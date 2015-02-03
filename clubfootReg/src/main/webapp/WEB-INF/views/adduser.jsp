@@ -11,7 +11,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
-<title>Clubfoot Registry | Home</title>
+<title>Clubfoot Registry | Add User</title>
 <div class="container">
 		<nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -56,19 +56,51 @@
 </nav>
 </div>
 </head>
+
 <body>
-	<div class="container">
-		<h1> ${greeting } </h1>
-		<p> ${tagline } </p>
-		<p> ${hospital.hospitalName } </p>
-		<p> ${hospital.hospitalRegion } </p>
-		<br><br>
-		<p> ${user.hospitalName } </p>
-		<p> ${user.userName } </p>
-		<br><br>
-		<p> ${visit.hospitalName } </p>
-		<br><br>
-		<p> ${evaluator.title } </p>
+
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-sm-2 column"></div>
+		<div class="col-md-8 column">
+			<h1 align="center">Add New User</h1>
+			<form action="#" th:action="@{/adduser}" th:object="${user}" modelAttribute="User" id="User" method="post">
+				<div class="form-group">
+					<label for="user_name">User Name</label>
+					<input type="name" class="form-control" name="userName" path="userName" />
+				</div>
+				<div class="form-group">
+					<label for="region">Hospital Affiliation</label>
+					<select class="form-control" name="hospitalName" required/>
+						<option>Select a Hospital</option>
+		                    	<option value="hospital1" path="hospitalName">Hospital1</option>
+	               				<option value="hospital2" path="hospitalName">Hospital2</option>
+	                			<option value="hospital3" path="hospitalName">Hospital3</option>
+		                	</select>
+				</div>
+				<div class="row">
+					
+					<div class="col-md-6">
+					
+					</div>
+				</div>
+				&nbsp;
+				<div class="row" align="center">
+					<button type="submit" class="btn btn-lg btn-primary">Submit Form</button>
+					<button type="reset" class="btn btn-lg btn-default">Clear</button>
+				</div>
+			</form>
+		</div>
+		<div class="col-sm-2 column"></div>
 	</div>
+</div>
+
+<script type="text/javascript">
+	$(".dropdown-menu li a").click(function(){
+	  var selText = $(this).text();
+	  $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+	});
+</script>
+
 </body>
-</html>
+</html> 

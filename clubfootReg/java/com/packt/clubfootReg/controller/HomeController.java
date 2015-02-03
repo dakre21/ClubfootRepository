@@ -14,6 +14,16 @@ public class HomeController {
 		
 		return "home";
 	}
+	
+	@RequestMapping("/home")
+	public String home1(Model model) {
+		model.addAttribute("greeting", "Welcome to the Clubfoot Registry");
+		model.addAttribute("tagline", "This is a UIowa Project");
+		model.addAttribute("newpatient");
+		
+		return "home";
+	}
+	
 	public HomeController() {
 		// TODO Auto-generated constructor stub
 	}

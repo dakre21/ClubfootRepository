@@ -1,9 +1,17 @@
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>New Patient Form</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <title>Clubfoot Registry | Add New Patient</title>
   <style>
 	  body {
 	  	margin-top: 1%;
@@ -44,113 +52,129 @@
 	}
   </style>
   <script>
-  function validateForm(date) {
-	  
-	  	var today = new Date();
-	    var dd = today.getDate();
-	    var mm = today.getMonth()+1;
-	    var yyyy = today.getFullYear();
-	    
-	    if(dd < 10)
-	    {
-	    	dd = '0' + dd
-	    }
-	    if(mm < 10)
-	    {
-	    	mm = '0' + mm
-	    }
-	    // First, get an array that holds all the elements.
-	    var inputElements = document.getElementById("newPatient").elements;
-	    //var date = document.getElementById("dob");
-	    var dateArray = new Array();
-	    //alert(date);
-	    for(var i = 0; i < date.length; i++){
-	    	if(date[i] != '/')
-	    	{
-	    		dateArray.push(date[i]);
-	    	}
-	    }
-	    
-	    if(dateArray[4] > yyyy[0] || dateArray[5] > yyyy[1] || dateArray[6] > yyyy[2] || dateArray[7] > yyyy[3] )
-	    {
-	    	//alert("Invalid date of birth");
-	    	date.setCustomValidity("Invalid date of birth");
-	    	//return false;
-	    }
-	    else if(dateArray[4] == yyyy[0] || dateArray[5] == yyyy[1] || dateArray[6] == yyyy[2] || dateArray[7] == yyyy[3] )
-	    {
-	    	if(dateArray[2] > mm[0])
-	    	{
-	    		//alert("Invalid date of birth");
-	    		date.setCustomValidity("Invalid date of birth");
-	    		//return false;
-	    	}
-	    	else if(dateArray[2] == mm[0])
-	    	{
-	    		if(dateArray[3] > mm[1])
-	    		{
-	    			//alert("Invalid date of birth");
-	    			date.setCustomValidity("Invalid date of birth");
-	    			//return false;
-	    		}
-	    		else if(dateArray[0] > dd[0])
-	    		{
-	    			//alert("Invalid date of birth");
-	    			date.setCustomValidity("Invalid date of birth");
-	    			//return false;
-	    		}
-	    		else if(dateArray[0] == dd[0])
-	    		{
-	    			if(dateArray[1] > dd[1])
-	    			{
-	    				//alert("Invalid date of birth");
-	    				date.setCustomValidity("Invalid date of birth");
-	    				//return false;
-	    			}
-	    		}
-	    	}
-	    }	
-	    else if(dateArray[5] == 1 || dateArray[5] == 2 || dateArray[5] == 3 || dateArray[5] == 4 || dateArray[5] == 5 || dateArray[5] == 6 || dateArray[5] == 7 || dateArray[5] == 8)
-	    {
-	    	date.setCustomValidity("Invalid date of birth");
-			//return false;
-	    }
-	    else
-	    {
-	    	date.setCustomValidity("");
-	    }
+  window.onload = function(){
+	  $('fieldset.guardian_check').hide();
+	  $('fieldset.emergency_contact').hide();
+	  $('#deformity_history_num1').hide();
+	  $('#deformity_history_num').hide();
+	  $('#preg_complications_explained1').hide();
+	  $('#preg_complications_explained').hide();
+	  $('#referral_hospital_name1').hide();
+	  $('#referral_hospital_name').hide();
+	  $('#referral_doc_name1').hide();
+	  $('#referral_doc_name').hide();
+	  $('#previous_treatments_num1').hide();
+	  $('#previous_treatments_num').hide();
+	  $('#diagnosis_prenatally_week1').hide();
+	  $('#diagnosis_prenatally_week').hide();
 
-  if (!Modernizr.input.required) {
-    // The required attribute is not supported, so you need to check the
-    // required fields yourself.
-    	
-    // Next, move through that array, checking eaching element.
-    for(var i = 0; i < inputElements.length; i++) {
-
-      // Check if this element is required.
-      if (inputElements[i].hasAttribute("required")) {
-        // If this elemnent is required, check if it has a value.
-        // If not, the form fails validation, and this function returns false.
-        if (inputElements[i].value == "") {
-          alert("Custom required-field validation failed. The form will not be submitted.");
-          return false;
-        }
-      }
-    }
-
-    // If you reach this point, everything worked out and the browser
-    // can submit the form.
-    return true;
   }
-}
+  function guardianHandlerTrue(){
+	  $('fieldset.guardian_check').show();
+  }
+  function guardianHandlerFalse(){
+	  $('fieldset.guardian_check').hide();
+  }
+  function guardianEmergencyTrue(){
+	  $('fieldset.emergency_contact').show();
+  }
+  function guardianEmergencyFalse(){
+	  $('fieldset.emergency_contact').hide();
+  }
+  function guardianDeformityTrue(){
+	  $('#deformity_history_num1').show();
+	  $('#deformity_history_num').show();
+  }
+  function guardianDeformityFalse(){
+	  $('#deformity_history_num1').hide();
+	  $('#deformity_history_num').hide();
+  }
+  function pregCompFalse(){
+	  $('#preg_complications_explained1').hide();
+	  $('#preg_complications_explained').hide();
+  }
+  function pregCompTrue(){
+	  $('#preg_complications_explained1').show();
+	  $('#preg_complications_explained').show();
+  }
+  function referralFnTrue(){
+	  $('#referral_hospital_name1').show();
+	  $('#referral_hospital_name').show();
+	  $('#referral_doc_name1').show();
+	  $('#referral_doc_name').show();
+  }
+  function referralFnFalse(){
+	  $('#referral_hospital_name1').hide();
+	  $('#referral_hospital_name').hide();
+	  $('#referral_doc_name1').hide();
+	  $('#referral_doc_name').hide();
+  }
+  function prevTreatmentTrue(){
+	  $('#previous_treatments_num1').show();
+	  $('#previous_treatments_num').show();
+  }
+  function prevTreatmentFalse(){
+	  $('#previous_treatments_num1').hide();
+	  $('#previous_treatments_num').hide();
+  }
+  function diagPrenatTrue(){
+	  $('#diagnosis_prenatally_week1').show();
+	  $('#diagnosis_prenatally_week').show();
+  }
+  function diagPrenatFalse(){
+	  $('#diagnosis_prenatally_week1').hide();
+	  $('#diagnosis_prenatally_week').hide();
+  }
   </script>
+  
+<div class="container">
+		<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/clubfootReg/home" class="btn btn-lg btn-mini">Clubfoot Registry</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="signup" class="btn btn-lg btn-mini">Sign up for an account</a></li>
+        <li><a href="login" class="btn btn-lg btn-mini">Log in</a></li>
+        <li><a href="<c:url value="/j_spring_security_logout"/>" class="btn btn-lg btn-mini">Log out</a></li>
+      </ul>
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search the registry">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Form information <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="newpatient">Add new patient</a></li>
+            <li><a href="evaluator">Add evaluator</a></li>
+            <li><a href="hospital">Add hospital</a></li>
+            <li><a href="adduser">Add user</a></li>
+            <li><a href="visit">Add visit</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+</div>
 </head>
 <body>
 	<h1>Create New patient </h1>  
-	<form action="#" th:action="@{/newpatient}" th:object="${newpatient}" modelAttribute="newPatient" method="post" id="newPatient" onsubmit="return validateForm(newpatient.dob);">
+	<form action="#" th:action="@{/newpatient}" th:object="${newpatient}" modelAttribute="newPatient" method="post" id="newPatient">
 		<p><i>Please complete the form. Mandatory fields are marked with a </i><em>*</em></p>
-			<label for="pre-imgfile">Upload photo of patient here: </label>
-			<input type="file" name="pre-imgfile" path="pre-imgfile"><br>
 			<label for="guardianConsent"><em>*</em>Does the parent or guardian consent to being included: </label>
 			<input type="radio" name="guardianConsent" value="guardian_consent" path="guardianConsent" required> Yes
 			<input type="radio" name="guardianConsent" value="no_guardian_consent" path="guardianConsent" required> No <br>
@@ -190,7 +214,10 @@
 			<input type="radio" name="race" value="unspecified" path="race"> Unspecified <br>
 
 			<label for="dob"><em>*</em>Date of birth: </label>
-			<input type="date" name="dob" id="dob" path="dob" placeholder="dd/mm/yyyy" required  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> <br>
+			<input type="date" name="dob" id="dob" path="dob" placeholder="dd/mm/yyyy" required  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
+			<label for="tribe">Tribe: </label>
+			<input type="text" name="tribe" path="tribe"> <br>
+		</fieldset>
 		<fieldset>
 		<legend>Address</legend>
 			<label for="addr1">Address 1: </label>
@@ -230,14 +257,194 @@
 			<input type="radio" name="guardian_relationship" value="other" path="guardian_relationship"> Other
 			<input type="radio" name="guardian_relationship" value="unspecified1" path="guardian_relationship"> Unspecified <br>
 
-			<label for="guardian_phone1"><em>*</em>Phone number 1: <label>
-			<input type="telephone" name="guardian_phone1" path="guardian_phone1" placeholder="xxx-xxx-xxxx" required pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
+			<label for="guardian_phone1"><em>*</em>Phone number 1: </label>
+			<input type="telephone" name="guardian_phone1" path="guardian_phone1" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
 			<label for="guardian_phone2">Phone number 2: </label>
-			<input type="telephone" name="guardian_phone2" path="guardian_phone2" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
-
-			</fieldset> 
+			<input type="telephone" name="guardian_phone2" path="guardian_phone2" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number"> <br>
+			<label for="guardian_check">Secondary parent/guardian: </label>
+			<input type="radio" name="guardian_check" id="guardian_check" value="Yes" path="guardian_check" onClick="guardianHandlerTrue()"> Yes
+			<input type="radio" name="guardian_check" id="guardian_check" value="No" path="guardian_check" onClick="guardianHandlerFalse()"> No <br>
+			
+			<fieldset class="guardian_check">
+			<legend>Secondary Parent/Guardian</legend>
+				<label for="second_guardian_last">Last name/Surname: </label>
+				<input type="name" name="second_guardian_last" path="second_guardian_last">
+				<label for="second_guardian_first">First name: </label>
+				<input type="name" name="second_guardian_first" path="second_guardian_first">
+				<label for="second_guardian_mid">Middle name: </label>
+				<input type="name" name="second_guardian_mid" path="second_guardian_mid"> <br>
+				
+				<label for="second_guardian_relationship">Relationship to parent: </label>
+				<input type="radio" name="second_guardian_relationship" value="mother" path="second_guardian_relationship"> Mother
+				<input type="radio" name="second_guardian_relationship" value="father" path="second_guardian_relationship"> Father
+				<input type="radio" name="second_guardian_relationship" value="grandparent" path="second_guardian_relationship"> Grandparent
+				<input type="radio" name="second_guardian_relationship" value="brother" path="second_guardian_relationship"> Brother
+				<input type="radio" name="second_guardian_relationship" value="sister" path="second_guardian_relationship"> Sister
+				<input type="radio" name="second_guardian_relationship" value="aunt" path="second_guardian_relationship"> Aunt
+				<input type="radio" name="second_guardian_relationship" value="uncle" path="second_guardian_relationship"> Uncle 
+				<input type="radio" name="second_guardian_relationship" value="friend" path="second_guardian_relationship"> Friend 
+				<input type="radio" name="second_guardian_relationship" value="other" path="second_guardian_relationship"> Other
+				<input type="radio" name="second_guardian_relationship" value="unspecified1" path="second_guardian_relationship"> Unspecified <br>
+			
+				<label for="second_guardian_phone1"><em>*</em>Phone number 1: <label>
+				<input type="telephone" name="second_guardian_phone1" path="second_guardian_phone1" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
+				<label for="second_guardian_phone2">Phone number 2: </label>
+				<input type="telephone" name="second_guardian_phone2" path="second_guardian_phone2" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
+			
+			</fieldset>
+			
+			<label for="emergency_contact">Emergency Contact: </label>
+			<input type="radio" name="emergency_contact" value="Primary" path="emergency_contact" onClick="guardianEmergencyFalse()"> Primary
+			<input type="radio" name="emergency_contact" value="Secondary" path="emergency_contact" onClick="guardianEmergencyFalse()"> Seconday
+			<input type="radio" name="emergency_contact" value="Other" path="emergency_contact" onClick="guardianEmergencyTrue()"> Other
+			<input type="radio" name="emergency_contact" value="Unspecified" path="emergency_contact" onClick="guardianEmergencyFalse()"> Unspecified
+			
+			<fieldset class="emergency_contact">
+			<legend>Other Emergency Contact</legend>
+				<label for="other_guardian_last">Last name/Surname: </label>
+				<input type="name" name="other_guardian_last" path="other_guardian_last">
+				<label for="other_guardian_first">First name: </label>
+				<input type="name" name="other_guardian_first" path="other_guardian_first">
+				<label for="other_guardian_mid">Middle name: </label>
+				<input type="name" name="other_guardian_mid" path="other_guardian_mid"> <br>
+				
+				<label for="other_guardian_relationship">Relationship to parent: </label>
+				<input type="radio" name="other_guardian_relationship" value="mother" path="other_guardian_relationship"> Mother
+				<input type="radio" name="other_guardian_relationship" value="father" path="other_guardian_relationship"> Father
+				<input type="radio" name="other_guardian_relationship" value="grandparent" path="other_guardian_relationship"> Grandparent
+				<input type="radio" name="other_guardian_relationship" value="brother" path="other_guardian_relationship"> Brother
+				<input type="radio" name="other_guardian_relationship" value="sister" path="other_guardian_relationship"> Sister
+				<input type="radio" name="other_guardian_relationship" value="aunt" path="other_guardian_relationship"> Aunt
+				<input type="radio" name="other_guardian_relationship" value="uncle" path="other_guardian_relationship"> Uncle 
+				<input type="radio" name="other_guardian_relationship" value="friend" path="other_guardian_relationship"> Friend 
+				<input type="radio" name="other_guardian_relationship" value="other" path="other_guardian_relationship" > Other
+				<input type="radio" name="other_guardian_relationship" value="unspecified1" path="other_guardian_relationship"> Unspecified <br>
+			
+				<label for="other_guardian_phone1"><em>*</em>Phone number 1: <label>
+				<input type="telephone" name="other_guardian_phone1" path="other_guardian_phone1" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
+				<label for="other_guardian_phone2">Phone number 2: </label>
+				<input type="telephone" name="other_guardian_phone2" path="other_guardian_phone2" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
+			</fieldset>
+		</fieldset> 
+		<fieldset>
+		<legend>Family History</legend>
+			<label for="deformity_history">Any relatives with the clubfoot deformity: </label>
+			<input type="radio" name="deformity_history" value="Yes" path="deformity_history" onClick="guardianDeformityTrue()"> Yes
+			<input type="radio" name="deformity_history" value="No" path="deformity_history" onClick="guardianDeformityFalse()"> No
+			<input type="radio" name="deformity_history" value="Unspecified" path="deformity_history" onClick="guardianDeformityFalse()"> Unspecified <br>
+			
+			<label for="deformity_history_num" id="deformity_history_num1">How many: </label>
+			<input type="text" name="deformity_history_num" path="deformity_history_num" id="deformity_history_num"> <br>
+			
+			<label for="pregnancy">Length of pregnancy (in weeks): </label>
+			<input type="text" name="pregnancy" path="pregnancy"> <br>
+			<label for="pregnancy_complications">Did the mother have any complications during pregnancy: </label>
+			<input type="radio" name="pregnancy_complications" value="Yes" path="pregnancy_complications" onClick="pregCompTrue()"> Yes
+			<input type="radio" name="pregnancy_complications" value="No" path="pregnancy_complications" onClick="pregCompFalse()"> No
+			<input type="radio" name="pregnancy_complications" value="Unspecified" path="pregnancy_complications" onClick="pregCompFalse()"> Unspecified <br>
+			
+			<label for="preg_complications_explained1" id="preg_complications_explained1">What were the complications: </label>
+			<input type="text" name="preg_complications_explained" path="preg_complications_explained" id="preg_complications_explained"> <br>
+			
+			<label for="pregnancy_alc">Did the mother consume alcohol during pregnancy: </label>
+			<input type="radio" name="pregnancy_alc" value="Yes" path="pregnancy_alc"> Yes
+			<input type="radio" name="pregnancy_alc" value="No" path="pregnancy_alc"> No
+			<input type="radio" name="pregnancy_alc" value="Unspecified" path="pregnancy_alc"> Unspecified <br>
+			<label for="pregnancy_smoke">Did the mother smoke during pregnancy: </label>
+			<input type="radio" name="pregnancy_smoke" value="Yes" path="pregnancy_smoke"> Yes
+			<input type="radio" name="pregnancy_smoke" value="No" path="pregnancy_smoke"> No
+			<input type="radio" name="pregnancy_smoke" value="Unspecified" path="pregnancy_smoke"> Unspecified <br>
+			<label for="complications">Any complications during birth: </label>
+			<input type="radio" name="complications" value="Yes" path="complications"> Yes
+			<input type="radio" name="complications" value="No" path="complications"> No
+			<input type="radio" name="complications" value="Unspecified" path="complications"> Unspecified <br> 
+			<label for="place_birth">Place of birth: </label>
+			<input type="radio" name="place_birth" value="Hospital" path="place_birth"> Hospital
+			<input type="radio" name="place_birth" value="Clinic" path="place_birth"> Clinic
+			<input type="radio" name="place_birth" value="Home" path="place_birth"> Home
+			<input type="radio" name="place_birth" value="Unspecified" path="place_birth"> Unspecified
+		</fieldset>
+		<fieldset>
+		<legend>Referral Information</legend>
+			<label for="referral">Referral source:</label>
+			<input type="radio" name="referral" value="Hospital_clinic" path="referral" onClick="referralFnTrue()"> Hospital/Clinic
+			<input type="radio" name="referral" value="Midwife" path="referral" onClick="referralFnFalse()"> Midwife
+			<input type="radio" name="referral" value="Word_of_mouth" path="referral" onClick="referralFnFalse()"> Word of mouth
+			<input type="radio" name="referral" value="Promotional_materials" path="referral" onClick="referralFnFalse()"> Promotional materials
+			<input type="radio" name="referral" value="Other" path="referral" onClick="referralFnFalse()"> Other
+			<input type="radio" name="referral" value="Unspecified" path="referral" onClick="referralFnFalse()"> Unspecified <br>
+		
+			<label for="referral_doc_name1" id="referral_doc_name1">Doctor name: </label>
+			<input type="text" name="referral_doc_name" path="referral_doc_name" id="referral_doc_name">
+			<label for="referral_hospital_name" id="referral_hospital_name1">Hospital/clinc name: </label>
+			<input type="text" name="referral_hospital_name" path="referral_hospital_name" id="referral_hospital_name">
+		</fieldset>
+		<fieldset>
+		<legend>Diagnosis</legend>
+			<label for="evaluator_name"><em>*</em>Name of evaluator: </label>
+			<input type="text" name="evaluator_name" path="evaluator_name" required> <a href="evaluator">Add evaluator</a> <br>
+			<label for="evaluation_date"><em>*</em>Evaluation date (dd/mm/yyyy): </label>
+			<input type="date" name="evaluation_date" path="evaluation_date" required> <br>
+			<label for="feet"><em>*</em>Feet affected: </label>
+			<input type="radio" name="feet" value="Left" path="feet" required> Left
+			<input type="radio" name="feet" value="Right" path="feet" required> Right
+			<input type="radio" name="feet" value="Both" path="feet" required> Both <br>
+			<label for="diagnosis"><em>*</em>Diagnosis: </label>
+			<input type="radio" name="diagnosis" value="Idiopathic_clubfoot" path="diagnosis" required> Idiopathic Clubfoot
+			<input type="radio" name="diagnosis" value="Syndromic_clubfoot" path="diagnosis" required> Syndromic Clubfoot
+			<input type="radio" name="diagnosis" value="Neuropathic_clubfoot" path="diagnosis" required> Neuropathic Clubfoot
+			<input type="radio" name="diagnosis" value="Other" path="diagnosis" required> Other <br>
+			<label for="deformity_at_birth">Deformity present at birth: </label>
+			<input type="radio" name="deformity_at_birth" value="Yes" path="deformity_at_birth"> Yes
+			<input type="radio" name="deformity_at_birth" value="No" path="deformity_at_birth"> No
+			<input type="radio" name="deformity_at_birth" value="Unspecified" path="deformity_at_birth"> Unspecified <br>
+			<label for="previous_treatments">Any previous treatments: </label>
+			<input type="radio" name="previous_treatments" value="Yes" path="previous_treatments" onClick="prevTreatmentTrue()"> Yes
+			<input type="radio" name="previous_treatments" value="No" path="previous_treatments" onClick="prevTreatmentFalse()"> No
+			<input type="radio" name="previous_treatments" value="Unspecified" path="previous_treatments"> Unspecified <br>
+			
+			<label for="previous_treatments_num1" id="previous_treatments_num1">Number of previous treatments: </label>
+			<input type="text" name="previous_treatments_num" path="previous_treatments_num" id="previous_treatments_num"> <br>
+			
+			<label for="diagnosis_prenatally">Diagnosis prenatally: </label>
+			<input type="radio" name="diagnosis_prenatally" value="Yes" path="diagnosis_prenatally" onClick="diagPrenatTrue()"> Yes
+			<input type="radio" name="diagnosis_prenatally" value="No" path="diagnosis_prenatally" onClick="diagPrenatFalse()"> No
+			<input type="radio" name="diagnosis_prenatally" value="Unspecified" path="diagnosis_prenatally" onClick="diagPrenatTrue()"> Unspecified <br>
+			
+			<label for="diagnosis_prenatally_week1" id="diagnosis_prenatally_week1">At prenatally week: </label>
+			<input type="text" name="diagnosis_prenatally_week" path="diagnosis_prenatally_week" id="diagnosis_prenatally_week"> <br>
+			<label for="prenatally_diag_confirmation1" id="prenatally_diag_confirmation1">If so, confirmed at birth: </label>
+			<input type="radio" name="prenatally_diag_confirmation" value="Yes" path="diagnosis_prenatally"> Yes
+			<input type="radio" name="prenatally_diag_confirmation" value="No" path="diagnosis_prenatally"> No
+			<input type="radio" name="prenatally_diag_confirmation" value="Unspecified" path="diagnosis_prenatally"> Unspecified <br><br>
+			
+			<label for="diagnosis_comments">Diagnosis comments: </label>
+			<input type="text" name="diagnosis_comments" path="diagnosis_comments"> <br>
+		</fieldset>
+		<fieldset>
+		<legend>Physical Examination</legend>
+			<label for="abnormalities">Any abnormalities: </label>
+			<input type="checkbox" name="abnormalities" value="Head" path="abnormalities"> Head
+			<input type="checkbox" name="abnormalities" value="Heart_lungs" path="abnormalities"> Heart/Lungs
+			<input type="checkbox" name="abnormalities" value="Urinary_digestive" path="abnormalities"> Urinary/Digestive
+			<input type="checkbox" name="abnormalities" value="Skin" path="abnormalities"> Skin
+			<input type="checkbox" name="abnormalities" value="Spine" path="abnormalities"> Spine
+			<input type="checkbox" name="abnormalities" value="Hips" path="abnormalities"> Hips
+			<input type="checkbox" name="abnormalities" value="Upper_extremities" path="abnormalities"> Upper extremities
+			<input type="checkbox" name="abnormalities" value="Lower_extremities" path="abnormalities"> Lower extremities
+			<input type="checkbox" name="abnormalities" value="Neurological" path="abnormalities"> Neurological <br>
+			<label for="weakness">Any weakness: </label>
+			<input type="checkbox" name="weakness" value="Arms" path="weakness"> Arms
+			<input type="checkbox" name="weakness" value="Legs" path="weakness"> Legs
+			<input type="checkbox" name="weakness" value="Other" path="weakness"> Other parts of body
+		</fieldset>
+		<fieldset>
+		<legend>Feet pre-treatments photo(s)</legend>
+			<label for="pre-imgfile">Upload photo of patient here: </label>
+			<input type="file" name="pre-imgfile" path="pre-imgfile"><br>
+			<button for="add_photo" id="add_photo">Add another photo</button>
+		</fieldset>
 			<p><input type="submit" value="Submit Form"></p>
-			<a href="">Back to home page</a>
 
 	</form>
 </body>

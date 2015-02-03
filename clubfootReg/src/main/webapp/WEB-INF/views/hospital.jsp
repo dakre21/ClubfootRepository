@@ -11,7 +11,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
-<title>Clubfoot Registry | Home</title>
+<title>Clubfoot Registry | Add Hospital</title>
 <div class="container">
 		<nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -56,19 +56,27 @@
 </nav>
 </div>
 </head>
-<body>
-	<div class="container">
-		<h1> ${greeting } </h1>
-		<p> ${tagline } </p>
-		<p> ${hospital.hospitalName } </p>
-		<p> ${hospital.hospitalRegion } </p>
-		<br><br>
-		<p> ${user.hospitalName } </p>
-		<p> ${user.userName } </p>
-		<br><br>
-		<p> ${visit.hospitalName } </p>
-		<br><br>
-		<p> ${evaluator.title } </p>
-	</div>
-</body>
+    <body>
+        <header>Add Hospital/Clinic</header>
+        <hr>
+        <div>
+        	<form action="#" th:action="@{/hospital}" th:object="${hospital}" modelAttribute="Hospital" id="Hospital" method="post">
+	            <fieldset>
+	            <label for="Region">Region:</label>
+	            <br>
+	            <select name="hospitalRegion" required> 
+	                <option value="region1" path="hospitalRegion">Region1</option>
+	                <option value="region2" path="hospitalRegion">Region2</option>
+	                <option value="region3" path="hospitalRegion">Region3</option>
+	            </select>
+	            <p><small>The region to which the hospital/clinic belong</small></p>
+	            <label>Hospital/Clinic Name:</label>
+	            <br>
+	            <input type="text" name="hospitalName" path="hospitalName" required>
+	              <p><small>The name of the hospital to be added</small></p>
+	            </fieldset>
+	             <p><input type="submit" value="Submit Form"></p>
+	          </form>
+        </div>
+    </body>
 </html>
