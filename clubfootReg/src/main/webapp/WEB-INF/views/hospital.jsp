@@ -1,3 +1,4 @@
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -13,7 +14,7 @@
 
 <title>Clubfoot Registry | Add Hospital</title>
 <div class="container">
-		<nav class="navbar navbar-default">
+    <nav class="navbar navbar-default">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -56,27 +57,48 @@
 </nav>
 </div>
 </head>
-    <body>
-        <header>Add Hospital/Clinic</header>
-        <hr>
-        <div>
-        	<form action="#" th:action="@{/hospital}" th:object="${hospital}" modelAttribute="Hospital" id="Hospital" method="post">
-	            <fieldset>
-	            <label for="Region">Region:</label>
-	            <br>
-	            <select name="hospitalRegion" required> 
-	                <option value="region1" path="hospitalRegion">Region1</option>
-	                <option value="region2" path="hospitalRegion">Region2</option>
-	                <option value="region3" path="hospitalRegion">Region3</option>
-	            </select>
-	            <p><small>The region to which the hospital/clinic belong</small></p>
-	            <label>Hospital/Clinic Name:</label>
-	            <br>
-	            <input type="text" name="hospitalName" path="hospitalName" required>
-	              <p><small>The name of the hospital to be added</small></p>
-	            </fieldset>
-	             <p><input type="submit" value="Submit Form"></p>
-	          </form>
+
+<body>
+
+<div class="container">
+  <div class="row clearfix">
+    <div class="col-sm-2 column"></div>
+    <div class="col-md-8 column">
+      <h1 align="center">Add New Hospital</h1>
+      <form action="#" th:action="@{/evaluator}" th:object="${evaluator}" modelAttribute="Evaluator" id="Evaluator" method="post">
+        <div class="form-group">
+          <label for="hospital">Hospital/Clinic Name</label>
+          <input type="text" class="form-control" id="hospital" name="hospitalName" path="hospitalName"/>
         </div>
-    </body>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="region">Region</label>
+              <select class="form-control" id="region" name="region">
+                <option>Select a Region</option>
+                          <option value="region1" name="region" path="hospitalRegion">Region1</option>
+                          <option value="region2" name="region" path="hospitalRegion">Region2</option>
+                      </select>
+            </div>
+          </div>
+        </div>
+        &nbsp;
+        <div class="row" align="center">
+          <button type="submit" class="btn btn-lg btn-primary">Submit Form</button>
+          <button type="reset" class="btn btn-lg btn-default">Clear</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-sm-2 column"></div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(".dropdown-menu li a").click(function(){
+    var selText = $(this).text();
+    $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+  });
+</script>
+
+</body>
 </html>
