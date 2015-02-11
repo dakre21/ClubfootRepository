@@ -91,6 +91,12 @@
 	  $('#problemsRight1').hide();
 	  $('#actionsRight').hide();
 	  $('#actionsRight1').hide();
+	  $('#description').hide();
+	  $('#results').hide();
+	  $('#treatmentComplications').hide();
+	  $('#description1').hide();
+	  $('#results1').hide();
+	  $('#treatmentComplications1').hide();
 
   }
   
@@ -378,6 +384,24 @@
 	  $('#problemsRight1').hide();
 	  $('#actionsRight').hide();
 	  $('#actionsRight1').hide();
+  }
+  
+  function complicationsTrue(){
+	  $('#description').show();
+	  $('#results').show();
+	  $('#treatmentComplications').show();
+	  $('#description1').show();
+	  $('#results1').show();
+	  $('#treatmentComplications1').show();
+	  
+  }
+  function complicationsFalse(){
+	  $('#description').hide();
+	  $('#results').hide();
+	  $('#treatmentComplications').hide();
+	  $('#description1').hide();
+	  $('#results1').hide();
+	  $('#treatmentComplications1').hide();
   }
   
   function lastVisitTrue(){
@@ -704,9 +728,15 @@
 		<fieldset>
 			<legend>Complications</legend>
 				<label for = "complications"><em>*</em>Were there any complications? </label>	
-				<INPUT TYPE="radio" NAME="complications" path="complications" VALUE="No">No
-				<INPUT TYPE="radio" NAME="complications" path="complications" VALUE="Yes"5">Yes
-				<INPUT TYPE="radio" NAME="complications" path="complications" VALUE="Unspecified">Unspecified<br>	
+				<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsFalse()"VALUE="No">No
+				<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsTrue()" VALUE="Yes"5">Yes
+				<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsFalse()" VALUE="Unspecified">Unspecified<br>
+				<label for = "description" id = "description1"><em>*</em>Description of complication(s): </label>
+	  			<input type="text" name="description" id = "description" class="form-control" path="description">
+	  			<label for = "treatmentComplications" id = "treatmentComplications1"><em>*</em>Treatment of complication(s): </label>
+	  			<input type="text" name="treatmentComplications" id = "treatmentComplications" class="form-control" path="treatmentComplications">
+	  			<label for = "results" id = "results1">Results after treatment: </label>
+	  			<input type="text" name="results" id = "results" class="form-control" path="results">	
 		</fieldset>
 	</div>
 	<div class = "form-group">
