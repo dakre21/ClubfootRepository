@@ -59,26 +59,15 @@
 	  $('#dateOfNextVisit1').hide();
 
   }
+  
   function lastVisitTrue(){
 	  $('#dateOfNextVisit').hide();
 	  $('#dateOfNextVisit1').hide();
-
-
   }
   function lastVisitFalse(){
 	  $('#dateOfNextVisit').show();
 	  $('#dateOfNextVisit1').show();
-
-
   }
-  <!--$(function(){
-      $('button').click(function(){  
-              if( $(this).html()=='Hide Right Foot') $(this).html('Hide Right Foot Data');
-          $(this).nextAll('fieldset:first').toggle();
-
-          $(this).html()=='Show Right Foot Data'?($(this).html('Hide Right Foot Data')):($(this).html('Show Right Foot Data'));
-      });
-  })-->
   </script>
 <div class="container">
 		<nav class="navbar navbar-default">
