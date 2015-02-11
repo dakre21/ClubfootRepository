@@ -105,9 +105,6 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `icr_spring`.`evaluator` (
   `id` INT NOT NULL,
-  `first_name` VARCHAR(45) NULL,
-  `last_name` VARCHAR(45) NULL,
-  `middle_name` VARCHAR(45) NULL,
   `title` VARCHAR(45) NULL,
   `hospital_id` INT NULL,
   PRIMARY KEY (`id`),
