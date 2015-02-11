@@ -53,9 +53,32 @@
 	}
   </style>
   <script>
-  	function test(){
-  		$('fieldset.test').hide();
-  	}
+  
+  window.onload = function(){
+	  $('#dateOfNextVisit').hide();
+	  $('#dateOfNextVisit1').hide();
+
+  }
+  function lastVisitTrue(){
+	  $('#dateOfNextVisit').hide();
+	  $('#dateOfNextVisit1').hide();
+
+
+  }
+  function lastVisitFalse(){
+	  $('#dateOfNextVisit').show();
+	  $('#dateOfNextVisit1').show();
+
+
+  }
+  <!--$(function(){
+      $('button').click(function(){  
+              if( $(this).html()=='Hide Right Foot') $(this).html('Hide Right Foot Data');
+          $(this).nextAll('fieldset:first').toggle();
+
+          $(this).html()=='Show Right Foot Data'?($(this).html('Hide Right Foot Data')):($(this).html('Show Right Foot Data'));
+      });
+  })-->
   </script>
 <div class="container">
 		<nav class="navbar navbar-default">
@@ -129,12 +152,14 @@
   		<input type="text" name="evaluatorName" class="form-control" path="evaluatorName" required> <a href="evaluator">Add evaluator</a> <br>
   		<label for="dateOfVisit"><em>*</em>Date of visit: </label>
 		<input type="date" name="dateOfVisit" id="dateOfVisit" class="form-control" path="dateOfVisit" placeholder="dd/mm/yyyy" required  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
+  		<label for="dateOfNextVist" id = "dateOfNextVisit1"><em>*</em>Date of next visit: </label>
+		<input type="date" name="dateOfNextVisit" id="dateOfNextVisit" class="form-control" path="dateOfNextVisit" placeholder="dd/mm/yyyy" required  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
   
   	
   	<label for = "finalTreatment">Is this the patient's final treatment visit? </label>
-	<INPUT TYPE="radio" NAME="finalTreatment" path="finalTreatment" VALUE="yes_final_treatment">Yes
-	<INPUT TYPE="radio" NAME="q1" path="finalTreatment" VALUE="no_not_final_treatment">No
-	<INPUT TYPE="radio" NAME="q1" path="finalTreatment" VALUE="unspecified_final_treatment">Unspecified<br>
+	<INPUT TYPE="radio" NAME="finalTreatment" path="finalTreatment" onClick = "lastVisitTrue()" VALUE="yes_final_treatment">Yes
+	<INPUT TYPE="radio" NAME="finalTreatment" path="finalTreatment" onClick = "lastVisitFalse()" VALUE="no_not_final_treatment">No
+	<INPUT TYPE="radio" NAME="finalTreatment" path="finalTreatment" onClick = "lastVisitFalse()" VALUE="unspecified_final_treatment">Unspecified<br>
  
   	<label for = "finalTreatment">Did the patient experience a relapse? </label>
   	
@@ -144,8 +169,9 @@
 	
 	</div>
 	<div class = "form-group">
+	<!--  <button class='toggle'>Hide Left Foot</button>-->
  	<fieldset>
-		<legend> <a href = "">Left Foot</a> </legend>
+		<legend>Left Foot</legend>
 		<label for = "hindfootLeftVarus">Varus: </label>
 		Varus:
 		<INPUT TYPE="radio" NAME="hindfootLeftVarus" path="hindfootLeftVarus" VALUE="varus">Varus
@@ -216,6 +242,7 @@
 	</div>
 	
 	<div class = "form-group">
+		<!-- <button class='toggle'>Hide Right Foot</button> -->
 		<fieldset> 
 		<legend>Right Foot</legend>
 		
@@ -308,14 +335,14 @@
 			</div>
 		</div>
 	<div class = "form-group">
-		<label for="omments">Comments: </label>
+		<label for="comments">Comments: </label>
 		<input type="text" name="comments" class="form-control" path="comments"> <br>
 			
 	</div>
 	<div class="row" align="center">
 		<button type="submit" class="btn btn-lg btn-primary">Submit Form</button>
 		<button type="reset" class="btn btn-lg btn-default">Clear</button>
-	</div>
+</div>
 	</div>
 	</div>
 	</div>
