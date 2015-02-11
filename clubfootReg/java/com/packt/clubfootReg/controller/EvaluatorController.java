@@ -34,12 +34,17 @@ public class EvaluatorController {
 		return "evaluator";
 	}
 	
+	@RequestMapping(value = "/view_evaluators", method = RequestMethod.GET)
+	public String viewEvaluatorsForm(Model model){
+		return "view_evaluators";
+	}
+	
 	@RequestMapping(value = "/evaluator", method = RequestMethod.POST)
 	public String evaluatorSubmitForm(@ModelAttribute("evaluator") Evaluator evaluator, Model model){
 		model.addAttribute("greeting", "UIowa Clubfoot Registry");
         model.addAttribute("tagline", "Evaluator Data Successfully Submitted");
         evaluatorRepo.addEvaluator(evaluator);
-		return "home";
+		return "view_evaluators";
 	}
 	
 	public EvaluatorController() {
