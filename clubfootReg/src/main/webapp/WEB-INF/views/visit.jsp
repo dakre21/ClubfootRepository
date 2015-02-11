@@ -57,7 +57,327 @@
   window.onload = function(){
 	  $('#dateOfNextVisit').hide();
 	  $('#dateOfNextVisit1').hide();
+	  $('#castLeftNum').hide();
+	  $('#casterLeft').hide();
+	  $('#castLeftNum1').hide();
+	  $('#casterLeft1').hide();
+	  $('#abductionLeft').hide();
+	  $('#abductionLeft1').hide();
+	  $('#dorsiflexionLeft').hide();
+	  $('#dorsiflexionLeft1').hide();
+	  $('#braceLeft').hide();
+	  $('#braceLeft1').hide();
+	  $('#problemsLeft').hide();
+	  $('#problemsLeft1').hide();
+	  $('#actionsLeft').hide();
+	  $('#actionsLeft1').hide();
+	  $('#otherLeft').hide();
+	  $('#otherLeft1').hide();
+	  $('div.surgeryLeftClass').hide();
+	  $('#castRightNum').hide();
+	  $('#casterRight').hide();
+	  $('#castRightNum1').hide();
+	  $('#casterRight1').hide();
+	  $('#abductionRight').hide();
+	  $('#abductionRight1').hide();
+	  $('#dorsiflexionRight').hide();
+	  $('#dorsiflexionRight1').hide();
+	  $('#otherRight').hide();
+	  $('#otherRight1').hide();
+	  $('div.surgeryRightClass').hide();
+	  $('#braceRight').hide();
+	  $('#braceRight1').hide();
+	  $('#problemsRight').hide();
+	  $('#problemsRight1').hide();
+	  $('#actionsRight').hide();
+	  $('#actionsRight1').hide();
 
+  }
+  
+  function braceLeftTrue(){
+	  $('#castLeftNum').hide();
+	  $('#casterLeft').hide();
+	  $('#castLeftNum1').hide();
+	  $('#casterLeft1').hide();
+	  $('#abductionLeft').hide();
+	  $('#abductionLeft1').hide();
+	  $('#dorsiflexionLeft').hide();
+	  $('#dorsiflexionLeft1').hide();
+	  $('#otherLeft').hide();
+	  $('#otherLeft1').hide();
+	  $('div.surgeryLeftClass').hide();
+	  $('#braceLeft').show();
+	  $('#braceLeft1').show();
+	  $('#problemsLeft').show();
+	  $('#problemsLeft1').show();
+	  $('#actionsLeft').show();
+	  $('#actionsLeft1').show();
+  }
+  
+  function tenotomyLeftTrue(){
+	  $('#abductionLeft').show();
+	  $('#abductionLeft1').show();
+	  $('#dorsiflexionLeft').show();
+	  $('#dorsiflexionLeft1').show();
+	  $('#castLeftNum').hide();
+	  $('#casterLeft').hide();
+	  $('#castLeftNum1').hide();
+	  $('#casterLeft1').hide();
+	  $('#otherLeft').hide();
+	  $('#otherLeft1').hide();
+	  $('div.surgeryLeftClass').hide();
+	  $('#braceLeft').hide();
+	  $('#braceLeft1').hide();
+	  $('#problemsLeft').hide();
+	  $('#problemsLeft1').hide();
+	  $('#actionsLeft').hide();
+	  $('#actionsLeft1').hide();
+  }
+  
+  function surgeryLeftTrue(){
+	  $('div.surgeryLeftClass').show();
+	  $('#braceLeft').hide();
+	  $('#braceLeft1').hide();
+	  $('#problemsLeft').hide();
+	  $('#problemsLeft1').hide();
+	  $('#actionsLeft').hide();
+	  $('#actionsLeft1').hide();
+	  $('#abductionLeft').hide();
+	  $('#abductionLeft1').hide();
+	  $('#dorsiflexionLeft').hide();
+	  $('#dorsiflexionLeft1').hide();
+	  $('#castLeftNum').hide();
+	  $('#casterLeft').hide();
+	  $('#castLeftNum1').hide();
+	  $('#casterLeft1').hide();
+	  $('#otherLeft').hide();
+	  $('#otherLeft1').hide();
+
+
+  }
+  
+  function referLeftTrue(){
+	  $('#castLeftNum').hide();
+	  $('#casterLeft').hide();
+	  $('#castLeftNum1').hide();
+	  $('#casterLeft1').hide();
+	  $('#abductionLeft').hide();
+	  $('#abductionLeft1').hide();
+	  $('#dorsiflexionLeft').hide();
+	  $('#dorsiflexionLeft1').hide();
+	  $('#braceLeft').hide();
+	  $('#braceLeft1').hide();
+	  $('#problemsLeft').hide();
+	  $('#problemsLeft1').hide();
+	  $('#actionsLeft').hide();
+	  $('#actionsLeft1').hide();
+	  $('#otherLeft').hide();
+	  $('#otherLeft1').hide();
+	  $('div.surgeryLeftClass').hide();
+
+
+  }
+  
+  function otherLeftTrue(){
+	  $('#otherLeft').show();
+	  $('#otherLeft1').show();
+	  $('div.surgeryLeftClass').hide();
+	  $('#braceLeft').hide();
+	  $('#braceLeft1').hide();
+	  $('#problemsLeft').hide();
+	  $('#problemsLeft1').hide();
+	  $('#actionsLeft').hide();
+	  $('#actionsLeft1').hide();
+	  $('#abductionLeft').hide();
+	  $('#abductionLeft1').hide();
+	  $('#dorsiflexionLeft').hide();
+	  $('#dorsiflexionLeft1').hide();
+	  $('#castLeftNum').hide();
+	  $('#casterLeft').hide();
+	  $('#castLeftNum1').hide();
+	  $('#casterLeft1').hide();
+  }
+  function noneLeftTrue(){
+	  $('#castLeftNum').hide();
+	  $('#casterLeft').hide();
+	  $('#castLeftNum1').hide();
+	  $('#casterLeft1').hide();
+	  $('#abductionLeft').hide();
+	  $('#abductionLeft1').hide();
+	  $('#dorsiflexionLeft').hide();
+	  $('#dorsiflexionLeft1').hide();
+	  $('#braceLeft').hide();
+	  $('#braceLeft1').hide();
+	  $('#problemsLeft').hide();
+	  $('#problemsLeft1').hide();
+	  $('#actionsLeft').hide();
+	  $('#actionsLeft1').hide();
+	  $('#otherLeft').hide();
+	  $('#otherLeft1').hide();
+	  $('div.surgeryLeftClass').hide();
+
+  }
+  function castingLeftTrue(){
+	  $('#castLeftNum').show();
+	  $('#casterLeft').show();
+	  $('#castLeftNum1').show();
+	  $('#casterLeft1').show();
+	  $('#otherLeft').hide();
+	  $('#otherLeft1').hide();
+	  $('div.surgeryLeftClass').hide();
+	  $('#braceLeft').hide();
+	  $('#braceLeft1').hide();
+	  $('#problemsLeft').hide();
+	  $('#problemsLeft1').hide();
+	  $('#actionsLeft').hide();
+	  $('#actionsLeft1').hide();
+	  $('#abductionLeft').hide();
+	  $('#abductionLeft1').hide();
+	  $('#dorsiflexionLeft').hide();
+	  $('#dorsiflexionLeft1').hide();
+  }
+  
+  function braceRightTrue(){
+	  $('#castRightNum').hide();
+	  $('#casterRight').hide();
+	  $('#castRightNum1').hide();
+	  $('#casterRight1').hide();
+	  $('#abductionRight').hide();
+	  $('#abductionRight1').hide();
+	  $('#dorsiflexionRight').hide();
+	  $('#dorsiflexionRight1').hide();
+	  $('#otherRight').hide();
+	  $('#otherRight1').hide();
+	  $('div.surgeryRightClass').hide();
+	  $('#braceRight').show();
+	  $('#braceRight1').show();
+	  $('#problemsRight').show();
+	  $('#problemsRight1').show();
+	  $('#actionsRight').show();
+	  $('#actionsRight1').show();
+  }
+  
+  function tenotomyRightTrue(){
+	  $('#castRightNum').hide();
+	  $('#casterRight').hide();
+	  $('#castRightNum1').hide();
+	  $('#casterRight1').hide();
+	  $('#abductionRight').show();
+	  $('#abductionRight1').show();
+	  $('#dorsiflexionRight').show();
+	  $('#dorsiflexionRight1').show();
+	  $('#otherRight').hide();
+	  $('#otherRight1').hide();
+	  $('div.surgeryRightClass').hide();
+	  $('#braceRight').hide();
+	  $('#braceRight1').hide();
+	  $('#problemsRight').hide();
+	  $('#problemsRight1').hide();
+	  $('#actionsRight').hide();
+	  $('#actionsRight1').hide();
+  }
+  
+  function surgeryRightTrue(){
+	  $('#castRightNum').hide();
+	  $('#casterRight').hide();
+	  $('#castRightNum1').hide();
+	  $('#casterRight1').hide();
+	  $('#abductionRight').hide();
+	  $('#abductionRight1').hide();
+	  $('#dorsiflexionRight').hide();
+	  $('#dorsiflexionRight1').hide();
+	  $('#otherRight').hide();
+	  $('#otherRight1').hide();
+	  $('div.surgeryRightClass').show();
+	  $('#braceRight').hide();
+	  $('#braceRight1').hide();
+	  $('#problemsRight').hide();
+	  $('#problemsRight1').hide();
+	  $('#actionsRight').hide();
+	  $('#actionsRight1').hide();
+
+
+  }
+  
+  function referRightTrue(){
+	  $('#castRightNum').hide();
+	  $('#casterRight').hide();
+	  $('#castRightNum1').hide();
+	  $('#casterRight1').hide();
+	  $('#abductionRight').hide();
+	  $('#abductionRight1').hide();
+	  $('#dorsiflexionRight').hide();
+	  $('#dorsiflexionRight1').hide();
+	  $('#otherRight').hide();
+	  $('#otherRight1').hide();
+	  $('div.surgeryRightClass').hide();
+	  $('#braceRight').hide();
+	  $('#braceRight1').hide();
+	  $('#problemsRight').hide();
+	  $('#problemsRight1').hide();
+	  $('#actionsRight').hide();
+	  $('#actionsRight1').hide();
+
+
+  }
+  
+  function otherRightTrue(){
+	  $('#castRightNum').hide();
+	  $('#casterRight').hide();
+	  $('#castRightNum1').hide();
+	  $('#casterRight1').hide();
+	  $('#abductionRight').hide();
+	  $('#abductionRight1').hide();
+	  $('#dorsiflexionRight').hide();
+	  $('#dorsiflexionRight1').hide();
+	  $('#otherRight').show();
+	  $('#otherRight1').show();
+	  $('div.surgeryRightClass').hide();
+	  $('#braceRight').hide();
+	  $('#braceRight1').hide();
+	  $('#problemsRight').hide();
+	  $('#problemsRight1').hide();
+	  $('#actionsRight').hide();
+	  $('#actionsRight1').hide();
+  }
+  function noneRightTrue(){
+	  $('#castRightNum').hide();
+	  $('#casterRight').hide();
+	  $('#castRightNum1').hide();
+	  $('#casterRight1').hide();
+	  $('#abductionRight').hide();
+	  $('#abductionRight1').hide();
+	  $('#dorsiflexionRight').hide();
+	  $('#dorsiflexionRight1').hide();
+	  $('#otherRight').hide();
+	  $('#otherRight1').hide();
+	  $('div.surgeryRightClass').hide();
+	  $('#braceRight').hide();
+	  $('#braceRight1').hide();
+	  $('#problemsRight').hide();
+	  $('#problemsRight1').hide();
+	  $('#actionsRight').hide();
+	  $('#actionsRight1').hide();
+
+  }
+  function castingRightTrue(){
+	  $('#castRightNum').show();
+	  $('#casterRight').show();
+	  $('#castRightNum1').show();
+	  $('#casterRight1').show();
+	  $('#abductionRight').hide();
+	  $('#abductionRight1').hide();
+	  $('#dorsiflexionRight').hide();
+	  $('#dorsiflexionRight1').hide();
+	  $('#otherRight').hide();
+	  $('#otherRight1').hide();
+	  $('div.surgeryRightClass').hide();
+	  $('#braceRight').hide();
+	  $('#braceRight1').hide();
+	  $('#problemsRight').hide();
+	  $('#problemsRight1').hide();
+	  $('#actionsRight').hide();
+	  $('#actionsRight1').hide();
   }
   
   function lastVisitTrue(){
@@ -219,14 +539,53 @@
 		
 		<legend></legend>
 			<label for = "leftTreatment"><em>*</em>Treatment: </label>	
-			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" VALUE="none">None
-			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" VALUE="C - Manipulation & Casting">C - Manipulation & Casting
-			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" VALUE="T - Tenotomy">T - Tenotomy
-			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" VALUE="B - Brace Application">B - Brace Application
-			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" VALUE="R - Refer">R - Refer
-			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" VALUE="S-Surgery">S - Surgery
-			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" VALUE="O-Other">O - Other
-		
+			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "noneLeftTrue()" VALUE="none">None
+			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "castingLeftTrue()"VALUE="C - Manipulation & Casting">C - Manipulation & Casting
+			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "tenotomyLeftTrue()" VALUE="T - Tenotomy">T - Tenotomy
+			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "braceLeftTrue()" VALUE="B - Brace Application">B - Brace Application
+			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "referLeftTrue()" VALUE="R - Refer">R - Refer
+			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "surgeryLeftTrue()" VALUE="S-Surgery">S - Surgery
+			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "otherLeftTrue()" VALUE="O-Other">O - Other<br>
+			<label for = "casterLeft" id = "casterLeft1">Caster: </label>
+  			<input type="text" name="casterLeft" id = "casterLeft" class="form-control" path="casterLeft">
+  			<label for = "castLeftNum" id = "castLeftNum1">Casting Number: </label>
+  			<input type="text" name="castLeftNum" id = "castLeftNum" class="form-control" path="castLeftNum">
+  			<label for = "abductionLeft" id = "abductionLeft1">Degrees abduction: </label>
+  			<input type="text" name="abductionLeft" id = "abductionLeft" class="form-control" path="abductionLeft">
+  			<label for = "dorsiflexionLeft" id = "dorsiflexionLeft1">Degrees dorsiflexion: </label>
+  			<input type="text" name="dorsiflexionLeft" id = "dorsiflexionLeft" class="form-control" path="dorsiflexionLeft">
+  			<label for = "braceLeft" id = "braceLeft1"><em>*</em>Brace Compliance: </label> 
+  				<select name="braceLeft" id = "braceLeft" required>
+  					<option value="unspecified" path="brace"> Unspecified </option>
+			  		<option value="good" path="braceLeft"> Good </option>
+			  		<option value="fair" path="braceLeft"> Fair </option>
+			  		<option value="poor" path="braceLeft"> Poor </option>
+			  		<option value="none" path="braceLeft"> None </option>
+			  	</select><br>
+  			<label for = "problemsLeft" id = "problemsLeft1">Problems: </label>
+  			<input type="text" name="problemsLeft" id = "problemsLeft" class="form-control" path="problemsLeft">
+  			<label for = "actionsLeft" id = "actionsLeft1">Degrees dorsiflexion: </label>
+  			<input type="text" name="actionsLeft" id = "actionsLeft" class="form-control" path="actionsLeft">
+  			<label for = "otherLeft" id = "otherLeft1"><em>*</em>Please give detials: </label>
+  			<input type="text" name="otherLeft" id = "otherLeft" class="form-control" path="otherLeft" required>
+  			<div class = "surgeryLeftClass">
+	  			<label for = "surgeryLeft" id = "surgeryLeft1"><em>*</em>Surgery Type: </label>	
+				<INPUT TYPE="radio" NAME="surgeryLeft"  path="surgeryLeft" VALUE="Posterior Release">Posterior Release
+				<INPUT TYPE="radio" NAME="surgeryLeft"  path="surgeryLeft" VALUE="Medial Release">Medial Release
+				<INPUT TYPE="radio" NAME="surgeryLeft"  path="surgeryLeft" VALUE="Subtalar Release">Subtalar Release
+				<INPUT TYPE="radio" NAME="surgeryLeft"  path="surgeryLeft" VALUE="Plantar Release">Plantar Release
+				<INPUT TYPE="radio" NAME="surgeryLeft"  path="surgeryLeft" VALUE="Achilles Lengthening ">Achilles Lengthening 
+				<INPUT TYPE="radio" NAME="surgeryLeft"  path="surgeryLeft" VALUE="Tendon Transfers">Tendon Transfers
+				<INPUT TYPE="radio" NAME="surgeryLeft"  path="surgeryLeft" VALUE="Osteotomies">Osteotomies
+				<INPUT TYPE="radio" NAME="surgeryLeft"  path="surgeryLeft" VALUE="Arthrodesis">Arthrodesis
+				<INPUT TYPE="radio" NAME="surgeryLeft"  path="surgeryLeft" VALUE="Talectomy">Talectomy	
+				<INPUT TYPE="radio" NAME="surgeryLeft"  path="surgeryLeft" VALUE="Other">Other<br>	
+				<label for = "leftSurgeryComments" >Surgery Comments: </label>
+	  			<input type="text" name="leftSurgeryComments" id = "leftSurgeryComments" class="form-control" path="leftSurgeryComments">	
+		   </div>
+  			
+  		
+  		
 			</fieldset>
 	</div>
 	
@@ -294,13 +653,50 @@
 		
 		<legend></legend>
 			<label for = "rightTreatment"><em>*</em>Treatment: </label>	
-			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" VALUE="none">None
-			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" VALUE="C - Manipulation & Casting">C - Manipulation & Casting
-			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" VALUE="T - Tenotomy">T - Tenotomy
-			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" VALUE="B - Brace Application">B - Brace Application
-			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" VALUE="R - Refer">R - Refer
-			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" VALUE="S-Surgery">S - Surgery
-			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" VALUE="O-Other">O - Other
+			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "noneRightTrue()" VALUE="none">None
+			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "castingRightTrue()"VALUE="C - Manipulation & Casting">C - Manipulation & Casting
+			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "tenotomyRightTrue()" VALUE="T - Tenotomy">T - Tenotomy
+			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "braceRightTrue()" VALUE="B - Brace Application">B - Brace Application
+			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "referRightTrue()" VALUE="R - Refer">R - Refer
+			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "surgeryRightTrue()" VALUE="S-Surgery">S - Surgery
+			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "otherRightTrue()" VALUE="O-Other">O - Other<br>
+			<label for = "casterRight" id = "casterRight1">Caster: </label>
+  			<input type="text" name="casterRight" id = "casterRight" class="form-control" path="casterRight">
+  			<label for = "castRightNum" id = "castRightNum1">Casting Number: </label>
+  			<input type="text" name="castRightNum" id = "castRightNum" class="form-control" path="castRightNum">
+  			<label for = "abductionRight" id = "abductionRight1">Degrees abduction: </label>
+  			<input type="text" name="abductionRight" id = "abductionRight" class="form-control" path="abductionRight">
+  			<label for = "dorsiflexionRight" id = "dorsiflexionRight1">Degrees dorsiflexion: </label>
+  			<input type="text" name="dorsiflexionRight" id = "dorsiflexionRight" class="form-control" path="dorsiflexionRight">
+  			<label for = "braceRight" id = "braceRight1"><em>*</em>Brace Compliance: </label> 
+  				<select name="braceRight" id = "braceRight" required>
+  					<option value="unspecified" path="braceRight"> Unspecified </option>
+			  		<option value="good" path="braceRight"> Good </option>
+			  		<option value="fair" path="braceRight"> Fair </option>
+			  		<option value="poor" path="braceRight"> Poor </option>
+			  		<option value="none" path="braceRight"> None </option>
+			  	</select><br>
+  			<label for = "problemsRight" id = "problemsRight1">Problems: </label>
+  			<input type="text" name="problemsRight" id = "problemsRight" class="form-control" path="problemsRight">
+  			<label for = "actionsRight" id = "actionsRight1">Degrees dorsiflexion: </label>
+  			<input type="text" name="actionsRight" id = "actionsRight" class="form-control" path="actionsRight">
+  			<label for = "otherRight" id = "otherRight1"><em>*</em>Please give detials: </label>
+  			<input type="text" name="otherRight" id = "otherRight" class="form-control" path="otherRight" required>
+  			<div class = "surgeryRightClass">
+	  			<label for = "surgeryRight" id = "surgeryRight1"><em>*</em>Surgery Type: </label>	
+				<INPUT TYPE="radio" NAME="surgeryRight"  path="surgeryRight" VALUE="Posterior Release">Posterior Release
+				<INPUT TYPE="radio" NAME="surgeryRight"  path="surgeryRight" VALUE="Medial Release">Medial Release
+				<INPUT TYPE="radio" NAME="surgeryRight"  path="surgeryRight" VALUE="Subtalar Release">Subtalar Release
+				<INPUT TYPE="radio" NAME="surgeryRight"  path="surgeryRight" VALUE="Plantar Release">Plantar Release
+				<INPUT TYPE="radio" NAME="surgeryRight"  path="surgeryRight" VALUE="Achilles Lengthening ">Achilles Lengthening 
+				<INPUT TYPE="radio" NAME="surgeryRight"  path="surgeryRight" VALUE="Tendon Transfers">Tendon Transfers
+				<INPUT TYPE="radio" NAME="surgeryRight"  path="surgeryRight" VALUE="Osteotomies">Osteotomies
+				<INPUT TYPE="radio" NAME="surgeryRight"  path="surgeryRight" VALUE="Arthrodesis">Arthrodesis
+				<INPUT TYPE="radio" NAME="surgeryRight"  path="surgeryRight" VALUE="Talectomy">Talectomy	
+				<INPUT TYPE="radio" NAME="surgeryRight"  path="surgeryRight" VALUE="Other">Other<br>	
+				<label for = "rightSurgeryComments" >Surgery Comments: </label>
+	  			<input type="text" name="rightSurgeryComments" id = "rightSurgeryComments" class="form-control" path="rightSurgeryComments">	
+		   </div>
 		</fieldset>
 	</div>
 	
