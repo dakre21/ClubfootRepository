@@ -4,9 +4,16 @@ public class User {
 	private String userName;
 	private String hospitalName;
 	private int id;
+	private int user_id;
 	
-	public User() {
-		// TODO Auto-generated constructor stub
+	public User(){
+		
+	}
+	public User(int id, String userName, String hospitalName, int user_id) {
+		this.id = id;
+		this.userName = userName;
+		this.hospitalName = hospitalName;
+		this.user_id = user_id;
 	}
 
 	public static void main(String[] args) {
@@ -36,6 +43,14 @@ public class User {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
 	}
 
 }
