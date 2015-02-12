@@ -1,6 +1,9 @@
 package com.packt.clubfootReg.domain.repository.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -8,9 +11,8 @@ import javax.sql.DataSource;
 import org.springframework.stereotype.Repository;
 
 import com.packt.clubfootReg.domain.Evaluator;
+import com.packt.clubfootReg.domain.newPatient;
 import com.packt.clubfootReg.domain.repository.EvaluatorRepo;
-
-import javax.sql.DataSource;
 
 import java.sql.Connection; 
 import java.sql.SQLException;
@@ -40,25 +42,43 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 
 	}
 
-	public Evaluator getEvaluator1(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public void addEvaluator(Evaluator evaluator) {
 		listOfEvaluators.add(evaluator);
 		int id = evaluator.getId();
-/*		Connection connection = null;
-		
+		String first_name = evaluator.getFirst_name();
+		String middle_name = evaluator.getMiddle_name();
+		String last_name = evaluator.getLast_name();
+		String title = evaluator.getTitle();
+		String hospital = evaluator.getHospitalName();
+		Connection connection = null;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+			 
 		try {
 			connection = dataSource.getConnection();
-			PreparedStatement ps = connection.prepareStatement(query);
-			ps.setInt(1, id);
-			ps.setString(2, hospitalName);
-			ps.setString(3, userName);
+			
+			String sql = "Insert into abstract_person values(?, ?, ?, ?, ?, ?)";
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, this.getMaxPersonID() + 1);
+			ps.setInt(2, 1);
+			ps.setString(3, dateFormat.format(date));
+			ps.setString(4, first_name);
+			ps.setString(5, last_name);
+			ps.setString(6, middle_name);
 			ps.executeUpdate();
 			ps.close();
-		}catch (SQLException e) {
+			
+			String sql2 = "Insert into evaluator values(?, ?, ?, ?, ?, ?)";
+			PreparedStatement ps2 = connection.prepareStatement(sql2);
+			ps2.setInt(1, this.getMaxPersonID());
+			ps2.setString(2, first_name);
+			ps2.setString(3, last_name);
+			ps2.setString(4, middle_name);
+			ps2.setString(5, title);
+			ps2.setInt(6, 1);
+			ps2.executeUpdate();
+			ps2.close();
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
  
 		} finally {
@@ -67,20 +87,27 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 					connection.close();
 				} catch (SQLException e) {}
 			}
-		}*/
+		}
 		
 		return;
-		
 	}
 
 	public List<Evaluator> getEvaluator(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "Select * from evaluator where id = ?";
+		List<Evaluator> evaluator = jdbcTemplateObject.query(sql, new EvaluatorMapper());
+		return evaluator;
+	}
+	
+	public List<Evaluator> getAllEvaluators() {
+		String sql = "Select * from evaluator order by last_name";
+		List<Evaluator> evaluator = jdbcTemplateObject.query(sql, new EvaluatorMapper());
+		return evaluator;
 	}
 
 	public void deleteEvaluator(int id) {
-		// TODO Auto-generated method stub
-		
+		String sql = "Delete from evaluator where id = ?";
+		jdbcTemplateObject.update(sql, id);
+		System.out.println("Deleted patient with id = " + id);	
 	}
 
 	public void updateEvaluator(Evaluator evaluator) {
@@ -88,4 +115,9 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 		
 	}
 
+	public int getMaxPersonID() {
+		String sql = "Select max(id) from abstract_person";
+		int person_id = jdbcTemplateObject.queryForInt(sql);
+		return person_id;
+	}
 }
