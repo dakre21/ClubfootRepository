@@ -25,7 +25,7 @@ public class EvaluatorController {
 	
 	@RequestMapping(value = "/evaluator", method = RequestMethod.GET)
 	public String evaluatorForm(Model model){
-		Evaluator evaluator = new Evaluator(evaluatorRepo.getMaxPersonID() + 1, null, null, null, null, 1);
+		Evaluator evaluator = new Evaluator(evaluatorRepo.getMaxPersonID() + 1, null, null, null, null, null, 1);
 		model.addAttribute("evaluator", evaluator);
 		return "evaluator";
 	}

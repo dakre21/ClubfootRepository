@@ -7,18 +7,20 @@ public class Evaluator {
 	private String middle_name;
 	private String last_name;
 	private String title;
+	private String hospital_name;
 	private int hospital_id;
 	
 	public Evaluator() {
 		
 	}
 	
-	public Evaluator(int id, String first, String last, String middle, String title, int hosp) {
+	public Evaluator(int id, String first, String last, String middle, String title, String hospName, int hosp) {
 		this.id = id;
 		this.first_name = first;
 		this.last_name = last;
 		this.middle_name = middle;
 		this.title = title;
+		this.hospital_name = hospName;
 		this.hospital_id = hosp;
 	}
 
@@ -67,6 +69,14 @@ public class Evaluator {
 		this.title = title;
 	}
 
+	public String getHospital_name() {
+		return hospital_name;
+	}
+	
+	public void setHospital_name(String name) {
+		this.hospital_name = name;
+	}
+	
 	public int getHospital_id() {
 		return hospital_id;
 	}

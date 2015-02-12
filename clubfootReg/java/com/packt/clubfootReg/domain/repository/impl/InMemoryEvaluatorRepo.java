@@ -93,7 +93,7 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "Select * from evaluator where id = ?";
+			String sql = "Select a.*, b.name from evaluator a inner join hospital b on a.hospital_id = b.id where id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
@@ -105,6 +105,7 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 					rs.getString("last_name"),
 					rs.getString("middle_name"),
 					rs.getString("title"),
+					rs.getString("name"),
 					rs.getInt("hospital_id")
 				);
 			}
@@ -130,7 +131,7 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "Select * from evaluator order by last_name";
+			String sql = "Select a.*, b.name from evaluator a inner join hospital b on a.hospital_id = b.id order by last_name";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
@@ -146,6 +147,7 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 					rs.getString("last_name"),
 					rs.getString("middle_name"),
 					rs.getString("title"),
+					rs.getString("name"),
 					rs.getInt("hospital_id")
 				);
 				evaluators.add(evaluator);
