@@ -105,7 +105,7 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 					rs.getString("last_name"),
 					rs.getString("middle_name"),
 					rs.getString("title"),
-					rs.getInt(6)
+					rs.getInt("hospital_id")
 				);
 			}
 			rs.close();
@@ -146,7 +146,7 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 					rs.getString("last_name"),
 					rs.getString("middle_name"),
 					rs.getString("title"),
-					rs.getInt(6)
+					rs.getInt("hospital_id")
 				);
 				evaluators.add(evaluator);
 			}
