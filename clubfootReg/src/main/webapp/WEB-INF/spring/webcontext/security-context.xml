@@ -21,10 +21,9 @@
 		<security:intercept-url pattern="/adduser" access="ROLE_ADMIN" />
 		<security:intercept-url pattern="/visit" access="ROLE_ADMIN" />
 		<security:intercept-url pattern="/view_hospitals" access="ROLE_ADMIN" />
-<<<<<<< HEAD
-=======
+
 		<security:intercept-url pattern="/view_users" access="ROLE_ADMIN" />
->>>>>>> testBranch
+
 		<security:form-login login-page="/login" 
 			default-target-url="/"
 			authentication-failure-url="/loginfailed"/>

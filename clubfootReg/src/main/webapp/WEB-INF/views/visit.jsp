@@ -486,7 +486,6 @@
                   </ul>
               </li>
               <li class="dropdown">
-<<<<<<< HEAD
                 	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">User Session
                 	<span class="caret"></span>
                 	</a>
@@ -494,7 +493,6 @@
                 		<li><a href="login">Log in</a></li>
                 		<li class="logout"><a href="<c:url value="/j_spring_security_logout"/>">Log out</a></li>
                 	</ul>
-=======
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                   User Session
                   <span class="caret"></span>
@@ -503,7 +501,6 @@
                     <li><a href="login">Log in</a></li>
                       <li><a href="<c:url value="/j_spring_security_logout"/>">Log out</a></li>
                   </ul>
->>>>>>> testBranch
               </li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
