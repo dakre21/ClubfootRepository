@@ -32,6 +32,30 @@ public class Visit {
 	private String rightTreatment;
 	private String complications;
 	private String comments;
+	private String description;
+	private String treatmentComplications;
+	private String results;
+	private String surgeryRight;
+	private String rightSurgeryComments;
+	private String otherRight;
+	private String actionsRight;
+	private String problemsRight;
+	private String braceRight;
+	private String dorsiflexionRight;
+	private String abductionRight;
+	private String castRightNum;
+	private String casterRight;
+	private String surgeryLeft;
+	private String leftSurgeryComments;
+	private String otherLeft;
+	private String actionsLeft;
+	private String problemsLeft;
+	private String braceLeft;
+	private String dorsiflexionLeft;
+	private String abductionLeft;
+	private String castLeftNum;
+	private String casterLeft;
+	
 	
 	public Visit() {
 		// TODO Auto-generated constructor stub
@@ -40,6 +64,146 @@ public class Visit {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+	}
+	public String getCasterLeft(){
+		return casterLeft;
+	}
+	public void setCasterLeft(String casterLeft){
+		this.casterLeft = casterLeft;
+	}
+	public String getCastLeftNum(){
+		return castLeftNum;
+	}
+	public void setCastLeftNum(String castLeftNum){
+		this.castLeftNum = castLeftNum;
+	}
+	public String getAbductionLeft(){
+		return abductionLeft;
+	}
+	public void setAbductionLeft(String abductionLeft){
+		this.abductionLeft = abductionLeft;
+	}
+	public String getDorsiflexionLeft(){
+		return dorsiflexionLeft;
+	}
+	public void setDorsiflexionLeft(String dorsiflexionLeft){
+		this.dorsiflexionLeft = dorsiflexionLeft;
+	}
+	public String getBraceLeft(){
+		return braceLeft;
+	}
+	public void setBraceLeft(String braceLeft){
+		this.braceLeft = braceLeft;
+	}
+	public String getProblemsLeft(){
+		return problemsLeft;
+	}
+	public void setProblemsLeft(String problemsLeft){
+		this.problemsLeft = problemsLeft;
+	}
+	public String getActionsLeft(){
+		return actionsLeft;
+	}
+	public void setActionsLeft(String actionsLeft){
+		this.actionsLeft = actionsLeft;
+	}
+	public String getOtherLeft(){
+		return otherLeft;
+	}
+	public void setOtherLeft(String otherLeft){
+		this.otherLeft = otherLeft;
+	}
+	public String getLeftSurgeryComments(){
+		return leftSurgeryComments;
+	}
+
+	public void setLeftSurgeryComments(String leftSurgeryComments){
+		this.leftSurgeryComments = leftSurgeryComments;
+	}
+	public String getSurgeryLeft(){
+		return surgeryLeft;
+	}
+	public void setSurgeryLeft(String surgeryLeft){
+		this.surgeryLeft = surgeryLeft;
+	}
+	public String getCasterRight(){
+		return casterRight;
+	}
+	public void setCasterRight(String casterRight){
+		this.casterRight = casterRight;
+	}
+	public String getCastRightNum(){
+		return castRightNum;
+	}
+	public void setCastRightNum(String castRightNum){
+		this.castRightNum = castRightNum;
+	}
+	public String getAbductionRight(){
+		return abductionRight;
+	}
+	public void setAbductionRight(String abductionRight){
+		this.abductionRight = abductionRight;
+	}
+	public String getDorsiflexionRight(){
+		return dorsiflexionRight;
+	}
+	public void setDorsiflexionRight(String dorsiflexionRight){
+		this.dorsiflexionRight = dorsiflexionRight;
+	}
+	public String getBraceRight(){
+		return braceRight;
+	}
+	public void setBraceRight(String braceRight){
+		this.braceRight = braceRight;
+	}
+	public String getProblemsRight(){
+		return problemsRight;
+	}
+	public void setProblemsRight(String problemsRight){
+		this.problemsRight = problemsRight;
+	}
+	public String getActionsRight(){
+		return actionsRight;
+	}
+	public void setActionsRight(String actionsRight){
+		this.actionsRight = actionsRight;
+	}
+	public String getOtherRight(){
+		return otherRight;
+	}
+	public void setOtherRight(String otherRight){
+		this.otherRight = otherRight;
+	}
+	public String getRightSurgeryComments(){
+		return rightSurgeryComments;
+	}
+
+	public void setRightSurgeryComments(String rightSurgeryComments){
+		this.rightSurgeryComments = rightSurgeryComments;
+	}
+	public String getSurgeryRight(){
+		return surgeryRight;
+	}
+	public void setSurgeryRight(String surgeryRight){
+		this.surgeryRight = surgeryRight;
+	}
+	public String getResults(){
+		return results;
+	}
+	public void setResults(String results){
+		this.results = results;
+	}
+	public String getDescription(){
+		return description;
+	}
+	public void setDescription(String description){
+		this.description = description;
+	}
+	public String getTreatmentComplications(){
+		return treatmentComplications;
+	}
+	public void setTreatmentComplications(String treatmentComplications){
+		this.treatmentComplications = treatmentComplications;
 	}
 	public String getComments(){
 		return comments;

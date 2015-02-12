@@ -53,7 +53,7 @@
 	}
   </style>
   <script>
-  
+
   window.onload = function(){
 	  $('#dateOfNextVisit').hide();
 	  $('#dateOfNextVisit1').hide();
@@ -100,6 +100,7 @@
 
   }
   
+
   function braceLeftTrue(){
 	  $('#castLeftNum').hide();
 	  $('#casterLeft').hide();
@@ -467,6 +468,7 @@
 <body>
 <h1>
     Add Visit
+
 </h1>
 
 <form action="#" th:action="@{/visit}" th:object="${visit}" modelAttribute="Visit" id="Visit" method="post">
@@ -505,6 +507,7 @@
 	<!--  <button class='toggle'>Hide Left Foot</button>-->
  	<fieldset>
 		<legend>Left Foot</legend>
+		<!--  <form>-->
 		<label for = "hindfootLeftVarus">Varus: </label>
 		Varus:
 		<INPUT TYPE="radio" NAME="hindfootLeftVarus" path="hindfootLeftVarus" VALUE="varus">Varus
@@ -676,6 +679,7 @@
 		
 		
 		<legend></legend>
+		
 			<label for = "rightTreatment"><em>*</em>Treatment: </label>	
 			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "noneRightTrue()" VALUE="none">None
 			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "castingRightTrue()"VALUE="C - Manipulation & Casting">C - Manipulation & Casting
@@ -721,6 +725,8 @@
 				<label for = "rightSurgeryComments" >Surgery Comments: </label>
 	  			<input type="text" name="rightSurgeryComments" id = "rightSurgeryComments" class="form-control" path="rightSurgeryComments">	
 		   </div>
+		   <!--  <button onClick = "copyTreatment(this.form)"class="btn btn-lg btn-default"></button>-->
+		  <!--  </form>-->
 		</fieldset>
 	</div>
 	
@@ -751,7 +757,8 @@
 		</div>
 	<div class = "form-group">
 		<label for="comments">Comments: </label>
-		<input type="text" name="comments" class="form-control" path="comments"> <br>
+		<textarea name = "comments" class = "form-control" path = "comments"></textarea><br>
+		<!-- <input type="text" name="comments" class="form-control" path="comments"> <br>-->
 			
 	</div>
 	<div class="row" align="center">
