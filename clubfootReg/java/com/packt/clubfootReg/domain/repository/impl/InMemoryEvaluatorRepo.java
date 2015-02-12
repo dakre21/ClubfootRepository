@@ -5,19 +5,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.sql.DataSource;
-
 import org.springframework.stereotype.Repository;
-
 import com.packt.clubfootReg.domain.Evaluator;
 import com.packt.clubfootReg.domain.repository.EvaluatorRepo;
-
 import java.sql.Connection; 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Repository
