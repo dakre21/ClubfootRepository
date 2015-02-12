@@ -36,11 +36,11 @@ public class HospitalController {
 	
 	@RequestMapping(value = "/hospital", method = RequestMethod.POST)
 	public String hospitalSubmitForm(@ModelAttribute("hospital") Hospital hospital, Model model){
-		model.addAttribute("greeting", "UIowa Clubfoot Registry");
-        model.addAttribute("tagline", "Hospital Data Successfully Submitted");
         hospitalRepo.addHospital(hospital);
-		return "home";
+        model.addAttribute("hospitals", hospitalRepo.getAllHospitals());
+		return "view_hospitals";
 	}
+	
 	@RequestMapping(value = "/view_hospitals", method = RequestMethod.GET)
 	public String viewHospitalsForm(Model model){
 		model.addAttribute("hospitals", hospitalRepo.getAllHospitals());

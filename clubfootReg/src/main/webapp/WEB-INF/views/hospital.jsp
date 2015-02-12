@@ -68,16 +68,16 @@
       <form action="#" th:action="@{/evaluator}" th:object="${evaluator}" modelAttribute="Evaluator" id="Evaluator" method="post">
         <div class="form-group">
           <label for="hospital">Hospital/Clinic Name</label>
-          <input type="text" class="form-control" id="hospital" name="hospitalName" path="hospitalName"/>
+          <input type="text" class="form-control" id="hospital" name="name" path="name"/>
         </div>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
               <label for="region">Region</label>
-              <select class="form-control" id="hospitalRegion" name="hospitalRegion">
+              <select class="form-control" id="region_id" name="region_id">
                 <option>Select a Region</option>
-                          <option value="region1" name="hospitalRegion" path="hospitalRegion">Region1</option>
-                          <option value="region2" name="hospitalRegion" path="hospitalRegion">Region2</option>
+                          <option value="1" name="region_id" path="region_id">Region1</option>
+                          <option value="2" name="region_id" path="region_id">Region2</option>
                       </select>
             </div>
           </div>

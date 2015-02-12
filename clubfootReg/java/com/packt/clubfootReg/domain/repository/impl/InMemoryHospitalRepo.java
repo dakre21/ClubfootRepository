@@ -1,6 +1,9 @@
 package com.packt.clubfootReg.domain.repository.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -44,21 +47,22 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	}
 	public void addHospital(Hospital hospital) {
 		listOfHospitals.add(hospital);
-		int id = hospital.getId();
-		String hospitalName = hospital.getHospitalName();
-		int hospitalRegionId = hospital.getHospitalRegionId();
-		String query = "Insert into hospital (id, hospital, region) values (?, ?, ?)";
-/*		Connection connection = null;
+		String name = hospital.getName();
+		int region_id = hospital.getRegion_id();
+		
+		Connection connection = null;
 		
 		try {
 			connection = dataSource.getConnection();
-			PreparedStatement ps = connection.prepareStatement(query);
-			ps.setInt(1, id);
-			ps.setString(2, hospitalName);
-			ps.setString(3, hospitalRegion);
+			
+			String sql = "Insert into hospital values(?, ?, ?)";
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, this.getMaxHospitalID()+1);
+			ps.setString(2, name);
+			ps.setInt(3, region_id);
 			ps.executeUpdate();
 			ps.close();
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
  
 		} finally {
@@ -67,7 +71,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 					connection.close();
 				} catch (SQLException e) {}
 			}
-		}*/
+		}
 		
 		return;
 	}
@@ -120,6 +124,35 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	public void updateHospital(Hospital hospital) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public int getMaxHospitalID() {
+		Connection conn = null;
+		int max = 0;
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select max(id) from hospital";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				max = rs.getInt(1);
+			}
+			
+			rs.close();
+			ps.close();
+			return max;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
 	}
 
 }

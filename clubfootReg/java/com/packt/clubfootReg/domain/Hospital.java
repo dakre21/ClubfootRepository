@@ -1,18 +1,19 @@
 package com.packt.clubfootReg.domain;
 
 public class Hospital {
-
-	private String hospitalName;
-	private int hospitalRegionId;
+	
 	private int id;
+	private String name;
+	private int region_id;
+	
 	
 	public Hospital() {
 		// TODO Auto-generated constructor stub
 	}
 	public Hospital(int id, String name, int region_id){
 		this.id = id;
-		this.hospitalName = name;
-		this.hospitalRegionId = region_id;
+		this.name = name;
+		this.region_id = region_id;
 	}
 
 	public static void main(String[] args) {
@@ -20,20 +21,20 @@ public class Hospital {
 
 	}
 
-	public String getHospitalName() {
-		return hospitalName;
+	public String getName() {
+		return name;
 	}
 
-	public void setHospitalName(String hospitalName) {
-		this.hospitalName = hospitalName;
+	public void setName(String hospitalName) {
+		this.name = hospitalName;
 	}
 
-	public int getHospitalRegionId() {
-		return hospitalRegionId;
+	public int getRegion_id() {
+		return region_id;
 	}
 
-	public void setHospitalRegionId(int hospitalRegion) {
-		this.hospitalRegionId = hospitalRegion;
+	public void setRegion_id(int hospitalRegion) {
+		this.region_id = hospitalRegion;
 	}
 
 	public int getId() {
