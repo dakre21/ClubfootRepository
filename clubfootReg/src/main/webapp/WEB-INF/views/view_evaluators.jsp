@@ -75,17 +75,23 @@
 		    </thead>
 	   
 	    	<tbody>
-	    		<tr>
-	        		<td>First Name</td>
-	        		<td>Middle Name</td>
-	        		<td>Last Name</td>
-	        		<td>Title</td>
-	        		<td>Hospital ID</td>
-	        	</tr>
-	        </tbody>
-	    </table>
+        	<c:if test="${not empty evaluators}">
+            <c:forEach var="o" items="${evaluators}">
+              <tr>
+                  <td>${o.first_name}</td>
+                  <td>${o.middle_name}</td>
+                  <td>${o.last_name}</td>
+                  <td>${o.title}</td>
+                  <td>${o.hospital_id}</td>
+              </tr>
+            </c:forEach>
+          </c:if>
+	      </tbody>
+	  </table>
 	</div>	
+
 	<hr>
+
 	<div class="row">
 		<div class="col-xs-12">
 			<footer align="center">

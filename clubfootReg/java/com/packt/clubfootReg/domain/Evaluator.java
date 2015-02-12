@@ -7,10 +7,19 @@ public class Evaluator {
 	private String middle_name;
 	private String last_name;
 	private String title;
-	private String hospitalName;
+	private int hospital_id;
 	
 	public Evaluator() {
-		// TODO Auto-generated constructor stub
+		
+	}
+	
+	public Evaluator(int id, String first, String last, String middle, String title, int hosp) {
+		this.id = id;
+		this.first_name = first;
+		this.last_name = last;
+		this.middle_name = middle;
+		this.title = title;
+		this.hospital_id = hosp;
 	}
 
 	public static void main(String[] args) {
@@ -58,12 +67,12 @@ public class Evaluator {
 		this.title = title;
 	}
 
-	public String getHospitalName() {
-		return hospitalName;
+	public int getHospital_id() {
+		return hospital_id;
 	}
 
-	public void setHospitalName(String hospitalName) {
-		this.hospitalName = hospitalName;
+	public void setHospital_id(int hospital) {
+		this.hospital_id = hospital;
 	}
 
 }

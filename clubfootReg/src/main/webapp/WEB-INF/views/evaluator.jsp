@@ -85,21 +85,21 @@
 							<label for="title">Title</label>
 							<select class="form-control" id="title" name="title">
 								<option>Select a Title</option>
-		                    	<option value="doctor" name="title" path="title">Doctor</option>
-		                    	<option value="nurse" name="title" path="title">Nurse</option>
-		                    	<option value="midwife" name="title" path="title">Midwife</option>
-		                    	<option value="physical_therapist" name="title" path="title">Physical Therapist</option>
-		                    	<option value="officer" name="title" path="title">Officer</option>
-		                    	<option value="other" name="title" path="title">Other</option>
+		                    	<option value="Doctor" name="title" path="title">Doctor</option>
+		                    	<option value="Nurse" name="title" path="title">Nurse</option>
+		                    	<option value="Midwife" name="title" path="title">Midwife</option>
+		                    	<option value="Physical Therapist" name="title" path="title">Physical Therapist</option>
+		                    	<option value="Officer" name="title" path="title">Officer</option>
+		                    	<option value="Other" name="title" path="title">Other</option>
 		                	</select>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="title">Hospital</label>
-							<select class="form-control" name="hospitalName">
+							<select class="form-control" name="hospitalID">
 								<option>Select a Hospital</option>
-		                    	<option value="hospital1" name="hospitalName" path="hospitalName">Test Hospital 1</option>
+		                    	<option value="1" name="hospitalID" path="hospitalID">Test Hospital 1</option>
 		                	</select>
 						</div>
 					</div>

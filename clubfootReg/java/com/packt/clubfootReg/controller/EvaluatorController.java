@@ -29,21 +29,21 @@ public class EvaluatorController {
 	
 	@RequestMapping(value = "/evaluator", method = RequestMethod.GET)
 	public String evaluatorForm(Model model){
-		Evaluator evaluator = new Evaluator();
+		Evaluator evaluator = new Evaluator(evaluatorRepo.getMaxPersonID() + 1, null, null, null, null, 1);
 		model.addAttribute("evaluator", evaluator);
 		return "evaluator";
 	}
 	
 	@RequestMapping(value = "/view_evaluators", method = RequestMethod.GET)
 	public String viewEvaluatorsForm(Model model){
+		model.addAttribute("evaluators", evaluatorRepo.getAllEvaluators());
 		return "view_evaluators";
 	}
 	
 	@RequestMapping(value = "/evaluator", method = RequestMethod.POST)
 	public String evaluatorSubmitForm(@ModelAttribute("evaluator") Evaluator evaluator, Model model){
-		model.addAttribute("greeting", "UIowa Clubfoot Registry");
-        model.addAttribute("tagline", "Evaluator Data Successfully Submitted");
         evaluatorRepo.addEvaluator(evaluator);
+        model.addAttribute("evaluators", evaluatorRepo.getAllEvaluators());
 		return "view_evaluators";
 	}
 	

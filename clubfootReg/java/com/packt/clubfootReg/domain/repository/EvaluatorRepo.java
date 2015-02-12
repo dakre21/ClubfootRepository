@@ -7,7 +7,7 @@ import com.packt.clubfootReg.domain.Evaluator;
 public interface EvaluatorRepo {
 	void addEvaluator(Evaluator evaluator);
 	void setDataSource(DataSource ds);
-	List<Evaluator> getEvaluator(int id);
+	Evaluator getEvaluator(int id);
 	List<Evaluator> getAllEvaluators();
 	void deleteEvaluator(int id);
 	void updateEvaluator(Evaluator evaluator);
