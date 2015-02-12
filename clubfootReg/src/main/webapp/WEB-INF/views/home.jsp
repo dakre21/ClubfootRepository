@@ -15,7 +15,7 @@
     padding-top: 70px;
   }
   .nav_links{
-  margin-left:30%;
+  margin-left:35%;
   width:30%;
   	border: 1px solid #000000;
   }
