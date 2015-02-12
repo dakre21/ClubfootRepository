@@ -10,10 +10,11 @@ import org.springframework.stereotype.Repository;
 import com.packt.clubfootReg.domain.Hospital;
 import com.packt.clubfootReg.domain.repository.HospitalRepo;
 
-import javax.sql.DataSource;
 import java.sql.Connection; 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -45,7 +46,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 		listOfHospitals.add(hospital);
 		int id = hospital.getId();
 		String hospitalName = hospital.getHospitalName();
-		String hospitalRegion = hospital.getHospitalRegion();
+		int hospitalRegionId = hospital.getHospitalRegionId();
 		String query = "Insert into hospital (id, hospital, region) values (?, ?, ?)";
 /*		Connection connection = null;
 		
@@ -73,6 +74,44 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	public List<Hospital> getHospital(int id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	public List<Hospital> getAllHospitals() {
+		Connection conn = null;
+		Hospital hospital = null;
+		List<Hospital> hospitals = null;
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select * from hospital order by name";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.last()) {
+			  hospitals = new ArrayList<>(rs.getRow());
+			  rs.beforeFirst(); 
+			}
+			
+			while (rs.next()) {
+				hospital = new Hospital(
+					rs.getInt("id"),
+					rs.getString("name"),
+					rs.getInt("region_id")
+				);
+				hospitals.add(hospital);
+			}
+			rs.close();
+			ps.close();
+			return hospitals;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
 	}
 	public void deleteHospital(int id) {
 		// TODO Auto-generated method stub

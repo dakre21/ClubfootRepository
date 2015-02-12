@@ -32,12 +32,19 @@ public class HospitalController {
 		return "hospital";
 	}
 	
+	
+	
 	@RequestMapping(value = "/hospital", method = RequestMethod.POST)
 	public String hospitalSubmitForm(@ModelAttribute("hospital") Hospital hospital, Model model){
 		model.addAttribute("greeting", "UIowa Clubfoot Registry");
         model.addAttribute("tagline", "Hospital Data Successfully Submitted");
         hospitalRepo.addHospital(hospital);
 		return "home";
+	}
+	@RequestMapping(value = "/view_hospitals", method = RequestMethod.GET)
+	public String viewHospitalsForm(Model model){
+		model.addAttribute("hospitals", hospitalRepo.getAllHospitals());
+		return "view_hospitals";
 	}
 	public HospitalController() {
 		// TODO Auto-generated constructor stub
