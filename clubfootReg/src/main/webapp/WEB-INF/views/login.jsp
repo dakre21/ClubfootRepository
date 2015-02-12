@@ -73,8 +73,14 @@
                       <li><a href="#">Visit</a></li>
                   </ul>
               </li>
-              <li>
-                <a href="login">Log in</a>
+              <li class="dropdown">
+                	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">User Session
+                	<span class="caret"></span>
+                	</a>
+                	<ul class="dropdown-menu" role="menu">
+                		<li><a href="login">Log in</a></li>
+                		<li class="logout"><a href="<c:url value="/j_spring_security_logout"/>">Log out</a></li>
+                	</ul>
               </li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
