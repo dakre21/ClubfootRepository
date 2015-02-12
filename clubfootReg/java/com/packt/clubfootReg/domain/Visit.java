@@ -22,6 +22,16 @@ public class Visit {
 	private String midfootRightHeel;
 	private String midfootLeftEquinus;
 	private String midfootRightEquinus;
+	private String midfootLeftMedial;
+	private String midfootRightMedial;
+	private String midfootLeftTalar;
+	private String midfootRightTalar;
+	private String midfootLeftLateral;
+	private String midfootRightLateral;
+	private String leftTreatment;
+	private String rightTreatment;
+	private String complications;
+	private String comments;
 	
 	public Visit() {
 		// TODO Auto-generated constructor stub
@@ -31,10 +41,71 @@ public class Visit {
 		// TODO Auto-generated method stub
 
 	}
+	public String getComments(){
+		return comments;
+	}
+	public void setComments(String comments){
+		this.comments = comments;
+	}
+	public String getComplications(){
+		return complications;
+	}
+	public void setComplications(String complications){
+		this.complications = complications;
+	}
+	public String getRightTreatment(){
+		return rightTreatment;
+	}
+	public void setRightTreatment(String rightTreatment){
+		this.rightTreatment = rightTreatment;
+	}
+	public String getLeftTreatment(){
+		return leftTreatment;
+	}
+	public void setLeftTreatment(String leftTreatment){
+		this.leftTreatment = leftTreatment;
+	}
+	public String getMidfootRightLateral(){
+		return midfootRightLateral;
+	}
+	public void setMidfootRightLateral(String midfootRightLateral){
+		this.midfootRightLateral = midfootRightLateral;
+	}
+	public String getMidfootLeftLateral(){
+		return midfootLeftLateral;
+	}
+	public void setMidfootLeftLateral(String midfootLeftLateral){
+		this.midfootLeftLateral = midfootLeftLateral;
+	}
+	public String getMidfootRightTalar(){
+		return midfootRightTalar;
+	}
+	public void setMidfootRightTalar(String midfootRightTalar){
+		this.midfootRightTalar = midfootRightTalar;
+	}
+	public String getMidfootLeftTalar(){
+		return midfootLeftTalar;
+	}
+	public void setMidfootLeftTalar(String midfootLeftTalar){
+		this.midfootLeftTalar = midfootLeftTalar;
+	}
+	public String getMidfootRightMedial(){
+		return midfootRightMedial;
+	}
+	public void setMidfootRightMedial(String midfootRightMedial){
+		this.midfootRightMedial = midfootRightMedial;
+	}
+	public String getMidfootLeftMedial(){
+		return midfootLeftMedial;
+	}
+	public void setMidfootLeftMedial(String midfootLeftMedial){
+		this.midfootLeftMedial = midfootLeftMedial;
+	}
 
 	public int getId() {
 		return id;
 	}
+	
 
 	public void setId(int id) {
 		this.id = id;

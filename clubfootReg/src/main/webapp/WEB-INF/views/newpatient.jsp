@@ -34,6 +34,7 @@
 	  	margin-bottom: 15px;
 	  	padding: 10px;
   	  	text-align: left;
+  	  	border: 2px groove;
 	  }
 
 	  legend {
