@@ -7,13 +7,17 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
 
+import com.packt.clubfootReg.domain.Evaluator;
 import com.packt.clubfootReg.domain.newPatient;
 import com.packt.clubfootReg.domain.repository.newPatientRepo;
 
 import javax.sql.DataSource;
+
 import java.sql.Connection; 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -116,10 +120,41 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		
 	}
 
-	public List<newPatient> getPatient(int id) {
-		String query = "select * from patient where id = ?";
-		List <newPatient> patients = jdbcTemplateObject.query(query, new PatientMapper());
-		return patients;
+	public newPatient getPatient(int id) {
+		Connection conn = null;
+		newPatient patient = null;
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select a.*, b.dob, b.tribe from abstract_person a inner join patient b on a.id = b.id where a.id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				patient = new newPatient(
+					rs.getInt("id"),
+					rs.getString("first_name"),
+					rs.getString("last_name"),
+					rs.getString("middle_name"),
+					rs.getString("title"),
+					rs.getString("name"),
+					rs.getInt("hospital_id")
+				);
+			}
+			rs.close();
+			ps.close();
+			return patient;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
 	}
 	public newPatient getNewPatient(int id) {
 		String query = "select * from patient where id = ?";
