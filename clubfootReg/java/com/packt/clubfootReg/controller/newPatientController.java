@@ -34,12 +34,16 @@ public class newPatientController {
 	
 	@RequestMapping(value="/newpatient", method=RequestMethod.POST)
     public String newPatientSubmit(@ModelAttribute("newpatient") newPatient newpatient, Model model) {
-
-        model.addAttribute("greeting", "UIowa Clubfoot Registry");
-        model.addAttribute("tagline", "Patient Data Successfully Submitted");
         newpatientrepo.addPatient(newpatient);
-        return "home";
+        model.addAttribute("patients", newpatientrepo.getAllPatients());
+        return "view_patients";
     }
+	
+	@RequestMapping(value = "/view_patients", method = RequestMethod.GET)
+	public String viewHospitalsForm(Model model){
+		model.addAttribute("patients", newpatientrepo.getAllPatients());
+		return "view_patients";
+	}
 	
 	public newPatientController() {
 		// TODO Auto-generated constructor stub

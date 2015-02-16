@@ -12,6 +12,8 @@ public interface newPatientRepo {
 	void addPatient(newPatient newpatient);
 	void setDataSource(DataSource ds);
 	List<newPatient> getPatient(int id);
+	List<newPatient> getAllPatients();
 	void deletePatient(int id);
 	void updatePatient(newPatient newpatient);
+	int getMaxPatientID();
 }
