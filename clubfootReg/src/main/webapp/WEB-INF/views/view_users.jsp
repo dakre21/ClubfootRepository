@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html"; charset=ISO-8859-1">
-<title>CURE Clubfoot | Evaluators</title>
+<title>CURE Clubfoot | Users</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -82,14 +82,15 @@
                   </ul>
               </li>
               <li class="dropdown">
-                	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">User Session
-                	<span class="caret"></span>
-                	</a>
-                	<ul class="dropdown-menu" role="menu">
-                		<li><a href="login">Log in</a></li>
-                		<li class="logout"><a href="<c:url value="/j_spring_security_logout"/>">Log out</a></li>
-                	</ul>
-                
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                  User Session
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="login">Log in</a></li>
+                      <li><a href="<c:url value="/j_spring_security_logout"/>">Log out</a></li>
+                  </ul>
+              </li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                   <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
@@ -109,34 +110,28 @@
 </head>
 
 <body>
+
+
 <div class="container">
 	<div class="jumbotron">
+		<h1>
+			Users
+			<a role="button" class="btn btn-primary" href="adduser">Add New User</a>
+		</h1>
 		<table class='table table-striped'>
 		   	<thead>
-          <h1>
-            Evaluators
-            <a role="button" class="btn btn-lg btn-primary" href="evaluator">Add New Evaluator</a>
-          </h1>
-          <hr>
 		   		<tr>
-		    		<th>First Name</th>
-		    		<th>Middle Name</th>
-		    		<th>Last Name</th>
-		    		<th>Title</th>
-		    		<th>Hospital</th>
+		   			<th>User</th>
+		    		<th>Hospital/Clinic Name</th>
 		    	</tr>
 		    </thead>
 	   
 	    	<tbody>
-        	<c:if test="${not empty evaluators}">
-            <c:forEach var="o" items="${evaluators}">
+        	<c:if test="${not empty users}">
+            <c:forEach var="o" items="${users}">
               <tr>
-                  <td>${o.first_name}</td>
-                  <td>${o.middle_name}</td>
-                  <td>${o.last_name}</td>
-                  <td>${o.title}</td>
-                  <td>${o.hospital_name}</td>
-                  <td><a href="#">Edit</a></td>
+                  <td>${o.userName}</td>
+                  <td>${o.hospitalName}</td>
               </tr>
             </c:forEach>
           </c:if>
@@ -155,4 +150,4 @@
 	</div>
 </div>
 </body>
-</html>                                 		
+</html> 
