@@ -115,8 +115,9 @@
 	<div class="jumbotron">
 		<h1>
 			Hospitals
-			<a role="button" class="btn btn-primary" href="hospital">Add New Hospital</a>
+			<a role="button" class="btn btn-lg btn-primary" href="hospital">Add New Hospital</a>
 		</h1>
+		<hr>
 		<table class='table table-striped'>
 		   	<thead>
 		   		<tr>
