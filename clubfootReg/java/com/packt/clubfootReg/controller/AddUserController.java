@@ -35,10 +35,17 @@ public class AddUserController {
 	
 	@RequestMapping(value = "/adduser", method = RequestMethod.POST)
 	public String userSubmitForm(@ModelAttribute("user") User user, Model model){
-		model.addAttribute("greeting", "UIowa Clubfoot Registry");
-        model.addAttribute("tagline", "User Data Successfully Submitted");
+		//model.addAttribute("greeting", "UIowa Clubfoot Registry");
+        //model.addAttribute("tagline", "User Data Successfully Submitted");
+		model.addAttribute("users", userRepo.getAllUsers());
         userRepo.addUser(user);
-		return "home";
+		return "view_users";
+	}
+	
+	@RequestMapping(value = "/view_users", method = RequestMethod.GET)
+	public String viewUsersForm(Model model){
+		model.addAttribute("users", userRepo.getAllUsers());
+		return "view_users";
 	}
 	
 	public AddUserController() {
