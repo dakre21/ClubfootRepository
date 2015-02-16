@@ -7,13 +7,17 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
 
+import com.packt.clubfootReg.domain.Hospital;
 import com.packt.clubfootReg.domain.newPatient;
 import com.packt.clubfootReg.domain.repository.newPatientRepo;
 
 import javax.sql.DataSource;
+
 import java.sql.Connection; 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -125,6 +129,78 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		String query = "select * from patient where id = ?";
 		newPatient patient = jdbcTemplateObject.queryForObject(query, new Object[]{id}, new PatientMapper());
 		return patient;
+	}
+
+	@Override
+	public List<newPatient> getAllPatients() {
+		Connection conn = null;
+		newPatient patient = null;
+		List<newPatient> patients = null;
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select * from patient order by name";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.last()) {
+			  patients = new ArrayList<>(rs.getRow());
+			  rs.beforeFirst(); 
+			}
+			
+			while (rs.next()) {
+				patient = new newPatient(
+					rs.getInt("id"),
+					rs.getString("patient_firstName"),
+					rs.getString("patient_lastName"),
+					rs.getString("patient_midName")
+					
+				);
+				patients.add(patient);
+			}
+			rs.close();
+			ps.close();
+			return patients;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
+
+	@Override
+	public int getMaxPatientID() {
+		Connection conn = null;
+		int max = 0;
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select max(id) from patient";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				max = rs.getInt(1);
+			}
+			
+			rs.close();
+			ps.close();
+			return max;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
 	}
 
 

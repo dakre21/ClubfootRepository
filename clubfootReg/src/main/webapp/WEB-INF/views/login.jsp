@@ -38,7 +38,7 @@
                   <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">View Patients</a></li>
+                   <li><a href="view_patients">View Patients</a></li>
                       <li><a href="newpatient">Add Patient</a></li>
                   </ul>
               </li>
