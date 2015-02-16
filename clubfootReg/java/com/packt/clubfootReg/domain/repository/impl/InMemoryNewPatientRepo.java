@@ -140,7 +140,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "Select * from patient order by name";
+			String sql = "Select * from patient order by id";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
