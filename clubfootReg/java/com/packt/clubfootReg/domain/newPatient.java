@@ -69,6 +69,13 @@ public class newPatient {
 		// TODO Auto-generated constructor stub
 		super();
 	}
+	
+	public newPatient(int id, String patient_lastName, String patient_firstName, String patient_midName){
+		this.id = id;
+		this.patient_lastName = patient_lastName;
+		this.patient_firstName = patient_firstName;
+		this.patient_midName = patient_midName;
+	}
 	//Getter
 	public String getGuardianConsent() {
 		return guardianConsent;
