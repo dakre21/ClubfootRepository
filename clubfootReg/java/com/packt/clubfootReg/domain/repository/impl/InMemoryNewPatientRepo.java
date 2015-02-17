@@ -7,11 +7,8 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
 
-<<<<<<< HEAD
 import com.packt.clubfootReg.domain.Evaluator;
-=======
 import com.packt.clubfootReg.domain.Hospital;
->>>>>>> 462784278434136b0a0fb546d4e376794d822fa6
 import com.packt.clubfootReg.domain.newPatient;
 import com.packt.clubfootReg.domain.repository.newPatientRepo;
 
@@ -135,7 +132,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
-			
+			/*
 			if (rs.next()) {
 				patient = new newPatient(
 					rs.getInt("id"),
@@ -146,7 +143,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 					rs.getString("name"),
 					rs.getInt("hospital_id")
 				);
-			}
+			}*/
 			rs.close();
 			ps.close();
 			return patient;
