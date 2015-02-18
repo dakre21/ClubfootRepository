@@ -75,6 +75,12 @@
 	  $('#diagnosis_prenatally_week').hide();
 	  $('#referral_other1').hide();
 	  $('#referral_other').hide();
+	  $('#previous_treatment_type1').hide();
+	  $('#prev_treat_casting_above').hide();
+	  $('#prev_treat_casting_below').hide();
+	  $('#prev_treat_physiotherapy').hide();
+	  $('#prev_treat_unspecified').hide();
+	  $('#prev_treat_other').hide();
 
   }
   function guardianHandlerTrue(){
@@ -110,6 +116,8 @@
 	  $('#referral_hospital_name').show();
 	  $('#referral_doc_name1').show();
 	  $('#referral_doc_name').show();
+	  $('#referral_other1').hide();
+	  $('#referral_other').hide();
   }
   function referralFnFalse(){
 	  $('#referral_hospital_name1').hide();
@@ -126,10 +134,22 @@
   function prevTreatmentTrue(){
 	  $('#previous_treatments_num1').show();
 	  $('#previous_treatments_num').show();
+	  $('#previous_treatment_type1').show();
+	  $('#prev_treat_casting_above').show();
+	  $('#prev_treat_casting_below').show();
+	  $('#prev_treat_physiotherapy').show();
+	  $('#prev_treat_unspecified').show();
+	  $('#prev_treat_other').show();
   }
   function prevTreatmentFalse(){
 	  $('#previous_treatments_num1').hide();
 	  $('#previous_treatments_num').hide();
+	  $('#previous_treatment_type1').hide();
+	  $('#prev_treat_casting_above').hide();
+	  $('#prev_treat_casting_below').hide();
+	  $('#prev_treat_physiotherapy').hide();
+	  $('#prev_treat_unspecified').hide();
+	  $('#prev_treat_other').hide();
   }
   function diagPrenatTrue(){
 	  $('#diagnosis_prenatally_week1').show();
@@ -515,7 +535,12 @@
 			
 			<label for="previous_treatments_num1" id="previous_treatments_num1">Number of previous treatments: </label>
 			<input type="text" name="previous_treatments_num" class="form-control" path="previous_treatments_num" id="previous_treatments_num"> <br>
-			
+			<label for ="previous_treatment_type" id="previous_treatment_type1">Type of previous treatments(s): </label>
+			<input type="checkbox" name = "prev_treat_casting_above" value = "Casting above knee" id = "prev_treat_casting_above"> Casting above knee
+			<input type="checkbox" name = "prev_treat_casting_below" value = "Casting below knee" id = "prev_treat_casting_below"> Casting below knee
+			<input type="checkbox" name = "prev_treat_physiotherapy" value = "Physiotherapy" id = "prev_treat_physiotherapy"> Physiotherapy
+			<input type="checkbox" name = "prev_treat_unspecified" value = "Unspecified" id = "prev_treat_unspecified"> Unspecified
+			<input type="checkbox" name = "prev_treat_other" value = "Other" id = "prev_treat_other"> Other
 			<label for="diagnosis_prenatally">Diagnosis prenatally: </label>
 			<input type="radio" name="diagnosis_prenatally" value="Yes" path="diagnosis_prenatally" onClick="diagPrenatTrue()"> Yes
 			<input type="radio" name="diagnosis_prenatally" value="No" path="diagnosis_prenatally" onClick="diagPrenatFalse()"> No
