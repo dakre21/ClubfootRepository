@@ -1,17 +1,20 @@
 package com.packt.clubfootReg.domain;
 
+
+import java.sql.Date;
 import org.springframework.web.multipart.MultipartFile;
 
 public class newPatient {
-	private String guardianConsent;
-	private String photoConsent;
-	private String hospital;
+	private int id;
+	private int guardianConsent;
+	private int photoConsent;
+	private int hospital;
 	private String patient_lastName;
 	private String patient_firstName;
 	private String patient_midName;
 	private String sex;
 	private String race;
-	private String dob;
+	private Date dob;
 	private String addr1;
 	private String addr2;
 	private String village;
@@ -23,45 +26,44 @@ public class newPatient {
 	private String guardian_relationship;
 	private String guardian_phone1;
 	private String guardian_phone2;
-	private String guardian_check;
-	private String emergency_contact;
-	private String deformity_history;
-	private String pregnancy;
-	private String pregnancy_complications;
-	private String pregnancy_alc;
-	private String pregnancy_smoke;
-	private String complications;
-	private String place_birth;
-	private String referral;
-	private String evaluator_name;
-	private String evaluation_date;
-	private String feet;
-	private String diagnosis;
-	private String deformity_at_birth;
-	private String previous_treatments;
-	private String diagnosis_prenatally;
-	private String diagnosis_comments;
-	private String abnormalities;
-	private String weakness;
 	private String second_guardian_last;
 	private String second_guardian_first;
 	private String second_guardian_mid;
 	private String second_guardian_relationship;
 	private String second_guardian_phone1;
 	private String second_guardian_phone2;
+	private String emergency_contact;
 	private String other_guardian_last;
 	private String other_guardian_first;
 	private String other_guardian_mid;
 	private String other_guardian_relationship;
 	private String other_guardian_phone1;
 	private String other_guardian_phone2;
-	private String deformity_history_num;
-	private String preg_complications_explained;
+	private String deformity_history;
+	private int deformity_history_num;
+	private String pregnancy; //YNU
+	private String pregnancy_complications_explained;
+	private String pregnancy_alc; //YNU
+	private String pregnancy_smoke; //YNU
+	private String complications; //YNU
+	private String place_birth;
+	private String referral;
 	private String referral_doc_name;
 	private String referral_hospital_name;
-	private String previous_treatments_num;
-	private String diagnosis_prenatally_week;
-	private int id;
+	private String referral_other;
+	private int evaluator;
+	private Date evaluation_date;
+	private String feet;
+	private String diagnosis;
+	private String deformity_at_birth; //YNU
+	private String previous_treatments; //YNU
+	private int previous_treatments_num;
+	private String diagnosis_prenatally; //YNU
+	private int diagnosis_prenatally_week;
+	private String prenatally_diag_confirmation; //YNU
+	private String diagnosis_comments;
+	private String abnormalities;
+	private String weakness;
 	//private MultipartFile pre_imgfile;
 
 	public newPatient() {
@@ -75,165 +77,166 @@ public class newPatient {
 		this.patient_midName = patient_midName;
 	}
 	
-	public String getGuardianConsent() {
+	public int getGuardianConsent() {
 		return guardianConsent;
 	}
-	
-	public void setGuardianConsent(String guardianConsent) {
+	public void setGuardianConsent(int guardianConsent) {
 		this.guardianConsent = guardianConsent;
 	}
 	
-	public String getPhotoConsent() {
+	
+	public int getPhotoConsent() {
 		return photoConsent;
 	}
-	
-	public void setPhotoConsent(String photoConsent) {
+	public void setPhotoConsent(int photoConsent) {
 		this.photoConsent = photoConsent;
 	}
 	
-	public String getHospital() {
+	
+	public int getHospital() {
 		return hospital;
 	}
-	
-	public void setHospital(String hospital) {
+	public void setHospital(int hospital) {
 		this.hospital = hospital;
 	}
+	
 	
 	public String getPatient_lastName() {
 		return patient_lastName;
 	}
-	
 	public void setPatient_lastName(String patient_lastName) {
 		this.patient_lastName = patient_lastName;
 	}
 	
+	
 	public String getPatient_firstName() {
 		return patient_firstName;
 	}
-	
 	public void setPatient_firstName(String patient_firstName) {
 		this.patient_firstName = patient_firstName;
 	}
 	
+	
 	public String getPatient_midName() {
 		return patient_midName;
 	}
-	
 	public void setPatient_midName(String patient_midName) {
 		this.patient_midName = patient_midName;
 	}
 	
+	
 	public String getSex() {
 		return sex;
 	}
-	
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
 	
+	
 	public String getRace() {
 		return race;
 	}
-	
 	public void setRace(String race) {
 		this.race = race;
 	}
 	
-	public String getDob() {
+	
+	public Date getDob() {
 		return dob;
 	}
-	
-	public void setDob(String dob) {
+	public void setDob(Date dob) {
 		this.dob = dob;
 	}
+	
 	
 	public String getAddr1() {
 		return addr1;
 	}
-	
 	public void setAddr1(String addr1) {
 		this.addr1 = addr1;
 	}
 	
+	
 	public String getAddr2() {
 		return addr2;
 	}
-	
 	public void setAddr2(String addr2) {
 		this.addr2 = addr2;
 	}
 	
+	
 	public String getVillage() {
 		return village;
 	}
-	
 	public void setVillage(String village) {
 		this.village = village;
 	}
 	
+	
 	public String getProvince() {
 		return province;
 	}
-	
 	public void setProvince(String province) {
 		this.province = province;
 	}
 	
+	
 	public String getCountry() {
 		return country;
 	}
-	
 	public void setCountry(String country) {
 		this.country = country;
 	}
 	
+	
 	public String getGuardian_lastName() {
 		return guardian_lastName;
 	}
-	
 	public void setGuardian_lastName(String guardian_lastName) {
 		this.guardian_lastName = guardian_lastName;
 	}
 	
+	
 	public String getGuardian_firstName() {
 		return guardian_firstName;
 	}
-	
 	public void setGuardian_firstName(String guardian_firstName) {
 		this.guardian_firstName = guardian_firstName;
 	}
 	
+	
 	public String getGuardian_midName() {
 		return guardian_midName;
 	}
-	
 	public void setGuardian_midName(String guardian_midName) {
 		this.guardian_midName = guardian_midName;
 	}
 	
+	
 	public String getGuardian_relationship() {
 		return guardian_relationship;
 	}
-	
 	public void setGuardian_relationship(String guardian_relationship) {
 		this.guardian_relationship = guardian_relationship;
 	}
 	
+	
 	public String getGuardian_phone1() {
 		return guardian_phone1;
 	}
-	
 	public void setGuardian_phone1(String guardian_phone1) {
 		this.guardian_phone1 = guardian_phone1;
 	}
 	
+	
 	public String getGuardian_phone2() {
 		return guardian_phone2;
 	}
-	
 	public void setGuardian_phone2(String guardian_phone2) {
 		this.guardian_phone2 = guardian_phone2;
 	}
+	
+	
 /*
 	public MultipartFile getPre_imgfile() {
 		return pre_imgfile;
@@ -243,150 +246,209 @@ public class newPatient {
 		this.pre_imgfile = pre_imgfile;
 	}
 */
+	
+	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	/*
 	public String getGuardian_check() {
 		return guardian_check;
 	}
 	public void setGuardian_check(String guardian_check) {
 		this.guardian_check = guardian_check;
 	}
+	*/
+	
+	
 	public String getEmergency_contact() {
 		return emergency_contact;
 	}
 	public void setEmergency_contact(String emergency_contact) {
 		this.emergency_contact = emergency_contact;
 	}
+	
+	
 	public String getDeformity_history() {
 		return deformity_history;
 	}
 	public void setDeformity_history(String deformity_history) {
 		this.deformity_history = deformity_history;
 	}
+	
+	
 	public String getPregnancy() {
 		return pregnancy;
 	}
 	public void setPregnancy(String pregnancy) {
 		this.pregnancy = pregnancy;
 	}
-	public String getPregnancy_complications() {
-		return pregnancy_complications;
+	
+	
+	public String getPregnancy_complications_explained() {
+		return pregnancy_complications_explained;
 	}
-	public void setPregnancy_complications(String pregnancy_complications) {
-		this.pregnancy_complications = pregnancy_complications;
+	public void setPregnancy_complications_explained(String pregnancy_complications_explained) {
+		this.pregnancy_complications_explained = pregnancy_complications_explained;
 	}
+	
+	
 	public String getPregnancy_alc() {
 		return pregnancy_alc;
 	}
 	public void setPregnancy_alc(String pregnancy_alc) {
 		this.pregnancy_alc = pregnancy_alc;
 	}
+	
+	
 	public String getPregnancy_smoke() {
 		return pregnancy_smoke;
 	}
 	public void setPregnancy_smoke(String pregnancy_smoke) {
 		this.pregnancy_smoke = pregnancy_smoke;
 	}
+	
+	
 	public String getComplications() {
 		return complications;
 	}
 	public void setComplications(String complications) {
 		this.complications = complications;
 	}
+	
+	
 	public String getPlace_birth() {
 		return place_birth;
 	}
 	public void setPlace_birth(String place_birth) {
 		this.place_birth = place_birth;
 	}
+	
+	
 	public String getReferral() {
 		return referral;
 	}
 	public void setReferral(String referral) {
 		this.referral = referral;
 	}
-	public String getEvaluator_name() {
-		return evaluator_name;
+	
+	
+	public int getEvaluator() {
+		return evaluator;
 	}
-	public void setEvaluator_name(String evaluator_name) {
-		this.evaluator_name = evaluator_name;
+	public void setEvaluator_name(int evaluator) {
+		this.evaluator = evaluator;
 	}
-	public String getEvaluation_date() {
+	
+	
+	public Date getEvaluation_date() {
 		return evaluation_date;
 	}
-	public void setEvaluation_date(String evaluation_date) {
+	public void setEvaluation_date(Date evaluation_date) {
 		this.evaluation_date = evaluation_date;
 	}
+	
+	
 	public String getFeet() {
 		return feet;
 	}
 	public void setFeet(String feet) {
 		this.feet = feet;
 	}
+	
+	
 	public String getDiagnosis() {
 		return diagnosis;
 	}
 	public void setDiagnosis(String diagnosis) {
 		this.diagnosis = diagnosis;
 	}
+	
+	
 	public String getDeformity_at_birth() {
 		return deformity_at_birth;
 	}
 	public void setDeformity_at_birth(String deformity_at_birth) {
 		this.deformity_at_birth = deformity_at_birth;
 	}
+	
+	
 	public String getPrevious_treatments() {
 		return previous_treatments;
 	}
 	public void setPrevious_treatments(String previous_treatments) {
 		this.previous_treatments = previous_treatments;
 	}
+	
+	
 	public String getDiagnosis_prenatally() {
 		return diagnosis_prenatally;
 	}
 	public void setDiagnosis_prenatally(String diagnosis_prenatally) {
 		this.diagnosis_prenatally = diagnosis_prenatally;
 	}
+	
+	
+	public String getPrenatally_diag_confirmation() {
+		return prenatally_diag_confirmation;
+	}
+	public void setPrenatally_diag_confirmation(String prenatally_diag_confirmation) {
+		this.prenatally_diag_confirmation = prenatally_diag_confirmation;
+	}
+	
+	
 	public String getDiagnosis_comments() {
 		return diagnosis_comments;
 	}
 	public void setDiagnosis_comments(String diagnosis_comments) {
 		this.diagnosis_comments = diagnosis_comments;
 	}
+	
+	
 	public String getAbnormalities() {
 		return abnormalities;
 	}
 	public void setAbnormalities(String abnormalities) {
 		this.abnormalities = abnormalities;
 	}
+	
+	
 	public String getWeakness() {
 		return weakness;
 	}
 	public void setWeakness(String weakness) {
 		this.weakness = weakness;
 	}
+	
+	
 	public String getSecond_guardian_last() {
 		return second_guardian_last;
 	}
 	public void setSecond_guardian_last(String second_guardian_last) {
 		this.second_guardian_last = second_guardian_last;
 	}
+	
+	
 	public String getSecond_guardian_first() {
 		return second_guardian_first;
 	}
 	public void setSecond_guardian_first(String second_guardian_first) {
 		this.second_guardian_first = second_guardian_first;
 	}
+	
+	
 	public String getSecond_guardian_mid() {
 		return second_guardian_mid;
 	}
 	public void setSecond_guardian_mid(String second_guardian_mid) {
 		this.second_guardian_mid = second_guardian_mid;
 	}
+	
+	
 	public String getSecond_guardian_relationship() {
 		return second_guardian_relationship;
 	}
@@ -394,90 +456,116 @@ public class newPatient {
 			String second_guardian_relationship) {
 		this.second_guardian_relationship = second_guardian_relationship;
 	}
+	
+	
 	public String getSecond_guardian_phone1() {
 		return second_guardian_phone1;
 	}
 	public void setSecond_guardian_phone1(String second_guardian_phone1) {
 		this.second_guardian_phone1 = second_guardian_phone1;
 	}
+	
+	
 	public String getSecond_guardian_phone2() {
 		return second_guardian_phone2;
 	}
 	public void setSecond_guardian_phone2(String second_guardian_phone2) {
 		this.second_guardian_phone2 = second_guardian_phone2;
 	}
+	
+	
 	public String getOther_guardian_last() {
 		return other_guardian_last;
 	}
 	public void setOther_guardian_last(String other_guardian_last) {
 		this.other_guardian_last = other_guardian_last;
 	}
+	
+	
 	public String getOther_guardian_first() {
 		return other_guardian_first;
 	}
 	public void setOther_guardian_first(String other_guardian_first) {
 		this.other_guardian_first = other_guardian_first;
 	}
+	
+	
 	public String getOther_guardian_mid() {
 		return other_guardian_mid;
 	}
 	public void setOther_guardian_mid(String other_guardian_mid) {
 		this.other_guardian_mid = other_guardian_mid;
 	}
+	
+	
 	public String getOther_guardian_relationship() {
 		return other_guardian_relationship;
 	}
-	public void setOther_guardian_relationship(
-			String other_guardian_relationship) {
+	public void setOther_guardian_relationship(String other_guardian_relationship) {
 		this.other_guardian_relationship = other_guardian_relationship;
 	}
+	
+	
 	public String getOther_guardian_phone1() {
 		return other_guardian_phone1;
 	}
 	public void setOther_guardian_phone1(String other_guardian_phone1) {
 		this.other_guardian_phone1 = other_guardian_phone1;
 	}
+	
+	
 	public String getOther_guardian_phone2() {
 		return other_guardian_phone2;
 	}
 	public void setOther_guardian_phone2(String other_guardian_phone2) {
 		this.other_guardian_phone2 = other_guardian_phone2;
 	}
-	public String getDeformity_history_num() {
+	
+	
+	public int getDeformity_history_num() {
 		return deformity_history_num;
 	}
-	public void setDeformity_history_num(String deformity_history_num) {
+	public void setDeformity_history_num(int deformity_history_num) {
 		this.deformity_history_num = deformity_history_num;
 	}
-	public String getPreg_complications_explained() {
-		return preg_complications_explained;
-	}
-	public void setPreg_complications_explained(
-			String preg_complications_explained) {
-		this.preg_complications_explained = preg_complications_explained;
-	}
+	
+	
 	public String getReferral_doc_name() {
 		return referral_doc_name;
 	}
 	public void setReferral_doc_name(String referral_doc_name) {
 		this.referral_doc_name = referral_doc_name;
 	}
+	
+	
 	public String getReferral_hospital_name() {
 		return referral_hospital_name;
 	}
 	public void setReferral_hospital_name(String referral_hospital_name) {
 		this.referral_hospital_name = referral_hospital_name;
 	}
-	public String getPrevious_treatments_num() {
+	
+	
+	public String getReferral_other() {
+		return referral_other;
+	}
+	public void setReferral_other(String referral_other) {
+		this.referral_other = referral_other;
+	}
+	
+	
+	public int getPrevious_treatments_num() {
 		return previous_treatments_num;
 	}
-	public void setPrevious_treatments_num(String previous_treatments_num) {
+	public void setPrevious_treatments_num(int previous_treatments_num) {
 		this.previous_treatments_num = previous_treatments_num;
 	}
-	public String getDiagnosis_prenatally_week() {
+	
+	
+	public int getDiagnosis_prenatally_week() {
 		return diagnosis_prenatally_week;
 	}
-	public void setDiagnosis_prenatally_week(String diagnosis_prenatally_week) {
+	public void setDiagnosis_prenatally_week(int	 diagnosis_prenatally_week) {
 		this.diagnosis_prenatally_week = diagnosis_prenatally_week;
 	}
 }
