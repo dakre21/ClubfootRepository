@@ -1,7 +1,10 @@
 package com.packt.clubfootReg.domain.repository.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 import javax.sql.DataSource;
 
@@ -18,6 +21,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+//import java.sql.Date;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -37,58 +41,110 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 	public void addPatient(newPatient newpatient) {
 		listOfPatients.add(newpatient);
 		int id = newpatient.getId();
-		String street = newpatient.getAddr1();
-		String city = newpatient.getVillage();
-		String state = newpatient.getProvince();
+		int guardianConsent = newpatient.getGuardianConsent();
+		int photoConsent = newpatient.getPhotoConsent();
+		int hospital = newpatient.getHospital();
+		String patient_lastName = newpatient.getPatient_lastName();
+		String patient_firstName = newpatient.getPatient_firstName();
+		String patient_midName = newpatient.getPatient_midName();
+		String sex = newpatient.getSex();
+		String race = newpatient.getRace();
+		Date dob = newpatient.getDob();
+		String addr1 = newpatient.getAddr1();
+		String addr2 = newpatient.getAddr2();
+		String village = newpatient.getVillage();
+		String province = newpatient.getProvince();
 		String country = newpatient.getCountry();
-		String dob = newpatient.getDob();
-		String name = newpatient.getHospital();
-		String relationship_to_patient = newpatient.getGuardian_relationship();
-		String consent_inclusion = newpatient.getGuardianConsent();
-		String consent_photos = newpatient.getPhotoConsent();
-		String first_name = newpatient.getPatient_firstName();
-		String last_name = newpatient.getPatient_lastName();
-		String middle_name = newpatient.getPatient_midName();
-		String first_nameG = newpatient.getGuardian_firstName();
-		String last_nameG = newpatient.getGuardian_lastName();
-		String middle_nameG = newpatient.getGuardian_midName();
-		String query = "Insert into address (id, street, city, state, country) values (?, ?, ?, ?, ?)";
-		String query2 = "Insert into patient (id, dob, consent_inclusion, consent_photos) values (?, ?, ?, ?)";
-		String query3 = "Insert into hospital (id, name) values (?, ?)";
-		String query4 = "Insert into patient_associates (patient_id, relationship_to_patient) values (?, ?)";
+		String guardian_lastName = newpatient.getGuardian_lastName();
+		String guardian_firstName = newpatient.getGuardian_firstName();
+		String guardian_midName = newpatient.getGuardian_midName();
+		String guardian_relationship = newpatient.getGuardian_relationship();
+		String guardian_phone1 = newpatient.getGuardian_phone1();
+		String guardian_phone2 = newpatient.getGuardian_phone2();
+		String second_guardian_last = newpatient.getSecond_guardian_last();
+		String second_guardian_first = newpatient.getSecond_guardian_first();
+		String second_guardian_mid = newpatient.getSecond_guardian_mid();
+		String second_guardian_relationship = newpatient.getSecond_guardian_relationship();
+		String second_guardian_phone1 = newpatient.getSecond_guardian_phone1();
+		String second_guardian_phone2 = newpatient.getSecond_guardian_phone2();
+		String emergency_contact = newpatient.getEmergency_contact();
+		String other_guardian_last = newpatient.getOther_guardian_last();
+		String other_guardian_first = newpatient.getOther_guardian_first();
+		String other_guardian_mid = newpatient.getOther_guardian_mid();
+		String other_guardian_relationship = newpatient.getOther_guardian_relationship();
+		String other_guardian_phone1 = newpatient.getOther_guardian_phone1();
+		String other_guardian_phone2 = newpatient.getOther_guardian_phone2();
+		String deformity_history = newpatient.getDeformity_history();
+		int deformity_history_num = newpatient.getDeformity_history_num();
+		String pregnancy = newpatient.getPregnancy();
+		String pregnancy_complications_explained = newpatient.getPregnancy_complications_explained();
+		String pregnancy_alc = newpatient.getPregnancy_alc();
+		String pregnancy_smoke = newpatient.getPregnancy_smoke();
+		String complications = newpatient.getComplications();
+		String place_birth = newpatient.getPlace_birth();
+		String referral = newpatient.getReferral();
+		String referral_doc_name = newpatient.getReferral_doc_name();
+		String referral_hospital_name = newpatient.getReferral_hospital_name();
+		String referral_other = newpatient.getReferral_other();
+		int evaluator = newpatient.getEvaluator();
+		Date evaluation_date = newpatient.getEvaluation_date();
+		String feet = newpatient.getFeet();
+		String diagnosis = newpatient.getDiagnosis();
+		String deformity_at_birth = newpatient.getDeformity_at_birth();
+		String previous_treatments = newpatient.getPrevious_treatments();
+		int previous_treatments_num = newpatient.getPrevious_treatments_num();
+		String diagnosis_prenatally = newpatient.getDiagnosis_prenatally();
+		int diagnosis_prenatally_week = newpatient.getDiagnosis_prenatally_week();
+		String prenatally_diag_confirmation = newpatient.getPrenatally_diag_confirmation();
+		String diagnosis_comments = newpatient.getDiagnosis_comments();
+		String abnormalities = newpatient.getAbnormalities();
+		String weakness = newpatient.getWeakness();
+		
+		
+		
+		String sql_address = "Insert into address (id, street, city, state, country) values (?, ?, ?, ?, ?)";
+		String sql_abstract_person = "Insert into abstract_person (id, address_id, created, first_name, last_name, middle_name) "
+				                   + "values (?, ?, ?, ?, ?, ?)";
+		
+		String sql_previous_treatments = "";
+		String sql_associate = "";
+		String sql_patient_associates = "Insert into patient_associates (patient_id, relationship_to_patient) values (?, ?)";
+		String sql_patient = "Insert into patient (id, dob, consent_inclusion, consent_photos) values (?, ?, ?, ?)";
+		
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
 		Connection conn = null;
+		PreparedStatement ps;
 		
 		try {
 			conn = dataSource.getConnection();
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, id);
-			ps.setString(2, street);
-			ps.setString(3, city);
-			ps.setString(4, state);
+			
+			// ADDRESS
+			ps = conn.prepareStatement(sql_address);
+			ps.setInt(1, getMaxAddressID()+1);
+			ps.setString(2, addr1);
+			ps.setString(3, village);
+			ps.setString(4, province);
 			ps.setString(5, country);
 			ps.executeUpdate();
 			ps.close();
-	
-			PreparedStatement ps1 = conn.prepareStatement(query2);
-			ps1.setInt(1, id);
-			ps1.setString(2, dob);
-			ps1.setString(3, consent_inclusion);
-			ps1.setString(4, consent_photos);
-			ps1.executeUpdate();
-			ps1.close();
-		
-			PreparedStatement ps2 = conn.prepareStatement(query3);
-			ps2.setInt(1, id);
-			ps2.setString(2, name);
-			ps2.executeUpdate();
-			ps2.close();
-/*			
-			PreparedStatement ps3 = conn.prepareStatement(query4);
-			ps3.setInt(1, id);
-			ps3.setString(2,  relationship_to_patient);
-			ps3.executeUpdate();
-			ps3.close();
-*/			
+
+			// ABSTRACT_PERSON
+			ps = conn.prepareStatement(sql_abstract_person);
+			ps.setInt(1, getMaxPersonID()+1);
+			ps.setInt(2, getMaxAddressID());
+			ps.setString(3, dateFormat.format(date));
+			ps.setString(4, patient_firstName);
+			ps.setString(5, patient_lastName);
+			ps.setString(6, patient_midName);
+			
+			
+			
+			ps.executeUpdate();
+			ps.close();
+			
+			
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
  
@@ -206,14 +262,44 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 	}
 
 	@Override
-	public int getMaxPatientID() {
+	public int getMaxPersonID() {
 		Connection conn = null;
 		int max = 0;
 		
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "Select max(id) from patient";
+			String sql = "Select max(id) from abstract_person";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				max = rs.getInt(1);
+			}
+			
+			rs.close();
+			ps.close();
+			return max;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
+	
+	@Override
+	public int getMaxAddressID() {
+		Connection conn = null;
+		int max = 0;
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select max(id) from address";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			

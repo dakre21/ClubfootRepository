@@ -1,0 +1,105 @@
+***********
+* PATIENT *
+***********
+guardianConsent - patient (consent_inclusion) int -- bit?
+photoConsent - patient (consent_photos) int -- bit?
+dob - patient (dob) datetime
+tribe - patient (tribe) varchar
+deformity_history - patient (affected_relatives) int
+pregnancy - patient (pregnancy_length) int -- mispellled in database
+preg_complications_explained - patient (pregnancy_complications) longtext
+pregnancy_alc - patient (pregnancy_drinking) longtext ——change to int?
+pregnancy_smoke - patient (pregnancy_smoking) long text ——-change to int?
+complications - patient (birth_complications) long text ———change to int?
+place_birth - patient (birth_place) int ——change to varchar?
+referral - patient (referral_source) longtext
+referral_doc_name - patient (referral_doctor_name) longtext ——change to varchar
+referral_hospital_name - patient (referral_hospital_name) long text————change to archer
+referral_other - patient (referral_other) long text
+evaluation_date - patient (evaluation_date) datetime
+feet - patient (feet_affected) varchar -- int?
+diagnosis - patient (diagnosis) varchar -- int?
+deformity_at_birth - patient (deformity_at_birth) long text -- varchar?
+diagnosis_prenatally_week - patient (prenatal_week) int
+prenatally_diag_confirmation - patient (prenatal_comfirmed) longtext ————varchar?
+diagnosis_comments - patient (diagnosis_comment) long text
+
+
+*******************
+* ABSTRACT_PERSON *
+*******************
+patient_lastName - user (id) int
+patient_firstName - user (id) int
+patient_midName - user (id) int
+
+
+***********
+* ADDRESS *
+***********
+addr1 - address (id) int
+addr2 - address (id) int
+village - address (id) int
+province - address (id) int
+country - address (id) int
+
+
+*************
+* ASSOCIATE *
+*************
+guardian_lastName - associate (id) int
+guardian_firstName - associate (id) int
+guardian_midName - associate (id) int
+second_guardian_last - associate (id) int
+second_guardian_first - associate (id) int
+second_guardian_mid - associate (id) int
+other_guardian_last - associate (id) int
+other_guardian_first - associate (id) int
+other_guardian_mid - associate (id) int
+
+
+*********************
+* PATIENT_ASSOCIATE *
+*********************
+guardian_relationship - patient_associate (relationship_to_patient) varchar
+second_guardian_relationship - patient_associate (relationship_to_patient) varchar
+other_guardian_relationship - patient_associate (relationship_to_patient) varchar
+emergency_contact - patient_associate (is_emergency_contact) int -- string?
+
+
+************
+* HOSPITAL *
+************
+hospital - hospital (hospital_id) int
+
+
+*************
+* EVALUATOR *
+*************
+evaluator_name - evaluator (evaluator_id) int
+
+
+***********************
+* PREVIOUS_TREATMENTS *
+***********************
+previous_treatments - previous_treatments (id)
+
+
+*********
+* OTHER *
+*********
+sex - ?
+race - ?
+guardian_phone1 - add to database?
+guardian_phone2 - add to database?
+second_guardian_phone1 - add to database?
+second_guardian_phone2 - add to database?
+other_guardian_phone1 - add to database?
+other_guardian_phone2 - add to database?
+deformity_history_num - add to database?
+previous_treatments_num - add to database?
+ *has not been created yet in view  - treatment (id) int
+weakness - add to database?
+abnormalities - add to database?
+pre-imgfile -- figure out database with image
+guardian_check - not needed in database (used to determine if another guardian is needed)
+
