@@ -15,5 +15,6 @@ public interface newPatientRepo {
 	List<newPatient> getAllPatients();
 	void deletePatient(int id);
 	void updatePatient(newPatient newpatient);
-	int getMaxPatientID();
+	int getMaxPersonID();
+	int getMaxAddressID();
 }
