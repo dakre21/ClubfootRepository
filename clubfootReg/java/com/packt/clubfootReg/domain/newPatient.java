@@ -3,7 +3,6 @@ package com.packt.clubfootReg.domain;
 import org.springframework.web.multipart.MultipartFile;
 
 public class newPatient {
-	
 	private String guardianConsent;
 	private String photoConsent;
 	private String hospital;
@@ -66,7 +65,6 @@ public class newPatient {
 	//private MultipartFile pre_imgfile;
 
 	public newPatient() {
-		// TODO Auto-generated constructor stub
 		super();
 	}
 	
@@ -76,11 +74,11 @@ public class newPatient {
 		this.patient_firstName = patient_firstName;
 		this.patient_midName = patient_midName;
 	}
-	//Getter
+	
 	public String getGuardianConsent() {
 		return guardianConsent;
 	}
-	//Setter
+	
 	public void setGuardianConsent(String guardianConsent) {
 		this.guardianConsent = guardianConsent;
 	}

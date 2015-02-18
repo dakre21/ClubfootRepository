@@ -68,7 +68,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setString(5, country);
 			ps.executeUpdate();
 			ps.close();
-/*		
+	
 			PreparedStatement ps1 = conn.prepareStatement(query2);
 			ps1.setInt(1, id);
 			ps1.setString(2, dob);
@@ -76,7 +76,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps1.setString(4, consent_photos);
 			ps1.executeUpdate();
 			ps1.close();
-*/		
+		
 			PreparedStatement ps2 = conn.prepareStatement(query3);
 			ps2.setInt(1, id);
 			ps2.setString(2, name);
