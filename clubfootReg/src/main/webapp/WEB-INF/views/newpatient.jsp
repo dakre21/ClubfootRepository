@@ -73,6 +73,8 @@
 	  $('#previous_treatments_num').hide();
 	  $('#diagnosis_prenatally_week1').hide();
 	  $('#diagnosis_prenatally_week').hide();
+	  $('#referral_other1').hide();
+	  $('#referral_other').hide();
 
   }
   function guardianHandlerTrue(){
@@ -114,6 +116,12 @@
 	  $('#referral_hospital_name').hide();
 	  $('#referral_doc_name1').hide();
 	  $('#referral_doc_name').hide();
+	  $('#referral_other1').hide();
+	  $('#referral_other').hide();
+  }
+  function referralOtherTrue(){
+	  $('#referral_other1').show();
+	  $('#referral_other').show();
   }
   function prevTreatmentTrue(){
 	  $('#previous_treatments_num1').show();
@@ -246,8 +254,8 @@
 			<label for="hospital"><em>*</em>Hospital/Clinic: </label>
 			<select name="hospital" required>
 				<option value="">Please select one of the following options</option>
-				<option value="hosptial1" path="hospital">Hosptial 1</option>
-				<option value="hosptial2" path="hospital">Hosptial 2</option>
+				<option value="1" path="hospital">Hosptial 1</option>
+				<option value="2" path="hospital">Hosptial 2</option>
 			<select> <br>
 			</div>
 		<div class="row">
@@ -292,7 +300,7 @@
 			<div class="form-group">
 			<label for="addr1">Address 1: </label>
 			<input type="text" name="addr1" class="form-control" path="addr1"> <br>
-			<label for="address2">Address 2: </label>
+			<label for="addr2">Address 2: </label>
 			<input type="text" name="addr2" class="form-control" path="addr2"> <br>
 			<label for="village">Village/Town/City: </label>
 			<input type="text" name="village" class="form-control" path="village"> 
@@ -321,7 +329,7 @@
 			<label for="guardian_midName">   Middle name: </label>
 			<input type="name" name="guardian_midName" class="form-control" path="guardian_midName"> <br>
 
-			<label for="guardian_relationship">Relationship to parent: </label>
+			<label for="guardian_relationship">Relationship to patient: </label>
 			<input type="radio" name="guardian_relationship" value="mother" path="guardian_relationship"> Mother
 			<input type="radio" name="guardian_relationship" value="father" path="guardian_relationship"> Father
 			<input type="radio" name="guardian_relationship" value="grandparent" path="guardian_relationship"> Grandparent
@@ -465,13 +473,15 @@
 			<input type="radio" name="referral" value="Midwife" path="referral" onClick="referralFnFalse()"> Midwife
 			<input type="radio" name="referral" value="Word_of_mouth" path="referral" onClick="referralFnFalse()"> Word of mouth
 			<input type="radio" name="referral" value="Promotional_materials" path="referral" onClick="referralFnFalse()"> Promotional materials
-			<input type="radio" name="referral" value="Other" path="referral" onClick="referralFnFalse()"> Other
+			<input type="radio" name="referral" value="Other" path="referral" onClick="referralOtherTrue()"> Other
 			<input type="radio" name="referral" value="Unspecified" path="referral" onClick="referralFnFalse()"> Unspecified <br>
 		
 			<label for="referral_doc_name1" id="referral_doc_name1">Doctor name: </label>
 			<input type="text" name="referral_doc_name" path="referral_doc_name" id="referral_doc_name">
-			<label for="referral_hospital_name" id="referral_hospital_name1">Hospital/clinc name: </label>
+			<label for="referral_hospital_name" id="referral_hospital_name1">Hospital/clinic name: </label>
 			<input type="text" name="referral_hospital_name" path="referral_hospital_name" id="referral_hospital_name">
+			<label for="referral_other" id="referral_other1"><em>*</em>Please specify: </label>
+			<input type="text" name="referral_other" path="referral_other" id="referral_other">
 			</div>
 			</div>
 		</fieldset>
