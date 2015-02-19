@@ -1,20 +1,22 @@
 package com.packt.clubfootReg.domain;
 
+import java.util.Date;
 
-import java.sql.Date;
 import org.springframework.web.multipart.MultipartFile;
 
 public class newPatient {
 	private int id;
 	private int guardianConsent;
 	private int photoConsent;
-	private int hospital;
+	private String hospital;
 	private String patient_lastName;
 	private String patient_firstName;
 	private String patient_midName;
 	private String sex;
 	private String race;
-	private Date dob;
+	private String tribe;
+	//private Date dob;
+	private String dob;
 	private String addr1;
 	private String addr2;
 	private String village;
@@ -40,7 +42,7 @@ public class newPatient {
 	private String other_guardian_phone1;
 	private String other_guardian_phone2;
 	private String deformity_history;
-	private int deformity_history_num;
+	private String deformity_history_num;
 	private String pregnancy; //YNU
 	private String pregnancy_complications_explained;
 	private String pregnancy_alc; //YNU
@@ -51,15 +53,16 @@ public class newPatient {
 	private String referral_doc_name;
 	private String referral_hospital_name;
 	private String referral_other;
-	private int evaluator;
-	private Date evaluation_date;
+	private String evaluator;
+	//private Date evaluation_date;
+	private String evaluation_date;
 	private String feet;
 	private String diagnosis;
 	private String deformity_at_birth; //YNU
 	private String previous_treatments; //YNU
-	private int previous_treatments_num;
+	private String previous_treatments_num;
 	private String diagnosis_prenatally; //YNU
-	private int diagnosis_prenatally_week;
+	private String diagnosis_prenatally_week;
 	private String prenatally_diag_confirmation; //YNU
 	private String diagnosis_comments;
 	private String abnormalities;
@@ -94,10 +97,10 @@ public class newPatient {
 	}
 	
 	
-	public int getHospital() {
+	public String getHospital() {
 		return hospital;
 	}
-	public void setHospital(int hospital) {
+	public void setHospital(String hospital) {
 		this.hospital = hospital;
 	}
 	
@@ -142,10 +145,18 @@ public class newPatient {
 	}
 	
 	
-	public Date getDob() {
+	public String getTribe() {
+		return tribe;
+	}
+	public void setTribe(String tribe) {
+		this.tribe = tribe;
+	}
+
+	
+	public String getDob() {
 		return dob;
 	}
-	public void setDob(Date dob) {
+	public void setDob(String dob) {
 		this.dob = dob;
 	}
 	
@@ -338,18 +349,18 @@ public class newPatient {
 	}
 	
 	
-	public int getEvaluator() {
+	public String getEvaluator() {
 		return evaluator;
 	}
-	public void setEvaluator_name(int evaluator) {
+	public void setEvaluator_name(String evaluator) {
 		this.evaluator = evaluator;
 	}
 	
 	
-	public Date getEvaluation_date() {
+	public String getEvaluation_date() {
 		return evaluation_date;
 	}
-	public void setEvaluation_date(Date evaluation_date) {
+	public void setEvaluation_date(String evaluation_date) {
 		this.evaluation_date = evaluation_date;
 	}
 	
@@ -523,10 +534,10 @@ public class newPatient {
 	}
 	
 	
-	public int getDeformity_history_num() {
+	public String getDeformity_history_num() {
 		return deformity_history_num;
 	}
-	public void setDeformity_history_num(int deformity_history_num) {
+	public void setDeformity_history_num(String deformity_history_num) {
 		this.deformity_history_num = deformity_history_num;
 	}
 	
@@ -555,18 +566,18 @@ public class newPatient {
 	}
 	
 	
-	public int getPrevious_treatments_num() {
+	public String getPrevious_treatments_num() {
 		return previous_treatments_num;
 	}
-	public void setPrevious_treatments_num(int previous_treatments_num) {
+	public void setPrevious_treatments_num(String previous_treatments_num) {
 		this.previous_treatments_num = previous_treatments_num;
 	}
 	
 	
-	public int getDiagnosis_prenatally_week() {
+	public String getDiagnosis_prenatally_week() {
 		return diagnosis_prenatally_week;
 	}
-	public void setDiagnosis_prenatally_week(int	 diagnosis_prenatally_week) {
+	public void setDiagnosis_prenatally_week(String diagnosis_prenatally_week) {
 		this.diagnosis_prenatally_week = diagnosis_prenatally_week;
 	}
 }

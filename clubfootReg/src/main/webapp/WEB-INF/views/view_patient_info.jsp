@@ -118,8 +118,9 @@
 		<h1>Patient Info</h1>
 		<hr>
 		<legend>Personal Information</legend>
-		
-		<label for = "patient_name" id = "patient_name"><b>Name:&nbsp </b><label>${o.patient_firstName}&nbsp</label><label>${o.patient_midName}&nbsp</label><label>${o.patient_lastName}&nbsp</label> </label>
+		<c:if test="${not empty patient}">
+			<b>Name:&nbsp </b><label>${patient.patient_firstName}&nbsp</label><label>${patient.patient_midName}&nbsp</label><label>${patient.patient_lastName}&nbsp</label> </label>
+		</c:if>
 	</div>
 	</div>
 </div>

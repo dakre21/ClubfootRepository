@@ -38,18 +38,18 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 	}
 	
 	public void addPatient(newPatient newpatient) {
-		/*
 		listOfPatients.add(newpatient);
 		int id = newpatient.getId();
 		int guardianConsent = newpatient.getGuardianConsent();
 		int photoConsent = newpatient.getPhotoConsent();
-		int hospital = newpatient.getHospital();
+		String hospital = newpatient.getHospital();
 		String patient_lastName = newpatient.getPatient_lastName();
 		String patient_firstName = newpatient.getPatient_firstName();
 		String patient_midName = newpatient.getPatient_midName();
 		String sex = newpatient.getSex();
 		String race = newpatient.getRace();
-		Date dob = newpatient.getDob();
+		//Date dob = newpatient.getDob();
+		String dob = newpatient.getDob();
 		String addr1 = newpatient.getAddr1();
 		String addr2 = newpatient.getAddr2();
 		String village = newpatient.getVillage();
@@ -75,7 +75,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		String other_guardian_phone1 = newpatient.getOther_guardian_phone1();
 		String other_guardian_phone2 = newpatient.getOther_guardian_phone2();
 		String deformity_history = newpatient.getDeformity_history();
-		int deformity_history_num = newpatient.getDeformity_history_num();
+		//int deformity_history_num = newpatient.getDeformity_history_num();
+		String deformity_history_num = newpatient.getDeformity_history_num();
 		String pregnancy = newpatient.getPregnancy();
 		String pregnancy_complications_explained = newpatient.getPregnancy_complications_explained();
 		String pregnancy_alc = newpatient.getPregnancy_alc();
@@ -86,15 +87,19 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		String referral_doc_name = newpatient.getReferral_doc_name();
 		String referral_hospital_name = newpatient.getReferral_hospital_name();
 		String referral_other = newpatient.getReferral_other();
-		int evaluator = newpatient.getEvaluator();
-		Date evaluation_date = newpatient.getEvaluation_date();
+		//int evaluator = newpatient.getEvaluator();
+		String evaluator = newpatient.getEvaluator();
+		//Date evaluation_date = newpatient.getEvaluation_date();
+		String evaluation_date = newpatient.getEvaluation_date();
 		String feet = newpatient.getFeet();
 		String diagnosis = newpatient.getDiagnosis();
 		String deformity_at_birth = newpatient.getDeformity_at_birth();
 		String previous_treatments = newpatient.getPrevious_treatments();
-		int previous_treatments_num = newpatient.getPrevious_treatments_num();
+		//int previous_treatments_num = newpatient.getPrevious_treatments_num();
+		String previous_treatments_num = newpatient.getPrevious_treatments_num();
 		String diagnosis_prenatally = newpatient.getDiagnosis_prenatally();
-		int diagnosis_prenatally_week = newpatient.getDiagnosis_prenatally_week();
+		//int diagnosis_prenatally_week = newpatient.getDiagnosis_prenatally_week();
+		String diagnosis_prenatally_week = newpatient.getDiagnosis_prenatally_week();
 		String prenatally_diag_confirmation = newpatient.getPrenatally_diag_confirmation();
 		String diagnosis_comments = newpatient.getDiagnosis_comments();
 		String abnormalities = newpatient.getAbnormalities();
@@ -151,7 +156,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				} catch (SQLException e) {}
 			}
 		}
-		*/
+		
 		return;
 	}
 	public InMemoryNewPatientRepo() {

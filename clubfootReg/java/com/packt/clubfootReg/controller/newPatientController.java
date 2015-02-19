@@ -1,6 +1,10 @@
 package com.packt.clubfootReg.controller;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +28,9 @@ public class newPatientController {
 	@InitBinder
 	public void initialiseBinder(WebDataBinder binder){
 		binder.setDisallowedFields("unitsInOrder", "discontinued");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	    sdf.setLenient(true);
+	    binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
 	}
 	@RequestMapping(value="/newpatient", method=RequestMethod.GET)
 	public String patientForm(Model model) {
@@ -32,22 +39,31 @@ public class newPatientController {
 		return "newpatient";
 	}
 	
+
 	@RequestMapping(value="/newpatient", method=RequestMethod.POST)
-    public String newPatientSubmit(@ModelAttribute("newpatient") newPatient newpatient, Model model) {
+    public String newPatientSubmit(@ModelAttribute("newPatient") newPatient newpatient, Model model) {
         newpatientrepo.addPatient(newpatient);
         model.addAttribute("patients", newpatientrepo.getAllPatients());
         return "view_patients";
     }
 	
+	/*
+	@RequestMapping(value="/newpatient", method=RequestMethod.POST)
+    public String newPatientSubmit(Model model) {
+        //newpatientrepo.addPatient(newpatient);
+        model.addAttribute("patients", newpatientrepo.getAllPatients());
+        return "view_patients";
+    }*/
+	
 	@RequestMapping(value = "/view_patients", method = RequestMethod.GET)
-	public String viewHospitalsForm(Model model){
+	public String viewPatientsForm(Model model){
 		model.addAttribute("patients", newpatientrepo.getAllPatients());
 		return "view_patients";
 	}
 	
 	@RequestMapping(value = "/view_patient_info", method = RequestMethod.GET)
-	public String viewPatientInfoForm(@ModelAttribute("newpatient") newPatient newpatient, Model model) {
-		model.addAttribute("patient", newpatientrepo.getPatient(newpatient.getId()));
+	public String viewPatientInfoForm(Model model) {
+		model.addAttribute("patient", newpatientrepo.getPatient(0));
 		return "view_patient_info";
 	}
 	

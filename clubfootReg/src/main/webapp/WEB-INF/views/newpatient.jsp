@@ -253,17 +253,17 @@
 		<div class="form-group">
 			<p><i>Please complete the form. Mandatory fields are marked with a </i><em>*</em></p>
 			<label for="guardianConsent"><em>*</em>Does the parent or guardian consent to being included: </label>
-			<input type="radio" name="guardianConsent" value="guardian_consent" path="guardianConsent" required> Yes
-			<input type="radio" name="guardianConsent" value="no_guardian_consent" path="guardianConsent" required> No <br>
+			<input type="radio" name="guardianConsent" value="1" path="guardianConsent"> Yes
+			<input type="radio" name="guardianConsent" value="0" path="guardianConsent"> No <br>
 
 			<label for="photoConsent"><em>*</em>Does the parent or guardian consent to photographs of the patient being used for CURE evaluation and marketing purposes: </label>
-			<input type="radio" name="photoConsent" value="photo_consent" path="photoConsent" required> Yes
-			<input type="radio" name="photoConsent" value="no_photo_consent" path="photoConsent" required> No <br>
+			<input type="radio" name="photoConsent" value="1" path="photoConsent"> Yes
+			<input type="radio" name="photoConsent" value="0" path="photoConsent"> No <br>
 			<label for="hospital"><em>*</em>Hospital/Clinic: </label>
-			<select name="hospital" required>
+			<select name="hospital">
 				<option value="">Please select one of the following options</option>
-				<option value="1" path="hospital">Hosptial 1</option>
-				<option value="2" path="hospital">Hosptial 2</option>
+				<option value="1" path="hospital">Hospital 1</option>
+				<option value="2" path="hospital">Hospital 2</option>
 			</select> <br>
 		</div>
 			
@@ -273,17 +273,17 @@
 			<div class="col-md-12">
 			<div class="form-group">
 			<label for="patient_lastName"><em>*</em>Last name/Surname: </label>
-			<input type="name" name="patient_lastName" class="form-control" path="patient_lastName" required>
+			<input type="name" name="patient_lastName" class="form-control" path="patient_lastName" >
 
 			<label for="patient_firstName"><em>  *</em>First name: </label>
-			<input type="name" name="patient_firstName" class="form-control" path="patient_firstName" required>
+			<input type="name" name="patient_firstName" class="form-control" path="patient_firstName" >
 
 			<label for="patient_midName">   Middle name: </label>
 			<input type="name" name="patient_midName" class="form-control" path="patient_midName"> <br>
 
 			<label for="sex"><em>*</em>Sex: </label>
-			<input type="radio" name="sex" value="male" path="sex" required> Male
-			<input type="radio" name="sex" value="female" path="sex" required> Female <br>
+			<input type="radio" name="sex" value="male" path="sex" > Male
+			<input type="radio" name="sex" value="female" path="sex" > Female <br>
 
 			<label for="race">Race: </label>
 			<input type="radio" name="race" value="asian" path="race"> Asian
@@ -295,7 +295,7 @@
 			<input type="radio" name="race" value="unspecified" path="race"> Unspecified <br>
 
 			<label for="dob"><em>*</em>Date of birth: </label>
-			<input type="date" name="dob" id="dob" class="form-control" path="dob" placeholder="dd/mm/yyyy" required validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
+			<input type="date" name="dob" id="dob" class="form-control" path="dob" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
 			<label for="tribe">Tribe: </label>
 			<input type="text" name="tribe" class="form-control" path="tribe">
 			</div>
@@ -449,7 +449,7 @@
 			<input type="radio" name="pregnancy_complications" value="Unspecified" path="pregnancy_complications" onClick="pregCompFalse()"> Unspecified <br>
 			
 			<label for="preg_complications_explained1" id="preg_complications_explained1">What were the complications: </label>
-			<input type="text" name="preg_complications_explained" class="form-control" path="preg_complications_explained" id="preg_complications_explained"> <br>
+			<input type="text" name="pregnancy_complications_explained" class="form-control" path="pregnancy_complications_explained" id="pregnancy_complications_explained"> <br>
 			
 			<label for="pregnancy_alc">Did the mother consume alcohol during pregnancy: </label>
 			<input type="radio" name="pregnancy_alc" value="Yes" path="pregnancy_alc"> Yes
@@ -501,18 +501,18 @@
 			<div class="col-mid-12">
 			<div class="form-group">
 			<label for="evaluator_name"><em>*</em>Name of evaluator: </label>
-			<input type="text" name="evaluator_name" class="form-control" path="evaluator_name" required> <a href="evaluator">Add evaluator</a> <br>
+			<input type="text" name="evaluator_name" class="form-control" path="evaluator_name" > <a href="evaluator">Add evaluator</a> <br>
 			<label for="evaluation_date"><em>*</em>Evaluation date (dd/mm/yyyy): </label>
-			<input type="date" name="evaluation_date" class="form-control" path="evaluation_date" required> <br>
+			<input type="date" name="evaluation_date" class="form-control" path="evaluation_date" > <br>
 			<label for="feet"><em>*</em>Feet affected: </label>
-			<input type="radio" name="feet" value="Left" path="feet" required> Left
-			<input type="radio" name="feet" value="Right" path="feet" required> Right
-			<input type="radio" name="feet" value="Both" path="feet" required> Both <br>
+			<input type="radio" name="feet" value="Left" path="feet" > Left
+			<input type="radio" name="feet" value="Right" path="feet" > Right
+			<input type="radio" name="feet" value="Both" path="feet" > Both <br>
 			<label for="diagnosis"><em>*</em>Diagnosis: </label>
-			<input type="radio" name="diagnosis" value="Idiopathic_clubfoot" path="diagnosis" required> Idiopathic Clubfoot
-			<input type="radio" name="diagnosis" value="Syndromic_clubfoot" path="diagnosis" required> Syndromic Clubfoot
-			<input type="radio" name="diagnosis" value="Neuropathic_clubfoot" path="diagnosis" required> Neuropathic Clubfoot
-			<input type="radio" name="diagnosis" value="Other" path="diagnosis" required> Other <br>
+			<input type="radio" name="diagnosis" value="Idiopathic_clubfoot" path="diagnosis" > Idiopathic Clubfoot
+			<input type="radio" name="diagnosis" value="Syndromic_clubfoot" path="diagnosis" > Syndromic Clubfoot
+			<input type="radio" name="diagnosis" value="Neuropathic_clubfoot" path="diagnosis" > Neuropathic Clubfoot
+			<input type="radio" name="diagnosis" value="Other" path="diagnosis" > Other <br>
 			<label for="deformity_at_birth">Deformity present at birth: </label>
 			<input type="radio" name="deformity_at_birth" value="Yes" path="deformity_at_birth"> Yes
 			<input type="radio" name="deformity_at_birth" value="No" path="deformity_at_birth"> No

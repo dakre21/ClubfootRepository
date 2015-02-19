@@ -116,7 +116,7 @@
 	<div class="jumbotron">
 		<h1>
 			Patients
-			<a role="button" class="btn btn-primary btn-lg" href="view_patient_info">Add New Patient</a>
+			<a role="button" class="btn btn-primary btn-lg" href="newpatient">Add New Patient</a>
 		</h1>
 		<hr>
 		<table class='table table-striped'>
