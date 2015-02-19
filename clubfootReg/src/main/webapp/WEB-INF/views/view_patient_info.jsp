@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html"; charset=ISO-8859-1">
-<title>CURE Clubfoot | Evaluators</title>
+<title>CURE Clubfoot | Patient Info</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -36,7 +36,7 @@
                   <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">View Patients</a></li>
+                    <li><a href="view_patients">View Patients</a></li>
                       <li><a href="newpatient">Add Patient</a></li>
                   </ul>
               </li>
@@ -112,25 +112,9 @@
 
 
 <div class="container">
-
-		<h1>
-			Hospitals
-			<a role="button" class="btn btn-lg btn-primary" href="hospital">View Patient</a>
-		</h1>
-		<hr>
-		
-        	<c:if test="${not empty hospitals}">
-
-                  <label><b>Name: </b></label>>${o.name}</td>
-                  <td>${o.region_id}</td>
-              
-         
-          </c:if>
-
-
-
+	<h1>Patient Info</h1>
 	<hr>
-
+	
 	<div class="row">
 		<div class="col-xs-12">
 			<footer align="center">

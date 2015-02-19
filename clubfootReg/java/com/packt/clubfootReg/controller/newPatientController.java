@@ -45,6 +45,12 @@ public class newPatientController {
 		return "view_patients";
 	}
 	
+	@RequestMapping(value = "/view_patient_info", method = RequestMethod.GET)
+	public String viewPatientInfoForm(@ModelAttribute("newpatient") newPatient newpatient, Model model) {
+		model.addAttribute("patient", newpatientrepo.getPatient(newpatient.getId()));
+		return "view_patient_info";
+	}
+	
 	public newPatientController() {
 		// TODO Auto-generated constructor stub
 	}

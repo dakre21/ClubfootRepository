@@ -70,12 +70,13 @@ public class newPatient {
 		super();
 	}
 	
-	public newPatient(int id, String patient_lastName, String patient_firstName, String patient_midName){
+	public newPatient(int id, String patient_firstName, String patient_lastName, String patient_midName){
 		this.id = id;
-		this.patient_lastName = patient_lastName;
 		this.patient_firstName = patient_firstName;
+		this.patient_lastName = patient_lastName;
 		this.patient_midName = patient_midName;
 	}
+	
 	
 	public int getGuardianConsent() {
 		return guardianConsent;

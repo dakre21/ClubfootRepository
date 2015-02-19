@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html"; charset=ISO-8859-1">
-<title>CURE Clubfoot | Evaluators</title>
+<title>CURE Clubfoot | Patients</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -116,12 +116,16 @@
 	<div class="jumbotron">
 		<h1>
 			Patients
-			<a role="button" class="btn btn-primary" href="hospital">Add New Patient</a>
+			<a role="button" class="btn btn-primary btn-lg" href="view_patient_info">Add New Patient</a>
 		</h1>
+		<hr>
 		<table class='table table-striped'>
 		   	<thead>
 		   		<tr>
-		    		<th>Patient Name</th>
+		    		<th>ID</th>
+		    		<th>First Name</th>
+		    		<th>Middle Name</th>
+		    		<th>Last Name</th>
 		    	</tr>
 		    </thead>
 	   
@@ -129,10 +133,12 @@
         	<c:if test="${not empty patients}">
             <c:forEach var="o" items="${patients}">
               <tr>
-                  <td>${o.id}</td>
+                  <td><a href="view_patient_info">${o.id}</a></td>
 				  <td>${o.patient_firstName}</td>
-				  <td>${o.patient_lastName}</td>
 				  <td>${o.patient_midName}</td>
+				  <td>${o.patient_lastName}</td>
+				  <td><a href="#">Edit</a></td>
+				  <td><a href="#">Add Visit</a></td>
               </tr>
             </c:forEach>
           </c:if>
