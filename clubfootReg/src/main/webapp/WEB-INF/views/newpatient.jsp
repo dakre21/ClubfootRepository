@@ -75,12 +75,8 @@
 	  $('#diagnosis_prenatally_week').hide();
 	  $('#referral_other1').hide();
 	  $('#referral_other').hide();
-	  $('#previous_treatment_type1').hide();
-	  $('#prev_treat_casting_above').hide();
-	  $('#prev_treat_casting_below').hide();
-	  $('#prev_treat_physiotherapy').hide();
-	  $('#prev_treat_unspecified').hide();
-	  $('#prev_treat_other').hide();
+	  $('div.prev_treat').hide();
+
 
   }
   function guardianHandlerTrue(){
@@ -134,22 +130,14 @@
   function prevTreatmentTrue(){
 	  $('#previous_treatments_num1').show();
 	  $('#previous_treatments_num').show();
-	  $('#previous_treatment_type1').show();
-	  $('#prev_treat_casting_above').show();
-	  $('#prev_treat_casting_below').show();
-	  $('#prev_treat_physiotherapy').show();
-	  $('#prev_treat_unspecified').show();
-	  $('#prev_treat_other').show();
+	  $('div.prev_treat').show();
+
   }
   function prevTreatmentFalse(){
 	  $('#previous_treatments_num1').hide();
 	  $('#previous_treatments_num').hide();
-	  $('#previous_treatment_type1').hide();
-	  $('#prev_treat_casting_above').hide();
-	  $('#prev_treat_casting_below').hide();
-	  $('#prev_treat_physiotherapy').hide();
-	  $('#prev_treat_unspecified').hide();
-	  $('#prev_treat_other').hide();
+	  $('div.prev_treat').hide();
+
   }
   function diagPrenatTrue(){
 	  $('#diagnosis_prenatally_week1').show();
@@ -263,7 +251,7 @@
 	<h1>Create New patient </h1>  
 	<form action="#" th:action="@{/newpatient}" th:object="${newpatient}" modelAttribute="newPatient" method="post" id="newPatient">
 		<div class="form-group">
-		<p><i>Please complete the form. Mandatory fields are marked with a </i><em>*</em></p>
+			<p><i>Please complete the form. Mandatory fields are marked with a </i><em>*</em></p>
 			<label for="guardianConsent"><em>*</em>Does the parent or guardian consent to being included: </label>
 			<input type="radio" name="guardianConsent" value="guardian_consent" path="guardianConsent" required> Yes
 			<input type="radio" name="guardianConsent" value="no_guardian_consent" path="guardianConsent" required> No <br>
@@ -276,8 +264,9 @@
 				<option value="">Please select one of the following options</option>
 				<option value="1" path="hospital">Hosptial 1</option>
 				<option value="2" path="hospital">Hosptial 2</option>
-			<select> <br>
-			</div>
+			</select> <br>
+		</div>
+			
 		<div class="row">
 		<fieldset>
 		<legend>General Information</legend>
@@ -306,13 +295,14 @@
 			<input type="radio" name="race" value="unspecified" path="race"> Unspecified <br>
 
 			<label for="dob"><em>*</em>Date of birth: </label>
-			<input type="date" name="dob" id="dob" class="form-control" path="dob" placeholder="dd/mm/yyyy" required  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
+			<input type="date" name="dob" id="dob" class="form-control" path="dob" placeholder="dd/mm/yyyy" required validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
 			<label for="tribe">Tribe: </label>
 			<input type="text" name="tribe" class="form-control" path="tribe">
 			</div>
 			</div>
-		</div>
 		</fieldset>
+		</div>
+		
 		<div class="row">
 		<fieldset>
 		<legend>Address</legend>
@@ -332,7 +322,6 @@
 			</div>
 		</fieldset>
 		</div>
-		</fieldset>
 
 		<div class="row">
 		<h2>Parent/Guardian Information</h2>
@@ -532,15 +521,17 @@
 			<input type="radio" name="previous_treatments" value="Yes" path="previous_treatments" onClick="prevTreatmentTrue()"> Yes
 			<input type="radio" name="previous_treatments" value="No" path="previous_treatments" onClick="prevTreatmentFalse()"> No
 			<input type="radio" name="previous_treatments" value="Unspecified" path="previous_treatments"> Unspecified <br>
-			
-			<label for="previous_treatments_num1" id="previous_treatments_num1">Number of previous treatments: </label>
-			<input type="text" name="previous_treatments_num" class="form-control" path="previous_treatments_num" id="previous_treatments_num"> <br>
-			<label for ="previous_treatment_type" id="previous_treatment_type1">Type of previous treatments(s): </label>
-			<input type="checkbox" name = "prev_treat_casting_above" value = "Casting above knee" id = "prev_treat_casting_above"> Casting above knee
-			<input type="checkbox" name = "prev_treat_casting_below" value = "Casting below knee" id = "prev_treat_casting_below"> Casting below knee
-			<input type="checkbox" name = "prev_treat_physiotherapy" value = "Physiotherapy" id = "prev_treat_physiotherapy"> Physiotherapy
-			<input type="checkbox" name = "prev_treat_unspecified" value = "Unspecified" id = "prev_treat_unspecified"> Unspecified
-			<input type="checkbox" name = "prev_treat_other" value = "Other" id = "prev_treat_other"> Other
+			<div class = "prev_treat">
+				<label for="previous_treatments_num1" id="previous_treatments_num1">Number of previous treatments: </label>
+				<input type="text" name="previous_treatments_num" class="form-control" path="previous_treatments_num" id="previous_treatments_num"> <br>
+				
+				<label for ="previous_treatment_type" id="previous_treatment_type1">Type of previous treatments(s): </label>
+				<input type="checkbox" name = "prev_treat_casting_above" value = "Casting above knee" id = "prev_treat_casting_above"> Casting above knee
+				<input type="checkbox" name = "prev_treat_casting_below" value = "Casting below knee" id = "prev_treat_casting_below"> Casting below knee
+				<input type="checkbox" name = "prev_treat_physiotherapy" value = "Physiotherapy" id = "prev_treat_physiotherapy"> Physiotherapy
+				<input type="checkbox" name = "prev_treat_unspecified" value = "Unspecified" id = "prev_treat_unspecified"> Unspecified
+				<input type="checkbox" name = "prev_treat_other" value = "Other" id = "prev_treat_other"> Other <br>
+			</div>
 			<label for="diagnosis_prenatally">Diagnosis prenatally: </label>
 			<input type="radio" name="diagnosis_prenatally" value="Yes" path="diagnosis_prenatally" onClick="diagPrenatTrue()"> Yes
 			<input type="radio" name="diagnosis_prenatally" value="No" path="diagnosis_prenatally" onClick="diagPrenatFalse()"> No

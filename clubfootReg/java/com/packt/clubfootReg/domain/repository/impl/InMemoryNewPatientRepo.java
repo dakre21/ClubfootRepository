@@ -35,10 +35,10 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 		this.jdbcTemplateObject = new JdbcTemplate(dataSource);
-		
 	}
 	
 	public void addPatient(newPatient newpatient) {
+		/*
 		listOfPatients.add(newpatient);
 		int id = newpatient.getId();
 		int guardianConsent = newpatient.getGuardianConsent();
@@ -151,7 +151,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				} catch (SQLException e) {}
 			}
 		}
-		
+		*/
 		return;
 	}
 	public InMemoryNewPatientRepo() {
