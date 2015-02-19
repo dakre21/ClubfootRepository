@@ -100,8 +100,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		String abnormalities = newpatient.getAbnormalities();
 		String weakness = newpatient.getWeakness();
 		
-		
-		
+
 		String sql_address = "Insert into address (id, street, city, state, country) values (?, ?, ?, ?, ?)";
 		String sql_abstract_person = "Insert into abstract_person (id, address_id, created, first_name, last_name, middle_name) "
 				                   + "values (?, ?, ?, ?, ?, ?)";
@@ -129,7 +128,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setString(5, country);
 			ps.executeUpdate();
 			ps.close();
-
+			
+			
 			// ABSTRACT_PERSON
 			ps = conn.prepareStatement(sql_abstract_person);
 			ps.setInt(1, getMaxPersonID()+1);
@@ -138,12 +138,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setString(4, patient_firstName);
 			ps.setString(5, patient_lastName);
 			ps.setString(6, patient_midName);
-			
-			
-			
 			ps.executeUpdate();
 			ps.close();
-			
 			
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -184,22 +180,19 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "Select a.*, b.dob, b.tribe from abstract_person a inner join patient b on a.id = b.id where a.id = ?";
+			String sql = "select * from patient a inner join abstract_person b on a.id = b.id where a.id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
-			/*
+			
 			if (rs.next()) {
 				patient = new newPatient(
 					rs.getInt("id"),
 					rs.getString("first_name"),
 					rs.getString("last_name"),
-					rs.getString("middle_name"),
-					rs.getString("title"),
-					rs.getString("name"),
-					rs.getInt("hospital_id")
+					rs.getString("middle_name")
 				);
-			}*/
+			}
 			rs.close();
 			ps.close();
 			return patient;
@@ -228,7 +221,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "Select * from patient order by id";
+			String sql = "select * from patient a inner join abstract_person b on a.id = b.id order by a.id";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
@@ -240,10 +233,9 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			while (rs.next()) {
 				patient = new newPatient(
 					rs.getInt("id"),
-					rs.getString("patient_firstName"),
-					rs.getString("patient_lastName"),
-					rs.getString("patient_midName")
-					
+					rs.getString("first_name"),
+					rs.getString("last_name"),
+					rs.getString("middle_name")
 				);
 				patients.add(patient);
 			}
