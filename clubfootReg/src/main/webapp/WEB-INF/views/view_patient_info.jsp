@@ -252,8 +252,7 @@ h2{
 		    </thead>
 	   
 	    	<tbody>
-        	<c:if test="${not empty patients}">
-            <c:forEach var="o" items="${patients}">
+
               <tr>
                   <td><</td>
 				  <td></td>
@@ -262,8 +261,7 @@ h2{
 				  <td></td>
 				  <td><a href="">View Details</a></td>
               </tr>
-            </c:forEach>
-          </c:if>
+
 	      </tbody>
 	  </table>
 
