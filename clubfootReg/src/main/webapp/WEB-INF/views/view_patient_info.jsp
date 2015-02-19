@@ -112,9 +112,17 @@
 
 
 <div class="container">
-	<h1>Patient Info</h1>
-	<hr>
-	
+<div class="row clearfix">
+	<div class="col-sm-2 column"></div>
+	<div class="col-md-8 column">
+		<h1>Patient Info</h1>
+		<hr>
+		<legend>Personal Information</legend>
+		
+		<label for = "patient_name" id = "patient_name"><b>Name:&nbsp </b><label>${o.patient_firstName}&nbsp</label><label>${o.patient_midName}&nbsp</label><label>${o.patient_lastName}&nbsp</label> </label>
+	</div>
+	</div>
+</div>
 	<div class="row">
 		<div class="col-xs-12">
 			<footer align="center">
