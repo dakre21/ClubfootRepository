@@ -113,7 +113,9 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		String sql_previous_treatments = "";
 		String sql_associate = "";
 		String sql_patient_associates = "Insert into patient_associates (patient_id, relationship_to_patient) values (?, ?)";
-		String sql_patient = "Insert into patient (id, dob, consent_inclusion, consent_photos) values (?, ?, ?, ?)";
+		
+		
+		String sql_patient = "Insert into patient (id) values (?)";
 		
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -143,6 +145,12 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setString(4, patient_firstName);
 			ps.setString(5, patient_lastName);
 			ps.setString(6, patient_midName);
+			ps.executeUpdate();
+			ps.close();
+			
+			// PATIENT
+			ps = conn.prepareStatement(sql_patient);
+			ps.setInt(1, getMaxPersonID());
 			ps.executeUpdate();
 			ps.close();
 			
@@ -185,7 +193,11 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "select * from patient a inner join abstract_person b on a.id = b.id where a.id = ?";
+			String sql = "select * " +
+						 "from patient a " +
+						 "inner join abstract_person b on a.id = b.id " +
+						 "inner join address c on b.address_id = c.id " +
+						 "where a.id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
@@ -195,7 +207,11 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 					rs.getInt("id"),
 					rs.getString("first_name"),
 					rs.getString("last_name"),
-					rs.getString("middle_name")
+					rs.getString("middle_name"),
+					rs.getString("street"),
+					rs.getString("city"),
+					rs.getString("state"),
+					rs.getString("country")
 				);
 			}
 			rs.close();
@@ -226,7 +242,11 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "select * from patient a inner join abstract_person b on a.id = b.id order by a.id";
+			String sql = "select * " +
+					 	 "from patient a " +
+					 	 "inner join abstract_person b on a.id = b.id " +
+					 	 "inner join address c on b.address_id = c.id " +
+					 	 "order by a.id";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
@@ -240,7 +260,11 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 					rs.getInt("id"),
 					rs.getString("first_name"),
 					rs.getString("last_name"),
-					rs.getString("middle_name")
+					rs.getString("middle_name"),
+					rs.getString("street"),
+					rs.getString("city"),
+					rs.getString("state"),
+					rs.getString("country")
 				);
 				patients.add(patient);
 			}

@@ -138,7 +138,7 @@
 				  <td>${o.patient_midName}</td>
 				  <td>${o.patient_lastName}</td>
 				  <td><a href="#">Edit</a></td>
-				  <td><a href="#">Add Visit</a></td>
+				  <td><a href="visit">Add Visit</a></td>
               </tr>
             </c:forEach>
           </c:if>
