@@ -196,10 +196,63 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.executeUpdate();
 			ps.close();
 			
+			
 			// SECONDARY PARENT/GUARDIAN
+			ps = conn.prepareStatement(sql_abstract_person_pg);
+			pg_id = getMaxPersonID()+1;
+			ps.setInt(1, pg_id);
+			ps.setString(2, dateFormat.format(date));
+			ps.setString(3, second_guardian_first);
+			ps.setString(4, second_guardian_last);
+			ps.setString(5, second_guardian_mid);
+			ps.executeUpdate();
+			ps.close();
+			
+			ps = conn.prepareStatement(sql_associate_pg);
+			ps.setInt(1, pg_id);
+			ps.executeUpdate();
+			ps.close();
+			
+			ps = conn.prepareStatement(sql_patient_associates_pg);
+			ps.setInt(1, patient_id);
+			ps.setInt(2, pg_id);
+			ps.setString(3, second_guardian_relationship);
+			if(emergency_contact.equalsIgnoreCase("Secondary")) {
+				ps.setInt(4, 1);
+			} else {
+				ps.setInt(4, 0);
+			}
+			ps.executeUpdate();
+			ps.close();
+				
 			
 			// EMERGENCY CONTACT
+			ps = conn.prepareStatement(sql_abstract_person_pg);
+			pg_id = getMaxPersonID()+1;
+			ps.setInt(1, pg_id);
+			ps.setString(2, dateFormat.format(date));
+			ps.setString(3, other_guardian_first);
+			ps.setString(4, other_guardian_last);
+			ps.setString(5, other_guardian_mid);
+			ps.executeUpdate();
+			ps.close();
 			
+			ps = conn.prepareStatement(sql_associate_pg);
+			ps.setInt(1, pg_id);
+			ps.executeUpdate();
+			ps.close();
+			
+			ps = conn.prepareStatement(sql_patient_associates_pg);
+			ps.setInt(1, patient_id);
+			ps.setInt(2, pg_id);
+			ps.setString(3, other_guardian_relationship);
+			if(emergency_contact.equalsIgnoreCase("Other")) {
+				ps.setInt(4, 1);
+			} else {
+				ps.setInt(4, 0);
+			}
+			ps.executeUpdate();
+			ps.close();
 	
 			
 			
