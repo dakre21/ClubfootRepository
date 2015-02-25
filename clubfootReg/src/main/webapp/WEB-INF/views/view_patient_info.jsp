@@ -71,97 +71,7 @@ h2{
   		padding: 10px;
 	}
   </style>
-  <script>
-  window.onload = function(){
-	  $('fieldset.guardian_check').hide();
-	  $('fieldset.emergency_contact').hide();
-	  $('#deformity_history_num1').hide();
-	  $('#deformity_history_num').hide();
-	  $('#preg_complications_explained1').hide();
-	  $('#preg_complications_explained').hide();
-	  $('#referral_hospital_name1').hide();
-	  $('#referral_hospital_name').hide();
-	  $('#referral_doc_name1').hide();
-	  $('#referral_doc_name').hide();
-	  $('#previous_treatments_num1').hide();
-	  $('#previous_treatments_num').hide();
-	  $('#diagnosis_prenatally_week1').hide();
-	  $('#diagnosis_prenatally_week').hide();
-	  $('#referral_other1').hide();
-	  $('#referral_other').hide();
-	  $('div.prev_treat').hide();
-
-
-  }
-  function guardianHandlerTrue(){
-	  $('fieldset.guardian_check').show();
-  }
-  function guardianHandlerFalse(){
-	  $('fieldset.guardian_check').hide();
-  }
-  function guardianEmergencyTrue(){
-	  $('fieldset.emergency_contact').show();
-  }
-  function guardianEmergencyFalse(){
-	  $('fieldset.emergency_contact').hide();
-  }
-  function guardianDeformityTrue(){
-	  $('#deformity_history_num1').show();
-	  $('#deformity_history_num').show();
-  }
-  function guardianDeformityFalse(){
-	  $('#deformity_history_num1').hide();
-	  $('#deformity_history_num').hide();
-  }
-  function pregCompFalse(){
-	  $('#preg_complications_explained1').hide();
-	  $('#preg_complications_explained').hide();
-  }
-  function pregCompTrue(){
-	  $('#preg_complications_explained1').show();
-	  $('#preg_complications_explained').show();
-  }
-  function referralFnTrue(){
-	  $('#referral_hospital_name1').show();
-	  $('#referral_hospital_name').show();
-	  $('#referral_doc_name1').show();
-	  $('#referral_doc_name').show();
-	  $('#referral_other1').hide();
-	  $('#referral_other').hide();
-  }
-  function referralFnFalse(){
-	  $('#referral_hospital_name1').hide();
-	  $('#referral_hospital_name').hide();
-	  $('#referral_doc_name1').hide();
-	  $('#referral_doc_name').hide();
-	  $('#referral_other1').hide();
-	  $('#referral_other').hide();
-  }
-  function referralOtherTrue(){
-	  $('#referral_other1').show();
-	  $('#referral_other').show();
-  }
-  function prevTreatmentTrue(){
-	  $('#previous_treatments_num1').show();
-	  $('#previous_treatments_num').show();
-	  $('div.prev_treat').show();
-
-  }
-  function prevTreatmentFalse(){
-	  $('#previous_treatments_num1').hide();
-	  $('#previous_treatments_num').hide();
-	  $('div.prev_treat').hide();
-
-  }
-  function diagPrenatTrue(){
-	  $('#diagnosis_prenatally_week1').show();
-	  $('#diagnosis_prenatally_week').show();
-  }
-  function diagPrenatFalse(){
-	  $('#diagnosis_prenatally_week1').hide();
-	  $('#diagnosis_prenatally_week').hide();
-  }
-  </script>
+ 
   
   	<jsp:include page="navbar.jsp" />
 
@@ -172,7 +82,7 @@ h2{
 	<div class="col-sm-2 column"></div>
 	<div class="col-md-8 column">
 	<h1>Update patient </h1>  
-	<form action="#" th:action="@{/edit_patient}" th:object="${updatepatient}" modelAttribute="newPatient" method="post" id="updatePatient">
+	
 		<div class = "col-md-12">
 		<div class = "row">
 			<fieldset>
@@ -359,6 +269,6 @@ h2{
 	</div>
 </div>
 </div>
-	</form>
+	
 </body>
 </html>
