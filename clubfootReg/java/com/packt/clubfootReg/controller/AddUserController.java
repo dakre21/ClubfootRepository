@@ -35,10 +35,8 @@ public class AddUserController {
 	
 	@RequestMapping(value = "/adduser", method = RequestMethod.POST)
 	public String userSubmitForm(@ModelAttribute("user") User user, Model model){
-		//model.addAttribute("greeting", "UIowa Clubfoot Registry");
-        //model.addAttribute("tagline", "User Data Successfully Submitted");
+		userRepo.addUser(user);
 		model.addAttribute("users", userRepo.getAllUsers());
-        userRepo.addUser(user);
 		return "view_users";
 	}
 	

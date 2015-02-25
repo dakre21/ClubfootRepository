@@ -283,6 +283,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		jdbcTemplateObject.update(query, id);
 		System.out.println("Deleted patient with id = " + id);
 	}
+	
 	public void updatePatient(newPatient newpatient) {
 		
 		

@@ -1,19 +1,22 @@
 package com.packt.clubfootReg.domain;
 
 public class User {
-	private String userName;
-	private String hospitalName;
 	private int id;
-	private int user_id;
+	private String user_name;
+	private String email;
+	private int hospital_id;
+	private int role_id;
 	
-	public User(){
+	public User() {
 		
 	}
-	public User(int id, String userName, String hospitalName, int user_id) {
+	
+	public User(int id, String userName, String email, int hospital_id, int role_id) {
 		this.id = id;
-		this.userName = userName;
-		this.hospitalName = hospitalName;
-		this.user_id = user_id;
+		this.user_name = userName;
+		this.email = email;
+		this.hospital_id = hospital_id;
+		this.role_id = role_id;
 	}
 
 	public static void main(String[] args) {
@@ -21,36 +24,43 @@ public class User {
 
 	}
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getHospitalName() {
-		return hospitalName;
-	}
-
-	public void setHospitalName(String hospitalName) {
-		this.hospitalName = hospitalName;
-	}
-
 	public int getId() {
 		return id;
 	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	public int getUser_id() {
-		return user_id;
+	
+	
+	public String getUser_name() {
+		return user_name;
+	}
+	public void setUser_name(String userName) {
+		this.user_name = userName;
 	}
 
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
+	
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	
+	public int getHospital_id() {
+		return hospital_id;
+	}
+	public void setHospital_id(int hospital_id) {
+		this.hospital_id = hospital_id;
+	}
+
+	
+	public int getRole_id() {
+		return role_id;
+	}
+	public void setRole_id(int role_id) {
+		this.role_id = role_id;
 	}
 
 }

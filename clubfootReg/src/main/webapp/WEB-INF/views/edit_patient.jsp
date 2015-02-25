@@ -158,7 +158,7 @@
 	<div class="col-sm-2 column"></div>
 	<div class="col-md-8 column">
 	<h1>Update patient </h1>  
-	<form action="#" th:action="@{/edit_patient}" th:object="${updatepatient}" modelAttribute="newPatient" method="post" id="updatePatient">
+	<form action="#" th:action="@{/edit_patient}" th:object="${patient}" modelAttribute="editPatient" method="post" id="updatePatient">
 		<div class="form-group">
 			<p><i>Please complete the form. Mandatory fields are marked with a </i><em>*</em></p>
 			<label for="guardianConsent"><em>*</em>Does the parent or guardian consent to being included: </label>

@@ -27,25 +27,34 @@
 		<div class="col-sm-2 column"></div>
 		<div class="col-md-8 column">
 			<h1 align="center">Add New User</h1>
-			<form action="#" th:action="@{/adduser}" th:object="${user}" modelAttribute="User" id="User" method="post">
+			<form action="#" th:action="@{/adduser}" th:object="${user}" modelAttribute="user" id="User" method="post">
 				<div class="form-group">
 					<label for="user_name">User Name</label>
-					<input type="name" class="form-control" name="userName" path="userName" />
+					<input type="name" class="form-control" name="user_name" path="user_name" />
 				</div>
+				
 				<div class="form-group">
-					<label for="region">Hospital Affiliation</label>
-					<select class="form-control" name="hospitalName" required/>
-						<option>Select a Hospital</option>
-		                    	<option value="hospital1" path="hospitalName">Hospital1</option>
-	               				<option value="hospital2" path="hospitalName">Hospital2</option>
-	                			<option value="hospital3" path="hospitalName">Hospital3</option>
-		                	</select>
+					<label for="email">Email</label>
+					<input type="text" class="form-control" name="email" path="email" />
 				</div>
-				<div class="row">
-					
-					<div class="col-md-6">
-					
-					</div>
+				
+				<div class="form-group">
+					<label for="role_id">Role</label>
+					<select class="form-control" name="role_id" required>
+						<option>Select a Role</option>
+		                <option value="0" path="role_id">Admin</option>
+	               		<option value="1" path="role_id">Data Entry</option>
+		            </select>
+				</div>
+				
+				<div class="form-group">
+					<label for="hospital_id">Hospital Affiliation</label>
+					<select class="form-control" name="hospital_id" required>
+						<option>Select a Hospital</option>
+		                <option value="0" path="hospital_id">Hospital1</option>
+	               		<option value="1" path="hospital_id">Hospital2</option>
+	                	<option value="2" path="hospital_id">Hospital3</option>
+		            </select>
 				</div>
 				&nbsp;
 				<div class="row" align="center">
