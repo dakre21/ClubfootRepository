@@ -29,8 +29,11 @@
 		<table class='table table-striped'>
 		   	<thead>
 		   		<tr>
-		   			<th>User</th>
-		    		<th>Hospital/Clinic Name</th>
+		   			<th>ID</th>
+		    		<th>Username</th>
+		    		<th>Email</th>
+		    		<th>Hospital</th>
+		    		<th>Role</th>
 		    	</tr>
 		    </thead>
 	   
@@ -38,8 +41,11 @@
         	<c:if test="${not empty users}">
             <c:forEach var="o" items="${users}">
               <tr>
-                  <td>${o.userName}</td>
-                  <td>${o.hospitalName}</td>
+                  <td>${o.id}</td>
+                  <td>${o.user_name}</td>
+                  <td>${o.email}</td>
+                  <td>${o.hospital_id}</td>
+                  <td>${o.role_id}</td>
               </tr>
             </c:forEach>
           </c:if>

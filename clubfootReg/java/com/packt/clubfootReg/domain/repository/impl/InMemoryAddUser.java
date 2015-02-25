@@ -1,12 +1,16 @@
 package com.packt.clubfootReg.domain.repository.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
 
+import com.packt.clubfootReg.domain.Evaluator;
 import com.packt.clubfootReg.domain.Hospital;
 import com.packt.clubfootReg.domain.User;
 import com.packt.clubfootReg.domain.repository.UserRepo;
@@ -43,31 +47,44 @@ public class InMemoryAddUser implements UserRepo{
 
 	}
 
-	public User getUser1(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public void addUser(User user) {
 		listOfUsers.add(user);
 		int id = user.getId();
-		String userName = user.getUserName();
-		String hospitalName = user.getHospitalName();
-		int user_id = user.getUser_id();
-		//String query = "Insert into user (id, hospital, name) values (?, ?, ?)";
+		String userName = user.getUser_name();
+		String email = user.getEmail();
+		int hospital_id = user.getHospital_id();
+		int role_id = user.getRole_id();
 
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
 		Connection connection = null;
 		
 		try {
 			connection = dataSource.getConnection();
 			
-			String sql = "Insert into user values(?, ?, ?)";
+			String sql = "Insert into abstract_person (id, created) values (?, ?)";
 			PreparedStatement ps = connection.prepareStatement(sql);
-			ps.setInt(1, this.getMaxUserID()+1);
-			ps.setString(2, userName);
-			ps.setInt(3, user_id);
+			ps.setInt(1, this.getMaxPersonID()+1);
+			ps.setString(2, dateFormat.format(date));
 			ps.executeUpdate();
 			ps.close();
+			
+			sql = "Insert into user (id, login, email, role_id) values (?, ?, ?, ?)";
+			PreparedStatement ps2 = connection.prepareStatement(sql);
+			ps2.setInt(1, this.getMaxPersonID());
+			ps2.setString(2, userName);
+			ps2.setString(3, email);
+			ps2.setInt(4, role_id);
+			ps2.executeUpdate();
+			ps2.close();
+			
+			sql = "Insert into user_hospital (user_id, hospital_id) values (?, ?)";
+			PreparedStatement ps3 = connection.prepareStatement(sql);
+			ps3.setInt(1, this.getMaxPersonID());
+			ps3.setInt(2, hospital_id);
+			ps3.executeUpdate();
+			ps3.close();
+			
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
  
@@ -84,6 +101,22 @@ public class InMemoryAddUser implements UserRepo{
 	}
 
 	public List<User> getUser(int id) {
+		
+		return null;
+	}
+
+	public void deleteUser(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void updateUser(User user) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<User> getAllUsers() {
 		Connection conn = null;
 		User user = null;
 		List<User> users = null;
@@ -91,7 +124,13 @@ public class InMemoryAddUser implements UserRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "Select * from user order by name";
+			String sql = "select a.id, a.login, a.email, d.id as hospital_id, e.id as role_id " +
+						 "from user a " +
+					     "inner join abstract_person b on a.id = b.id " +
+					     "inner join user_hospital c on a.id = c.user_id " +
+					     "inner join hospital d on c.hospital_id = d.id " +
+					     "inner join role e on a.role_id = e.id " +
+					     "order by a.id";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
@@ -103,9 +142,10 @@ public class InMemoryAddUser implements UserRepo{
 			while (rs.next()) {
 				user = new User(
 					rs.getInt("id"),
-					rs.getString("userName"),
-					rs.getString("hospitalName"),
-					rs.getInt("user_id")
+					rs.getString("login"),
+					rs.getString("email"),
+					rs.getInt("hospital_id"),
+					rs.getInt("role_id")
 				);
 				users.add(user);
 			}
@@ -121,34 +161,17 @@ public class InMemoryAddUser implements UserRepo{
 				} catch (SQLException e) {}
 			}
 		}
-
-	}
-
-	public void deleteUser(int id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void updateUser(User user) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	public List<User> getAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int getMaxUserID() {
+	public int getMaxPersonID() {
 		Connection conn = null;
 		int max = 0;
 		
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "Select max(id) from user";
+			String sql = "Select max(id) from abstract_person";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			

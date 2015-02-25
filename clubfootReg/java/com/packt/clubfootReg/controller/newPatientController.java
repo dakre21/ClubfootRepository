@@ -47,12 +47,17 @@ public class newPatientController {
     }
 	
 	@RequestMapping(value="/edit_patient", method=RequestMethod.GET)
-    public String updatePatientSubmit(Model model) {
+    public String editPatientForm(Model model) {
         model.addAttribute("patient", newpatientrepo.getPatient(24));
         return "edit_patient";
     }
 	
-	
+	@RequestMapping(value="/edit_patient", method=RequestMethod.POST)
+    public String editPatientSubmit(@ModelAttribute("editPatient") newPatient patient, Model model) {
+        newpatientrepo.updatePatient(patient);
+        model.addAttribute("patient", newpatientrepo.getPatient(24));
+        return "view_patient_info";
+    }
 	
 	/*
 	@RequestMapping(value="/newpatient", method=RequestMethod.POST)

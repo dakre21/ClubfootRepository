@@ -31,7 +31,11 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
    		<property name="dataSource" ref="dataSource" />
    </bean>
    
-      <bean id="inMemoryVisitRepo" class="com.packt.clubfootReg.domain.repository.impl.InMemoryVisitRepo">
+   <bean id="inMemoryVisitRepo" class="com.packt.clubfootReg.domain.repository.impl.InMemoryVisitRepo">
+   		<property name="dataSource" ref="dataSource" />
+   </bean>
+   
+   <bean id="inMemoryAddUser" class="com.packt.clubfootReg.domain.repository.impl.InMemoryAddUser">
    		<property name="dataSource" ref="dataSource" />
    </bean>
    
