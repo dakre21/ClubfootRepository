@@ -149,16 +149,20 @@
   }
   </script>
   
+<<<<<<< HEAD
   	<jsp:include page="navbar.jsp" />
 
+=======
+  <jsp:include page="navbar.jsp" />
+>>>>>>> 6cae7a6ec19c7168376bdb5d44ebeb272775cc2c
 </head>
 <body>
 <div class="container">
 	<div class="row clearfix">
 	<div class="col-sm-2 column"></div>
 	<div class="col-md-8 column">
-	<h1>Create New patient </h1>  
-	<form action="#" th:action="@{/newpatient}" th:object="${newpatient}" modelAttribute="newPatient" method="post" id="newPatient">
+	<h1>Update patient </h1>  
+	<form action="#" th:action="@{/edit_patient}" th:object="${updatepatient}" modelAttribute="newPatient" method="post" id="updatePatient">
 		<div class="form-group">
 			<p><i>Please complete the form. Mandatory fields are marked with a </i><em>*</em></p>
 			<label for="guardianConsent"><em>*</em>Does the parent or guardian consent to being included: </label>
@@ -397,7 +401,7 @@
 			<label for="referral_doc_name1" id="referral_doc_name1">Doctor name: </label>
 			<input type="text" name="referral_doc_name" path="referral_doc_name" id="referral_doc_name" value = "${patient.referral_doc_name}">
 			<label for="referral_hospital_name" id="referral_hospital_name1">Hospital/clinic name: </label>
-			<input type="text" name="referral_hospital_name" path="referral_hospital_name" id="referral_hospital_name" value = "${patient.referral_hospital_name">
+			<input type="text" name="referral_hospital_name" path="referral_hospital_name" id="referral_hospital_name" value = "${patient.referral_hospital_name}">
 			<label for="referral_other" id="referral_other1"><em>*</em>Please specify: </label>
 			<input type="text" name="referral_other" path="referral_other" id="referral_other" value = "${patient.referral_other}">
 			</div>

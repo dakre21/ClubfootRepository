@@ -39,13 +39,20 @@ public class newPatientController {
 		return "newpatient";
 	}
 	
-
 	@RequestMapping(value="/newpatient", method=RequestMethod.POST)
     public String newPatientSubmit(@ModelAttribute("newPatient") newPatient newpatient, Model model) {
         newpatientrepo.addPatient(newpatient);
         model.addAttribute("patients", newpatientrepo.getAllPatients());
         return "view_patients";
     }
+	
+	@RequestMapping(value="/edit_patient", method=RequestMethod.GET)
+    public String updatePatientSubmit(Model model) {
+        model.addAttribute("patient", newpatientrepo.getPatient(24));
+        return "edit_patient";
+    }
+	
+	
 	
 	/*
 	@RequestMapping(value="/newpatient", method=RequestMethod.POST)
@@ -63,7 +70,7 @@ public class newPatientController {
 	
 	@RequestMapping(value = "/view_patient_info", method = RequestMethod.GET)
 	public String viewPatientInfoForm(Model model) {
-		model.addAttribute("patient", newpatientrepo.getPatient(0));
+		model.addAttribute("patient", newpatientrepo.getPatient(24));
 		return "view_patient_info";
 	}
 	
