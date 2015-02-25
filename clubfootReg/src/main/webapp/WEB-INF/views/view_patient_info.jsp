@@ -179,7 +179,7 @@ h2{
 				<legend>Personal Information</legend>
 					<div class = "col-md-12">
 
-						<label><b>Name:&nbsp </b><label>${patient.patient_firstName}&nbsp</label><label>${patient.patient_midName}&nbsp</label><label>${patient.patient_lastName}&nbsp</label> </label><br>
+						<label><b>Name:&nbsp </b></label><label>${patient.patient_firstName}&nbsp</label><label>${patient.patient_midName}&nbsp</label><label>${patient.patient_lastName}&nbsp</label><br>
 						<label><b>Sex:&nbsp</b></label><label>${patient.sex}</label><br>
 						<label><b>Date of Birth (dd/mm/yyyy):&nbsp</b></label><label>${patient.dob}</label><br>
 						<label><b>Race:&nbsp</b></label><label>${patient.race}</label><br>
@@ -194,13 +194,13 @@ h2{
 				<legend>Diagnosis</legend>
 					<div class = "col-md-12">
 						
-						<label><b>Evaluator:&nbsp </b><label><a href = "">${patient.evaluator}</a></label><br>
+						<label><b>Evaluator:&nbsp </b></label><label><a href = "">${patient.evaluator}</a></label><br>
 						<label><b>Evaluation date (dd/mm/yyyy):&nbsp</b></label><label>${patient.evaluation_date}</label><br>
 						<label><b>Hospital/Clinic:&nbsp</b></label><label>${patient.hospital}</label><br>
 						<label><b>Feet affected:&nbsp</b></label><label>${patient.feet}</label><br>
 						<label><b>Diagnosis:&nbsp</b></label><label>${patient.diagnosis}</label><br>
 						<label><b>Deformity at birth:&nbsp</b></label><label>${patient.deformity_at_birth}</label><br>
-						<label><b>Any previous treatments:&nbsp </b><label>${patient.previous_treatments}&nbsp</label></label><br>
+						<label><b>Any previous treatments:&nbsp </b></label><label>${patient.previous_treatments}&nbsp</label><br>
 						<label><b>Number of previous treatments:&nbsp</b></label><label>${patient.previous_treatments_num}</label><br>
 						<label><b>Type of previous treatments:&nbsp</b></label><label></label><br>
 						<label><b>Diagnosed prenatally:&nbsp</b></label><label>${patient.diagnosis_prenatally}</label><br>
@@ -217,7 +217,7 @@ h2{
 				<legend>Physical Examination</legend>
 					<div class = "col-md-12">
 				
-						<label><b>Abnormalities:&nbsp </b><label>${patient.abnormalities}&nbsp</label></label><br>
+						<label><b>Abnormalities:&nbsp </b></label><label>${patient.abnormalities}&nbsp</label><br>
 						<label><b>Weakness:&nbsp</b></label><label>${patient.weakness}</label><br>
 
 					</div>
@@ -229,7 +229,7 @@ h2{
 				<legend>Referral Information</legend>
 					<div class = "col-md-12">
 
-						<label><b>Referral source:&nbsp </b><label>${patient.referral}</label><br>
+						<label><b>Referral source:&nbsp </b></label><label>${patient.referral}</label><br>
 						<label><b>Referring doctor:&nbsp</b></label><label>${patient.referral_doc_name}</label><br>
 						<label><b>Referring hospital:&nbsp</b></label><label>${patient.referral_hospital_name}</label><br>
 						<label><b>Other referral:&nbsp</b></label><label>${patient.referral_other}</label><br>
@@ -243,7 +243,7 @@ h2{
 				<legend>Patient Address</legend>
 					<div class = "col-md-12">
 
-						<label><b>Address 1:&nbsp </b><label>${patient.addr1}</label><br>
+						<label><b>Address 1:&nbsp </b></label><label>${patient.addr1}</label><br>
 						<label><b>Address 2:&nbsp</b></label><label>${patient.addr2}</label><br>
 						<label><b>City:&nbsp</b></label><label>${patient.village}</label><br>
 						<label><b>State:&nbsp</b></label><label>${patient.province}</label><br>
@@ -260,21 +260,21 @@ h2{
 
 						<h2>Primary</h2>
 
-							<label><b>Name:&nbsp </b><label>${patient.guardian_firstName}&nbsp</label><label>${patient.guardian_midName}&nbsp</label><label>${patient.guardian_lastName}&nbsp</label> </label><br>			
+							<label><b>Name:&nbsp </b></label><label>${patient.guardian_firstName}&nbsp</label><label>${patient.guardian_midName}&nbsp</label><label>${patient.guardian_lastName}&nbsp</label><br>			
 							<label><b>Relationship to patient:&nbsp</b></label><label>${patient.guardian_relationship}</label><br>
 							<label><b>Phone 1:&nbsp</b></label><label>${patient.guardian_phone1}</label><br>
 							<label><b>Phone 2:&nbsp</b></label><label>${patient.guardian_phone2}</label><br>
 
 						<h2>Secondary</h2>
 
-							<label><b>Name:&nbsp </b><label>${patient.second_guardian_first}&nbsp</label><label>${patient.second_guardian_mid}&nbsp</label><label>${patient.second_guardian_last}&nbsp</label> </label><br>			
+							<label><b>Name:&nbsp </b></label><label>${patient.second_guardian_first}&nbsp</label><label>${patient.second_guardian_mid}&nbsp</label><label>${patient.second_guardian_last}&nbsp</label><br>			
 							<label><b>Relationship to patient:&nbsp</b></label><label>${patient.second_guardian_relationship}</label><br>
 							<label><b>Phone 1:&nbsp</b></label><label>${patient.second_guardian_phone1}</label><br>
 							<label><b>Phone 2:&nbsp</b></label><label>${patient.second_guardian_phone2}</label><br>
 
 						<h2>Other Emergency Contact</h2>
 
-							<label><b>Name:&nbsp </b><label>${patient.other_guardian_first}&nbsp</label><label>${patient.other_guardian_mid}&nbsp</label><label>${patient.other_guardian_last}&nbsp</label> </label><br>			
+							<label><b>Name:&nbsp </b></label><label>${patient.other_guardian_first}&nbsp</label><label>${patient.other_guardian_mid}&nbsp</label><label>${patient.other_guardian_last}&nbsp</label><br>			
 							<label><b>Relationship to patient:&nbsp</b></label><label>${patient.other_guardian_relationship}</label><br>
 							<label><b>Phone 1:&nbsp</b></label><label>${patient.other_guardian_phone1}</label><br>
 							<label><b>Phone 2:&nbsp</b></label><label>${patient.other_guardian_phone2}</label><br>
