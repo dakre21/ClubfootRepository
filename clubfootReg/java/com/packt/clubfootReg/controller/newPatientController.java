@@ -63,7 +63,7 @@ public class newPatientController {
 	
 	@RequestMapping(value = "/view_patient_info", method = RequestMethod.GET)
 	public String viewPatientInfoForm(Model model) {
-		model.addAttribute("patient", newpatientrepo.getPatient(0));
+		model.addAttribute("patient", newpatientrepo.getPatient(24));
 		return "view_patient_info";
 	}
 	

@@ -295,6 +295,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		try {
 			conn = dataSource.getConnection();
 			
+			// General Info - Address
 			String sql = "select * " +
 						 "from patient a " +
 						 "inner join abstract_person b on a.id = b.id " +
@@ -316,8 +317,57 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 					rs.getString("country")
 				);
 			}
+			
 			rs.close();
 			ps.close();
+			
+			// Guardian - Contact Info
+			sql = "select a.id, b.relationship_to_patient, b.is_emergency_contact, c.is_affected, d.first_name, d.last_name, d.middle_name " +
+				  "from patient a " +
+				  "inner join patient_associates b on a.id = b.patient_id " +
+				  "inner join associate c on b.associate_id = c.id " +
+				  "inner join abstract_person d on c.id = d.id " +
+				  "where a.id = ?";
+			PreparedStatement ps2 = conn.prepareStatement(sql);
+			ps2.setInt(1, id);
+			ResultSet rs2 = ps2.executeQuery();
+			
+			int count = 0;
+			while (rs2.next()) {
+				if (count == 0) {
+					patient.setGuardian_relationship(rs2.getString("relationship_to_patient"));
+					patient.setGuardian_firstName(rs2.getString("first_Name"));
+					patient.setGuardian_lastName(rs2.getString("last_name"));
+					patient.setGuardian_midName(rs2.getString("middle_name"));
+					if (rs2.getInt("is_emergency_contact") == 1) {
+						patient.setEmergency_contact("primary");
+					}
+				}
+				else if (count == 1) {
+					patient.setSecond_guardian_relationship(rs2.getString("relationship_to_patient"));
+					patient.setSecond_guardian_first(rs2.getString("first_Name"));
+					patient.setSecond_guardian_last(rs2.getString("last_name"));
+					patient.setSecond_guardian_mid(rs2.getString("middle_name"));
+					if (rs2.getInt("is_emergency_contact") == 1) {
+						patient.setEmergency_contact("secondary");
+					}
+				}
+				else {
+					patient.setOther_guardian_relationship(rs2.getString("relationship_to_patient"));
+					patient.setOther_guardian_first(rs2.getString("first_Name"));
+					patient.setOther_guardian_last(rs2.getString("last_name"));
+					patient.setOther_guardian_mid(rs2.getString("middle_name"));
+					if (rs2.getInt("is_emergency_contact") == 1) {
+						patient.setEmergency_contact("other");
+					}
+				}
+				System.out.println(count);
+				count++;
+			}
+			
+			rs2.close();
+			ps2.close();
+			
 			return patient;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
