@@ -32,12 +32,18 @@ public class VisitController {
 		return "visit";
 	}
 	
+	@RequestMapping(value = "/view_visit", method = RequestMethod.GET)
+	public String view_visitForm(Model model){
+		model.addAttribute("visit", visitRepo.getAllVisits());
+		return "view_visit";
+	}
+	
 	@RequestMapping(value = "/visit", method = RequestMethod.POST)
 	public String visitSubmitForm(@ModelAttribute("visit") Visit visit, Model model){
 		model.addAttribute("greeting", "UIowa Clubfoot Registry");
         model.addAttribute("tagline", "Visit Data Successfully Submitted");
         visitRepo.addVisit(visit);
-		return "home";
+		return "view_visit";
 	}
 	
 	public VisitController() {
