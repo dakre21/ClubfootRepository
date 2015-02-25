@@ -25,6 +25,7 @@
 		<security:intercept-url pattern="/view_patient_info" access="ROLE_ADMIN" />
 		<security:intercept-url pattern="/view_users" access="ROLE_ADMIN" />
 		<security:intercept-url pattern="/view_visit" access="ROLE_ADMIN" />
+		<security:intercept-url pattern="/edit_patient" access="ROLE_ADMIN" />
 
 		<security:form-login login-page="/login" 
 			default-target-url="/"
