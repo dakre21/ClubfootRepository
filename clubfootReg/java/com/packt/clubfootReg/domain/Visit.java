@@ -60,6 +60,10 @@ public class Visit {
 	public Visit() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Visit(int id) {
+		this.id = id;
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

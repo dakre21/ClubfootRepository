@@ -14,6 +14,7 @@ import com.packt.clubfootReg.domain.repository.VisitRepo;
 import javax.sql.DataSource;
 
 import java.sql.Connection; 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 
@@ -50,14 +51,13 @@ public class InMemoryVisitRepo implements VisitRepo{
 	public void addVisit(Visit visit) {
 		listOfVisits.add(visit);
 		int id = visit.getId();
-/*		Connection connection = null;
+		String query = "Insert into user values(?)";
+		Connection connection = null;
 		
 		try {
 			connection = dataSource.getConnection();
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setInt(1, id);
-			ps.setString(2, hospitalName);
-			ps.setString(3, hospitalRegion);
 			ps.executeUpdate();
 			ps.close();
 		}catch (SQLException e) {
@@ -69,7 +69,7 @@ public class InMemoryVisitRepo implements VisitRepo{
 					connection.close();
 				} catch (SQLException e) {}
 			}
-		}*/
+		}
 		
 		return;
 		
@@ -81,13 +81,83 @@ public class InMemoryVisitRepo implements VisitRepo{
 	}
 
 	public void deleteVisit(int id) {
-		// TODO Auto-generated method stub
+		String query = "delete from visit where id = ?";
+		jdbcTemplateObject.update(query, id);
+		System.out.println("Deleted visit with id = " + id);
 		
 	}
 
 	public void updateVisit(Visit visit) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<Visit> getAllVisits() {
+		Connection conn = null;
+		Visit visit = null;
+		List<Visit> visits = null;
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select * from visit order by id";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.last()) {
+			  visits = new ArrayList<>(rs.getRow());
+			  rs.beforeFirst(); 
+			}
+			
+			while (rs.next()) {
+				visit = new Visit(
+					rs.getInt("id")
+				);
+				visits.add(visit);
+			}
+			rs.close();
+			ps.close();
+			return visits;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
+
+	@Override
+	public int getMaxVisitId() {
+		Connection conn = null;
+		int max = 0;
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select max(id) from visit";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				max = rs.getInt(1);
+			}
+			
+			rs.close();
+			ps.close();
+			return max;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
 	}
 
 }

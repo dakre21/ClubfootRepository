@@ -105,14 +105,23 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		String abnormalities = newpatient.getAbnormalities();
 		String weakness = newpatient.getWeakness();
 		
-
+		int patient_id;
+		int address_id;
+		int pg_id;
+		
+		// Address
 		String sql_address = "Insert into address (id, street, city, state, country) values (?, ?, ?, ?, ?)";
+		
+		// General Info
 		String sql_abstract_person = "Insert into abstract_person (id, address_id, created, first_name, last_name, middle_name) "
 				                   + "values (?, ?, ?, ?, ?, ?)";
 		
-		String sql_previous_treatments = "";
-		String sql_associate = "";
-		String sql_patient_associates = "Insert into patient_associates (patient_id, relationship_to_patient) values (?, ?)";
+		// Parent/Guardian Info
+		String sql_abstract_person_pg = "Insert into abstract_person (id, created, first_name, last_name, middle_name) "
+								      + "values (?, ?, ?, ?, ?)";
+		String sql_associate_pg = "Insert into associate (id) values (?)";
+		String sql_patient_associates_pg = "Insert into patient_associates (patient_id, associate_id, relationship_to_patient, is_emergency_contact) "
+							             + "values (?, ?, ?, ?)";
 		
 		
 		String sql_patient = "Insert into patient (id) values (?)";
@@ -126,9 +135,12 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		try {
 			conn = dataSource.getConnection();
 			
+			address_id = getMaxAddressID()+1;
+			patient_id = getMaxPersonID()+1;
+			
 			// ADDRESS
 			ps = conn.prepareStatement(sql_address);
-			ps.setInt(1, getMaxAddressID()+1);
+			ps.setInt(1, address_id);
 			ps.setString(2, addr1);
 			ps.setString(3, village);
 			ps.setString(4, province);
@@ -137,10 +149,10 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.close();
 			
 			
-			// ABSTRACT_PERSON
+			// GENERAL INFO
 			ps = conn.prepareStatement(sql_abstract_person);
-			ps.setInt(1, getMaxPersonID()+1);
-			ps.setInt(2, getMaxAddressID());
+			ps.setInt(1, patient_id);
+			ps.setInt(2, address_id);
 			ps.setString(3, dateFormat.format(date));
 			ps.setString(4, patient_firstName);
 			ps.setString(5, patient_lastName);
@@ -148,11 +160,101 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.executeUpdate();
 			ps.close();
 			
+			
 			// PATIENT
 			ps = conn.prepareStatement(sql_patient);
-			ps.setInt(1, getMaxPersonID());
+			ps.setInt(1, patient_id);
 			ps.executeUpdate();
 			ps.close();
+			
+			
+			// PRIMARY PARENT/GUARDIAN
+			ps = conn.prepareStatement(sql_abstract_person_pg);
+			pg_id = getMaxPersonID()+1;
+			ps.setInt(1, pg_id);
+			ps.setString(2, dateFormat.format(date));
+			ps.setString(3, guardian_firstName);
+			ps.setString(4, guardian_lastName);
+			ps.setString(5, guardian_midName);
+			ps.executeUpdate();
+			ps.close();
+			
+			ps = conn.prepareStatement(sql_associate_pg);
+			ps.setInt(1, pg_id);
+			ps.executeUpdate();
+			ps.close();
+			
+			ps = conn.prepareStatement(sql_patient_associates_pg);
+			ps.setInt(1, patient_id);
+			ps.setInt(2, pg_id);
+			ps.setString(3, guardian_relationship);
+			if(emergency_contact.equalsIgnoreCase("Primary")) {
+				ps.setInt(4, 1);
+			} else {
+				ps.setInt(4, 0);
+			}
+			ps.executeUpdate();
+			ps.close();
+			
+			
+			// SECONDARY PARENT/GUARDIAN
+			ps = conn.prepareStatement(sql_abstract_person_pg);
+			pg_id = getMaxPersonID()+1;
+			ps.setInt(1, pg_id);
+			ps.setString(2, dateFormat.format(date));
+			ps.setString(3, second_guardian_first);
+			ps.setString(4, second_guardian_last);
+			ps.setString(5, second_guardian_mid);
+			ps.executeUpdate();
+			ps.close();
+			
+			ps = conn.prepareStatement(sql_associate_pg);
+			ps.setInt(1, pg_id);
+			ps.executeUpdate();
+			ps.close();
+			
+			ps = conn.prepareStatement(sql_patient_associates_pg);
+			ps.setInt(1, patient_id);
+			ps.setInt(2, pg_id);
+			ps.setString(3, second_guardian_relationship);
+			if(emergency_contact.equalsIgnoreCase("Secondary")) {
+				ps.setInt(4, 1);
+			} else {
+				ps.setInt(4, 0);
+			}
+			ps.executeUpdate();
+			ps.close();
+				
+			
+			// EMERGENCY CONTACT
+			ps = conn.prepareStatement(sql_abstract_person_pg);
+			pg_id = getMaxPersonID()+1;
+			ps.setInt(1, pg_id);
+			ps.setString(2, dateFormat.format(date));
+			ps.setString(3, other_guardian_first);
+			ps.setString(4, other_guardian_last);
+			ps.setString(5, other_guardian_mid);
+			ps.executeUpdate();
+			ps.close();
+			
+			ps = conn.prepareStatement(sql_associate_pg);
+			ps.setInt(1, pg_id);
+			ps.executeUpdate();
+			ps.close();
+			
+			ps = conn.prepareStatement(sql_patient_associates_pg);
+			ps.setInt(1, patient_id);
+			ps.setInt(2, pg_id);
+			ps.setString(3, other_guardian_relationship);
+			if(emergency_contact.equalsIgnoreCase("Other")) {
+				ps.setInt(4, 1);
+			} else {
+				ps.setInt(4, 0);
+			}
+			ps.executeUpdate();
+			ps.close();
+	
+			
 			
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

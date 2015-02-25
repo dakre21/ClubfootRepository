@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import com.packt.clubfootReg.domain.Hospital;
 import com.packt.clubfootReg.domain.Visit;
 
 public interface VisitRepo {
@@ -13,6 +14,8 @@ public interface VisitRepo {
 	void setDataSource(DataSource ds);
 	List<Visit> getVisit(int id);
 	void deleteVisit(int id);
+	List<Visit> getAllVisits();
 	void updateVisit(Visit visit);
+	int getMaxVisitId();
 
 }
