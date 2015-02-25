@@ -149,12 +149,8 @@
   }
   </script>
   
-<<<<<<< HEAD
   	<jsp:include page="navbar.jsp" />
 
-=======
-  <jsp:include page="navbar.jsp" />
->>>>>>> 6cae7a6ec19c7168376bdb5d44ebeb272775cc2c
 </head>
 <body>
 <div class="container">
