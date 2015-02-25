@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html"; charset=ISO-8859-1">
-<title>CURE Clubfoot | Evaluators</title>
+<title>CURE Clubfoot | Users</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -23,24 +23,21 @@
 <div class="container">
 	<div class="jumbotron">
 		<h1>
-			Hospitals
-			<a role="button" class="btn btn-lg btn-primary" href="hospital">Add New Hospital</a>
+			Visits
+			<a role="button" class="btn btn-primary" href="visit">Add New Visit</a>
 		</h1>
-		<hr>
 		<table class='table table-striped'>
 		   	<thead>
 		   		<tr>
-		    		<th>Hospital/Clinic Name</th>
-		    		<th>Region</th>
+		   			<th>Visit id</th>
 		    	</tr>
 		    </thead>
 	   
 	    	<tbody>
-        	<c:if test="${not empty hospitals}">
-            <c:forEach var="o" items="${hospitals}">
+        	<c:if test="${not empty visit}">
+            <c:forEach var="o" items="${visit}">
               <tr>
-                  <td>${o.name}</td>
-                  <td>${o.region_id}</td>
+                  <td>${o.visits}</td>
               </tr>
             </c:forEach>
           </c:if>
@@ -59,4 +56,4 @@
 	</div>
 </div>
 </body>
-</html>                                 		
+</html> 
