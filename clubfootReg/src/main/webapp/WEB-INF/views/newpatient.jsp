@@ -170,8 +170,8 @@
 			<label for="hospital"><em>*</em>Hospital/Clinic: </label>
 			<select name="hospital">
 				<option value="">Please select one of the following options</option>
+				<option value="0" path="hospital">Hospital 0</option>
 				<option value="1" path="hospital">Hospital 1</option>
-				<option value="2" path="hospital">Hospital 2</option>
 			</select> <br>
 		</div>
 			
@@ -372,10 +372,10 @@
 			<input type="radio" name="complications" value="No" path="complications"> No
 			<input type="radio" name="complications" value="Unspecified" path="complications"> Unspecified <br> 
 			<label for="place_birth">Place of birth: </label>
-			<input type="radio" name="place_birth" value="Hospital" path="place_birth"> Hospital
-			<input type="radio" name="place_birth" value="Clinic" path="place_birth"> Clinic
-			<input type="radio" name="place_birth" value="Home" path="place_birth"> Home
-			<input type="radio" name="place_birth" value="Unspecified" path="place_birth"> Unspecified
+			<input type="radio" name="place_birth" value="0" path="place_birth"> Hospital
+			<input type="radio" name="place_birth" value="1" path="place_birth"> Clinic
+			<input type="radio" name="place_birth" value="2" path="place_birth"> Home
+			<input type="radio" name="place_birth" value="3" path="place_birth"> Unspecified
 			</div>
 			</div>
 		</fieldset>
@@ -386,10 +386,10 @@
 			<div class="col-md-12">
 			<div class="form-group">
 			<label for="referral">Referral source:</label>
-			<input type="radio" name="referral" value="Hospital_clinic" path="referral" onClick="referralFnTrue()"> Hospital/Clinic
+			<input type="radio" name="referral" value="Hospital/Clinic" path="referral" onClick="referralFnTrue()"> Hospital/Clinic
 			<input type="radio" name="referral" value="Midwife" path="referral" onClick="referralFnFalse()"> Midwife
-			<input type="radio" name="referral" value="Word_of_mouth" path="referral" onClick="referralFnFalse()"> Word of mouth
-			<input type="radio" name="referral" value="Promotional_materials" path="referral" onClick="referralFnFalse()"> Promotional materials
+			<input type="radio" name="referral" value="Word Of Mouth" path="referral" onClick="referralFnFalse()"> Word of mouth
+			<input type="radio" name="referral" value="Promotional Materials" path="referral" onClick="referralFnFalse()"> Promotional materials
 			<input type="radio" name="referral" value="Other" path="referral" onClick="referralOtherTrue()"> Other
 			<input type="radio" name="referral" value="Unspecified" path="referral" onClick="referralFnFalse()"> Unspecified <br>
 		
@@ -403,28 +403,39 @@
 			</div>
 		</fieldset>
 		</div>
+		
 		<div class="row">
 		<fieldset>
 		<legend>Diagnosis</legend>
 			<div class="col-mid-12">
-			<div class="form-group">
-			<label for="evaluator_name"><em>*</em>Name of evaluator: </label>
-			<input type="text" name="evaluator_name" class="form-control" path="evaluator_name" > <a href="evaluator">Add evaluator</a> <br>
+			<div class="form-group"> 
+			<label for="evaluator"><em>*</em>Name of evaluator: </label>
+			<select name="evaluator">
+				<option value="">Please select an evaluator</option>
+				<option value="1" path="evaluator">Evaluator 1</option>
+				<option value="3" path="evaluator">Evaluator 3</option>
+			</select>
+			<a href="evaluator">Add evaluator</a> <br>
+			
 			<label for="evaluation_date"><em>*</em>Evaluation date (dd/mm/yyyy): </label>
 			<input type="date" name="evaluation_date" class="form-control" path="evaluation_date" > <br>
+			
 			<label for="feet"><em>*</em>Feet affected: </label>
 			<input type="radio" name="feet" value="Left" path="feet" > Left
 			<input type="radio" name="feet" value="Right" path="feet" > Right
 			<input type="radio" name="feet" value="Both" path="feet" > Both <br>
+			
 			<label for="diagnosis"><em>*</em>Diagnosis: </label>
 			<input type="radio" name="diagnosis" value="Idiopathic_clubfoot" path="diagnosis" > Idiopathic Clubfoot
 			<input type="radio" name="diagnosis" value="Syndromic_clubfoot" path="diagnosis" > Syndromic Clubfoot
 			<input type="radio" name="diagnosis" value="Neuropathic_clubfoot" path="diagnosis" > Neuropathic Clubfoot
 			<input type="radio" name="diagnosis" value="Other" path="diagnosis" > Other <br>
+			
 			<label for="deformity_at_birth">Deformity present at birth: </label>
 			<input type="radio" name="deformity_at_birth" value="Yes" path="deformity_at_birth"> Yes
 			<input type="radio" name="deformity_at_birth" value="No" path="deformity_at_birth"> No
 			<input type="radio" name="deformity_at_birth" value="Unspecified" path="deformity_at_birth"> Unspecified <br>
+			
 			<label for="previous_treatments">Any previous treatments: </label>
 			<input type="radio" name="previous_treatments" value="Yes" path="previous_treatments" onClick="prevTreatmentTrue()"> Yes
 			<input type="radio" name="previous_treatments" value="No" path="previous_treatments" onClick="prevTreatmentFalse()"> No
@@ -440,6 +451,7 @@
 				<input type="checkbox" name = "prev_treat_unspecified" value = "Unspecified" id = "prev_treat_unspecified"> Unspecified
 				<input type="checkbox" name = "prev_treat_other" value = "Other" id = "prev_treat_other"> Other <br>
 			</div>
+			
 			<label for="diagnosis_prenatally">Diagnosis prenatally: </label>
 			<input type="radio" name="diagnosis_prenatally" value="Yes" path="diagnosis_prenatally" onClick="diagPrenatTrue()"> Yes
 			<input type="radio" name="diagnosis_prenatally" value="No" path="diagnosis_prenatally" onClick="diagPrenatFalse()"> No
@@ -458,6 +470,7 @@
 			</div>
 		</fieldset>
 		</div>
+		
 		<div class="row">
 		<fieldset>
 		<legend>Physical Examination</legend>

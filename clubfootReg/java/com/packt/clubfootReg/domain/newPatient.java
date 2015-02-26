@@ -6,9 +6,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class newPatient {
 	private int id;
-	private int guardianConsent;
-	private int photoConsent;
-	private String hospital;
+	private Integer guardianConsent;
+	private Integer photoConsent;
+	private Integer hospital;
 	private String patient_lastName;
 	private String patient_firstName;
 	private String patient_midName;
@@ -42,18 +42,22 @@ public class newPatient {
 	private String other_guardian_phone1;
 	private String other_guardian_phone2;
 	private String deformity_history;
-	private String deformity_history_num;
-	private String pregnancy; //YNU
+	//private String deformity_history_num;
+	private Integer deformity_history_num;
+	//private String pregnancy;
+	private Integer pregnancy;
 	private String pregnancy_complications_explained;
 	private String pregnancy_alc; //YNU
 	private String pregnancy_smoke; //YNU
 	private String complications; //YNU
-	private String place_birth;
+	//private String place_birth;
+	private Integer place_birth;
 	private String referral;
 	private String referral_doc_name;
 	private String referral_hospital_name;
 	private String referral_other;
-	private String evaluator;
+	//private String evaluator;
+	private Integer evaluator;
 	//private Date evaluation_date;
 	private String evaluation_date;
 	private String feet;
@@ -85,26 +89,26 @@ public class newPatient {
 	}
 	
 	
-	public int getGuardianConsent() {
+	public Integer getGuardianConsent() {
 		return guardianConsent;
 	}
-	public void setGuardianConsent(int guardianConsent) {
+	public void setGuardianConsent(Integer guardianConsent) {
 		this.guardianConsent = guardianConsent;
 	}
 	
 	
-	public int getPhotoConsent() {
+	public Integer getPhotoConsent() {
 		return photoConsent;
 	}
-	public void setPhotoConsent(int photoConsent) {
+	public void setPhotoConsent(Integer photoConsent) {
 		this.photoConsent = photoConsent;
 	}
 	
 	
-	public String getHospital() {
+	public Integer getHospital() {
 		return hospital;
 	}
-	public void setHospital(String hospital) {
+	public void setHospital(Integer hospital) {
 		this.hospital = hospital;
 	}
 	
@@ -297,10 +301,10 @@ public class newPatient {
 	}
 	
 	
-	public String getPregnancy() {
+	public Integer getPregnancy() {
 		return pregnancy;
 	}
-	public void setPregnancy(String pregnancy) {
+	public void setPregnancy(Integer pregnancy) {
 		this.pregnancy = pregnancy;
 	}
 	
@@ -337,10 +341,10 @@ public class newPatient {
 	}
 	
 	
-	public String getPlace_birth() {
+	public Integer getPlace_birth() {
 		return place_birth;
 	}
-	public void setPlace_birth(String place_birth) {
+	public void setPlace_birth(Integer place_birth) {
 		this.place_birth = place_birth;
 	}
 	
@@ -353,10 +357,10 @@ public class newPatient {
 	}
 	
 	
-	public String getEvaluator() {
+	public Integer getEvaluator() {
 		return evaluator;
 	}
-	public void setEvaluator_name(String evaluator) {
+	public void setEvaluator_name(Integer evaluator) {
 		this.evaluator = evaluator;
 	}
 	
@@ -538,10 +542,10 @@ public class newPatient {
 	}
 	
 	
-	public String getDeformity_history_num() {
+	public Integer getDeformity_history_num() {
 		return deformity_history_num;
 	}
-	public void setDeformity_history_num(String deformity_history_num) {
+	public void setDeformity_history_num(Integer deformity_history_num) {
 		this.deformity_history_num = deformity_history_num;
 	}
 	
