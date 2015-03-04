@@ -27,7 +27,7 @@
     <div class="col-sm-2 column"></div>
     <div class="col-md-8 column">
       <h1 align="center">Add New Hospital</h1>
-      <form action="#" th:action="@{/evaluator}" th:object="${evaluator}" modelAttribute="Evaluator" id="Evaluator" method="post">
+      <form action="#" th:action="@{/hospital}" th:object="${hospital}" modelAttribute="Hospital" id="Hospital" method="post">
         <div class="form-group">
           <label for="hospital">Hospital/Clinic Name</label>
           <input type="text" class="form-control" id="hospital" name="name" path="name"/>

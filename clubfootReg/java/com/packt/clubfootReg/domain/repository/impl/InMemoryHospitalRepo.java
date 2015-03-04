@@ -33,6 +33,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 		this.jdbcTemplateObject = new JdbcTemplate(dataSource);
 		
 	}
+	
 	public InMemoryHospitalRepo() {
 		// TODO Auto-generated constructor stub
 	}
@@ -41,10 +42,12 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 		// TODO Auto-generated method stub
 
 	}
+	
 	public Hospital getHospital1(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 	public void addHospital(Hospital hospital) {
 		listOfHospitals.add(hospital);
 		String name = hospital.getName();
@@ -57,9 +60,11 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 			
 			String sql = "Insert into hospital values(?, ?, ?)";
 			PreparedStatement ps = connection.prepareStatement(sql);
+			
 			ps.setInt(1, this.getMaxHospitalID()+1);
 			ps.setString(2, name);
 			ps.setInt(3, region_id);
+			
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
