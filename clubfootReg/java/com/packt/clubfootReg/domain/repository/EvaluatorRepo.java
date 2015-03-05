@@ -1,7 +1,10 @@
 package com.packt.clubfootReg.domain.repository;
 
 import java.util.List;
+import java.util.Map;
+
 import javax.sql.DataSource;
+
 import com.packt.clubfootReg.domain.Evaluator;
 
 public interface EvaluatorRepo {
@@ -12,4 +15,5 @@ public interface EvaluatorRepo {
 	void deleteEvaluator(int id);
 	void updateEvaluator(Evaluator evaluator);
 	int getMaxPersonID();
+	Map<Integer, String> getAllHospitals();
 }

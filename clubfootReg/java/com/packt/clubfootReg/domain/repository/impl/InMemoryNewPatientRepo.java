@@ -480,7 +480,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			// PATIENT
 			
 			ps = conn.prepareStatement(sql_patient);
-		
+			/*
 			ps.setString(1, "Idiopathic Clubfoot");
 			ps.setString(2, "Test Comments");
 			ps.setInt(3, 0);
@@ -505,8 +505,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setString(22, "Yes");
 			ps.setInt(23, 30);
 			ps.setString(24, "Yes");
+			*/
 			
-			/*
 			ps.setString(1, diagnosis);
 			ps.setString(2, diagnosis_comments);
 			//ps.setInt(3, evaluator); /// <--- THIS IS NOT WORKING
@@ -548,12 +548,12 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setInt(25, id);
 			ps.executeUpdate();
 			ps.close();
-			*/
+
 			
+			// PRIMARY PARENT/GUARDIAN
 			int[] associate_ids = new int[3];
 			associate_ids = this.getAssociateIDsForPatient(id);
 			
-			// PRIMARY PARENT/GUARDIAN
 			if (associate_ids[0] != 0 && (guardian_firstName != "" || !guardian_lastName.isEmpty())) {
 				ps = conn.prepareStatement(sql_abstract_person);
 				ps.setString(1, guardian_firstName);

@@ -3,21 +3,20 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html"; charset=ISO-8859-1">
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<meta http-equiv="Content-Type" content="text/html"; charset=ISO-8859-1">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	<style type="text/css">
+		body {
+			padding-top: 70px;
+		}
+	</style>
 
-<!-- Latest compiled and minified JavaScript -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<style type="text/css">
-	body {
-		padding-top: 70px;
-	}
-</style>
-
-<title>Clubfoot Registry | Add Evaluator</title>
-
+	<title>Clubfoot Registry | Add Evaluator</title>
 	<jsp:include page="navbar.jsp" />
 </head>
 
@@ -27,7 +26,7 @@
 		<div class="col-sm-2 column"></div>
 		<div class="col-md-8 column">
 			<h1 align="center">Add New Evaluator</h1>
-			<form action="#" th:action="@{/evaluator}" th:object="${evaluator}" modelAttribute="Evaluator" id="Evaluator" method="post">
+			<form action="#" th:action="@{/evaluator}" th:object="${evaluator}" modelAttribute="Evaluator" "id="Evaluator" method="post">
 				<div class="form-group">
 					<label for="first_name">First Name</label>
 					<input type="name" class="form-control" id="first_name" name="first_name" path="first_name"/>
