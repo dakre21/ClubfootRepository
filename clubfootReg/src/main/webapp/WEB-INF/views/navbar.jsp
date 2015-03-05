@@ -25,6 +25,7 @@
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="view_visit">View Visits</a></li>
                       <li><a href="visit">Add Visit</a></li>
+                      <li><a href="view_visit_info">View Visit Info</a></li>
                   </ul>
               </li>
               <li class="dropdown">

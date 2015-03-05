@@ -38,6 +38,11 @@ public class VisitController {
 		return "view_visit";
 	}
 	
+	@RequestMapping(value = "/view_visit_info", method = RequestMethod.GET)
+	public String view_visit_infoForm(Model model){
+		return "view_visit_info";
+	}
+	
 	@RequestMapping(value = "/visit", method = RequestMethod.POST)
 	public String visitSubmitForm(@ModelAttribute("visit") Visit visit, Model model){
 		model.addAttribute("greeting", "UIowa Clubfoot Registry");

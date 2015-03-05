@@ -489,7 +489,7 @@
   
   		<fieldset>
 			<legend> Pirani Scores (Hindfoot) </legend>
-			<label for = "hindfootLeftPosterior"><em>*</em>Posterior creaase: </label>
+			<label for = "hindfootLeftPosterior"><em>*</em>Posterior crease: </label>
   			
 			<INPUT TYPE="radio" NAME="hindfootLeftPosterior" path="hindfootLeftPosterior" VALUE="1">1
 			<INPUT TYPE="radio" NAME="hindfootLeftPosterior" path="hindfootLeftPosterior" VALUE="0.5">0.5
@@ -602,7 +602,7 @@
   		
   		<fieldset>
 			<legend> Pirani Scores (Hindfoot) </legend>
-			<label for = "hindfootRightPosterior"><em>*</em>Posterior creaase: </label>
+			<label for = "hindfootRightPosterior"><em>*</em>Posterior crease: </label>
   			
 			<INPUT TYPE="radio" NAME="hindfootRightPosterior" path="hindfootRightPosterior" VALUE="1">1
 			<INPUT TYPE="radio" NAME="hindfootRightPosterior" path="hindfootRightPosterior" VALUE="0.5">0.5
