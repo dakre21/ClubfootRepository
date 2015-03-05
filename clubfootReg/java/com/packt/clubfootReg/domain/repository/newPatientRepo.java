@@ -18,4 +18,5 @@ public interface newPatientRepo {
 	int getMaxPersonID();
 	int getAddressIDForPerson(int id);
 	int getMaxAddressID();
+	int[] getAssociateIDsForPatient(int id);
 }

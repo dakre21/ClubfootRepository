@@ -15,7 +15,6 @@ public class newPatient {
 	private String sex;
 	private String race;
 	private String tribe;
-	//private Date dob;
 	private String dob;
 	private String addr1;
 	private String addr2;
@@ -42,33 +41,27 @@ public class newPatient {
 	private String other_guardian_phone1;
 	private String other_guardian_phone2;
 	private String deformity_history;
-	//private String deformity_history_num;
 	private Integer deformity_history_num;
-	//private String pregnancy;
 	private Integer pregnancy;
 	private String pregnancy_complications_explained;
-	private String pregnancy_alc; //YNU
-	private String pregnancy_smoke; //YNU
-	private String complications; //YNU
-	//private String place_birth;
+	private String pregnancy_alc; 
+	private String pregnancy_smoke; 
+	private String complications; 
 	private Integer place_birth;
 	private String referral;
 	private String referral_doc_name;
 	private String referral_hospital_name;
 	private String referral_other;
-	//private String evaluator;
 	private Integer evaluator;
-	//private Date evaluation_date;
 	private String evaluation_date;
 	private String feet;
 	private String diagnosis;
-	private String deformity_at_birth; //YNU
-	private String previous_treatments; //YNU
+	private String deformity_at_birth; 
+	private String previous_treatments; 
 	private String previous_treatments_num;
-	private String diagnosis_prenatally; //YNU
-	//private String diagnosis_prenatally_week;
+	private String diagnosis_prenatally; 
 	private Integer diagnosis_prenatally_week;
-	private String prenatally_diag_confirmation; //YNU
+	private String prenatally_diag_confirmation; 
 	private String diagnosis_comments;
 	private String abnormalities;
 	private String weakness;

@@ -3,6 +3,8 @@ package com.packt.clubfootReg.controller;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -46,16 +49,28 @@ public class newPatientController {
         return "view_patients";
     }
 	
+	/*
 	@RequestMapping(value="/edit_patient", method=RequestMethod.GET)
     public String editPatientForm(Model model) {
         model.addAttribute("patient", newpatientrepo.getPatient(77));
         return "edit_patient";
     }
+    */
+	
+	@RequestMapping(value = "/edit_patient", method = RequestMethod.GET)
+	public ModelAndView editPatientForm(HttpServletRequest request) {
+	    int patient_id = Integer.parseInt(request.getParameter("id"));
+	    newPatient patient = newpatientrepo.getPatient(patient_id);
+	    ModelAndView model = new ModelAndView("edit_patient");
+	    model.addObject("patient", patient);
+	    return model;
+	}
+	
 	
 	@RequestMapping(value="/edit_patient", method=RequestMethod.POST)
     public String editPatientSubmit(@ModelAttribute("editPatient") newPatient patient, Model model) {
         newpatientrepo.updatePatient(patient);
-        model.addAttribute("patient", newpatientrepo.getPatient(77));
+        model.addAttribute("patient", newpatientrepo.getPatient(patient.getId()));
         return "view_patient_info";
     }
 	
@@ -74,9 +89,12 @@ public class newPatientController {
 	}
 	
 	@RequestMapping(value = "/view_patient_info", method = RequestMethod.GET)
-	public String viewPatientInfoForm(Model model) {
-		model.addAttribute("patient", newpatientrepo.getPatient(77));
-		return "view_patient_info";
+	public ModelAndView viewPatientInfoForm(HttpServletRequest request) {
+	    int patient_id = Integer.parseInt(request.getParameter("id"));
+	    newPatient patient = newpatientrepo.getPatient(patient_id);
+	    ModelAndView model = new ModelAndView("view_patient_info");
+	    model.addObject("patient", patient);
+	    return model;
 	}
 	
 	public newPatientController() {

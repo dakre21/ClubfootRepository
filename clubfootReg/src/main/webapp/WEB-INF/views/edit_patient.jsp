@@ -16,7 +16,7 @@
 		padding-top: 70px;
 	}
 </style>
-  <title>Clubfoot Registry | Add Patient</title>
+  <title>Clubfoot Registry | Edit Patient</title>
   <style>
 	  body {
 	  	margin-top: 1%;
@@ -373,10 +373,10 @@
 			<input type="radio" name="complications" value="No" path="complications"> No
 			<input type="radio" name="complications" value="Unspecified" path="complications"> Unspecified <br> 
 			<label for="place_birth">Place of birth: </label>
-			<input type="radio" name="place_birth" value="Hospital" path="place_birth"> Hospital
-			<input type="radio" name="place_birth" value="Clinic" path="place_birth"> Clinic
-			<input type="radio" name="place_birth" value="Home" path="place_birth"> Home
-			<input type="radio" name="place_birth" value="Unspecified" path="place_birth"> Unspecified
+			<input type="radio" name="place_birth" value="0" path="place_birth"> Hospital
+			<input type="radio" name="place_birth" value="1" path="place_birth"> Clinic
+			<input type="radio" name="place_birth" value="2" path="place_birth"> Home
+			<input type="radio" name="place_birth" value="3" path="place_birth"> Unspecified
 			</div>
 			</div>
 		</fieldset>
@@ -387,10 +387,10 @@
 			<div class="col-md-12">
 			<div class="form-group">
 			<label for="referral">Referral source:</label>
-			<input type="radio" name="referral" value="Hospital_clinic" path="referral" onClick="referralFnTrue()"> Hospital/Clinic
+			<input type="radio" name="referral" value="Hospital/Clinic" path="referral" onClick="referralFnTrue()"> Hospital/Clinic
 			<input type="radio" name="referral" value="Midwife" path="referral" onClick="referralFnFalse()"> Midwife
-			<input type="radio" name="referral" value="Word_of_mouth" path="referral" onClick="referralFnFalse()"> Word of mouth
-			<input type="radio" name="referral" value="Promotional_materials" path="referral" onClick="referralFnFalse()"> Promotional materials
+			<input type="radio" name="referral" value="Word of Mouth" path="referral" onClick="referralFnFalse()"> Word of mouth
+			<input type="radio" name="referral" value="Promotional Materials" path="referral" onClick="referralFnFalse()"> Promotional materials
 			<input type="radio" name="referral" value="Other" path="referral" onClick="referralOtherTrue()"> Other
 			<input type="radio" name="referral" value="Unspecified" path="referral" onClick="referralFnFalse()"> Unspecified <br>
 		
@@ -418,9 +418,9 @@
 			<input type="radio" name="feet" value="Right" path="feet" > Right
 			<input type="radio" name="feet" value="Both" path="feet" > Both <br>
 			<label for="diagnosis"><em>*</em>Diagnosis: </label>
-			<input type="radio" name="diagnosis" value="Idiopathic_clubfoot" path="diagnosis"  > Idiopathic Clubfoot
-			<input type="radio" name="diagnosis" value="Syndromic_clubfoot" path="diagnosis" > Syndromic Clubfoot
-			<input type="radio" name="diagnosis" value="Neuropathic_clubfoot" path="diagnosis" > Neuropathic Clubfoot
+			<input type="radio" name="diagnosis" value="Idiopathic Clubfoot" path="diagnosis"  > Idiopathic Clubfoot
+			<input type="radio" name="diagnosis" value="Syndromic Clubfoot" path="diagnosis" > Syndromic Clubfoot
+			<input type="radio" name="diagnosis" value="Neuropathic Clubfoot" path="diagnosis" > Neuropathic Clubfoot
 			<input type="radio" name="diagnosis" value="Other" path="diagnosis" > Other <br>
 			<label for="deformity_at_birth">Deformity present at birth: </label>
 			<input type="radio" name="deformity_at_birth" value="Yes" path="deformity_at_birth"> Yes
