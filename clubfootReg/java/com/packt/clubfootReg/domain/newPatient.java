@@ -66,7 +66,8 @@ public class newPatient {
 	private String previous_treatments; //YNU
 	private String previous_treatments_num;
 	private String diagnosis_prenatally; //YNU
-	private String diagnosis_prenatally_week;
+	//private String diagnosis_prenatally_week;
+	private Integer diagnosis_prenatally_week;
 	private String prenatally_diag_confirmation; //YNU
 	private String diagnosis_comments;
 	private String abnormalities;
@@ -582,10 +583,10 @@ public class newPatient {
 	}
 	
 	
-	public String getDiagnosis_prenatally_week() {
+	public Integer getDiagnosis_prenatally_week() {
 		return diagnosis_prenatally_week;
 	}
-	public void setDiagnosis_prenatally_week(String diagnosis_prenatally_week) {
+	public void setDiagnosis_prenatally_week(Integer diagnosis_prenatally_week) {
 		this.diagnosis_prenatally_week = diagnosis_prenatally_week;
 	}
 }

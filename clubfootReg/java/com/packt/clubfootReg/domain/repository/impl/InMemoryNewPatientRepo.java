@@ -49,6 +49,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		String sex = newpatient.getSex();
 		String race = newpatient.getRace();
 		String dob = newpatient.getDob();
+		String tribe = newpatient.getTribe();
 		String addr1 = newpatient.getAddr1();
 		String addr2 = newpatient.getAddr2();
 		String village = newpatient.getVillage();
@@ -93,7 +94,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		String previous_treatments = newpatient.getPrevious_treatments();
 		String previous_treatments_num = newpatient.getPrevious_treatments_num();
 		String diagnosis_prenatally = newpatient.getDiagnosis_prenatally();
-		String diagnosis_prenatally_week = newpatient.getDiagnosis_prenatally_week();
+		Integer diagnosis_prenatally_week = newpatient.getDiagnosis_prenatally_week();
 		String prenatally_diag_confirmation = newpatient.getPrenatally_diag_confirmation();
 		String diagnosis_comments = newpatient.getDiagnosis_comments();
 		String abnormalities = newpatient.getAbnormalities();
@@ -111,11 +112,12 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				                   + "values (?, ?, ?, ?, ?, ?)";
 		
 		// Patient, Family History
-		String sql_patient = "Insert into patient (id, evaluator_id, hospital_id, consent_inclusion, consent_photos, birth_place, " +
+		String sql_patient = "Insert into patient (id, diagnosis, diagnosis_comment, evaluator_id, hospital_id, feet_affected, " +
+							 "evaluation_date, dob, tribe, consent_inclusion, consent_photos, birth_place, " +
 							 "birth_complications, affected_relatives, pregency_length, pregnancy_complications, " +
 							 "pregnancy_drinking, pregnancy_smoking, referral_source, referral_other, referral_doctor_name, " +
-							 "referral_hospital_name) " +
-		                     "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+							 "referral_hospital_name, deformity_at_birth, prenatal_week, prenatal_confirmed) " +
+		                     "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		// Parent/Guardian Info
 		String sql_abstract_person_pg = "Insert into abstract_person (id, created, first_name, last_name, middle_name) "
@@ -123,9 +125,6 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		String sql_associate_pg = "Insert into associate (id) values (?)";
 		String sql_patient_associates_pg = "Insert into patient_associates (patient_id, associate_id, relationship_to_patient, is_emergency_contact) "
 							             + "values (?, ?, ?, ?)";
-		
-		// Family History
-		
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
@@ -140,18 +139,18 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			
 			// ADDRESS
 			ps = conn.prepareStatement(sql_address);
+			/* TEST DATA
 			ps.setInt(1, address_id);
 			ps.setString(2, "Address");
 			ps.setString(3, "Village");
 			ps.setString(4, "Province");
 			ps.setString(5, "Country");
-			/*
+			*/
 			ps.setInt(1, address_id);
 			ps.setString(2, addr1);
 			ps.setString(3, village);
 			ps.setString(4, province);
 			ps.setString(5, country);
-			*/
 			ps.executeUpdate();
 			ps.close();
 			
@@ -161,14 +160,14 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setInt(1, patient_id);
 			ps.setInt(2, address_id);
 			ps.setString(3, dateFormat.format(date));
+			/* TEST DATA
 			ps.setString(4, "First");
 			ps.setString(5, "Last");
 			ps.setString(6, "Middle");
-			/*
+			*/
 			ps.setString(4, patient_firstName);
 			ps.setString(5, patient_lastName);
 			ps.setString(6, patient_midName);
-			*/
 			ps.executeUpdate();
 			ps.close();
 			
@@ -176,52 +175,68 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			// PATIENT
 			ps = conn.prepareStatement(sql_patient);
 			ps.setInt(1, patient_id);
-			ps.setInt(2, 0);
-			ps.setInt(3, 0);
-			ps.setInt(4, 1);
-			ps.setInt(5, 1);
-			ps.setInt(6, 0);
-			ps.setString(7, "Birth Complications");
-			ps.setInt(8, 0);
-			ps.setInt(9, 36);
-			ps.setString(10, "Pregnancy Complications");
-			ps.setString(11, "No");
-			ps.setString(12, "No");
-			ps.setString(13, "Unspecified");
-			ps.setString(14, null);
-			ps.setString(15, null);
-			ps.setString(16, null);
-			
-			/*
-			ps.setInt(2, evaluator); /// <--- THIS IS NOT WORKING
-			ps.setInt(3, hospital);
-			ps.setInt(4, guardianConsent);
-			ps.setInt(5, photoConsent);
-			ps.setInt(6, place_birth);
-			ps.setString(7, complications);
+			/* TEST DATA
+			ps.setString(2, "Idiopathic Clubfoot");
+			ps.setString(3, "Test Comments");
+			ps.setInt(4, 0);
+			ps.setInt(5, 0);
+			ps.setString(6, "Left");
+			ps.setString(7, "2015-03-04 00:00:00");
+			ps.setInt(8, 1);
+			ps.setInt(9, 1);
+			ps.setInt(10, 0);
+			ps.setString(11, "Birth Complications");
+			ps.setInt(12, 0);
+			ps.setInt(13, 36);
+			ps.setString(14, "Pregnancy Complications");
+			ps.setString(15, "No");
+			ps.setString(16, "No");
+			ps.setString(17, "Unspecified");
+			ps.setString(18, null);
+			ps.setString(19, null);
+			ps.setString(20, null);
+			ps.setString(21, "Yes");
+			ps.setInt(22, 30);
+			ps.setString(23, "Yes");
+			*/
+			ps.setString(2, diagnosis);
+			ps.setString(3, diagnosis_comments);
+			//ps.setInt(4, evaluator); /// <--- THIS IS NOT WORKING
+			ps.setInt(4, 0);
+			ps.setInt(5, hospital);
+			ps.setString(6, feet);
+			ps.setString(7, evaluation_date);
+			ps.setString(8, dob);
+			ps.setString(9, tribe);
+			ps.setInt(10, guardianConsent);
+			ps.setInt(11, photoConsent);
+			ps.setInt(12, place_birth);
+			ps.setString(13, complications);
 			if (deformity_history.equalsIgnoreCase("Yes")) {
-				ps.setInt(8, deformity_history_num);
+				ps.setInt(14, deformity_history_num);
 			} else {
-				ps.setInt(8, 0);
+				ps.setInt(14, 0);
 			}
-			ps.setInt(9, pregnancy);
-			ps.setString(10, pregnancy_complications_explained);
-			ps.setString(11, pregnancy_alc);
-			ps.setString(12, pregnancy_smoke);
-			ps.setString(13, referral);
+			ps.setInt(15, pregnancy);
+			ps.setString(16, pregnancy_complications_explained);
+			ps.setString(17, pregnancy_alc);
+			ps.setString(18, pregnancy_smoke);
+			ps.setString(19, referral);
 			if(referral.equalsIgnoreCase("Other")) {
-				ps.setString(14, referral_other);
+				ps.setString(20, referral_other);
 			} else {
-				ps.setString(14, null);
+				ps.setString(20, null);
 			}
 			if (referral.equalsIgnoreCase("Hospital/Clinic")) {
-				ps.setString(15, referral_doc_name);
-				ps.setString(16, referral_hospital_name);
+				ps.setString(21, referral_doc_name);
+				ps.setString(22, referral_hospital_name);
 			} else {
-				ps.setString(15, null);
-				ps.setString(16, null);
+				ps.setString(21, null);
+				ps.setString(22, null);
 			}
-			*/
+			ps.setString(23, deformity_at_birth);
+			ps.setInt(24, diagnosis_prenatally_week);
+			ps.setString(25, prenatally_diag_confirmation);
 			ps.executeUpdate();
 			ps.close();
 			
@@ -231,41 +246,44 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			pg_id = getMaxPersonID()+1;
 			ps.setInt(1, pg_id);
 			ps.setString(2, dateFormat.format(date));
+			/* TEST DATA
 			ps.setString(3, "Guardian First");
 			ps.setString(4, "Guardian Last");
 			ps.setString(5, "Guardian Middle");
-			/*
+			*/
 			ps.setString(3, guardian_firstName);
 			ps.setString(4, guardian_lastName);
 			ps.setString(5, guardian_midName);
-			*/
 			ps.executeUpdate();
 			ps.close();
 			
+			
+			// ASSOCIATE
 			ps = conn.prepareStatement(sql_associate_pg);
 			ps.setInt(1, pg_id);
 			ps.executeUpdate();
 			ps.close();
 			
+			
+			// PATIENT ASSOCIATES
 			ps = conn.prepareStatement(sql_patient_associates_pg);
 			ps.setInt(1, patient_id);
 			ps.setInt(2, pg_id);
+			/* TEST DATA
 			ps.setString(3, "father");
 			ps.setInt(4, 1);
-			/*
+			*/
 			ps.setString(3, guardian_relationship);
 			if(emergency_contact.equalsIgnoreCase("Primary")) {
 				ps.setInt(4, 1);
 			} else {
 				ps.setInt(4, 0);
 			}
-			*/
 			ps.executeUpdate();
 			ps.close();
 			
 			
 			// SECONDARY PARENT/GUARDIAN
-			/*
 			if (second_guardian_first != "" || !other_guardian_first.isEmpty()) {
 				ps = conn.prepareStatement(sql_abstract_person_pg);
 				pg_id = getMaxPersonID()+1;
@@ -325,7 +343,6 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				ps.executeUpdate();
 				ps.close();
 			}
-			*/
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
  
@@ -355,8 +372,323 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 	}
 	
 	public void updatePatient(newPatient newpatient) {
+		listOfPatients.add(newpatient);
+		//int id = newpatient.getId();
+		Integer guardianConsent = newpatient.getGuardianConsent();
+		Integer photoConsent = newpatient.getPhotoConsent();
+		Integer hospital = newpatient.getHospital();
+		String patient_lastName = newpatient.getPatient_lastName();
+		String patient_firstName = newpatient.getPatient_firstName();
+		String patient_midName = newpatient.getPatient_midName();
+		String sex = newpatient.getSex();
+		String race = newpatient.getRace();
+		String dob = newpatient.getDob();
+		String tribe = newpatient.getTribe();
+		String addr1 = newpatient.getAddr1();
+		String addr2 = newpatient.getAddr2();
+		String village = newpatient.getVillage();
+		String province = newpatient.getProvince();
+		String country = newpatient.getCountry();
+		String guardian_lastName = newpatient.getGuardian_lastName();
+		String guardian_firstName = newpatient.getGuardian_firstName();
+		String guardian_midName = newpatient.getGuardian_midName();
+		String guardian_relationship = newpatient.getGuardian_relationship();
+		String guardian_phone1 = newpatient.getGuardian_phone1();
+		String guardian_phone2 = newpatient.getGuardian_phone2();
+		String second_guardian_last = newpatient.getSecond_guardian_last();
+		String second_guardian_first = newpatient.getSecond_guardian_first();
+		String second_guardian_mid = newpatient.getSecond_guardian_mid();
+		String second_guardian_relationship = newpatient.getSecond_guardian_relationship();
+		String second_guardian_phone1 = newpatient.getSecond_guardian_phone1();
+		String second_guardian_phone2 = newpatient.getSecond_guardian_phone2();
+		String emergency_contact = newpatient.getEmergency_contact();
+		String other_guardian_last = newpatient.getOther_guardian_last();
+		String other_guardian_first = newpatient.getOther_guardian_first();
+		String other_guardian_mid = newpatient.getOther_guardian_mid();
+		String other_guardian_relationship = newpatient.getOther_guardian_relationship();
+		String other_guardian_phone1 = newpatient.getOther_guardian_phone1();
+		String other_guardian_phone2 = newpatient.getOther_guardian_phone2();
+		String deformity_history = newpatient.getDeformity_history();
+		Integer deformity_history_num = newpatient.getDeformity_history_num();
+		Integer pregnancy = newpatient.getPregnancy();
+		String pregnancy_complications_explained = newpatient.getPregnancy_complications_explained();
+		String pregnancy_alc = newpatient.getPregnancy_alc();
+		String pregnancy_smoke = newpatient.getPregnancy_smoke();
+		String complications = newpatient.getComplications();
+		Integer place_birth = newpatient.getPlace_birth();
+		String referral = newpatient.getReferral();
+		String referral_doc_name = newpatient.getReferral_doc_name();
+		String referral_hospital_name = newpatient.getReferral_hospital_name();
+		String referral_other = newpatient.getReferral_other();
+		Integer evaluator = newpatient.getEvaluator();
+		String evaluation_date = newpatient.getEvaluation_date();
+		String feet = newpatient.getFeet();
+		String diagnosis = newpatient.getDiagnosis();
+		String deformity_at_birth = newpatient.getDeformity_at_birth();
+		String previous_treatments = newpatient.getPrevious_treatments();
+		String previous_treatments_num = newpatient.getPrevious_treatments_num();
+		String diagnosis_prenatally = newpatient.getDiagnosis_prenatally();
+		Integer diagnosis_prenatally_week = newpatient.getDiagnosis_prenatally_week();
+		String prenatally_diag_confirmation = newpatient.getPrenatally_diag_confirmation();
+		String diagnosis_comments = newpatient.getDiagnosis_comments();
+		String abnormalities = newpatient.getAbnormalities();
+		String weakness = newpatient.getWeakness();
 		
+		int patient_id;
+		int address_id;
+		int pg_id;
 		
+		// Address
+		String sql_address = "Insert into address (id, street, city, state, country) values (?, ?, ?, ?, ?)";
+		
+		// General Info
+		String sql_abstract_person = "Insert into abstract_person (id, address_id, created, first_name, last_name, middle_name) "
+				                   + "values (?, ?, ?, ?, ?, ?)";
+		
+		// Patient, Family History
+		String sql_patient = "Insert into patient (id, diagnosis, diagnosis_comment, evaluator_id, hospital_id, feet_affected, " +
+							 "evaluation_date, dob, tribe, consent_inclusion, consent_photos, birth_place, " +
+							 "birth_complications, affected_relatives, pregency_length, pregnancy_complications, " +
+							 "pregnancy_drinking, pregnancy_smoking, referral_source, referral_other, referral_doctor_name, " +
+							 "referral_hospital_name, deformity_at_birth, prenatal_week, prenatal_confirmed) " +
+		                     "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		
+		// Parent/Guardian Info
+		String sql_abstract_person_pg = "Insert into abstract_person (id, created, first_name, last_name, middle_name) "
+								      + "values (?, ?, ?, ?, ?)";
+		String sql_associate_pg = "Insert into associate (id) values (?)";
+		String sql_patient_associates_pg = "Insert into patient_associates (patient_id, associate_id, relationship_to_patient, is_emergency_contact) "
+							             + "values (?, ?, ?, ?)";
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		Connection conn = null;
+		PreparedStatement ps;
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			address_id = getMaxAddressID()+1;
+			patient_id = getMaxPersonID()+1;
+			
+			// ADDRESS
+			ps = conn.prepareStatement(sql_address);
+			/* TEST DATA
+			ps.setInt(1, address_id);
+			ps.setString(2, "Address");
+			ps.setString(3, "Village");
+			ps.setString(4, "Province");
+			ps.setString(5, "Country");
+			*/
+			ps.setInt(1, address_id);
+			ps.setString(2, addr1);
+			ps.setString(3, village);
+			ps.setString(4, province);
+			ps.setString(5, country);
+			ps.executeUpdate();
+			ps.close();
+			
+			
+			// GENERAL INFO
+			ps = conn.prepareStatement(sql_abstract_person);
+			ps.setInt(1, patient_id);
+			ps.setInt(2, address_id);
+			ps.setString(3, dateFormat.format(date));
+			/* TEST DATA
+			ps.setString(4, "First");
+			ps.setString(5, "Last");
+			ps.setString(6, "Middle");
+			*/
+			ps.setString(4, patient_firstName);
+			ps.setString(5, patient_lastName);
+			ps.setString(6, patient_midName);
+			ps.executeUpdate();
+			ps.close();
+			
+			
+			// PATIENT
+			ps = conn.prepareStatement(sql_patient);
+			ps.setInt(1, patient_id);
+			/* TEST DATA
+			ps.setString(2, "Idiopathic Clubfoot");
+			ps.setString(3, "Test Comments");
+			ps.setInt(4, 0);
+			ps.setInt(5, 0);
+			ps.setString(6, "Left");
+			ps.setString(7, "2015-03-04 00:00:00");
+			ps.setInt(8, 1);
+			ps.setInt(9, 1);
+			ps.setInt(10, 0);
+			ps.setString(11, "Birth Complications");
+			ps.setInt(12, 0);
+			ps.setInt(13, 36);
+			ps.setString(14, "Pregnancy Complications");
+			ps.setString(15, "No");
+			ps.setString(16, "No");
+			ps.setString(17, "Unspecified");
+			ps.setString(18, null);
+			ps.setString(19, null);
+			ps.setString(20, null);
+			ps.setString(21, "Yes");
+			ps.setInt(22, 30);
+			ps.setString(23, "Yes");
+			*/
+			ps.setString(2, diagnosis);
+			ps.setString(3, diagnosis_comments);
+			//ps.setInt(4, evaluator); /// <--- THIS IS NOT WORKING
+			ps.setInt(4, 0);
+			ps.setInt(5, hospital);
+			ps.setString(6, feet);
+			ps.setString(7, evaluation_date);
+			ps.setString(8, dob);
+			ps.setString(9, tribe);
+			ps.setInt(10, guardianConsent);
+			ps.setInt(11, photoConsent);
+			ps.setInt(12, place_birth);
+			ps.setString(13, complications);
+			if (deformity_history.equalsIgnoreCase("Yes")) {
+				ps.setInt(14, deformity_history_num);
+			} else {
+				ps.setInt(14, 0);
+			}
+			ps.setInt(15, pregnancy);
+			ps.setString(16, pregnancy_complications_explained);
+			ps.setString(17, pregnancy_alc);
+			ps.setString(18, pregnancy_smoke);
+			ps.setString(19, referral);
+			if(referral.equalsIgnoreCase("Other")) {
+				ps.setString(20, referral_other);
+			} else {
+				ps.setString(20, null);
+			}
+			if (referral.equalsIgnoreCase("Hospital/Clinic")) {
+				ps.setString(21, referral_doc_name);
+				ps.setString(22, referral_hospital_name);
+			} else {
+				ps.setString(21, null);
+				ps.setString(22, null);
+			}
+			ps.setString(23, deformity_at_birth);
+			ps.setInt(24, diagnosis_prenatally_week);
+			ps.setString(25, prenatally_diag_confirmation);
+			ps.executeUpdate();
+			ps.close();
+			
+			
+			// PRIMARY PARENT/GUARDIAN
+			ps = conn.prepareStatement(sql_abstract_person_pg);
+			pg_id = getMaxPersonID()+1;
+			ps.setInt(1, pg_id);
+			ps.setString(2, dateFormat.format(date));
+			/* TEST DATA
+			ps.setString(3, "Guardian First");
+			ps.setString(4, "Guardian Last");
+			ps.setString(5, "Guardian Middle");
+			*/
+			ps.setString(3, guardian_firstName);
+			ps.setString(4, guardian_lastName);
+			ps.setString(5, guardian_midName);
+			ps.executeUpdate();
+			ps.close();
+			
+			
+			// ASSOCIATE
+			ps = conn.prepareStatement(sql_associate_pg);
+			ps.setInt(1, pg_id);
+			ps.executeUpdate();
+			ps.close();
+			
+			
+			// PATIENT ASSOCIATES
+			ps = conn.prepareStatement(sql_patient_associates_pg);
+			ps.setInt(1, patient_id);
+			ps.setInt(2, pg_id);
+			/* TEST DATA
+			ps.setString(3, "father");
+			ps.setInt(4, 1);
+			*/
+			ps.setString(3, guardian_relationship);
+			if(emergency_contact.equalsIgnoreCase("Primary")) {
+				ps.setInt(4, 1);
+			} else {
+				ps.setInt(4, 0);
+			}
+			ps.executeUpdate();
+			ps.close();
+			
+			
+			// SECONDARY PARENT/GUARDIAN
+			if (second_guardian_first != "" || !other_guardian_first.isEmpty()) {
+				ps = conn.prepareStatement(sql_abstract_person_pg);
+				pg_id = getMaxPersonID()+1;
+				ps.setInt(1, pg_id);
+				ps.setString(2, dateFormat.format(date));
+				ps.setString(3, second_guardian_first);
+				ps.setString(4, second_guardian_last);
+				ps.setString(5, second_guardian_mid);
+				ps.executeUpdate();
+				ps.close();
+				
+				ps = conn.prepareStatement(sql_associate_pg);
+				ps.setInt(1, pg_id);
+				ps.executeUpdate();
+				ps.close();
+				
+				ps = conn.prepareStatement(sql_patient_associates_pg);
+				ps.setInt(1, patient_id);
+				ps.setInt(2, pg_id);
+				ps.setString(3, second_guardian_relationship);
+				if(emergency_contact.equalsIgnoreCase("Secondary")) {
+					ps.setInt(4, 1);
+				} else {
+					ps.setInt(4, 0);
+				}
+				ps.executeUpdate();
+				ps.close();
+			}
+				
+			
+			// EMERGENCY CONTACT
+			if (other_guardian_first != "" || !other_guardian_first.isEmpty()) {
+				ps = conn.prepareStatement(sql_abstract_person_pg);
+				pg_id = getMaxPersonID()+1;
+				ps.setInt(1, pg_id);
+				ps.setString(2, dateFormat.format(date));
+				ps.setString(3, other_guardian_first);
+				ps.setString(4, other_guardian_last);
+				ps.setString(5, other_guardian_mid);
+				ps.executeUpdate();
+				ps.close();
+				
+				ps = conn.prepareStatement(sql_associate_pg);
+				ps.setInt(1, pg_id);
+				ps.executeUpdate();
+				ps.close();
+				
+				ps = conn.prepareStatement(sql_patient_associates_pg);
+				ps.setInt(1, patient_id);
+				ps.setInt(2, pg_id);
+				ps.setString(3, other_guardian_relationship);
+				if(emergency_contact.equalsIgnoreCase("Other")) {
+					ps.setInt(4, 1);
+				} else {
+					ps.setInt(4, 0);
+				}
+				ps.executeUpdate();
+				ps.close();
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+ 
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return;
 	}
 
 	public newPatient getPatient(int id) {
