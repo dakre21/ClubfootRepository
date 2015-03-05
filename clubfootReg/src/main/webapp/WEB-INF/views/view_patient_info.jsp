@@ -205,7 +205,7 @@ h2{
 						<label><b>Length of pregnancy (in weeks):&nbsp</b></label><label>${patient.pregnancy}</label><br>
 						<label><b>Did the mother have any complications during pregnancy:&nbsp</b></label><label></label><br>
 						<label><b>Pregnancy complications:&nbsp</b></label><label>${patient.pregnancy_complications_explained}</label><br>
-						<label><b>Did the mother consume alcohol during pregnancy:&nbsp </b><label>${patient.pregnancy_alch}</label><br>
+						<label><b>Did the mother consume alcohol during pregnancy:&nbsp </b><label>${patient.pregnancy_alc}</label><br>
 						<label><b>Did the mother smoke during pregnancy:&nbsp</b></label><label>${patient.pregnancy_smoke}</label><br>
 						<label><b>Any complications during birth:&nbsp</b></label><label>${patient.complications}</label><br>
 						<label><b>Place of birth:&nbsp</b></label><label>${patient.place_birth}</label><br>

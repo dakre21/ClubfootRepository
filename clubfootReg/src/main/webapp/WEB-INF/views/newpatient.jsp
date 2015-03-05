@@ -426,9 +426,9 @@
 			<input type="radio" name="feet" value="Both" path="feet" > Both <br>
 			
 			<label for="diagnosis"><em>*</em>Diagnosis: </label>
-			<input type="radio" name="diagnosis" value="Idiopathic_clubfoot" path="diagnosis" > Idiopathic Clubfoot
-			<input type="radio" name="diagnosis" value="Syndromic_clubfoot" path="diagnosis" > Syndromic Clubfoot
-			<input type="radio" name="diagnosis" value="Neuropathic_clubfoot" path="diagnosis" > Neuropathic Clubfoot
+			<input type="radio" name="diagnosis" value="Idiopathic Clubfoot" path="diagnosis" > Idiopathic Clubfoot
+			<input type="radio" name="diagnosis" value="Syndromic Clubfoot" path="diagnosis" > Syndromic Clubfoot
+			<input type="radio" name="diagnosis" value="Neuropathic Clubfoot" path="diagnosis" > Neuropathic Clubfoot
 			<input type="radio" name="diagnosis" value="Other" path="diagnosis" > Other <br>
 			
 			<label for="deformity_at_birth">Deformity present at birth: </label>

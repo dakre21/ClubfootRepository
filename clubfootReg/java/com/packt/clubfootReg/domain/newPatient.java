@@ -78,15 +78,21 @@ public class newPatient {
 		super();
 	}
 	
-	public newPatient(int id, String patient_firstName, String patient_lastName, String patient_midName, String addr1, String village, String province, String country){
+	public newPatient(int id, Integer guardianConsent, Integer photoConsent, Integer hospital, String patient_firstName, 
+			          String patient_lastName, String patient_midName, String dob, Integer evaluator,
+			          String evaluation_date, String feet, String diagnosis) {
 		this.id = id;
+		this.guardianConsent = guardianConsent;
+		this.photoConsent = photoConsent;
+		this.hospital = hospital;
 		this.patient_firstName = patient_firstName;
 		this.patient_lastName = patient_lastName;
 		this.patient_midName = patient_midName;
-		this.addr1 = addr1;
-		this.village = village;
-		this.province = province;
-		this.country = country;
+		this.dob = dob;
+		this.evaluator = evaluator;
+		this.evaluation_date = evaluation_date;
+		this.feet = feet;
+		this.diagnosis = diagnosis;
 	}
 	
 	
