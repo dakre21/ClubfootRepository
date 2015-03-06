@@ -34,13 +34,13 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 		this.jdbcTemplateObject = new JdbcTemplate(dataSource);
 		
 	}
+	
 	public InMemoryEvaluatorRepo() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
 	}
 
 	public void addEvaluator(Evaluator evaluator) {
@@ -58,14 +58,13 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 		try {
 			connection = dataSource.getConnection();
 			
-			String sql = "Insert into abstract_person values(?, ?, ?, ?, ?, ?)";
+			String sql = "Insert into abstract_person (id, created, first_name, last_name, middle_name) values(?, ?, ?, ?, ?)";
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, this.getMaxPersonID()+1);
-			ps.setInt(2, 1);
-			ps.setString(3, dateFormat.format(date));
-			ps.setString(4, first_name);
-			ps.setString(5, last_name);
-			ps.setString(6, middle_name);
+			ps.setString(2, dateFormat.format(date));
+			ps.setString(3, first_name);
+			ps.setString(4, last_name);
+			ps.setString(5, middle_name);
 			ps.executeUpdate();
 			ps.close();
 			
@@ -81,7 +80,6 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 			ps2.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
- 
 		} finally {
 			if (connection != null) {
 				try {
@@ -100,12 +98,13 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "Select a.*, b.name from evaluator a inner join hospital b on a.hospital_id = b.id where id = ?";
+			String sql = "Select a.*, b.name from evaluator a inner join hospital b on a.hospital_id = b.id where a.id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			
 			if (rs.next()) {
+				System.out.println("evaluator exists");
 				evaluator = new Evaluator(
 					rs.getInt("id"),
 					rs.getString("first_name"),
@@ -180,8 +179,54 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 	}
 
 	public void updateEvaluator(Evaluator evaluator) {
-		// TODO Auto-generated method stub
+		listOfEvaluators.add(evaluator);
+		int id = evaluator.getId();
+		String first_name = evaluator.getFirst_name();
+		String middle_name = evaluator.getMiddle_name();
+		String last_name = evaluator.getLast_name();
+		String title = evaluator.getTitle();
+		int hospital = evaluator.getHospital_id();
+	
+		String sql_abstract_person = "Update abstract_person set first_name = ?, last_name = ?, middle_name = ? where id = ?";
+		String sql_evaluator = "Update evaluator set first_name = ?, last_name = ?, middle_name = ?, title = ?, hospital_id = ? " +
+							   "where id = ?";
 		
+		Connection connection = null;
+		PreparedStatement ps = null;
+		
+		try {
+			connection = dataSource.getConnection();
+			
+			// Abstract Person
+			ps = connection.prepareStatement(sql_abstract_person);
+			ps.setString(1, first_name);
+			ps.setString(2, last_name);
+			ps.setString(3, middle_name);
+			ps.setInt(4, id);
+			ps.executeUpdate();
+			ps.close();
+			
+			// Evaluator
+			ps = connection.prepareStatement(sql_evaluator);
+			ps.setString(1, first_name);
+			ps.setString(2, last_name);
+			ps.setString(3, middle_name);
+			ps.setString(4, title);
+			ps.setInt(5, hospital);
+			ps.setInt(6, id);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return;
 	}
 
 	public int getMaxPersonID() {

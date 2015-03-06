@@ -17,6 +17,7 @@
 		<security:intercept-url pattern="/newpatient" access="ROLE_ADMIN" />
 		<security:intercept-url pattern="/evaluator" access="ROLE_ADMIN" />
 		<security:intercept-url pattern="/view_evaluators" access="ROLE_ADMIN" />
+		<security:intercept-url pattern="/edit_evaluator" access="ROLE_ADMIN" />
 		<security:intercept-url pattern="/hospital" access="ROLE_ADMIN" />
 		<security:intercept-url pattern="/adduser" access="ROLE_ADMIN" />
 		<security:intercept-url pattern="/visit" access="ROLE_ADMIN" />

@@ -45,7 +45,7 @@
                   <td>${o.last_name}</td>
                   <td>${o.title}</td>
                   <td>${o.hospital_name}</td>
-                  <td><a href="#">Edit</a></td>
+                  <td><a href="edit_evaluator?id=${o.id}">Edit</a></td>
               </tr>
             </c:forEach>
           </c:if>

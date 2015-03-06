@@ -36,9 +36,8 @@ public class EvaluatorController {
 	
 	@RequestMapping(value = "/evaluator", method = RequestMethod.GET)
 	public String evaluatorForm(Model model){
-		Evaluator evaluator = new Evaluator(evaluatorRepo.getMaxPersonID() + 1, null, null, null, null, null, 1);
+		Evaluator evaluator = new Evaluator();
 		model.addAttribute("evaluator", evaluator);
-		//this.initModelList(model);
 		return "evaluator";
 	}
 	
@@ -54,12 +53,28 @@ public class EvaluatorController {
         model.addAttribute("evaluators", evaluatorRepo.getAllEvaluators());
 		return "view_evaluators";
 	}
-	/*
-	private void initModelList(Model model) {
-		Map<Integer,String> hospitals = new LinkedHashMap<Integer,String>();
-		hospitals = evaluatorRepo.getAllHospitals();
-		model.addAttribute("hospitalList", hospitals);
-	}*/
+	
+	@RequestMapping(value = "/edit_evaluator", method = RequestMethod.GET)
+	public ModelAndView editEvaluatorForm(HttpServletRequest request) {
+	    int evaluator_id = Integer.parseInt(request.getParameter("id"));
+	    Evaluator e = evaluatorRepo.getEvaluator(evaluator_id);
+	    ModelAndView model = new ModelAndView("edit_evaluator");
+	    model.addObject("evaluator", e);
+	    return model;
+	}
+	
+	@RequestMapping(value="/edit_evaluator", method=RequestMethod.POST)
+    public String editEvaluatorSubmit(@ModelAttribute("editEvaluator") Evaluator evaluator, Model model) {
+        evaluatorRepo.updateEvaluator(evaluator);
+        //model.addAttribute("evaluator", evaluatorRepo.getEvaluator(evaluator.getId()));
+        model.addAttribute("evaluators", evaluatorRepo.getAllEvaluators());
+        return "view_evaluators";
+    }
+	
+	@ModelAttribute("hospitalList")
+	public Map<Integer, String> populateHospitalSelect() {
+	    return evaluatorRepo.getAllHospitals();
+	}
 	
 	public EvaluatorController() {
 		// TODO Auto-generated constructor stub
