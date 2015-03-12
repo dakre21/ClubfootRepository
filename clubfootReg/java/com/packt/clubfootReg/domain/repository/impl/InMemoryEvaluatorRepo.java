@@ -68,14 +68,11 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 			ps.executeUpdate();
 			ps.close();
 			
-			String sql2 = "Insert into evaluator values(?, ?, ?, ?, ?, ?)";
+			String sql2 = "Insert into evaluator values(?, ?, ?)";
 			PreparedStatement ps2 = connection.prepareStatement(sql2);
 			ps2.setInt(1, this.getMaxPersonID());
-			ps2.setString(2, first_name);
-			ps2.setString(3, last_name);
-			ps2.setString(4, middle_name);
-			ps2.setString(5, title);
-			ps2.setInt(6, hospital);
+			ps2.setString(2, title);
+			ps2.setInt(3, hospital);
 			ps2.executeUpdate();
 			ps2.close();
 		} catch (SQLException e) {
@@ -98,7 +95,11 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "Select a.*, b.name from evaluator a inner join hospital b on a.hospital_id = b.id where a.id = ?";
+			String sql = "Select a.*, b.first_name, b.last_name, b.middle_name, c.name " +
+						 "from evaluator a " +
+						 "inner join abstract_person b on a.id = b.id " +
+						 "inner join hospital c on a.hospital_id = c.id " +
+						 "where a.id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
@@ -137,7 +138,11 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "Select a.*, b.name from evaluator a inner join hospital b on a.hospital_id = b.id order by last_name";
+			String sql = "Select a.*, b.first_name, b.last_name, b.middle_name, c.name " +
+					     "from evaluator a " +
+					     "inner join abstract_person b on a.id = b.id " +
+					     "inner join hospital c on a.hospital_id = c.id " +
+					     "order by b.last_name";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
@@ -188,8 +193,7 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 		int hospital = evaluator.getHospital_id();
 	
 		String sql_abstract_person = "Update abstract_person set first_name = ?, last_name = ?, middle_name = ? where id = ?";
-		String sql_evaluator = "Update evaluator set first_name = ?, last_name = ?, middle_name = ?, title = ?, hospital_id = ? " +
-							   "where id = ?";
+		String sql_evaluator = "Update evaluator set title = ?, hospital_id = ? where id = ?";
 		
 		Connection connection = null;
 		PreparedStatement ps = null;
@@ -208,12 +212,9 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 			
 			// Evaluator
 			ps = connection.prepareStatement(sql_evaluator);
-			ps.setString(1, first_name);
-			ps.setString(2, last_name);
-			ps.setString(3, middle_name);
-			ps.setString(4, title);
-			ps.setInt(5, hospital);
-			ps.setInt(6, id);
+			ps.setString(1, title);
+			ps.setInt(2, hospital);
+			ps.setInt(3, id);
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
@@ -257,7 +258,7 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 			}
 		}
 	}
-
+	
 	public Map<Integer, String> getAllHospitals() {
 		Connection conn = null;
 		Map<Integer, String> hospitals = new LinkedHashMap<Integer,String>();

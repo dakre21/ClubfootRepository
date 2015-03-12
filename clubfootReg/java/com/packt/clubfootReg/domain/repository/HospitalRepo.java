@@ -1,6 +1,7 @@
 package com.packt.clubfootReg.domain.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -12,8 +13,8 @@ public interface HospitalRepo {
 	void addHospital(Hospital hospital);
 	void setDataSource(DataSource ds);
 	List<Hospital> getHospital(int id);
-	List<Hospital> getAllHospitals();
 	void deleteHospital(int id);
 	void updateHospital(Hospital hospital);
 	int getMaxHospitalID();
+	Map<Integer, String> getAllHospitals();
 }

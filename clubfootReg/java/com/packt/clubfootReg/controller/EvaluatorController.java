@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.packt.clubfootReg.domain.Evaluator;
 import com.packt.clubfootReg.domain.newPatient;
 import com.packt.clubfootReg.domain.repository.EvaluatorRepo;
+import com.packt.clubfootReg.domain.repository.HospitalRepo;
 
 
 @Controller
@@ -28,6 +29,7 @@ public class EvaluatorController {
 
 	@Autowired
 	private EvaluatorRepo evaluatorRepo;
+	private HospitalRepo hospitalRepo;
 	
 	@InitBinder
 	public void initialiseBinder(WebDataBinder binder){

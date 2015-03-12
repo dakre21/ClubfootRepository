@@ -2,6 +2,7 @@ package com.packt.clubfootReg.controller;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.packt.clubfootReg.domain.newPatient;
+import com.packt.clubfootReg.domain.repository.HospitalRepo;
 import com.packt.clubfootReg.domain.repository.newPatientRepo;
 
 @Controller
@@ -27,6 +29,7 @@ public class newPatientController {
 
 	@Autowired
 	private newPatientRepo newpatientrepo;
+	//private HospitalRepo hospitalRepo;
 	
 	@InitBinder
 	public void initialiseBinder(WebDataBinder binder){

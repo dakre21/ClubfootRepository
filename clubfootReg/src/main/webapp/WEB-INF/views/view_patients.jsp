@@ -46,7 +46,7 @@
 				  <td>${o.patient_midName}</td>
 				  <td>${o.patient_lastName}</td>
 				  <td><a href="edit_patient?id=${o.id}">Edit</a></td>
-				  <td><a href="visit">Add Visit</a></td>
+				  <td><a href="visit?id=${o.id}">Add Visit</a></td>
               </tr>
             </c:forEach>
           </c:if>

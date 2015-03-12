@@ -3,19 +3,69 @@ package com.packt.clubfootReg.domain;
 public class Visit {
 
 	private int id;
-	private String hospitalName;
-	private String evaluatorName;
+	
+	private int patientId;
+	private Integer hospitalId;
+	private Integer evaluatorId;
 	private String dateOfVisit;
-	private String finalTreatment;
+	private String isLastVisit;
+	private String nextVisitDate;
 	private String relapse;
-	private String hindfootLeftVarus;
-	private String hindfootRightVarus;
-	private String hindfootLeftCavus;
-	private String hindfootRightCavus;
-	private String hindfootLeftAbductus;
-	private String hindfootRightAbductus;
-	private String hindfootLeftEquinus;
-	private String hindfootRightEquinus;
+	
+	private Integer hindfootLeftVarus;
+	private Integer hindfootLeftCavus;
+	private Integer hindfootLeftAbductus;
+	private Integer hindfootLeftEquinus;
+	private Integer leftPC;
+	private Integer leftEH;
+	private Integer leftRE;
+	private Integer leftMC;
+	private Integer leftTHC;
+	private Integer leftCLB;
+	private String leftTreatment;
+	
+	private Integer casterLeft;
+	private Integer castLeftNum;
+	private Integer abductionLeft;
+	private Integer dorsiflexionLeft;
+	private String braceLeft;
+	private String problemsLeft;
+	private String actionsLeft;
+	private String surgeryLeft;
+	private String leftSurgeryComments;
+	private String otherLeft;
+	
+	private Integer hindfootRightVarus;
+	private Integer hindfootRightCavus;
+	private Integer hindfootRightAbductus;
+	private Integer hindfootRightEquinus;
+	private Integer rightPC;
+	private Integer rightEH;
+	private Integer rightRE;
+	private Integer rightMC;
+	private Integer rightTHC;
+	private Integer rightCLB;
+	private String rightTreatment;
+	
+	private Integer casterRight;
+	private Integer castRightNum;
+	private Integer abductionRight;
+	private Integer dorsiflexionRight;
+	private String braceRight;
+	private String problemsRight;
+	private String actionsRight;
+	private String surgeryRight;
+	private String rightSurgeryComments;
+	private String otherRight;
+	
+	//private String hindfootLeftVarus;
+	//private String hindfootRightVarus;
+	//private String hindfootLeftCavus;
+	//private String hindfootRightCavus;
+	//private String hindfootLeftAbductus;
+	//private String hindfootRightAbductus;
+	//private String hindfootLeftEquinus;
+	//private String hindfootRightEquinus;
 	private String midfootLeftPosterior;
 	private String midfootRightPosterior;
 	private String midfootLeftHeel;
@@ -28,69 +78,47 @@ public class Visit {
 	private String midfootRightTalar;
 	private String midfootLeftLateral;
 	private String midfootRightLateral;
-	private String leftTreatment;
-	private String rightTreatment;
+	
 	private String complications;
 	private String comments;
 	private String description;
 	private String treatmentComplications;
 	private String results;
-	private String surgeryRight;
-	private String rightSurgeryComments;
-	private String otherRight;
-	private String actionsRight;
-	private String problemsRight;
-	private String braceRight;
-	private String dorsiflexionRight;
-	private String abductionRight;
-	private String castRightNum;
-	private String casterRight;
-	private String surgeryLeft;
-	private String leftSurgeryComments;
-	private String otherLeft;
-	private String actionsLeft;
-	private String problemsLeft;
-	private String braceLeft;
-	private String dorsiflexionLeft;
-	private String abductionLeft;
-	private String castLeftNum;
-	private String casterLeft;
-	
 	
 	public Visit() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Visit(int id) {
-		this.id = id;
+	public Visit(int patientId) {
+		this.patientId = patientId;
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
 	}
-	public String getCasterLeft(){
+	public Integer getCasterLeft(){
 		return casterLeft;
 	}
-	public void setCasterLeft(String casterLeft){
+	public void setCasterLeft(Integer casterLeft){
 		this.casterLeft = casterLeft;
 	}
-	public String getCastLeftNum(){
+	public Integer getCastLeftNum(){
 		return castLeftNum;
 	}
-	public void setCastLeftNum(String castLeftNum){
+	public void setCastLeftNum(Integer castLeftNum){
 		this.castLeftNum = castLeftNum;
 	}
-	public String getAbductionLeft(){
+	public Integer getAbductionLeft(){
 		return abductionLeft;
 	}
-	public void setAbductionLeft(String abductionLeft){
+	public void setAbductionLeft(Integer abductionLeft){
 		this.abductionLeft = abductionLeft;
 	}
-	public String getDorsiflexionLeft(){
+	public Integer getDorsiflexionLeft(){
 		return dorsiflexionLeft;
 	}
-	public void setDorsiflexionLeft(String dorsiflexionLeft){
+	public void setDorsiflexionLeft(Integer dorsiflexionLeft){
 		this.dorsiflexionLeft = dorsiflexionLeft;
 	}
 	public String getBraceLeft(){
@@ -130,28 +158,28 @@ public class Visit {
 	public void setSurgeryLeft(String surgeryLeft){
 		this.surgeryLeft = surgeryLeft;
 	}
-	public String getCasterRight(){
+	public Integer getCasterRight(){
 		return casterRight;
 	}
-	public void setCasterRight(String casterRight){
+	public void setCasterRight(Integer casterRight){
 		this.casterRight = casterRight;
 	}
-	public String getCastRightNum(){
+	public Integer getCastRightNum(){
 		return castRightNum;
 	}
-	public void setCastRightNum(String castRightNum){
+	public void setCastRightNum(Integer castRightNum){
 		this.castRightNum = castRightNum;
 	}
-	public String getAbductionRight(){
+	public Integer getAbductionRight(){
 		return abductionRight;
 	}
-	public void setAbductionRight(String abductionRight){
+	public void setAbductionRight(Integer abductionRight){
 		this.abductionRight = abductionRight;
 	}
-	public String getDorsiflexionRight(){
+	public Integer getDorsiflexionRight(){
 		return dorsiflexionRight;
 	}
-	public void setDorsiflexionRight(String dorsiflexionRight){
+	public void setDorsiflexionRight(Integer dorsiflexionRight){
 		this.dorsiflexionRight = dorsiflexionRight;
 	}
 	public String getBraceRight(){
@@ -279,20 +307,28 @@ public class Visit {
 		this.id = id;
 	}
 
-	public String getHospitalName() {
-		return hospitalName;
+	public int getPatientId() {
+		return patientId;
+	}
+	
+	public void setPatientId(int patientId) {
+		this.patientId = patientId;
+	}
+	
+	public Integer getHospitalId() {
+		return hospitalId;
 	}
 
-	public void setHospitalName(String hospitalName) {
-		this.hospitalName = hospitalName;
+	public void setHospital_id(Integer hospitalId) {
+		this.hospitalId = hospitalId;
 	}
 
-	public String getEvaluatorName() {
-		return evaluatorName;
+	public Integer getEvaluatorId() {
+		return evaluatorId;
 	}
 
-	public void setEvaluatorName(String evaluatorName) {
-		this.evaluatorName = evaluatorName;
+	public void setEvaluatorId(Integer evaluatorId) {
+		this.evaluatorId = evaluatorId;
 	}
 
 	public String getDateOfVisit() {
@@ -303,12 +339,20 @@ public class Visit {
 		this.dateOfVisit = dateOfVisit;
 	}
 
-	public String getFinalTreatment() {
-		return finalTreatment;
+	public String getIsLastVisit() {
+		return isLastVisit;
 	}
 
-	public void setFinalTreatment(String finalTreatment) {
-		this.finalTreatment = finalTreatment;
+	public void setIsLastVisit(String isLastVisit) {
+		this.isLastVisit = isLastVisit;
+	}
+	
+	public String getNextVisitDate() {
+		return nextVisitDate;
+	}
+	
+	public void setNextVisitDate(String nextVisitDate) {
+		this.nextVisitDate = nextVisitDate;
 	}
 
 	public String getRelapse() {
@@ -319,70 +363,156 @@ public class Visit {
 		this.relapse = relapse;
 	}
 
-	public String getHindfootLeftVarus() {
+	public Integer getHindfootLeftVarus() {
 		return hindfootLeftVarus;
 	}
 
-	public void setHindfootLeftVarus(String hindfootLeftVarus) {
+	public void setHindfootLeftVarus(Integer hindfootLeftVarus) {
 		this.hindfootLeftVarus = hindfootLeftVarus;
 	}
 
-	public String getHindfootRightVarus() {
+	public Integer getHindfootRightVarus() {
 		return hindfootRightVarus;
 	}
 
-	public void setHindfootRightVarus(String hindfootRightVarus) {
+	public void setHindfootRightVarus(Integer hindfootRightVarus) {
 		this.hindfootRightVarus = hindfootRightVarus;
 	}
 
-	public String getHindfootLeftCavus() {
+	public Integer getHindfootLeftCavus() {
 		return hindfootLeftCavus;
 	}
 
-	public void setHindfootLeftCavus(String hindfootLeftCavus) {
+	public void setHindfootLeftCavus(Integer hindfootLeftCavus) {
 		this.hindfootLeftCavus = hindfootLeftCavus;
 	}
 
-	public String getHindfootRightCavus() {
+	public Integer getHindfootRightCavus() {
 		return hindfootRightCavus;
 	}
 
-	public void setHindfootRightCavus(String hindfootRightCavus) {
+	public void setHindfootRightCavus(Integer hindfootRightCavus) {
 		this.hindfootRightCavus = hindfootRightCavus;
 	}
 
-	public String getHindfootLeftAbductus() {
+	public Integer getHindfootLeftAbductus() {
 		return hindfootLeftAbductus;
 	}
 
-	public void setHindfootLeftAbductus(String hindfootLeftAbductus) {
+	public void setHindfootLeftAbductus(Integer hindfootLeftAbductus) {
 		this.hindfootLeftAbductus = hindfootLeftAbductus;
 	}
 
-	public String getHindfootRightAbductus() {
+	public Integer getHindfootRightAbductus() {
 		return hindfootRightAbductus;
 	}
 
-	public void setHindfootRightAbductus(String hindfootRightAbductus) {
+	public void setHindfootRightAbductus(Integer hindfootRightAbductus) {
 		this.hindfootRightAbductus = hindfootRightAbductus;
 	}
 
-	public String getHindfootLeftEquinus() {
+	public Integer getHindfootLeftEquinus() {
 		return hindfootLeftEquinus;
 	}
 
-	public void setHindfootLeftEquinus(String hindfootLeftEquinus) {
+	public void setHindfootLeftEquinus(Integer hindfootLeftEquinus) {
 		this.hindfootLeftEquinus = hindfootLeftEquinus;
 	}
 
-	public String getHindfootRightEquinus() {
+	public Integer getHindfootRightEquinus() {
 		return hindfootRightEquinus;
 	}
 
-	public void setHindfootRightEquinus(String hindfootRightEquinus) {
+	public void setHindfootRightEquinus(Integer hindfootRightEquinus) {
 		this.hindfootRightEquinus = hindfootRightEquinus;
 	}
-
+	
+	public Integer getLeftPC() {
+		return leftPC;
+	}
+	public void setLeftPC(Integer leftPC) {
+		this.leftPC = leftPC;
+	}
+	
+	public Integer getLeftEH() {
+		return leftEH;
+	}
+	public void setLeftEH(Integer leftEH) {
+		this.leftEH = leftEH;
+	}
+	
+	public Integer getLeftRE() {
+		return leftRE;
+	}
+	public void setLeftRE(Integer leftRE) {
+		this.leftRE = leftRE;
+	}
+	
+	public Integer getLeftMC() {
+		return leftMC;
+	}
+	public void setLeftMC(Integer leftMC) {
+		this.leftMC = leftMC;
+	}
+	
+	public Integer getLeftTHC() {
+		return leftTHC;
+	}
+	public void setLeftTHC(Integer leftTHC) {
+		this.leftTHC = leftTHC;
+	}
+	
+	public Integer getLeftCLB() {
+		return leftCLB;
+	}
+	public void setLeftCLB(Integer leftCLB) {
+		this.leftCLB = leftCLB;
+	}
+	
+	
+	public Integer getRightPC() {
+		return rightPC;
+	}
+	public void setRightPC(Integer rightPC) {
+		this.rightPC = rightPC;
+	}
+	
+	public Integer getRightEH() {
+		return rightEH;
+	}
+	public void setRightEH(Integer rightEH) {
+		this.rightEH = rightEH;
+	}
+	
+	public Integer getRightRE() {
+		return rightRE;
+	}
+	public void setRightRE(Integer rightRE) {
+		this.rightRE = rightRE;
+	}
+	
+	public Integer getRightMC() {
+		return rightMC;
+	}
+	public void setRightMC(Integer rightMC) {
+		this.rightMC = rightMC;
+	}
+	
+	public Integer getRightTHC() {
+		return rightTHC;
+	}
+	public void setRightTHC(Integer rightTHC) {
+		this.rightTHC = rightTHC;
+	}
+	
+	public Integer getRightCLB() {
+		return rightCLB;
+	}
+	public void setRightCLB(Integer rightCLB) {
+		this.rightCLB = rightCLB;
+	}
+	
+	
 	public String getMidfootLeftPosterior() {
 		return midfootLeftPosterior;
 	}

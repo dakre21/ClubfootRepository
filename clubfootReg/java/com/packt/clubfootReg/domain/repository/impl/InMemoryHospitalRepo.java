@@ -4,7 +4,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -84,31 +86,22 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public List<Hospital> getAllHospitals() {
+	
+	public Map<Integer, String> getAllHospitals() {
 		Connection conn = null;
-		Hospital hospital = null;
-		List<Hospital> hospitals = null;
+		Map<Integer, String> hospitals = new LinkedHashMap<Integer,String>();
 		
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "Select * from hospital order by name";
+			String sql = "Select id, name from hospital";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
-			if (rs.last()) {
-			  hospitals = new ArrayList<>(rs.getRow());
-			  rs.beforeFirst(); 
+			while (rs.next()) {
+				hospitals.put(rs.getInt("id"), rs.getString("name"));
 			}
 			
-			while (rs.next()) {
-				hospital = new Hospital(
-					rs.getInt("id"),
-					rs.getString("name"),
-					rs.getInt("region_id")
-				);
-				hospitals.add(hospital);
-			}
 			rs.close();
 			ps.close();
 			return hospitals;
@@ -122,6 +115,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 			}
 		}
 	}
+	
 	public void deleteHospital(int id) {
 		// TODO Auto-generated method stub
 		
