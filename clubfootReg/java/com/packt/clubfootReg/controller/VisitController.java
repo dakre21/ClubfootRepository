@@ -84,12 +84,12 @@ public class VisitController {
         visitRepo.addVisit(visit);
 		return "view_visit";
 	}*/
-	
+	/*
 	@ModelAttribute("hospitalList")
 	public Map<Integer, String> populateHospitalSelect() {
 	    return visitRepo.getAllHospitals();
 	}
-	
+	*/
 	public VisitController() {
 		// TODO Auto-generated constructor stub
 	}

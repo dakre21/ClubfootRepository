@@ -84,12 +84,12 @@ public class EvaluatorController {
         model.addAttribute("evaluators", evaluatorRepo.getAllEvaluators());	// This invokes the addAttribute method of the model and receives all of the evaluators
         return "view_evaluators"; // Returns the view_evaluators page for the user to view
     }
-	
+	/*
 	@ModelAttribute("hospitalList")
 	public Map<Integer, String> populateHospitalSelect() {
 	    return evaluatorRepo.getAllHospitals();
 	}
-	
+	*/
 	public EvaluatorController() {
 		// TODO Auto-generated constructor stub
 	}
