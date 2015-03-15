@@ -19,12 +19,21 @@ import com.packt.clubfootReg.domain.repository.HospitalRepo;
 import com.packt.clubfootReg.domain.repository.VisitRepo;
 import com.packt.clubfootReg.domain.repository.newPatientRepo;
 
+/**
+ * 
+ * @author David
+ * This class is the VisitController which routes and synchronizes data submitted via the view to the model.
+ * This class contains Three get methods and One post method. 
+ */
+// Visit Controller class 
 @Controller
 public class VisitController {
 
+	// Tells the Dispatcher-context to "wire" or inject an instance of UserRepo for this controller class
 	@Autowired
-	private VisitRepo visitRepo;
+	private VisitRepo visitRepo;	// An instantiation of VisitRepo interface
 	
+	// This initializes spring's "webdatabinder" class to bind web request parameters to the java bean objects to receive the incoming data 
 	@InitBinder
 	public void initialiseBinder(WebDataBinder binder){
 		binder.setDisallowedFields("unitsInOrder", "discontinued");
@@ -37,30 +46,34 @@ public class VisitController {
 		return "visit";
 	}*/
 	
-	@RequestMapping(value = "/visit", method = RequestMethod.GET)
+	// Annotation for mapping web requests to specific handler classes/methods
+	@RequestMapping(value = "/visit", method = RequestMethod.GET)	// Gets the visit view
 	public ModelAndView editPatientForm(HttpServletRequest request) {
-	    Visit visit = new Visit(Integer.parseInt(request.getParameter("id")));
-	    ModelAndView model = new ModelAndView("visit");
-		model.addObject("visit", visit);
-	    return model;
+	    Visit visit = new Visit(Integer.parseInt(request.getParameter("id")));	// Instantiation of visit and passes parses an integer from the getParameter method for "id"
+	    ModelAndView model = new ModelAndView("visit");	// Model passes the "visit" view to it
+		model.addObject("visit", visit);	// Adds an object called visit to the model
+	    return model;// Returns the model 
 	}
 	
-	@RequestMapping(value="/visit", method=RequestMethod.POST)
+	// Annotation for mapping web requests to specific handler classes/methods
+	@RequestMapping(value="/visit", method=RequestMethod.POST)	// Posts the visit form information to the database
     public String addVisitSubmit(@ModelAttribute("visit") Visit visit, Model model) {
-        visitRepo.addVisit(visit);
-        model.addAttribute("visit", visitRepo.getVisit(visit.getId()));
-        return "view_visit_info";
+        visitRepo.addVisit(visit);	// Visitrepo adds visit object to the interface
+        model.addAttribute("visit", visitRepo.getVisit(visit.getId()));	// Gets the visit id from the interface method getVisit and adds it to the attribute of the model
+        return "view_visit_info";// Returns the view_visit_info page
     }
 	
-	@RequestMapping(value = "/view_visit", method = RequestMethod.GET)
+	// Annotation for mapping web requests to specific handler classes/methods
+	@RequestMapping(value = "/view_visit", method = RequestMethod.GET)	// Get the view_visit page
 	public String view_visitForm(Model model){
-		model.addAttribute("visit", visitRepo.getAllVisits());
-		return "view_visit";
+		model.addAttribute("visit", visitRepo.getAllVisits());	// Gets all the visits from the visitRepo to the visit attribute of the model
+		return "view_visit";// Returns the view_visit page
 	}
 	
-	@RequestMapping(value = "/view_visit_info", method = RequestMethod.GET)
+	// Annotation for mapping web requests to specific handler classes/methods	
+	@RequestMapping(value = "/view_visit_info", method = RequestMethod.GET)	// Get the view_visit_info page info
 	public String view_visit_infoForm(Model model){
-		return "view_visit_info";
+		return "view_visit_info";	// Returns the view_visit_info page
 	}
 	
 	/*
