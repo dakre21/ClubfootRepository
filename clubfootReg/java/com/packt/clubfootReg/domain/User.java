@@ -1,6 +1,13 @@
 package com.packt.clubfootReg.domain;
 
+/**
+ * 
+ * @author David
+ * User model class that contains all the attributes to be added to the database and visible on the form.
+ */
+//User class
 public class User {
+	// Form attributes to by synchronized to the database
 	private int id;
 	private String user_name;
 	private String email;
@@ -11,7 +18,9 @@ public class User {
 		
 	}
 	
+	// User constructor that sets up the retriving information from the database via this model
 	public User(int id, String userName, String email, int hospital_id, int role_id) {
+		// Sets current object "this" to the value being passed when this model is being instantiated 
 		this.id = id;
 		this.user_name = userName;
 		this.email = email;
@@ -24,6 +33,12 @@ public class User {
 
 	}
 
+	/**
+	 * 
+	 * Getter and setter methods for all of the forms attributes. These get the value being passed into the model, and effectively set
+	 * the value to the model attribute to be synchronized to the database (visa versa for pull requests). 
+	 */
+	
 	public int getId() {
 		return id;
 	}

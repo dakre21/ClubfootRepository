@@ -4,7 +4,14 @@ import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * 
+ * @author David
+ * newPatient model class that contains all the attributes to be added to the database and visible on the form.
+ */
+//newPatient class
 public class newPatient {
+	// Form attributes to by synchronized to the database
 	private int id;
 	private Integer guardianConsent;
 	private Integer photoConsent;
@@ -71,9 +78,11 @@ public class newPatient {
 		super();
 	}
 	
+	// newPatient constructor that sets up the retriving information from the database via this model
 	public newPatient(int id, Integer guardianConsent, Integer photoConsent, Integer hospital, String patient_firstName, 
 			          String patient_lastName, String patient_midName, String dob, Integer evaluator,
 			          String evaluation_date, String feet, String diagnosis) {
+		// Sets current object "this" to the value being passed when this model is being instantiated 
 		this.id = id;
 		this.guardianConsent = guardianConsent;
 		this.photoConsent = photoConsent;
@@ -88,6 +97,12 @@ public class newPatient {
 		this.diagnosis = diagnosis;
 	}
 	
+	
+	/**
+	 * 
+	 * Getter and setter methods for all of the forms attributes. These get the value being passed into the model, and effectively set
+	 * the value to the model attribute to be synchronized to the database (visa versa for pull requests). 
+	 */
 	
 	public Integer getGuardianConsent() {
 		return guardianConsent;

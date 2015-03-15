@@ -1,7 +1,14 @@
 package com.packt.clubfootReg.domain;
 
+/**
+ * 
+ * @author David
+ * Visit model class that contains all the attributes to be added to the database and visible on the form.
+ */
+//Visit class
 public class Visit {
 
+	// Form attributes to by synchronized to the database
 	private int id;
 	
 	private int patientId;
@@ -89,7 +96,15 @@ public class Visit {
 		// TODO Auto-generated constructor stub
 	}
 	
+	/**
+	 * 
+	 * Getter and setter methods for all of the forms attributes. These get the value being passed into the model, and effectively set
+	 * the value to the model attribute to be synchronized to the database (visa versa for pull requests). 
+	 */
+	
+	// Visit constructor that sets up the retriving information from the database via this model
 	public Visit(int patientId) {
+		// Sets current object "this" to the value being passed when this model is being instantiated 
 		this.patientId = patientId;
 	}
 

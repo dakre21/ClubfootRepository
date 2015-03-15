@@ -1,8 +1,16 @@
 package com.packt.clubfootReg.domain;
 
+/**
+ * 
+ * @author David
+ * Evaluator model class that contains all the attributes to be added to the database and visible on the form.
+ */
+
+// Evaluator class
 public class Evaluator {
 
-	private int id;
+	// Form attributes to by synchronized to the database
+	private int id;	
 	private String first_name;
 	private String middle_name;
 	private String last_name;
@@ -14,7 +22,9 @@ public class Evaluator {
 		
 	}
 	
+	// Evaluator constructor that sets up the retriving information from the database via this model
 	public Evaluator(int id, String first, String last, String middle, String title, String hospName, int hosp) {
+		// Sets current object "this" to the value being passed when this model is being instantiated 
 		this.id = id;
 		this.first_name = first;
 		this.last_name = last;
@@ -29,6 +39,11 @@ public class Evaluator {
 
 	}
 
+	/**
+	 * 
+	 * Getter and setter methods for all of the forms attributes. These get the value being passed into the model, and effectively set
+	 * the value to the model attribute to be synchronized to the database (visa versa for pull requests). 
+	 */
 	public int getId() {
 		return id;
 	}
