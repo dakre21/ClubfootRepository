@@ -807,6 +807,10 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		return patient;
 	}
 
+	/**
+	 * Method that retrieves all Users data from a series of sql queries to the database, and puts it into a result set
+	 * to be viewed in the "view" pages
+	 */
 	@Override
 	public List<newPatient> getAllPatients() {
 		Connection conn = null;
@@ -860,6 +864,9 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		}
 	}
 
+	/**
+	 * Method that retrieves the max person id
+	 */
 	@Override
 	public int getMaxPersonID() {
 		Connection conn = null;

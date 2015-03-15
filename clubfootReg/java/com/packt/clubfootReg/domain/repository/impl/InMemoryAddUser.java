@@ -126,6 +126,10 @@ public class InMemoryAddUser implements UserRepo{
 		
 	}
 
+	/**
+	 * Method that retrieves all Users data from a series of sql queries to the database, and puts it into a result set
+	 * to be viewed in the "view" pages
+	 */
 	@Override
 	public List<User> getAllUsers() {
 		Connection conn = null;
@@ -174,6 +178,9 @@ public class InMemoryAddUser implements UserRepo{
 		}
 	}
 
+	/**
+	 * Method that retrieves the max person id
+	 */
 	@Override
 	public int getMaxPersonID() {
 		Connection conn = null;

@@ -141,6 +141,10 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 		}
 	}
 	
+	/**
+	 * Method that retrieves all Users data from a series of sql queries to the database, and puts it into a result set
+	 * to be viewed in the "view" pages
+	 */
 	public List<Evaluator> getAllEvaluators() {
 		Connection conn = null;
 		Evaluator evaluator = null;
@@ -241,6 +245,9 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 		return;
 	}
 
+	/**
+	 * Method that retrieves the max person id
+	 */
 	public int getMaxPersonID() {
 		Connection conn = null;
 		int max = 0;

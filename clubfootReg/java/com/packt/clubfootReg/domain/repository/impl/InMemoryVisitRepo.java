@@ -276,7 +276,10 @@ public class InMemoryVisitRepo implements VisitRepo{
 		
 	}
 
-	
+	/**
+	 * Method that retrieves all Users data from a series of sql queries to the database, and puts it into a result set
+	 * to be viewed in the "view" pages
+	 */
 	@Override
 	public List<Visit> getAllVisits() {
 		Connection conn = null;
@@ -315,7 +318,9 @@ public class InMemoryVisitRepo implements VisitRepo{
 		}
 	}
 
-	
+	/**
+	 * Method that retrieves the max visit id
+	 */
 	@Override
 	public int getMaxVisitId() {
 		Connection conn = null;

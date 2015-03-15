@@ -136,6 +136,9 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 		
 	}
 	
+	/**
+	 * Method that retrieves the max hospital id
+	 */
 	public int getMaxHospitalID() {
 		Connection conn = null;
 		int max = 0;
