@@ -23,16 +23,22 @@ import java.sql.PreparedStatement;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+/**
+ * 
+ * @author David
+ * This class represents the InMemoryHospitalRepo class that uses CRUD actions (methods) to manipulate data in the database
+ */
 @Repository
 public class InMemoryHospitalRepo implements HospitalRepo{
 
-	private DataSource dataSource;
-	private JdbcTemplate jdbcTemplateObject;
-	private List<Hospital> listOfHospitals = new ArrayList<Hospital>();
+	private DataSource dataSource; // Instantiation of the datasource object
+	private JdbcTemplate jdbcTemplateObject; // Instantiation of the JdbcTemplate object
+	private List<Hospital> listOfHospitals = new ArrayList<Hospital>(); // Creation of a new list of users
 	
+	// JDBCTemplate subclass DataSource sets up the environment to allow data to be manipulated in this Spring app
 	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+		this.dataSource = dataSource; // Sets the current object this of the class's attribute dataSource eqal to the object of datasource
+		this.jdbcTemplateObject = new JdbcTemplate(dataSource); // Instantiation of the JDBCTemplateObject class which takes in the object of datasource to set up data synchronization
 		
 	}
 	
@@ -50,18 +56,23 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 		return null;
 	}
 	
+	// This method effectively adds data that was saved to the model to the MySQL instance of the database
 	public void addHospital(Hospital hospital) {
-		listOfHospitals.add(hospital);
-		String name = hospital.getName();
-		int region_id = hospital.getRegion_id();
+		listOfHospitals.add(hospital); // Adds the object of the model "hospital" to the list created above
+		String name = hospital.getName();	// Gets the String name from the hospital model
+		int region_id = hospital.getRegion_id(); // Gets the integer value of the region id
 		
-		Connection connection = null;
+		Connection connection = null;	// Instantiation of the connection to the database
 		
+		/**
+		 * The following contains a set of prepared statements to be prepared to be synchronized to the MySql database.
+		 * The prepared statements pull information that was saved to the model via the form submission.
+		 */
 		try {
-			connection = dataSource.getConnection();
+			connection = dataSource.getConnection(); // Connection of the dataSource with the MySql sever
 			
-			String sql = "Insert into hospital values(?, ?, ?)";
-			PreparedStatement ps = connection.prepareStatement(sql);
+			String sql = "Insert into hospital values(?, ?, ?)"; // First sql statement that contains the information to query into hospital
+			PreparedStatement ps = connection.prepareStatement(sql); // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database and establishment of the sql query
 			
 			ps.setInt(1, this.getMaxHospitalID()+1);
 			ps.setString(2, name);
@@ -69,11 +80,11 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 			
 			ps.executeUpdate();
 			ps.close();
-		} catch (SQLException e) {
+		} catch (SQLException e) { // Catches SQL exception errors
 			throw new RuntimeException(e);
  
 		} finally {
-			if (connection != null) {
+			if (connection != null) { // Closes SQL connection 
 				try {
 					connection.close();
 				} catch (SQLException e) {}

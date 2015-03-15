@@ -23,6 +23,11 @@ import java.sql.PreparedStatement;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+/**
+ * 
+ * @author David
+ * This class represents the InMemoryVisitrepo class that uses CRUD actions (methods) to manipulate data in the database
+ */
 @Repository
 public class InMemoryVisitRepo implements VisitRepo{
 
@@ -35,20 +40,25 @@ public class InMemoryVisitRepo implements VisitRepo{
 
 	}
 	
-	private DataSource dataSource;
-	private JdbcTemplate jdbcTemplateObject;
-	private List<Visit> listOfVisits = new ArrayList<Visit>();
+	private DataSource dataSource; // Instantiation of the datasource object
+	private JdbcTemplate jdbcTemplateObject; // Instantiation of the JdbcTemplate object
+	private List<Visit> listOfVisits = new ArrayList<Visit>(); // Creation of a new list of users
 	
+	// JDBCTemplate subclass DataSource sets up the environment to allow data to be manipulated in this Spring app
 	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+		this.dataSource = dataSource; // Sets the current object this of the class's attribute dataSource eqal to the object of datasource
+		this.jdbcTemplateObject = new JdbcTemplate(dataSource); // Instantiation of the JDBCTemplateObject class which takes in the object of datasource to set up data synchronization
 	}
 
+	// This method effectively adds data that was saved to the model to the MySQL instance of the database
 	public void addVisit(Visit visit) {
-		listOfVisits.add(visit);
+		listOfVisits.add(visit); // Adds the object of the model "visit" to the list created above
 		
-		int visitId = this.getMaxVisitId() + 1;
-		int patientId = visit.getPatientId();
+		// The visit model has around 60 fields that are being retrieved in this instance of the repo class
+		// There are integers, strings, and date formatted information that is saved from the form to the model 
+		// That is going to be synchronized to the database
+		int visitId = this.getMaxVisitId() + 1;	// Gets the max integer value of the visit id
+		int patientId = visit.getPatientId(); // Gets the integer value of the visit id
 		Integer hospitalId = visit.getHospitalId();
 		Integer evaluatorId = visit.getEvaluatorId();
 		String dateOfVisit = visit.getDateOfVisit();
@@ -111,7 +121,7 @@ public class InMemoryVisitRepo implements VisitRepo{
 		String sql_visit = "Insert into visit (id, evaluator_id, patient_id, hospital_id, is_last_visit, " +
 					   	   "next_visit_date, relapse, complications, complications_description, " +
 					   	   "complications_results, general_comments) " +
-		                   "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		                   "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into visit
 		
 		//String sql_left_foot = "Insert into foot (id, visit_id, laterality, varus, cavus, abductus, equinus, pc, eh, re, mc, thc, clb, " +
 		//					   "cast_number, abduction, dorsiflexion, brace_compliance, brace_problems, brace_action, surgery_other, " +
@@ -119,16 +129,20 @@ public class InMemoryVisitRepo implements VisitRepo{
 		//					   "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		String sql_left_foot = "Insert into foot (id, visit_id, laterality, varus, cavus, abductus, equinus, pc, eh, re, mc, thc, clb) " +
-   				               "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+   				               "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into left foot
 		
 		String sql_right_foot = "Insert into foot (id, visit_id, laterality, varus, cavus, abductus, equinus, pc, eh, re, mc, thc, clb) " +
-				   				"values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				   				"values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into right foot
 		
-		Connection connection = null;
-		PreparedStatement ps = null;
+		Connection connection = null;	// Instantiation of the connection to the database
+		PreparedStatement ps = null; // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database
 		
+		/**
+		 * The following contains a set of prepared statements to be prepared to be synchronized to the MySql database.
+		 * The prepared statements pull information that was saved to the model via the form submission.
+		 */
 		try {
-			connection = dataSource.getConnection();
+			connection = dataSource.getConnection(); // Connection of the dataSource with the MySql sever
 			
 			// VISIT
 			ps = connection.prepareStatement(sql_visit);
@@ -290,10 +304,10 @@ public class InMemoryVisitRepo implements VisitRepo{
 			rs.close();
 			ps.close();
 			return visits;
-		} catch (SQLException e) {
+		} catch (SQLException e) { // Catches SQL exception errors
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
+			if (conn != null) { // Closes SQL connection 
 				try {
 				conn.close();
 				} catch (SQLException e) {}

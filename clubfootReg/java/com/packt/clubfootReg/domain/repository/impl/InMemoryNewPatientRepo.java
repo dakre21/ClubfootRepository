@@ -26,20 +26,31 @@ import java.sql.PreparedStatement;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+/**
+ * 
+ * @author David
+ * This class represents the InMemoryNewPatientRepo class that uses CRUD actions (methods) to manipulate data in the database
+ */
 @Repository
 public class InMemoryNewPatientRepo implements newPatientRepo{
-	private DataSource dataSource;
-	private JdbcTemplate jdbcTemplateObject;
-	private List<newPatient> listOfPatients = new ArrayList<newPatient>();
+	private DataSource dataSource; // Instantiation of the datasource object
+	private JdbcTemplate jdbcTemplateObject; // Instantiation of the JdbcTemplate object
+	private List<newPatient> listOfPatients = new ArrayList<newPatient>(); // Creation of a new list of users
 	
+	// JDBCTemplate subclass DataSource sets up the environment to allow data to be manipulated in this Spring app
 	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+		this.dataSource = dataSource; // Sets the current object this of the class's attribute dataSource eqal to the object of datasource
+		this.jdbcTemplateObject = new JdbcTemplate(dataSource); // Instantiation of the JDBCTemplateObject class which takes in the object of datasource to set up data synchronization
 	}
 	
+	// This method effectively adds data that was saved to the model to the MySQL instance of the database
 	public void addPatient(newPatient newpatient) {
-		listOfPatients.add(newpatient);
+		listOfPatients.add(newpatient); // Adds the object of the model "newpatient" to the list created above
 		//int id = newpatient.getId();
+		
+		// The patient model has around 60 fields that are being retrieved in this instance of the repo class
+		// There are integers, strings, and date formatted information that is saved from the form to the model 
+		// That is going to be synchronized to the database
 		Integer guardianConsent = newpatient.getGuardianConsent();
 		Integer photoConsent = newpatient.getPhotoConsent();
 		Integer hospital = newpatient.getHospital();
@@ -100,16 +111,16 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		String abnormalities = newpatient.getAbnormalities();
 		String weakness = newpatient.getWeakness();
 		
-		int patient_id;
-		int address_id;
-		int pg_id;
+		int patient_id; // Gets the integer value of the patient id
+		int address_id;	// Gets the integer value of the address id
+		int pg_id; // Gets the integer value of the guardian id
 		
 		// Address
-		String sql_address = "Insert into address (id, street, city, state, country) values (?, ?, ?, ?, ?)";
+		String sql_address = "Insert into address (id, street, city, state, country) values (?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into address
 		
 		// General Info
-		String sql_abstract_person = "Insert into abstract_person (id, address_id, created, first_name, last_name, middle_name) "
-				                   + "values (?, ?, ?, ?, ?, ?)";
+		String sql_abstract_person = "Insert into abstract_person (id, address_id, created, first_name, last_name, middle_name) " 
+				                   + "values (?, ?, ?, ?, ?, ?)";// First sql statement that contains the information to query into abstract_person
 		
 		// Patient, Family History
 		String sql_patient = "Insert into patient (id, diagnosis, diagnosis_comment, evaluator_id, hospital_id, feet_affected, " +
@@ -117,28 +128,32 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 							 "birth_complications, affected_relatives, pregency_length, pregnancy_complications, " +
 							 "pregnancy_drinking, pregnancy_smoking, referral_source, referral_other, referral_doctor_name, " +
 							 "referral_hospital_name, deformity_at_birth, prenatal_week, prenatal_confirmed) " +
-		                     "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		                     "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";// First sql statement that contains the information to query into patient
 		
 		// Parent/Guardian Info
 		String sql_abstract_person_pg = "Insert into abstract_person (id, created, first_name, last_name, middle_name) "
-								      + "values (?, ?, ?, ?, ?)";
-		String sql_associate_pg = "Insert into associate (id) values (?)";
+								      + "values (?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into abstract_person
+		String sql_associate_pg = "Insert into associate (id) values (?)"; // First sql statement that contains the information to query into associate person
 		String sql_patient_associates_pg = "Insert into patient_associates (patient_id, associate_id, relationship_to_patient, is_emergency_contact) "
-							             + "values (?, ?, ?, ?)";
+							             + "values (?, ?, ?, ?)"; // First sql statement that contains the information to query into associate person guardian
 		
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		Date date = new Date();
-		Connection conn = null;
-		PreparedStatement ps;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); // Sets up the date format for data to be properly synchronized to the database
+		Date date = new Date(); // Instantiation of the Date class
+		Connection conn = null; // Instantiation of the connection to the database
+		PreparedStatement ps;	// Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database
 		
+		/**
+		 * The following contains a set of prepared statements to be prepared to be synchronized to the MySql database.
+		 * The prepared statements pull information that was saved to the model via the form submission.
+		 */
 		try {
-			conn = dataSource.getConnection();
+			conn = dataSource.getConnection(); // Connection of the dataSource with the MySql sever
 			
 			address_id = getMaxAddressID()+1;
 			patient_id = getMaxPersonID()+1;
 			
 			// ADDRESS
-			ps = conn.prepareStatement(sql_address);
+			ps = conn.prepareStatement(sql_address); // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database and establishment of the sql query
 			/* TEST DATA
 			ps.setInt(1, address_id);
 			ps.setString(2, "Address");
@@ -343,11 +358,11 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				ps.executeUpdate();
 				ps.close();
 			}
-		} catch (SQLException e) {
+		} catch (SQLException e) { // Catches SQL exception errors
 			throw new RuntimeException(e);
  
 		} finally {
-			if (conn != null) {
+			if (conn != null) { // Closes SQL connection 
 				try {
 					conn.close();
 				} catch (SQLException e) {}

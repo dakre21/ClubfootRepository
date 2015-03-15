@@ -22,16 +22,22 @@ import java.sql.PreparedStatement;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
+/**
+ * 
+ * @author David
+ * This class represents the InMemoryEvaluatorRepo class that uses CRUD actions (methods) to manipulate data in the database
+ */
 @Repository
 public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 
-	private DataSource dataSource;
-	private JdbcTemplate jdbcTemplateObject;
-	private List<Evaluator> listOfEvaluators = new ArrayList<Evaluator>();
+	private DataSource dataSource; // Instantiation of the datasource object
+	private JdbcTemplate jdbcTemplateObject; // Instantiation of the JdbcTemplate object
+	private List<Evaluator> listOfEvaluators = new ArrayList<Evaluator>(); // Creation of a new list of users
 	
+	// JDBCTemplate subclass DataSource sets up the environment to allow data to be manipulated in this Spring app
 	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+		this.dataSource = dataSource; // Sets the current object this of the class's attribute dataSource eqal to the object of datasource
+		this.jdbcTemplateObject = new JdbcTemplate(dataSource); // Instantiation of the JDBCTemplateObject class which takes in the object of datasource to set up data synchronization
 		
 	}
 	
@@ -43,23 +49,28 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 		// TODO Auto-generated method stub
 	}
 
+	// This method effectively adds data that was saved to the model to the MySQL instance of the database
 	public void addEvaluator(Evaluator evaluator) {
-		listOfEvaluators.add(evaluator);
-		String first_name = evaluator.getFirst_name();
-		String middle_name = evaluator.getMiddle_name();
-		String last_name = evaluator.getLast_name();
-		String title = evaluator.getTitle();
-		int hospital = evaluator.getHospital_id();
+		listOfEvaluators.add(evaluator); // Adds the object of the model "evaluator" to the list created above
+		String first_name = evaluator.getFirst_name(); // Gets the String first_name from the evaluator model
+		String middle_name = evaluator.getMiddle_name(); // Gets the String middle_name from the evaluator model
+		String last_name = evaluator.getLast_name(); // Gets the String last_name from the evaluator model
+		String title = evaluator.getTitle(); // Gets the String title from the evaluator model
+		int hospital = evaluator.getHospital_id(); // Gets the integer value of the evaluator id
 		
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		Date date = new Date();
-		Connection connection = null;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); // Sets up the date format for data to be properly synchronized to the database
+		Date date = new Date(); // Instantiation of the Date class
+		Connection connection = null; // Instantiation of the connection to the database
 		
+		/**
+		 * The following contains a set of prepared statements to be prepared to be synchronized to the MySql database.
+		 * The prepared statements pull information that was saved to the model via the form submission.
+		 */
 		try {
-			connection = dataSource.getConnection();
+			connection = dataSource.getConnection(); // Connection of the dataSource with the MySql sever
 			
-			String sql = "Insert into abstract_person (id, created, first_name, last_name, middle_name) values(?, ?, ?, ?, ?)";
-			PreparedStatement ps = connection.prepareStatement(sql);
+			String sql = "Insert into abstract_person (id, created, first_name, last_name, middle_name) values(?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into abstract_person
+			PreparedStatement ps = connection.prepareStatement(sql); // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database and connection to the database with the sql query
 			ps.setInt(1, this.getMaxPersonID()+1);
 			ps.setString(2, dateFormat.format(date));
 			ps.setString(3, first_name);
@@ -68,17 +79,17 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 			ps.executeUpdate();
 			ps.close();
 			
-			String sql2 = "Insert into evaluator values(?, ?, ?)";
+			String sql2 = "Insert into evaluator values(?, ?, ?)"; // First sql statement that contains the information to query into evaluator
 			PreparedStatement ps2 = connection.prepareStatement(sql2);
 			ps2.setInt(1, this.getMaxPersonID());
 			ps2.setString(2, title);
 			ps2.setInt(3, hospital);
 			ps2.executeUpdate();
 			ps2.close();
-		} catch (SQLException e) {
+		} catch (SQLException e) { // Catches SQL exception errors
 			throw new RuntimeException(e);
 		} finally {
-			if (connection != null) {
+			if (connection != null) { // Closes SQL connection 
 				try {
 					connection.close();
 				} catch (SQLException e) {}
