@@ -500,7 +500,7 @@
 			<div class="col-md-12">
 			<div class="form-group">
 			<label for="pre-imgfile">Upload photo of patient here: </label>
-			<input type="file" class="btn btn-lg btn-default" name="pre-imgfile" path="pre-imgfile"><br>
+			<input type="file" class="btn btn-lg btn-default" id="fileName" name="fileName" path="fileName"><br>
 			<button type="submit" class="btn btn-lg btn-default" for="add_photo" id="add_photo">Add another photo</button>
 			</div>
 			</div>

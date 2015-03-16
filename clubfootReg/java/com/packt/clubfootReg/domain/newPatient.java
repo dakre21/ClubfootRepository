@@ -72,7 +72,7 @@ public class newPatient {
 	private String diagnosis_comments;
 	private String abnormalities;
 	private String weakness;
-	//private MultipartFile pre_imgfile;
+	private MultipartFile fileName;
 
 	public newPatient() {
 		super();
@@ -602,5 +602,13 @@ public class newPatient {
 	}
 	public void setDiagnosis_prenatally_week(Integer diagnosis_prenatally_week) {
 		this.diagnosis_prenatally_week = diagnosis_prenatally_week;
+	}
+
+	public MultipartFile getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(MultipartFile fileName) {
+		this.fileName = fileName;
 	}
 }
