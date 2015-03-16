@@ -264,6 +264,9 @@ public class InMemoryVisitRepo implements VisitRepo{
 		return null;
 	}
 
+	/**
+	 * Method the effectively deletes visit information stored in the database
+	 */
 	public void deleteVisit(int id) {
 		String query = "delete from visit where id = ?";
 		jdbcTemplateObject.update(query, id);
@@ -282,10 +285,15 @@ public class InMemoryVisitRepo implements VisitRepo{
 	 */
 	@Override
 	public List<Visit> getAllVisits() {
-		Connection conn = null;
-		Visit visit = null;
-		List<Visit> visits = null;
+		Connection conn = null; // Resets the connection to the database
+		Visit visit = null; // Resets the model
+		List<Visit> visits = null; // Resets the list
 		
+		/**
+		 * Reseting the database connection to retrieve information that's stored in the mysql database
+		 * via queries that are sent through the open connection. The results of the data received by this class
+		 * is saved in a result set to be displayed in the jsp view. 
+		 */
 		try {
 			conn = dataSource.getConnection();
 			
@@ -323,7 +331,7 @@ public class InMemoryVisitRepo implements VisitRepo{
 	 */
 	@Override
 	public int getMaxVisitId() {
-		Connection conn = null;
+		Connection conn = null; // Resets the connection to the database
 		int max = 0;
 		
 		try {
@@ -351,10 +359,12 @@ public class InMemoryVisitRepo implements VisitRepo{
 		}
 	}
 
-	
+	/**
+	 * Method that receives the max foot id from the database
+	 */
 	@Override
 	public int getMaxFootId() {
-		Connection conn = null;
+		Connection conn = null; // Resets the connection to the database
 		int max = 0;
 		
 		try {
@@ -382,8 +392,12 @@ public class InMemoryVisitRepo implements VisitRepo{
 		}
 	}
 	
+	/**
+	 * 
+	 * Method that returns a mapped vector of int and string values for all hosptials
+	 */
 	public Map<Integer, String> getAllHospitals() {
-		Connection conn = null;
+		Connection conn = null; // Resets the connection to the database
 		Map<Integer, String> hospitals = new LinkedHashMap<Integer,String>();
 		
 		try {

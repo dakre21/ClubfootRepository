@@ -93,13 +93,19 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 		
 		return;
 	}
+	
+	/**
+	 * Reseting the database connection to retrieve information that's stored in the mysql database
+	 * via queries that are sent through the open connection. The results of the data received by this class
+	 * is saved in a result set to be displayed in the jsp view. 
+	 */
 	public List<Hospital> getHospital(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	public Map<Integer, String> getAllHospitals() {
-		Connection conn = null;
+		Connection conn = null; // Resets the connection to the database
 		Map<Integer, String> hospitals = new LinkedHashMap<Integer,String>();
 		
 		try {
@@ -127,6 +133,9 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 		}
 	}
 	
+	/**
+	 * Method the effectively deletes hospital information stored in the database
+	 */
 	public void deleteHospital(int id) {
 		// TODO Auto-generated method stub
 		
@@ -140,7 +149,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	 * Method that retrieves the max hospital id
 	 */
 	public int getMaxHospitalID() {
-		Connection conn = null;
+		Connection conn = null; // Resets the connection to the database
 		int max = 0;
 		
 		try {

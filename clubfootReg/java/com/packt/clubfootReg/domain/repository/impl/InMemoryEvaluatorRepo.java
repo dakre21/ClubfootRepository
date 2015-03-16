@@ -100,8 +100,8 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 	}
 
 	public Evaluator getEvaluator(int id) {
-		Connection conn = null;
-		Evaluator evaluator = null;
+		Connection conn = null; // Resets the connection to the database
+		Evaluator evaluator = null; // Resets the model
 		
 		try {
 			conn = dataSource.getConnection();
@@ -146,9 +146,15 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 	 * to be viewed in the "view" pages
 	 */
 	public List<Evaluator> getAllEvaluators() {
-		Connection conn = null;
-		Evaluator evaluator = null;
-		List<Evaluator> evaluators = null;
+		Connection conn = null; // Resets the connection to the database
+		Evaluator evaluator = null; // Resets the model
+		List<Evaluator> evaluators = null; // Resets the list
+		
+		/**
+		 * Reseting the database connection to retrieve information that's stored in the mysql database
+		 * via queries that are sent through the open connection. The results of the data received by this class
+		 * is saved in a result set to be displayed in the jsp view. 
+		 */
 		
 		try {
 			conn = dataSource.getConnection();
@@ -192,12 +198,18 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 		}
 	}
 
+	/**
+	 * Method the effectively deletes evaluator information stored in the database
+	 */
 	public void deleteEvaluator(int id) {
 		String sql = "Delete from evaluator where id = ?";
 		jdbcTemplateObject.update(sql, id);
 		System.out.println("Deleted patient with id = " + id);	
 	}
 
+	/**
+	 * Method that updates the evaluator model
+	 */
 	public void updateEvaluator(Evaluator evaluator) {
 		listOfEvaluators.add(evaluator);
 		int id = evaluator.getId();
@@ -249,7 +261,7 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 	 * Method that retrieves the max person id
 	 */
 	public int getMaxPersonID() {
-		Connection conn = null;
+		Connection conn = null; // Resets the connection to the database
 		int max = 0;
 		
 		try {
@@ -278,7 +290,7 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 	}
 	
 	public Map<Integer, String> getAllHospitals() {
-		Connection conn = null;
+		Connection conn = null; // Resets the connection to the database
 		Map<Integer, String> hospitals = new LinkedHashMap<Integer,String>();
 		
 		try {

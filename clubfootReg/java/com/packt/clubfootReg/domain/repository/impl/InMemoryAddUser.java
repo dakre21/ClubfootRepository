@@ -132,10 +132,15 @@ public class InMemoryAddUser implements UserRepo{
 	 */
 	@Override
 	public List<User> getAllUsers() {
-		Connection conn = null;
-		User user = null;
-		List<User> users = null;
+		Connection conn = null;	// Resets the connection to the database
+		User user = null;	// Resets the model
+		List<User> users = null; // Resets the List
 		
+		/**
+		 * Reseting the database connection to retrieve information that's stored in the mysql database
+		 * via queries that are sent through the open connection. The results of the data received by this class
+		 * is saved in a result set to be displayed in the jsp view. 
+		 */
 		try {
 			conn = dataSource.getConnection();
 			
@@ -146,7 +151,7 @@ public class InMemoryAddUser implements UserRepo{
 					     "inner join hospital d on c.hospital_id = d.id " +
 					     "inner join role e on a.role_id = e.id " +
 					     "order by a.id";
-			PreparedStatement ps = conn.prepareStatement(sql);
+			PreparedStatement ps = conn.prepareStatement(sql);	
 			ResultSet rs = ps.executeQuery();
 			
 			if (rs.last()) {
@@ -183,7 +188,7 @@ public class InMemoryAddUser implements UserRepo{
 	 */
 	@Override
 	public int getMaxPersonID() {
-		Connection conn = null;
+		Connection conn = null; // Resets the connection to the database
 		int max = 0;
 		
 		try {

@@ -381,12 +381,18 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 
 	}
 
+	/**
+	 * Method the effectively deletes new patient information stored in the database
+	 */
 	public void deletePatient(int id) {
 		String query = "delete from patient where id = ?";
 		jdbcTemplateObject.update(query, id);
 		System.out.println("Deleted patient with id = " + id);
 	}
 	
+	/**
+	 * Method that updates patient information
+	 */
 	public void updatePatient(newPatient newpatient) {
 		listOfPatients.add(newpatient);
 		int id = newpatient.getId();
@@ -656,8 +662,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 	}
 
 	public newPatient getPatient(int id) {
-		Connection conn = null;
-		newPatient patient = null;
+		Connection conn = null; // Resets the connection to the database
+		newPatient patient = null; // Resets the model
 		
 		try {
 			conn = dataSource.getConnection();
@@ -813,10 +819,15 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 	 */
 	@Override
 	public List<newPatient> getAllPatients() {
-		Connection conn = null;
-		newPatient patient = null;
-		List<newPatient> patients = null;
+		Connection conn = null; // Resets the connection to the database
+		newPatient patient = null; // Resets the model
+		List<newPatient> patients = null; // Resets the list
 		
+		/**
+		 * Reseting the database connection to retrieve information that's stored in the mysql database
+		 * via queries that are sent through the open connection. The results of the data received by this class
+		 * is saved in a result set to be displayed in the jsp view. 
+		 */
 		try {
 			conn = dataSource.getConnection();
 			
@@ -869,7 +880,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 	 */
 	@Override
 	public int getMaxPersonID() {
-		Connection conn = null;
+		Connection conn = null; // Resets the connection to the database
 		int max = 0;
 		
 		try {
@@ -897,8 +908,11 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		}
 	}
 	
+	/**
+	 * Method that gets the address id for person
+	 */
 	public int getAddressIDForPerson(int id) {
-		Connection conn = null;
+		Connection conn = null; // Resets the connection to the database
 		int address_id = 0;
 		
 		try {
@@ -929,7 +943,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 	
 	@Override
 	public int getMaxAddressID() {
-		Connection conn = null;
+		Connection conn = null; // Resets the connection to the database
 		int max = 0;
 		
 		try {
@@ -959,7 +973,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 
 	@Override
 	public int[] getAssociateIDsForPatient(int id) {
-		Connection conn = null;
+		Connection conn = null; // Resets the connection to the database
 		int[] ids = new int[3];
 		int count = 0;
 		
