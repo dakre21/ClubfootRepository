@@ -12,6 +12,7 @@ public class Hospital {
 	private int id;
 	private String name;
 	private int region_id;
+	private String region_name;
 	
 	
 	public Hospital() {
@@ -19,11 +20,12 @@ public class Hospital {
 	}
 	
 	// Hospital constructor that sets up the retriving information from the database via this model
-	public Hospital(int id, String name, int region_id){
+	public Hospital(int id, String name, int region_id, String region_name){
 		// Sets current object "this" to the value being passed when this model is being instantiated 
 		this.id = id;
 		this.name = name;
 		this.region_id = region_id;
+		this.region_name = region_name;
 	}
 
 	public static void main(String[] args) {
@@ -53,6 +55,14 @@ public class Hospital {
 		this.region_id = hospitalRegion;
 	}
 
+	public String getRegion_name() {
+		return region_name;
+	}
+
+	public void setRegion_name(String regionName) {
+		this.region_name = regionName;
+	}
+	
 	public int getId() {
 		return id;
 	}

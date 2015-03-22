@@ -13,7 +13,6 @@ import com.packt.clubfootReg.domain.Hospital;
  * Interface for the Hospital Repository to synchronize data to the database via the following interface methods.
  */
 public interface HospitalRepo {
-	
 	Hospital getHospital1(int id);
 	void addHospital(Hospital hospital); // addHospital method to add the model data to the database
 	void setDataSource(DataSource ds); // Sets up the dataSource for the database synch
@@ -21,5 +20,6 @@ public interface HospitalRepo {
 	void deleteHospital(int id); // DeleteHospital method which takes the id value 
 	void updateHospital(Hospital hospital); // UpdateHospital method which takes in the hospital object
 	int getMaxHospitalID();	// Method that returns the maxhospitalid
-	Map<Integer, String> getAllHospitals();	// Map object that has a vector of Integer and String values which getsAllHospitals
+	List<Hospital> getAllHospitals();	// Map object that has a vector of Integer and String values which getsAllHospitals
+	Map<Integer, String> getAllRegions();
 }

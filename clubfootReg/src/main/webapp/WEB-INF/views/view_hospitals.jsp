@@ -40,7 +40,7 @@
             <c:forEach var="o" items="${hospitals}">
               <tr>
                   <td>${o.name}</td>
-                  <td>${o.region_id}</td>
+                  <td>${o.region_name}</td>
               </tr>
             </c:forEach>
           </c:if>

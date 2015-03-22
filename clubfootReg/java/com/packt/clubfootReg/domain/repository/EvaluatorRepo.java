@@ -20,5 +20,5 @@ public interface EvaluatorRepo {
 	void deleteEvaluator(int id);	// DeleteEvaluator method which takes the id value 
 	void updateEvaluator(Evaluator evaluator);	// UpdateEvaluator method which takes in the evaluator object
 	int getMaxPersonID();	// Method that returns the maxpersonid
-	//Map<Integer, String> getAllHospitals();	// Map object that has a vector of Integer and String values which getsAllHospitals
+	Map<Integer, String> getAllHospitals();	// Map object that has a vector of Integer and String values which getsAllHospitals
 }

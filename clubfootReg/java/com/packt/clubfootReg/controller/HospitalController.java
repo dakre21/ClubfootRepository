@@ -1,5 +1,7 @@
 package com.packt.clubfootReg.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.packt.clubfootReg.domain.Evaluator;
 import com.packt.clubfootReg.domain.Hospital;
 import com.packt.clubfootReg.domain.repository.HospitalRepo;
 
@@ -51,12 +54,19 @@ public class HospitalController {
 		return "view_hospitals";	// Returns view_hospitals view
 	}
 	
+	
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value = "/view_hospitals", method = RequestMethod.GET) // In this instance we receive the jsp view "view_hospitals" and get command to view the page
 	public String viewHospitalsForm(Model model){
 		model.addAttribute("hospitals", hospitalRepo.getAllHospitals()); // Method call getAllHospitals receives all of the hospitals from the database and synchronizes to the attribute "hospitals" in the model
 		return "view_hospitals";	// Returns view_hospitals view
 	}
+	
+	@ModelAttribute("regionList")
+	public Map<Integer, String> populateRegionSelect() {
+	    return hospitalRepo.getAllRegions();
+	}
+	
 	public HospitalController() {
 		// TODO Auto-generated constructor stub
 	}

@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
 
+import com.packt.clubfootReg.domain.Evaluator;
 import com.packt.clubfootReg.domain.Hospital;
 import com.packt.clubfootReg.domain.repository.HospitalRepo;
 
@@ -82,7 +83,6 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 			ps.close();
 		} catch (SQLException e) { // Catches SQL exception errors
 			throw new RuntimeException(e);
- 
 		} finally {
 			if (connection != null) { // Closes SQL connection 
 				try {
@@ -104,21 +104,42 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 		return null;
 	}
 	
-	public Map<Integer, String> getAllHospitals() {
+	public List<Hospital> getAllHospitals() {
 		Connection conn = null; // Resets the connection to the database
-		Map<Integer, String> hospitals = new LinkedHashMap<Integer,String>();
+		Hospital hospital = null; // Resets the model
+		List<Hospital> hospitals = null; // Resets the list
+		
+		/**
+		 * Reseting the database connection to retrieve information that's stored in the mysql database
+		 * via queries that are sent through the open connection. The results of the data received by this class
+		 * is saved in a result set to be displayed in the jsp view. 
+		 */
 		
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "Select id, name from hospital";
+			String sql = "Select a.*, b.name as region_name " +
+						 "from hospital a " +
+						 "inner join region b on a.region_id = b.id " +
+						 "order by a.name";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
-			while (rs.next()) {
-				hospitals.put(rs.getInt("id"), rs.getString("name"));
+			if (rs.last()) {
+			  hospitals = new ArrayList<>(rs.getRow());
+			  rs.beforeFirst(); 
 			}
 			
+			while (rs.next()) {
+				hospital = new Hospital(
+					rs.getInt("id"),
+					rs.getString("name"),
+					rs.getInt("region_id"),
+					rs.getString("region_name")
+				);
+				hospitals.add(hospital);
+				System.out.println(hospital.getName());
+			}
 			rs.close();
 			ps.close();
 			return hospitals;
@@ -132,7 +153,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 			}
 		}
 	}
-	
+
 	/**
 	 * Method the effectively deletes hospital information stored in the database
 	 */
@@ -177,4 +198,33 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 		}
 	}
 
+	public Map<Integer, String> getAllRegions() {
+		Connection conn = null; // Resets the connection to the database
+		Map<Integer, String> regions = new LinkedHashMap<Integer,String>();
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select * from region order by name";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				regions.put(rs.getInt("id"), rs.getString("name"));
+			}
+			
+			rs.close();
+			ps.close();
+			return regions;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
+	
 }
