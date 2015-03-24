@@ -27,6 +27,8 @@ import org.springframework.ui.Model;
 
 import com.packt.clubfootReg.controller.HomeController;
 import com.packt.clubfootReg.controller.VisitController;
+import com.packt.clubfootReg.domain.Visit;
+import com.packt.clubfootReg.domain.newPatient;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -48,6 +50,10 @@ public class VisitTest {
 
 	@InjectMocks
 	private VisitController vc;
+	@InjectMocks
+	Visit visit = new Visit();
+	@InjectMocks
+	Visit visit1 = new Visit(1);
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -61,6 +67,7 @@ public class VisitTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(vc).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@After
@@ -70,6 +77,22 @@ public class VisitTest {
 	@Test
 	public void test_view() throws Exception {
 		//mockMvc.perform(get("/visit")).andExpect(status().isOk()).andExpect(view().name("visit"));
+		this.mockMvc.perform(get("/visit")).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void test_VisitIDisNull() throws Exception {
+		if(this.visit == null){
+			assertNull(visit.getPatientId());
+		}
+	}
+	
+	@Test
+	public void test_VisitIDisNotNull() throws Exception {
+		if(this.visit1 != null){
+			assertNotNull(visit1.getPatientId());
+			assertEquals(visit1.getPatientId(), 1);
+		}
 	}
 
 }

@@ -91,7 +91,7 @@ public class HospitalTest {
 	@Test
 	public void test_HospitalNameisNotNull() throws Exception {
 		
-		if(this.mockHosp != null){
+		if(this.mockHosp1 != null){
 			assertNotNull(mockHosp1.getName());
 			assertEquals(mockHosp1.getName(), "Rush");
 		}
@@ -110,7 +110,7 @@ public class HospitalTest {
 	@Test
 	public void test_HospitalIDisNotNull() throws Exception {
 		
-		if(this.mockHosp != null){
+		if(this.mockHosp1 != null){
 			assertNotNull(mockHosp1.getId());
 			assertEquals(mockHosp1.getId(), 1);
 		}
@@ -129,7 +129,7 @@ public class HospitalTest {
 	@Test
 	public void test_HospitalRegionIDisNotNull() throws Exception {
 		
-		if(this.mockHosp != null){
+		if(this.mockHosp1 != null){
 			assertNotNull(mockHosp1.getRegion_id());
 			assertEquals(mockHosp1.getRegion_id(), 1);
 		}
@@ -148,7 +148,7 @@ public class HospitalTest {
 	@Test
 	public void test_HospitalRegionisNotNull() throws Exception {
 		
-		if(this.mockHosp != null){
+		if(this.mockHosp1 != null){
 			assertNotNull(mockHosp1.getRegion_name());
 			assertEquals(mockHosp1.getRegion_name(), "USA");
 		}

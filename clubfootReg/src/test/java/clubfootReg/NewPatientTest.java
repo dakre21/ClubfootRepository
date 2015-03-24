@@ -86,14 +86,14 @@ public class NewPatientTest {
 	
 	@Test
 	public void test_PatientIDisNull() throws Exception {
-		if(this.np1 == null){
-			assertNull(np1.getId());
+		if(this.np == null){
+			assertNull(np.getId());
 		}
 	}
 	
 	@Test
 	public void test_PatientIDisNotNull() throws Exception {
-		if(this.np1 == null){
+		if(this.np1 != null){
 			assertNotNull(np1.getId());
 			assertEquals(np1.getId(), 1);
 		}
@@ -101,8 +101,8 @@ public class NewPatientTest {
 	
 	@Test
 	public void test_PatientFirstNameisNull() throws Exception {
-		if(this.np1 == null){
-			assertNull(np1.getPatient_firstName());
+		if(this.np == null){
+			assertNull(np.getPatient_firstName());
 		}
 	}
 	
@@ -116,8 +116,8 @@ public class NewPatientTest {
 	
 	@Test
 	public void test_PatientMidNameisNull() throws Exception {
-		if(this.np1 == null){
-			assertNull(np1.getPatient_midName());
+		if(this.np == null){
+			assertNull(np.getPatient_midName());
 		}
 	}
 	
@@ -131,8 +131,8 @@ public class NewPatientTest {
 	
 	@Test
 	public void test_PatientLastNameisNull() throws Exception {
-		if(this.np1 == null){
-			assertNull(np1.getPatient_lastName());
+		if(this.np == null){
+			assertNull(np.getPatient_lastName());
 		}
 	}
 	
@@ -154,8 +154,8 @@ public class NewPatientTest {
 	
 	@Test
 	public void test_PatientConsentisNull() throws Exception {
-		if(this.np1 == null){
-			assertNull(np1.getGuardianConsent());
+		if(this.np == null){
+			assertNull(np.getGuardianConsent());
 		}
 	}
 	
@@ -169,8 +169,8 @@ public class NewPatientTest {
 	
 	@Test
 	public void test_PatientPConsentisNull() throws Exception {
-		if(this.np1 == null){
-			assertNull(np1.getPhotoConsent());
+		if(this.np == null){
+			assertNull(np.getPhotoConsent());
 		}
 	}
 	
@@ -184,8 +184,8 @@ public class NewPatientTest {
 	
 	@Test
 	public void test_PatientHospitalisNull() throws Exception {
-		if(this.np1 == null){
-			assertNull(np1.getHospital());
+		if(this.np == null){
+			assertNull(np.getHospital());
 		}
 	}
 	
@@ -199,8 +199,8 @@ public class NewPatientTest {
 	
 	@Test
 	public void test_PatientDobisNull() throws Exception {
-		if(this.np1 == null){
-			assertNull(np1.getDob());
+		if(this.np == null){
+			assertNull(np.getDob());
 		}
 	}
 	
@@ -214,8 +214,8 @@ public class NewPatientTest {
 	
 	@Test
 	public void test_PatientVisitisNull() throws Exception {
-		if(this.np1 == null){
-			assertNull(np1.getEvaluation_date());
+		if(this.np == null){
+			assertNull(np.getEvaluation_date());
 		}
 	}
 	
@@ -229,8 +229,8 @@ public class NewPatientTest {
 	
 	@Test
 	public void test_PatientFeettisNull() throws Exception {
-		if(this.np1 == null){
-			assertNull(np1.getFeet());
+		if(this.np == null){
+			assertNull(np.getFeet());
 		}
 	}
 	
@@ -244,8 +244,8 @@ public class NewPatientTest {
 	
 	@Test
 	public void test_PatientDiagtisNull() throws Exception {
-		if(this.np1 == null){
-			assertNull(np1.getDiagnosis());
+		if(this.np == null){
+			assertNull(np.getDiagnosis());
 		}
 	}
 	
@@ -259,8 +259,8 @@ public class NewPatientTest {
 	
 	@Test
 	public void test_PatientEvaltisNull() throws Exception {
-		if(this.np1 == null){
-			assertNull(np1.getEvaluator());
+		if(this.np == null){
+			assertNull(np.getEvaluator());
 		}
 	}
 
