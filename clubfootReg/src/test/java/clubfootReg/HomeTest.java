@@ -32,8 +32,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({"classpath*:spring/webcontext/DispatcherServlet-context.xml"})
+//@ContextConfiguration({"classpath*:spring/applicationContext.xml"})
 @WebAppConfiguration
-@ContextConfiguration({"classpath*:spring/applicationContext.xml"})
 public class HomeTest {
 	@Autowired
 	private WebApplicationContext wac;
