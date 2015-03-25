@@ -4,7 +4,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -111,9 +113,49 @@ public class InMemoryAddUser implements UserRepo{
 		
 	}
 
-	public List<User> getUser(int id) {
+	public User getUser(int id) {
+		Connection conn = null;	// Resets the connection to the database
+		User user = null;	// Resets the model
 		
-		return null;
+		/**
+		 * Reseting the database connection to retrieve information that's stored in the mysql database
+		 * via queries that are sent through the open connection. The results of the data received by this class
+		 * is saved in a result set to be displayed in the jsp view. 
+		 */
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select a.id, a.login, a.email, d.id as hospital_id, e.id as role_id " +
+						 "from user a " +
+					     "inner join abstract_person b on a.id = b.id " +
+					     "inner join user_hospital c on a.id = c.user_id " +
+					     "inner join hospital d on c.hospital_id = d.id " +
+					     "inner join role e on a.role_id = e.id " +
+					     "order by a.id";
+			PreparedStatement ps = conn.prepareStatement(sql);	
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				user = new User(
+					rs.getInt("id"),
+					rs.getString("login"),
+					rs.getString("email"),
+					rs.getInt("hospital_id"),
+					rs.getInt("role_id")
+				);
+			}
+			rs.close();
+			ps.close();
+			return user;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
 	}
 
 	public void deleteUser(int id) {
@@ -122,8 +164,50 @@ public class InMemoryAddUser implements UserRepo{
 	}
 
 	public void updateUser(User user) {
-		// TODO Auto-generated method stub
+		listOfUsers.add(user);	// Adds the object of the model "user" to the list created above
+		int id = user.getId();	// Gets the integer value of the user id
+		String userName = user.getUser_name(); // Gets the user name from the model
+		String email = user.getEmail();	// Gets the email from the model
+		int hospital_id = user.getHospital_id();	// Gets the hospital id
+		int role_id = user.getRole_id();	// Gets the user role id
+
+		Connection connection = null;	// Instantiation of the database connection
 		
+		/**
+		 * The following contains a set of prepared statements to be prepared to be synchronized to the MySql database.
+		 * The prepared statements pull information that was saved to the model via the form submission.
+		 */
+		try {
+			connection = dataSource.getConnection();	// Connection of the dataSource with the MySql sever
+			
+			String sql = "Update user set login = ?, email = ?, role_id = ? where id = ?"; // First sql statement that contains the information to query into user
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setString(1, userName);
+			ps.setString(2, email);
+			ps.setInt(3, role_id);
+			ps.setInt(4, id);
+			ps.executeUpdate();
+			ps.close();
+			
+			sql = "Update user_hospital set hospital_id = ? where user_id = ?"; // First sql statement that contains the information to query into hospital
+			PreparedStatement ps2 = connection.prepareStatement(sql);
+			ps2.setInt(1, hospital_id);
+			ps2.setInt(2, id);
+			ps2.executeUpdate();
+			ps2.close();
+			
+		} catch (SQLException e) { // Catches SQL exception errors
+			throw new RuntimeException(e);
+ 
+		} finally {
+			if (connection != null) { // Closes SQL connection 
+				try {
+					connection.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return;
 	}
 
 	/**
@@ -215,6 +299,64 @@ public class InMemoryAddUser implements UserRepo{
 			}
 		}
 		
+	}
+	
+	public Map<Integer, String> getAllRoles() {
+		Connection conn = null; // Resets the connection to the database
+		Map<Integer, String> roles = new LinkedHashMap<Integer,String>();
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select * from role";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				roles.put(rs.getInt("id"), rs.getString("name"));
+			}
+			
+			rs.close();
+			ps.close();
+			return roles;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
+	
+	public Map<Integer, String> getAllHospitals() {
+		Connection conn = null; // Resets the connection to the database
+		Map<Integer, String> hospitals = new LinkedHashMap<Integer,String>();
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select id, name from hospital";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				hospitals.put(rs.getInt("id"), rs.getString("name"));
+			}
+			
+			rs.close();
+			ps.close();
+			return hospitals;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
 	}
 
 }

@@ -99,9 +99,41 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	 * via queries that are sent through the open connection. The results of the data received by this class
 	 * is saved in a result set to be displayed in the jsp view. 
 	 */
-	public List<Hospital> getHospital(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Hospital getHospital(int id) {
+		Connection conn = null; // Resets the connection to the database
+		Hospital hospital = null; // Resets the model
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select a.*, b.name as region_name " +
+						 "from hospital a " +
+						 "inner join region b on a.region_id = b.id " +
+						 "where a.id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				hospital = new Hospital(
+					rs.getInt("id"),
+					rs.getString("name"),
+					rs.getInt("region_id"),
+					rs.getString("region_name")
+				);
+			}
+			rs.close();
+			ps.close();
+			return hospital;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
 	}
 	
 	public List<Hospital> getAllHospitals() {
@@ -162,8 +194,37 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 		
 	}
 	public void updateHospital(Hospital hospital) {
-		// TODO Auto-generated method stub
+		listOfHospitals.add(hospital);
+		int id = hospital.getId();
+		String name = hospital.getName();
+		int region_id = hospital.getRegion_id();
+	
+		String sql = "Update hospital set name = ?, region_id = ? where id = ?";
 		
+		Connection connection = null;
+		PreparedStatement ps = null;
+		
+		try {
+			connection = dataSource.getConnection();
+			
+			ps = connection.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.setInt(2, region_id);
+			ps.setInt(3, id);
+			ps.executeUpdate();
+			ps.close();
+			
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return;
 	}
 	
 	/**

@@ -24,12 +24,12 @@
 	<div class="jumbotron">
 		<h1>
 			Users
-			<a role="button" class="btn btn-primary" href="adduser">Add New User</a>
+			<a role="button" class="btn btn-primary btn-lg" href="adduser">Add New User</a>
 		</h1>
+		<hr>
 		<table class='table table-striped'>
 		   	<thead>
 		   		<tr>
-		   			<th>ID</th>
 		    		<th>Username</th>
 		    		<th>Email</th>
 		    		<th>Hospital</th>
@@ -41,11 +41,11 @@
         	<c:if test="${not empty users}">
             <c:forEach var="o" items="${users}">
               <tr>
-                  <td>${o.id}</td>
                   <td>${o.user_name}</td>
                   <td>${o.email}</td>
                   <td>${o.hospital_id}</td>
                   <td>${o.role_id}</td>
+                  <td><a href="edit_user?id=${o.id}">Edit</a></td>
               </tr>
             </c:forEach>
           </c:if>
