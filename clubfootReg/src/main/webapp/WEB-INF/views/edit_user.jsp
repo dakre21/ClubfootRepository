@@ -97,8 +97,7 @@
 			
 				&nbsp;
 				<div class="row" align="center">
-					<button type="submit" class="btn btn-lg btn-primary">Submit Form</button>
-					<button type="reset" class="btn btn-lg btn-default">Clear</button>
+					<button type="submit" class="btn btn-lg btn-primary">Save</button>
 				</div>
 			</form>
 		</div>

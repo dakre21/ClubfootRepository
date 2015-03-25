@@ -54,7 +54,7 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<footer align="center">
-				<p>&copy; Some Copywrite Info</p>
+				<p>&copy; Some Copyright Info</p>
 			</footer>
 		</div>
 	</div>

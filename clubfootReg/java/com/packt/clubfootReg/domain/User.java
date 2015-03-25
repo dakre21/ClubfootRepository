@@ -12,20 +12,24 @@ public class User {
 	private String user_name;
 	private String email;
 	private int hospital_id;
+	private String hospital_name;
 	private int role_id;
+	private String role_name;
 	
 	public User() {
 		
 	}
 	
 	// User constructor that sets up the retriving information from the database via this model
-	public User(int id, String userName, String email, int hospital_id, int role_id) {
+	public User(int id, String userName, String email, int hospital_id, String hospital_name, int role_id, String role_name) {
 		// Sets current object "this" to the value being passed when this model is being instantiated 
 		this.id = id;
 		this.user_name = userName;
 		this.email = email;
 		this.hospital_id = hospital_id;
+		this.hospital_name = hospital_name;
 		this.role_id = role_id;
+		this.role_name = role_name;
 	}
 
 	public static void main(String[] args) {
@@ -71,11 +75,27 @@ public class User {
 	}
 
 	
+	public String getHospital_name() {
+		return hospital_name;
+	}
+	public void setHospital_name(String hospital_name) {
+		this.hospital_name = hospital_name;
+	}
+	
+	
 	public int getRole_id() {
 		return role_id;
 	}
 	public void setRole_id(int role_id) {
 		this.role_id = role_id;
+	}
+	
+	
+	public String getRole_name() {
+		return role_name;
+	}
+	public void setRole_name(String role_name) {
+		this.role_name = role_name;
 	}
 
 }

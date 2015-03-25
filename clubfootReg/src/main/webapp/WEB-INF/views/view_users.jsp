@@ -43,8 +43,8 @@
               <tr>
                   <td>${o.user_name}</td>
                   <td>${o.email}</td>
-                  <td>${o.hospital_id}</td>
-                  <td>${o.role_id}</td>
+                  <td>${o.hospital_name}</td>
+                  <td>${o.role_name}</td>
                   <td><a href="edit_user?id=${o.id}">Edit</a></td>
               </tr>
             </c:forEach>
@@ -58,10 +58,11 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<footer align="center">
-				<p>&copy; Some Copywrite Info</p>
+				<p>&copy; Some Copyright Info</p>
 			</footer>
 		</div>
 	</div>
 </div>
+
 </body>
 </html> 

@@ -125,7 +125,7 @@ public class InMemoryAddUser implements UserRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "Select a.id, a.login, a.email, d.id as hospital_id, e.id as role_id " +
+			String sql = "Select a.id, a.login, a.email, d.id as hospital_id, d.name as hospital_name, e.id as role_id, e.name as role_name " +
 						 "from user a " +
 					     "inner join abstract_person b on a.id = b.id " +
 					     "inner join user_hospital c on a.id = c.user_id " +
@@ -141,7 +141,9 @@ public class InMemoryAddUser implements UserRepo{
 					rs.getString("login"),
 					rs.getString("email"),
 					rs.getInt("hospital_id"),
-					rs.getInt("role_id")
+					rs.getString("hospital_name"),
+					rs.getInt("role_id"),
+					rs.getString("role_name")
 				);
 			}
 			rs.close();
@@ -228,7 +230,7 @@ public class InMemoryAddUser implements UserRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "select a.id, a.login, a.email, d.id as hospital_id, e.id as role_id " +
+			String sql = "select a.id, a.login, a.email, d.id as hospital_id, d.name as hospital_name, e.id as role_id, e.name as role_name " +
 						 "from user a " +
 					     "inner join abstract_person b on a.id = b.id " +
 					     "inner join user_hospital c on a.id = c.user_id " +
@@ -249,7 +251,9 @@ public class InMemoryAddUser implements UserRepo{
 					rs.getString("login"),
 					rs.getString("email"),
 					rs.getInt("hospital_id"),
-					rs.getInt("role_id")
+					rs.getString("hospital_name"),
+					rs.getInt("role_id"),
+					rs.getString("role_name")
 				);
 				users.add(user);
 			}

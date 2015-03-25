@@ -53,7 +53,7 @@ public class UserTest {
 	@InjectMocks
 	User user = new User();
 	@InjectMocks
-	User user1 = new User(1, "test_name", "test@email.com", 2, 3);
+	User user1 = new User(1, "test_name", "test@email.com", 2, "UIHC", 0, "Admin");
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
