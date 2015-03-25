@@ -67,7 +67,7 @@
 	<div class="row clearfix">
 		<div class="col-sm-2 column"></div>
 		<div class="col-md-8 column">
-			<h1>Update User</h1>  
+			<h1>Edit User</h1>  
 			<form action="#" th:action="@{/edit_user}" th:object="${user}" modelAttribute="editUser" method="post" id="updateUser">
 				<div class="form-group">
 					<label for="user_name">User Name</label>

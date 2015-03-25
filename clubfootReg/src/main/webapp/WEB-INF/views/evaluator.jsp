@@ -68,14 +68,9 @@
 				</div>
 				&nbsp;
 				<div class="row" align="center">
-					<button type="submit" class="btn btn-lg btn-primary">Submit Form</button>
-					<button type="reset" class="btn btn-lg btn-default">Clear</button>
+					<button type="submit" class="btn btn-lg btn-primary">Save</button>
 				</div>
 			</form>
-			<br>
-			<div class="row" align="center">
-				<a href="view_evaluators" class="btn btn-sm btn-default">Back to View Evaluators</a>
-			</div>
 		</div>
 		<div class="col-sm-2 column"></div>
 	</div>

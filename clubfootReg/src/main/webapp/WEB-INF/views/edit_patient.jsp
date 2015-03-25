@@ -157,7 +157,7 @@
 	<div class="row clearfix">
 	<div class="col-sm-2 column"></div>
 	<div class="col-md-8 column">
-	<h1>Update patient </h1>  
+	<h1>Edit Patient</h1>  
 	<form action="#" th:action="@{/edit_patient}" th:object="${patient}" modelAttribute="editPatient" method="post" id="updatePatient">
 		<div class="form-group">
 			<p><i>Please complete the form. Mandatory fields are marked with a </i><em>*</em></p>

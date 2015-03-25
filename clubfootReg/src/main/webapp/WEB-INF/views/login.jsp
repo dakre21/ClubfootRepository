@@ -15,7 +15,7 @@
     padding-top: 70px;
   }
 </style>
-<title>Clubfoot Registry | Log in</title>
+<title>Clubfoot Registry | Login</title>
 	<jsp:include page="navbar.jsp" />
 </head>
 <body>

@@ -156,7 +156,7 @@
 	<div class="row clearfix">
 	<div class="col-sm-2 column"></div>
 	<div class="col-md-8 column">
-	<h1>Create New patient </h1>  
+	<h1>Add New Patient</h1>  
 	<form action="#" th:action="@{/newpatient}" th:object="${newpatient}" modelAttribute="newPatient" method="post" id="newPatient" enctype="multipart/form-data">
 		<div class="form-group">
 			<p><i>Please complete the form. Mandatory fields are marked with a </i><em>*</em></p>
@@ -167,12 +167,22 @@
 			<label for="photoConsent"><em>*</em>Does the parent or guardian consent to photographs of the patient being used for CURE evaluation and marketing purposes: </label>
 			<input type="radio" name="photoConsent" value="1" path="photoConsent"> Yes
 			<input type="radio" name="photoConsent" value="0" path="photoConsent"> No <br>
-			<label for="hospital"><em>*</em>Hospital/Clinic: </label>
+			
+			<div class="form-group">
+				<label for="hospital">Hospital</label>
+				<form:select class="form-control" path="hospitalList" id="hospital" name="hospital">
+                   	<form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
+                   	<form:options items="${hospitalList}" />
+                </form:select>
+			</div>
+			
+			<!-- <label for="hospital"><em>*</em>Hospital/Clinic: </label>
 			<select name="hospital">
 				<option value="">Please select one of the following options</option>
 				<option value="0" path="hospital">Hospital 0</option>
 				<option value="1" path="hospital">Hospital 1</option>
-			</select> <br>
+			</select>-->
+			<br>
 		</div>
 			
 		<div class="row">
@@ -506,8 +516,7 @@
 			</div>
 		</fieldset>
 			<div class="row" align="center">
-					<button type="submit" class="btn btn-lg btn-primary">Submit Form</button>
-					<button type="reset" class="btn btn-lg btn-default">Clear</button>
+				<button type="submit" class="btn btn-lg btn-primary">Save</button>
 			</div>
 		</div>
 	</div>

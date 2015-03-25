@@ -3,8 +3,10 @@ package com.packt.clubfootReg.domain.repository.impl;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Date;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -22,6 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 //import java.sql.Date;
+
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -1003,4 +1006,34 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			}
 		}
 	}
+	
+	public Map<Integer, String> getAllHospitals() {
+		Connection conn = null; // Resets the connection to the database
+		Map<Integer, String> hospitals = new LinkedHashMap<Integer,String>();
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select id, name from hospital";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				hospitals.put(rs.getInt("id"), rs.getString("name"));
+			}
+			
+			rs.close();
+			ps.close();
+			return hospitals;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
+	
 }
