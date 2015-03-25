@@ -1,6 +1,7 @@
 package com.packt.clubfootReg.domain.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -24,4 +25,5 @@ public interface newPatientRepo {
 	int getAddressIDForPerson(int id);	// Method that returns maxaddressidforperson
 	int getMaxAddressID();// Method that returns the maxaddressid
 	int[] getAssociateIDsForPatient(int id);	// Method that returns associateidforpatient
+	Map<Integer, String> getAllHospitals();
 }

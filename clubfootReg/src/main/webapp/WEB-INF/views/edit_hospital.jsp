@@ -65,7 +65,7 @@
 	<div class="row clearfix">
 		<div class="col-sm-2 column"></div>
 		<div class="col-md-8 column">
-			<h1>Update Hospital</h1>  
+			<h1>Edit Hospital</h1>  
 			<form action="#" th:action="@{/edit_hospital}" th:object="${hospital}" modelAttribute="editHospital" method="post" id="updateHospital">
 				<div class="form-group">
           			<label for="hospital">Hospital/Clinic Name</label>
