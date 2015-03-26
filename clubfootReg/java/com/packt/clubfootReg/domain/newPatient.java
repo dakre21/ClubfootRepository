@@ -375,7 +375,7 @@ public class newPatient {
 	public Integer getEvaluator() {
 		return evaluator;
 	}
-	public void setEvaluator_name(Integer evaluator) {
+	public void setEvaluator(Integer evaluator) {
 		this.evaluator = evaluator;
 	}
 	

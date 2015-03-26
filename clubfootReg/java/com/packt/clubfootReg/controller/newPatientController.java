@@ -137,6 +137,11 @@ public class newPatientController {
 	    return newpatientrepo.getAllHospitals();
 	}
 	
+	@ModelAttribute("evaluatorList")
+	public Map<Integer, String> populateEvaluatorSelect() {
+	    return newpatientrepo.getAllEvaluators();
+	}
+	
 	public newPatientController() {
 		// TODO Auto-generated constructor stub
 	}

@@ -164,6 +164,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setString(4, "Province");
 			ps.setString(5, "Country");
 			*/
+			
 			ps.setInt(1, address_id);
 			ps.setString(2, addr1);
 			ps.setString(3, village);
@@ -183,6 +184,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setString(5, "Last");
 			ps.setString(6, "Middle");
 			*/
+			
 			ps.setString(4, patient_firstName);
 			ps.setString(5, patient_lastName);
 			ps.setString(6, patient_midName);
@@ -196,31 +198,33 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			/* TEST DATA
 			ps.setString(2, "Idiopathic Clubfoot");
 			ps.setString(3, "Test Comments");
-			ps.setInt(4, 0);
-			ps.setInt(5, 0);
+			ps.setInt(4, evaluator);
+			ps.setInt(5, 1);
 			ps.setString(6, "Left");
 			ps.setString(7, "2015-03-04 00:00:00");
-			ps.setInt(8, 1);
-			ps.setInt(9, 1);
-			ps.setInt(10, 0);
-			ps.setString(11, "Birth Complications");
+			ps.setString(8, "1993-08-24 00:00:00");
+			ps.setString(9, "Some Tribe");
+			ps.setInt(10, 1);
+			ps.setInt(11, 1);
 			ps.setInt(12, 0);
-			ps.setInt(13, 36);
-			ps.setString(14, "Pregnancy Complications");
-			ps.setString(15, "No");
-			ps.setString(16, "No");
-			ps.setString(17, "Unspecified");
-			ps.setString(18, null);
-			ps.setString(19, null);
+			ps.setString(13, "Birth Complications");
+			ps.setInt(14, 0);
+			ps.setInt(15, 36);
+			ps.setString(16, "Pregnancy Complications");
+			ps.setString(17, "No");
+			ps.setString(18, "No");
+			ps.setString(19, "Unspecified");
 			ps.setString(20, null);
-			ps.setString(21, "Yes");
-			ps.setInt(22, 30);
+			ps.setString(21, null);
+			ps.setString(22, null);
 			ps.setString(23, "Yes");
+			ps.setInt(24, 30);
+			ps.setString(25, "Yes");
 			*/
+			
 			ps.setString(2, diagnosis);
 			ps.setString(3, diagnosis_comments);
-			//ps.setInt(4, evaluator); /// <--- THIS IS NOT WORKING
-			ps.setInt(4, 0);
+			ps.setInt(4, evaluator);
 			ps.setInt(5, hospital);
 			ps.setString(6, feet);
 			ps.setString(7, evaluation_date);
@@ -269,6 +273,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setString(4, "Guardian Last");
 			ps.setString(5, "Guardian Middle");
 			*/
+			
 			ps.setString(3, guardian_firstName);
 			ps.setString(4, guardian_lastName);
 			ps.setString(5, guardian_midName);
@@ -291,6 +296,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setString(3, "father");
 			ps.setInt(4, 1);
 			*/
+			
 			ps.setString(3, guardian_relationship);
 			if(emergency_contact.equalsIgnoreCase("Primary")) {
 				ps.setInt(4, 1);
@@ -1025,6 +1031,37 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			rs.close();
 			ps.close();
 			return hospitals;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
+	
+	public Map<Integer, String> getAllEvaluators() {
+		Connection conn = null; // Resets the connection to the database
+		Map<Integer, String> evaluators = new LinkedHashMap<Integer,String>();
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select a.id, concat(b.last_name, ', ', b.first_name, ' ', left(b.middle_name, 1)) as name " + 
+						 "From evaluator a inner join abstract_person b on a.id = b.id " +
+						 "Order by b.last_name";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				evaluators.put(rs.getInt("id"), rs.getString("name"));
+			}
+			
+			rs.close();
+			ps.close();
+			return evaluators;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {

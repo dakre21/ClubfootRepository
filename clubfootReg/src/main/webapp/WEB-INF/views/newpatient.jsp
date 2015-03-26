@@ -168,20 +168,11 @@
 			<input type="radio" name="photoConsent" value="1" path="photoConsent"> Yes
 			<input type="radio" name="photoConsent" value="0" path="photoConsent"> No <br>
 			
-			<div class="form-group">
-				<label for="hospital">Hospital</label>
-				<form:select class="form-control" path="hospitalList" id="hospital" name="hospital">
-                   	<form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
-                   	<form:options items="${hospitalList}" />
-                </form:select>
-			</div>
-			
-			<!-- <label for="hospital"><em>*</em>Hospital/Clinic: </label>
-			<select name="hospital">
-				<option value="">Please select one of the following options</option>
-				<option value="0" path="hospital">Hospital 0</option>
-				<option value="1" path="hospital">Hospital 1</option>
-			</select>-->
+			<label for="hospital">Hospital</label>
+			<form:select class="form-control" path="hospitalList" id="hospital" name="hospital">
+            	<form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
+                <form:options items="${hospitalList}" />
+            </form:select>
 			<br>
 		</div>
 			
@@ -419,13 +410,14 @@
 		<legend>Diagnosis</legend>
 			<div class="col-mid-12">
 			<div class="form-group"> 
-			<label for="evaluator"><em>*</em>Name of evaluator: </label>
-			<select name="evaluator">
-				<option value="">Please select an evaluator</option>
-				<option value="1" path="evaluator">Evaluator 1</option>
-				<option value="3" path="evaluator">Evaluator 3</option>
-			</select>
-			<a href="evaluator">Add evaluator</a> <br>
+			
+			<label for="evaluator">Evaluator</label>
+			<form:select class="form-control" path="evaluatorList" id="evaluator" name="evaluator">
+            	<form:option value="" label="Select an Evaluator" disabled="true" selected="true" style="display: none;"/>
+                <form:options items="${evaluatorList}" />
+            </form:select>
+			<!-- <a href="evaluator">Add evaluator</a>-->
+			<br>
 			
 			<label for="evaluation_date"><em>*</em>Evaluation date (dd/mm/yyyy): </label>
 			<input type="date" name="evaluation_date" class="form-control" path="evaluation_date" > <br>
