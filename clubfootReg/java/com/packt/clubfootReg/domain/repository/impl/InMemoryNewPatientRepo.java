@@ -26,6 +26,8 @@ import java.sql.PreparedStatement;
 //import java.sql.Date;
 
 
+
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -1071,6 +1073,30 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				} catch (SQLException e) {}
 			}
 		}
+	}
+
+	@Override
+	public void addPhoto(byte[] bytes) {
+		Connection connection = null;	// Instantiation of the database connection
+		try{
+			connection = dataSource.getConnection();	// Connection of the dataSource with the MySql sever
+			String sql = "Insert into photo_table (photo) values (?)";	// First sql statement that contains the information to query into abstract_person
+			PreparedStatement ps = connection.prepareStatement(sql); // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database with an instantiation of the database connection	
+			ps.setBytes(1, bytes);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) { // Catches SQL exception errors
+			throw new RuntimeException(e);
+ 
+		} finally {
+			if (connection != null) { // Closes SQL connection 
+				try {
+					connection.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		
 	}
 	
 }

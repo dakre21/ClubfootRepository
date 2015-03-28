@@ -48,6 +48,41 @@
 	<jsp:include page="navbar.jsp" />
 </head>
 <body>
-Visit Reports
+<div class="container">
+	<div class="jumbotron">
+		<h1>
+			Visits
+		</h1>
+		<hr>
+		<a role="button" class="btn btn-primary btn-lg">Generate Report</a>
+		<table class='table table-striped'>
+		   	<thead>
+		   		<tr>
+		   			<th>Visit id</th>
+		    	</tr>
+		    </thead>
+	   
+	    	<tbody>
+        	<c:if test="${not empty visit}">
+            <c:forEach var="o" items="${visit}">
+              <tr>
+                  <td>${o.visits}</td>
+              </tr>
+            </c:forEach>
+          </c:if>
+	      </tbody>
+	  </table>
+	</div>	
+
+	<hr>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<footer align="center">
+				<p>&copy; Some Copyright Info</p>
+			</footer>
+		</div>
+	</div>
+</div>
 </body>
-</html>
+</html> 

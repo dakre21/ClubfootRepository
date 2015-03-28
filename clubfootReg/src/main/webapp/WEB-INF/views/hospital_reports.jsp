@@ -48,6 +48,56 @@
 	<jsp:include page="navbar.jsp" />
 </head>
 <body>
-Hospital Reports
+<div class="container">
+	<div class="jumbotron">
+		<h1>
+			Hospital Report
+		</h1>
+		<hr>
+	
+		<div class="form-group">
+					<label for="hospital_id">Hospital</label>
+					<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
+                    <form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
+                    <form:options items="${hospitalList}" />
+                    </form:select>
+		<label for="dob">Start date: </label>
+		<input type="date" name="start" id="start" class="form-control" path="start" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
+		<label for="dob">End date: </label>
+		<input type="date" name="end" id="end" class="form-control" path="end" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
+		<label for="all">All Hospitals</label>
+		<input type="checkbox" name="all" id="all" path="all"> <br>
+		<a role="button" class="btn btn-primary btn-lg">Generate Report</a>
+		<table class='table table-striped'>
+		   	<thead>
+		   		<tr>
+		    		<th>Hospital/Clinic Name</th>
+		    		<th>Region</th>
+		    	</tr>
+		    </thead>
+	   
+	    	<tbody>
+        	<c:if test="${not empty hospitals}">
+            <c:forEach var="o" items="${hospitals}">
+              <tr>
+                  <td>${o.name}</td>
+                  <td>${o.region_name}</td>
+              </tr>
+            </c:forEach>
+          </c:if>
+	      </tbody>
+	  </table>
+	</div>	
+
+	<hr>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<footer align="center">
+				<p>&copy; Some Copyright Info</p>
+			</footer>
+		</div>
+	</div>
+</div>
 </body>
 </html>

@@ -70,6 +70,7 @@ public class newPatientController {
 	                stream.write(bytes);
 	                stream.close();
 	                System.out.println("File upload sucess");
+	                newpatientrepo.addPhoto(bytes);
 	            } catch (Exception e) {
 	            	System.out.println("File upload failed");
 	            }

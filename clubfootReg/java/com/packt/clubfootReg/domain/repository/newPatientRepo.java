@@ -25,6 +25,7 @@ public interface newPatientRepo {
 	int getAddressIDForPerson(int id);	// Method that returns maxaddressidforperson
 	int getMaxAddressID();// Method that returns the maxaddressid
 	int[] getAssociateIDsForPatient(int id);	// Method that returns associateidforpatient
+	void addPhoto(byte[] bytes);
 	Map<Integer, String> getAllHospitals();
 	Map<Integer, String> getAllEvaluators();
 }

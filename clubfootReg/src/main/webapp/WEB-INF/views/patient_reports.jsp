@@ -48,6 +48,50 @@
 	<jsp:include page="navbar.jsp" />
 </head>
 <body>
-Patient Reports
+
+<div class="container">
+	<div class="jumbotron">
+		<h1>
+			Patients
+		</h1>
+		<hr>
+		<a role="button" class="btn btn-primary btn-lg">Generate Report</a>
+		<table class='table table-striped'>
+		   	<thead>
+		   		<tr>
+		    		<th>ID</th>
+		    		<th>First Name</th>
+		    		<th>Middle Name</th>
+		    		<th>Last Name</th>
+		    	</tr>
+		    </thead>
+	   
+	    	<tbody>
+        	<c:if test="${not empty patients}">
+            <c:forEach var="o" items="${patients}">
+              <tr>
+                  <td><a href="view_patient_info?id=${o.id}">${o.id}</a></td>
+				  <td>${o.patient_firstName}</td>
+				  <td>${o.patient_midName}</td>
+				  <td>${o.patient_lastName}</td>
+				  <td><a href="edit_patient?id=${o.id}">Edit</a></td>
+				  <td><a href="visit?id=${o.id}">Add Visit</a></td>
+              </tr>
+            </c:forEach>
+          </c:if>
+	      </tbody>
+	  </table>
+	</div>	
+
+	<hr>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<footer align="center">
+				<p>&copy; Some Copyright Info</p>
+			</footer>
+		</div>
+	</div>
+</div>
 </body>
-</html>
+</html>   

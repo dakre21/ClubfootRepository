@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.packt.clubfootReg.domain.Hospital;
 import com.packt.clubfootReg.domain.Visit;
 import com.packt.clubfootReg.domain.newPatient;
+import com.packt.clubfootReg.domain.repository.EvaluatorRepo;
 import com.packt.clubfootReg.domain.repository.HospitalRepo;
 import com.packt.clubfootReg.domain.repository.VisitRepo;
 import com.packt.clubfootReg.domain.repository.newPatientRepo;
@@ -38,6 +39,8 @@ public class ReportsController {
 	private newPatientRepo newpatientRepo;
 	@Autowired
 	private HospitalRepo hospitalRepo;
+	@Autowired
+	private EvaluatorRepo evaluatorRepo;
 	
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value="/visit_reports", method=RequestMethod.GET)	// Posts the visit form information to the database
@@ -57,11 +60,17 @@ public class ReportsController {
 	
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value="/hospital_reports", method=RequestMethod.GET)	// Posts the visit form information to the database
-	public String patientReports(@ModelAttribute("hospital_reports") Hospital hospital, Model model) {
+	public String patientReports(Model model) {
 		//hospitalRepo.addHospital(hospital);	// Visitrepo adds visit object to the interface
 		//model.addAttribute("hospital_reports", hospitalRepo.getHospital(hospital.getId()));	// Gets the visit id from the interface method getVisit and adds it to the attribute of the model
 		return "hospital_reports";// Returns the view_visit_info page
 	}
+	
+	@ModelAttribute("hospitalList")
+	public Map<Integer, String> populateHospitalSelect() {
+	    return evaluatorRepo.getAllHospitals();
+	}
+	
 	/*
 	// This initializes spring's "webdatabinder" class to bind web request parameters to the java bean objects to receive the incoming data 
 	@InitBinder
