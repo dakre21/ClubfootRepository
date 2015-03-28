@@ -55,7 +55,7 @@
 			Patients
 		</h1>
 		<hr>
-		<!--<div class="form-group">
+		<div class="form-group">
 			<label for="sex">Gender: </label>
 			<input type="radio" name="sex" value="male" path="sex" > Male
 			<input type="radio" name="sex" value="female" path="sex" > Female <br>
@@ -95,7 +95,7 @@
 					<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
                     <form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
                     <form:options items="${hospitalList}" />
-                    </form:select><br>-->
+                    </form:select><br>
             
             
 		<a role="button" class="btn btn-primary btn-lg">Generate Report</a>
