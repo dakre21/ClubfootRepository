@@ -119,6 +119,13 @@
 			break;
 	  }
 	  
+	  /*
+	  var year = "${patient.dob}".substring(0, 4);
+	  var month = "${patient.dob}".substring(5, 7);
+	  var day = "${patient.dob}".substring(8, 10);
+	  var date = month + '/' + day + '/' + year;
+	  $("#dob").val(date);*/
+	  
 	  switch ("${patient.guardian_relationship}") {
 	    case "mother":
 	    	document.getElementById("relMom").checked = true;
@@ -152,7 +159,133 @@
 			break;
 	  }
 	  
-  
+	  if ("${patient.second_guardian_last}")
+	    document.getElementById("secondGuardianYes").checked = true;
+      else
+		document.getElementById("secondGuardianNo").checked = true;
+	  
+	  switch ("${patient.emergency_contact}") {
+	  	case "primary":
+	  		document.getElementById("emergencyPrimary").checked = true;
+	  		break;
+	  	case "secondary":
+	  		document.getElementById("emergencySecondary").checked = true;
+	  		break;
+	  	case "other":
+	  		document.getElementById("emergencyOther").checked = true;
+	  		break;
+	  	default:
+	  		document.getElementById("emergencyUnspecified").checked = true;
+	  		break;
+      }
+
+	  if ("${patient.deformity_history_num}" > 0) {
+	    document.getElementById("defYes").checked = true;
+	  }
+	  else if ("${patient.deformity_history_num}" == 0) {
+	    document.getElementById("defNo").checked = true;
+	  }
+	  else {
+	    document.getElementById("defUn").checked = true;
+	  }
+	  
+	  if ("${patient.pregnancy_complications_explained}")
+		document.getElementById("pregCompYes").checked = true;
+  	  else
+    	document.getElementById("pregCompNo").checked = true;
+	  
+	  if ("${patient.pregnancy_alc}" == "Yes")
+		document.getElementById("pregAlcYes").checked = true;
+	  else if ("${patient.pregnancy_alc}" == "No")
+	   	document.getElementById("pregAlcNo").checked = true;
+	  else
+		document.getElementById("pregAlcUn").checked = true;
+
+	  if ("${patient.pregnancy_smoke}" == "Yes")
+		document.getElementById("pregSmokeYes").checked = true;
+	  else if ("${patient.pregnancy_smoke}" == "No")
+	   	document.getElementById("pregSmokeNo").checked = true;
+	  else
+		document.getElementById("pregSmokeUn").checked = true;
+		
+	  if ("${patient.complications}" == "Yes")
+		document.getElementById("compYes").checked = true;
+	  else if ("${patient.complications}" == "No")
+	   	document.getElementById("compNo").checked = true;
+	  else
+		document.getElementById("compUn").checked = true;
+		
+	  if ("${patient.place_birth}" == "0")
+		document.getElementById("placeBirthHosp").checked = true;
+	  else if ("${patient.place_birth}" == "1")
+	   	document.getElementById("placeBirthClinic").checked = true;
+	  else if ("${patient.place_birth}" == "2")
+		document.getElementById("placeBirthHome").checked = true;
+	  else
+		document.getElementById("placeBirthUn").checked = true;
+	  
+	  switch ("${patient.referral}") {
+	  	case "Hospital/Clinic":
+	  		document.getElementById("refHosp").checked = true;
+			break;
+	  	case "Midwife":
+	  		document.getElementById("refMidwife").checked = true;
+			break;
+	  	case "Word of Mouth":
+	  		document.getElementById("refWord").checked = true;
+			break;
+	  	case "Promotional Materials":
+	  		document.getElementById("refPromo").checked = true;
+			break;
+	  	case "Other":
+	  		document.getElementById("refOther").checked = true;
+			break;
+		default:
+			document.getElementById("refUn").checked = true;
+			break;
+	  }
+	  
+	  if ("${patient.feet}" == "Left")
+	    document.getElementById("feetLeft").checked = true;
+	  else if ("${patient.feet}" == "Right")
+		document.getElementById("feetRight").checked = true;
+	  else if ("${patient.feet}" == "Both")
+		document.getElementById("feetBoth").checked = true;
+	  
+	  if ("${patient.diagnosis}" == "Idiopathic Clubfoot")
+	    document.getElementById("diagIdio").checked = true;
+	  else if ("${patient.diagnosis}" == "Syndromic Clubfoot")
+		document.getElementById("diagSynd").checked = true;
+	  else if ("${patient.diagnosis}" == "Neuropathic Clubfoot")
+		document.getElementById("diagNeuro").checked = true;
+	  else if ("${patient.diagnosis}" == "Other")
+	    document.getElementById("diagOther").checked = true;
+	  
+	  if ("${patient.deformity_at_birth}" == "Yes")
+	    document.getElementById("deformityYes").checked = true;
+	  else if ("${patient.deformity_at_birth}" == "No")
+		document.getElementById("deformityNo").checked = true;
+	  else
+		document.getElementById("deformityUn").checked = true;
+	  
+	  if ("${patient.previous_treatments_num}" > 0)
+	    document.getElementById("prevYes").checked = true;
+	  else if ("${patient.previous_treatments_num}" == 0)
+		document.getElementById("prevNo").checked = true;
+	  else
+		document.getElementById("prevUn").checked = true;
+	  
+	  if ("${patient.diagnosis_prenatally_week}")
+	    document.getElementById("diagYes").checked = true;
+	  else
+		document.getElementById("diagNo").checked = true;
+	  
+	  if ("${patient.prenatally_diag_confirmation}" == "Yes")
+	    document.getElementById("prenatallyDiagYes").checked = true;
+	  else if ("${patient.prenatally_diag_confirmation}" == "No")
+		document.getElementById("prenatallyDiagNo").checked = true;
+	  else
+		document.getElementById("prenatallyDiagUn").checked = true;
   }
   function guardianHandlerTrue(){
 	  $('fieldset.guardian_check').show();
@@ -280,7 +413,7 @@
 			<input id="raceUn" type="radio" name="race" value="unspecified" path="race"> Unspecified <br>
 
 			<label for="dob"><em>*</em>Date of birth: </label>
-			<input type="date" name="dob" id="dob" class="form-control" path="dob" value ="${patient.dob}"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy" > 
+			<input type="date" name="dob" id="dob" class="form-control" path="dob"> 
 			<label for="tribe">Tribe: </label>
 			<input type="text" name="tribe" class="form-control" path="tribe" value = "${patient.tribe}">
 			</div>
@@ -429,6 +562,7 @@
 			
 			<label for="pregnancy">Length of pregnancy (in weeks): </label>
 			<input type="text" name="pregnancy" class="form-control" path="pregnancy" value = "${patient.pregnancy}"> <br>
+			
 			<label for="pregnancy_complications">Did the mother have any complications during pregnancy: </label>
 			<input id="pregCompYes" type="radio" name="pregnancy_complications" value="Yes" path="pregnancy_complications" onClick="pregCompTrue()"> Yes
 			<input id="pregCompNo" type="radio" name="pregnancy_complications" value="No" path="pregnancy_complications" onClick="pregCompFalse()"> No
@@ -511,9 +645,9 @@
 			<input id="diagOther" type="radio" name="diagnosis" value="Other" path="diagnosis" > Other <br>
 			
 			<label for="deformity_at_birth">Deformity present at birth: </label>
-			<input id="defYes" type="radio" name="deformity_at_birth" value="Yes" path="deformity_at_birth"> Yes
-			<input id="defNo" type="radio" name="deformity_at_birth" value="No" path="deformity_at_birth"> No
-			<input id="defUn" type="radio" name="deformity_at_birth" value="Unspecified" path="deformity_at_birth"> Unspecified <br>
+			<input id="deformityYes" type="radio" name="deformity_at_birth" value="Yes" path="deformity_at_birth"> Yes
+			<input id="deformityNo" type="radio" name="deformity_at_birth" value="No" path="deformity_at_birth"> No
+			<input id="deformityUn" type="radio" name="deformity_at_birth" value="Unspecified" path="deformity_at_birth"> Unspecified <br>
 			
 			<label for="previous_treatments">Any previous treatments: </label>
 			<input id="prevYes" type="radio" name="previous_treatments" value="Yes" path="previous_treatments" onClick="prevTreatmentTrue()"> Yes

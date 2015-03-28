@@ -132,8 +132,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 							 "evaluation_date, dob, tribe, consent_inclusion, consent_photos, birth_place, " +
 							 "birth_complications, affected_relatives, pregency_length, pregnancy_complications, " +
 							 "pregnancy_drinking, pregnancy_smoking, referral_source, referral_other, referral_doctor_name, " +
-							 "referral_hospital_name, deformity_at_birth, prenatal_week, prenatal_confirmed) " +
-		                     "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";// First sql statement that contains the information to query into patient
+							 "referral_hospital_name, deformity_at_birth, prenatal_week, prenatal_confirmed, sex, race) " +
+		                     "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";// First sql statement that contains the information to query into patient
 		
 		// Parent/Guardian Info
 		String sql_abstract_person_pg = "Insert into abstract_person (id, created, first_name, last_name, middle_name) "
@@ -222,6 +222,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setString(23, "Yes");
 			ps.setInt(24, 30);
 			ps.setString(25, "Yes");
+			ps.setString(26, "male");
+			ps.setString(27, "asian");
 			*/
 			
 			ps.setString(2, diagnosis);
@@ -261,6 +263,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setString(23, deformity_at_birth);
 			ps.setInt(24, diagnosis_prenatally_week);
 			ps.setString(25, prenatally_diag_confirmation);
+			ps.setString(26, sex);
+			ps.setString(27, race);
 			ps.executeUpdate();
 			ps.close();
 			
@@ -476,7 +480,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 							 "consent_photos = ?, birth_place = ?, birth_complications = ?, affected_relatives = ?, " +
 							 "pregency_length = ?, pregnancy_complications = ?, pregnancy_drinking = ?, pregnancy_smoking = ?, " +
 							 "referral_source = ?, referral_other = ?, referral_doctor_name = ?, referral_hospital_name = ?, " +
-							 "deformity_at_birth = ?, prenatal_week = ?, prenatal_confirmed = ? " +
+							 "deformity_at_birth = ?, prenatal_week = ?, prenatal_confirmed = ?, sex = ?, race = ? " +
 							 "where id = ?";
 		
 		String sql_patient_associates = "Update patient_associates set relationship_to_patient = ?, is_emergency_contact = ? " +
@@ -577,7 +581,9 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setString(22, deformity_at_birth);
 			ps.setInt(23, diagnosis_prenatally_week);
 			ps.setString(24, prenatally_diag_confirmation);
-			ps.setInt(25, id);
+			ps.setString(25, sex);
+			ps.setString(26, race);
+			ps.setInt(27, id);
 			ps.executeUpdate();
 			ps.close();
 
@@ -733,6 +739,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				patient.setPregnancy_smoke(rs2.getString("pregnancy_smoking"));
 				patient.setComplications(rs2.getString("birth_complications"));
 				patient.setPlace_birth(rs2.getInt("birth_place"));
+				patient.setSex(rs2.getString("sex"));
+				patient.setRace(rs2.getString("race"));
 			}
 			
 			rs2.close();
@@ -843,7 +851,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			conn = dataSource.getConnection();
 			
 			String sql = "select a.id, a.consent_inclusion, a.consent_photos, a.hospital_id, b.first_name, b.last_name, " +
-		    				    "b.middle_name, a.dob, a.evaluator_id, a.evaluation_date, a.feet_affected, a.diagnosis " +
+		    		            "b.middle_name, a.dob, a.evaluator_id, a.evaluation_date, a.feet_affected, a.diagnosis, " +
+		    		            "a.sex, a.race " +
 		    		     "from patient a " +
 		    		     "inner join abstract_person b on a.id = b.id " +
 		    		     "order by a.id";
