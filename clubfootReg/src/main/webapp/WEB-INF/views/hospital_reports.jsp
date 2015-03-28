@@ -68,7 +68,7 @@
 		<label for="all">All Hospitals</label>
 		<input type="checkbox" name="all" id="all" path="all"> <br>
 		<a role="button" class="btn btn-primary btn-lg">Generate Report</a>
-		<table class='table table-striped'>
+		<!-- <table class='table table-striped'>
 		   	<thead>
 		   		<tr>
 		    		<th>Hospital/Clinic Name</th>
@@ -82,12 +82,14 @@
               <tr>
                   <td>${o.name}</td>
                   <td>${o.region_name}</td>
+                  <td><a href="edit_hospital?id=${o.id}">Edit</a></td>
               </tr>
             </c:forEach>
           </c:if>
 	      </tbody>
-	  </table>
+	  </table>-->
 	</div>	
+	</div>
 
 	<hr>
 

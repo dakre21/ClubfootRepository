@@ -55,7 +55,7 @@
 		</h1>
 		<hr>
 		<a role="button" class="btn btn-primary btn-lg">Generate Report</a>
-		<table class='table table-striped'>
+	<!-- 	<table class='table table-striped'>
 		   	<thead>
 		   		<tr>
 		   			<th>Visit id</th>
@@ -71,7 +71,7 @@
             </c:forEach>
           </c:if>
 	      </tbody>
-	  </table>
+	  </table>-->
 	</div>	
 
 	<hr>
