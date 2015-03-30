@@ -280,6 +280,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setString(5, "Guardian Middle");
 			*/
 			
+			
 			ps.setString(3, guardian_firstName);
 			ps.setString(4, guardian_lastName);
 			ps.setString(5, guardian_midName);
@@ -373,6 +374,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				ps.executeUpdate();
 				ps.close();
 			}
+			
 		} catch (SQLException e) { // Catches SQL exception errors
 			throw new RuntimeException(e);
  
