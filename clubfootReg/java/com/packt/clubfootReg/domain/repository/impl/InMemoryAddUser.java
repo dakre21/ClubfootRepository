@@ -82,12 +82,13 @@ public class InMemoryAddUser implements UserRepo{
 			ps.executeUpdate();
 			ps.close();
 			
-			sql = "Insert into user (id, login, email, role_id) values (?, ?, ?, ?)"; // First sql statement that contains the information to query into user
+			sql = "Insert into user (id, login, email, role_id, offon) values (?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into user
 			PreparedStatement ps2 = connection.prepareStatement(sql);
 			ps2.setInt(1, this.getMaxPersonID());
 			ps2.setString(2, userName);
 			ps2.setString(3, email);
 			ps2.setInt(4, role_id);
+			ps2.setString(5, "offline");
 			ps2.executeUpdate();
 			ps2.close();
 			
