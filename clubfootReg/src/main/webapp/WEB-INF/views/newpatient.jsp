@@ -64,7 +64,6 @@
 	  $('#deformity_history_num1').hide();
 	  $('#deformity_history_num').hide();
 	  $('#preg_complications_explained1').hide();
-	  $('#preg_complications_explained').hide();
 	  $('#referral_hospital_name1').hide();
 	  $('#referral_hospital_name').hide();
 	  $('#referral_doc_name1').hide();
@@ -76,6 +75,7 @@
 	  $('#referral_other1').hide();
 	  $('#referral_other').hide();
 	  $('div.prev_treat').hide();
+	  $('#pregnancy_complications_explained').hide();
 
 
   }
@@ -128,6 +128,8 @@
 	  $('#referral_other').show();
 	  $('#referral_hospital_name1').hide();
 	  $('#referral_hospital_name').hide();
+	  $('#referral_doc_name1').hide();
+	  $('#referral_doc_name').hide();
   }
   function prevTreatmentTrue(){
 	  $('#previous_treatments_num1').show();
@@ -459,7 +461,7 @@
 			<label for="diagnosis_prenatally">Diagnosis prenatally: </label>
 			<input type="radio" name="diagnosis_prenatally" value="Yes" path="diagnosis_prenatally" onClick="diagPrenatTrue()"> Yes
 			<input type="radio" name="diagnosis_prenatally" value="No" path="diagnosis_prenatally" onClick="diagPrenatFalse()"> No
-			<input type="radio" name="diagnosis_prenatally" value="Unspecified" path="diagnosis_prenatally" onClick="diagPrenatTrue()"> Unspecified <br>
+			<input type="radio" name="diagnosis_prenatally" value="Unspecified" path="diagnosis_prenatally" onClick="diagPrenatFalse()"> Unspecified <br>
 			
 			<label for="diagnosis_prenatally_week1" id="diagnosis_prenatally_week1">At prenatally week: </label>
 			<input type="text" name="diagnosis_prenatally_week" class="form-control" path="diagnosis_prenatally_week" id="diagnosis_prenatally_week"> <br>
