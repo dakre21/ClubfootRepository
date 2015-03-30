@@ -72,12 +72,13 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 		try {
 			connection = dataSource.getConnection(); // Connection of the dataSource with the MySql sever
 			
-			String sql = "Insert into hospital values(?, ?, ?)"; // First sql statement that contains the information to query into hospital
+			String sql = "Insert into hospital values(?, ?, ?, ?)"; // First sql statement that contains the information to query into hospital
 			PreparedStatement ps = connection.prepareStatement(sql); // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database and establishment of the sql query
 			
 			ps.setInt(1, this.getMaxHospitalID()+1);
 			ps.setString(2, name);
 			ps.setInt(3, region_id);
+			ps.setString(4, "offline");
 			
 			ps.executeUpdate();
 			ps.close();
