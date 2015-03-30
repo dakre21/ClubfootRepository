@@ -74,9 +74,9 @@
                   <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Hospital</a></li>
-                      <li><a href="#">Patient</a></li>
-                      <li><a href="#">Visit</a></li>
+                    <li><a href="hospital_reports">Hospital</a></li>
+                      <li><a href="patient_reports">Patient</a></li>
+                      <li><a href="visit_reports">Visit</a></li>
                   </ul>
               </li>
               <li class="dropdown">

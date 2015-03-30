@@ -4,6 +4,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/**
+ * 
+ * @author David
+ * This Class contains the code for the LoginController which has three GET methods which gets "login" and "home"
+ */
+// LoginController class
 @Controller
 public class LoginController {
 
@@ -16,19 +22,23 @@ public class LoginController {
 
 	}
 	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	// Annotation for mapping web requests to specific handler classes/methods
+	@RequestMapping(value = "/login", method = RequestMethod.GET)	// Gets login view
 	public String login(){
-		return "login";
+		return "login";	// Returns login view
 	}
 	
-	@RequestMapping(value = "/loginfailed", method = RequestMethod.GET)
+	// Annotation for mapping web requests to specific handler classes/methods
+	@RequestMapping(value = "/loginfailed", method = RequestMethod.GET)	// Gets loginfailed view
 	public String loginerror(Model model){
-		model.addAttribute("error", "true");
-		return "login";
+		model.addAttribute("error", "true");	// Adds the error message to the model 
+		return "login";	// Returns login view
 	}
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	
+	// Annotation for mapping web requests to specific handler classes/methods
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)	// Gets logout view
 	public String logout(Model model) {
-		return "home";
+		return "home";	// Returns the home view
 	}
 
 }

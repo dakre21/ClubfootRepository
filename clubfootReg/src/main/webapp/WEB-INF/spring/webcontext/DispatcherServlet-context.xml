@@ -48,6 +48,14 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
       <property name="password" value=""/>
    </bean>
    
+   <bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+ 
+         <!-- setting maximum upload size -->
+        <property name="maxUploadSize" value="300000" />
+ 
+    </bean>
+   
    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
    	  <property name="basename" value="messages"/>
    </bean>

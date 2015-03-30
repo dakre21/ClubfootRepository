@@ -4,7 +4,14 @@ import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * 
+ * @author David
+ * newPatient model class that contains all the attributes to be added to the database and visible on the form.
+ */
+//newPatient class
 public class newPatient {
+	// Form attributes to by synchronized to the database
 	private int id;
 	private Integer guardianConsent;
 	private Integer photoConsent;
@@ -15,7 +22,6 @@ public class newPatient {
 	private String sex;
 	private String race;
 	private String tribe;
-	//private Date dob;
 	private String dob;
 	private String addr1;
 	private String addr2;
@@ -42,53 +48,61 @@ public class newPatient {
 	private String other_guardian_phone1;
 	private String other_guardian_phone2;
 	private String deformity_history;
-	//private String deformity_history_num;
 	private Integer deformity_history_num;
-	//private String pregnancy;
 	private Integer pregnancy;
 	private String pregnancy_complications_explained;
-	private String pregnancy_alc; //YNU
-	private String pregnancy_smoke; //YNU
-	private String complications; //YNU
-	//private String place_birth;
+	private String pregnancy_alc; 
+	private String pregnancy_smoke; 
+	private String complications; 
 	private Integer place_birth;
 	private String referral;
 	private String referral_doc_name;
 	private String referral_hospital_name;
 	private String referral_other;
-	//private String evaluator;
 	private Integer evaluator;
-	//private Date evaluation_date;
 	private String evaluation_date;
 	private String feet;
 	private String diagnosis;
-	private String deformity_at_birth; //YNU
-	private String previous_treatments; //YNU
+	private String deformity_at_birth; 
+	private String previous_treatments; 
 	private String previous_treatments_num;
-	private String diagnosis_prenatally; //YNU
-	//private String diagnosis_prenatally_week;
+	private String diagnosis_prenatally; 
 	private Integer diagnosis_prenatally_week;
-	private String prenatally_diag_confirmation; //YNU
+	private String prenatally_diag_confirmation; 
 	private String diagnosis_comments;
 	private String abnormalities;
 	private String weakness;
-	//private MultipartFile pre_imgfile;
+	private MultipartFile fileName;
 
 	public newPatient() {
 		super();
 	}
 	
-	public newPatient(int id, String patient_firstName, String patient_lastName, String patient_midName, String addr1, String village, String province, String country){
+	// newPatient constructor that sets up the retriving information from the database via this model
+	public newPatient(int id, Integer guardianConsent, Integer photoConsent, Integer hospital, String patient_firstName, 
+			          String patient_lastName, String patient_midName, String dob, Integer evaluator,
+			          String evaluation_date, String feet, String diagnosis) {
+		// Sets current object "this" to the value being passed when this model is being instantiated 
 		this.id = id;
+		this.guardianConsent = guardianConsent;
+		this.photoConsent = photoConsent;
+		this.hospital = hospital;
 		this.patient_firstName = patient_firstName;
 		this.patient_lastName = patient_lastName;
 		this.patient_midName = patient_midName;
-		this.addr1 = addr1;
-		this.village = village;
-		this.province = province;
-		this.country = country;
+		this.dob = dob;
+		this.evaluator = evaluator;
+		this.evaluation_date = evaluation_date;
+		this.feet = feet;
+		this.diagnosis = diagnosis;
 	}
 	
+	
+	/**
+	 * 
+	 * Getter and setter methods for all of the forms attributes. These get the value being passed into the model, and effectively set
+	 * the value to the model attribute to be synchronized to the database (visa versa for pull requests). 
+	 */
 	
 	public Integer getGuardianConsent() {
 		return guardianConsent;
@@ -361,7 +375,7 @@ public class newPatient {
 	public Integer getEvaluator() {
 		return evaluator;
 	}
-	public void setEvaluator_name(Integer evaluator) {
+	public void setEvaluator(Integer evaluator) {
 		this.evaluator = evaluator;
 	}
 	
@@ -588,5 +602,13 @@ public class newPatient {
 	}
 	public void setDiagnosis_prenatally_week(Integer diagnosis_prenatally_week) {
 		this.diagnosis_prenatally_week = diagnosis_prenatally_week;
+	}
+
+	public MultipartFile getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(MultipartFile fileName) {
+		this.fileName = fileName;
 	}
 }

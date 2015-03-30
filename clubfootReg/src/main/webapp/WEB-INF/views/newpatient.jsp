@@ -156,8 +156,8 @@
 	<div class="row clearfix">
 	<div class="col-sm-2 column"></div>
 	<div class="col-md-8 column">
-	<h1>Create New patient </h1>  
-	<form action="#" th:action="@{/newpatient}" th:object="${newpatient}" modelAttribute="newPatient" method="post" id="newPatient">
+	<h1>Add New Patient</h1>  
+	<form action="#" th:action="@{/newpatient}" th:object="${newpatient}" modelAttribute="newPatient" method="post" id="newPatient" enctype="multipart/form-data">
 		<div class="form-group">
 			<p><i>Please complete the form. Mandatory fields are marked with a </i><em>*</em></p>
 			<label for="guardianConsent"><em>*</em>Does the parent or guardian consent to being included: </label>
@@ -167,12 +167,13 @@
 			<label for="photoConsent"><em>*</em>Does the parent or guardian consent to photographs of the patient being used for CURE evaluation and marketing purposes: </label>
 			<input type="radio" name="photoConsent" value="1" path="photoConsent"> Yes
 			<input type="radio" name="photoConsent" value="0" path="photoConsent"> No <br>
-			<label for="hospital"><em>*</em>Hospital/Clinic: </label>
-			<select name="hospital">
-				<option value="">Please select one of the following options</option>
-				<option value="0" path="hospital">Hospital 0</option>
-				<option value="1" path="hospital">Hospital 1</option>
-			</select> <br>
+			
+			<label for="hospital">Hospital</label>
+			<form:select class="form-control" path="hospitalList" id="hospital" name="hospital">
+            	<form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
+                <form:options items="${hospitalList}" />
+            </form:select>
+			<br>
 		</div>
 			
 		<div class="row">
@@ -409,13 +410,14 @@
 		<legend>Diagnosis</legend>
 			<div class="col-mid-12">
 			<div class="form-group"> 
-			<label for="evaluator"><em>*</em>Name of evaluator: </label>
-			<select name="evaluator">
-				<option value="">Please select an evaluator</option>
-				<option value="1" path="evaluator">Evaluator 1</option>
-				<option value="3" path="evaluator">Evaluator 3</option>
-			</select>
-			<a href="evaluator">Add evaluator</a> <br>
+			
+			<label for="evaluator">Evaluator</label>
+			<form:select class="form-control" path="evaluatorList" id="evaluator" name="evaluator">
+            	<form:option value="" label="Select an Evaluator" disabled="true" selected="true" style="display: none;"/>
+                <form:options items="${evaluatorList}" />
+            </form:select>
+			<!-- <a href="evaluator">Add evaluator</a>-->
+			<br>
 			
 			<label for="evaluation_date"><em>*</em>Evaluation date (dd/mm/yyyy): </label>
 			<input type="date" name="evaluation_date" class="form-control" path="evaluation_date" > <br>
@@ -426,9 +428,9 @@
 			<input type="radio" name="feet" value="Both" path="feet" > Both <br>
 			
 			<label for="diagnosis"><em>*</em>Diagnosis: </label>
-			<input type="radio" name="diagnosis" value="Idiopathic_clubfoot" path="diagnosis" > Idiopathic Clubfoot
-			<input type="radio" name="diagnosis" value="Syndromic_clubfoot" path="diagnosis" > Syndromic Clubfoot
-			<input type="radio" name="diagnosis" value="Neuropathic_clubfoot" path="diagnosis" > Neuropathic Clubfoot
+			<input type="radio" name="diagnosis" value="Idiopathic Clubfoot" path="diagnosis" > Idiopathic Clubfoot
+			<input type="radio" name="diagnosis" value="Syndromic Clubfoot" path="diagnosis" > Syndromic Clubfoot
+			<input type="radio" name="diagnosis" value="Neuropathic Clubfoot" path="diagnosis" > Neuropathic Clubfoot
 			<input type="radio" name="diagnosis" value="Other" path="diagnosis" > Other <br>
 			
 			<label for="deformity_at_birth">Deformity present at birth: </label>
@@ -499,15 +501,14 @@
 		<legend>Feet pre-treatments photo(s)</legend>
 			<div class="col-md-12">
 			<div class="form-group">
-			<label for="pre-imgfile">Upload photo of patient here: </label>
-			<input type="file" class="btn btn-lg btn-default" name="pre-imgfile" path="pre-imgfile"><br>
-			<button type="submit" class="btn btn-lg btn-default" for="add_photo" id="add_photo">Add another photo</button>
+			<label for="file">Upload photo of patient here: </label>
+			<input type="file" class="btn btn-lg btn-default" id="file" name="file" path="file"><br>
+			<button type="submit" class="btn btn-lg btn-default" for="add_photo" id="add_photo" value="Upload">Add another photo</button>
 			</div>
 			</div>
 		</fieldset>
 			<div class="row" align="center">
-					<button type="submit" class="btn btn-lg btn-primary">Submit Form</button>
-					<button type="reset" class="btn btn-lg btn-default">Clear</button>
+				<button type="submit" class="btn btn-lg btn-primary">Save</button>
 			</div>
 		</div>
 	</div>

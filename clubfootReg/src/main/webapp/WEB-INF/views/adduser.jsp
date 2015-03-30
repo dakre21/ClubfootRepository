@@ -40,26 +40,22 @@
 				
 				<div class="form-group">
 					<label for="role_id">Role</label>
-					<select class="form-control" name="role_id" required>
-						<option>Select a Role</option>
-		                <option value="0" path="role_id">Admin</option>
-	               		<option value="1" path="role_id">Data Entry</option>
-		            </select>
+					<form:select class="form-control" path="roleList" id="role_id" name="role_id">
+                    	<form:option value="" label="Select a Role" disabled="true" selected="true" style="display: none;"/>
+                    	<form:options items="${roleList}" />
+                    </form:select>
 				</div>
 				
 				<div class="form-group">
-					<label for="hospital_id">Hospital Affiliation</label>
-					<select class="form-control" name="hospital_id" required>
-						<option>Select a Hospital</option>
-		                <option value="0" path="hospital_id">Hospital1</option>
-	               		<option value="1" path="hospital_id">Hospital2</option>
-	                	<option value="2" path="hospital_id">Hospital3</option>
-		            </select>
+					<label for="hospital">Hospital</label>
+					<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
+                    	<form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
+                    	<form:options items="${hospitalList}" />
+                    </form:select>
 				</div>
 				&nbsp;
 				<div class="row" align="center">
-					<button type="submit" class="btn btn-lg btn-primary">Submit Form</button>
-					<button type="reset" class="btn btn-lg btn-default">Clear</button>
+					<button type="submit" class="btn btn-lg btn-primary">Save</button>
 				</div>
 			</form>
 		</div>

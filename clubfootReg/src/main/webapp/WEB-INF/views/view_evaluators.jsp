@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html"; charset=ISO-8859-1">
-<title>CURE Clubfoot | Evaluators</title>
+<title>Clubfoot Registry | Evaluators</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -45,7 +45,7 @@
                   <td>${o.last_name}</td>
                   <td>${o.title}</td>
                   <td>${o.hospital_name}</td>
-                  <td><a href="#">Edit</a></td>
+                  <td><a href="edit_evaluator?id=${o.id}">Edit</a></td>
               </tr>
             </c:forEach>
           </c:if>
@@ -58,7 +58,7 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<footer align="center">
-				<p>&copy; Some Copywrite Info</p>
+				<p>&copy; Some Copyright Info</p>
 			</footer>
 		</div>
 	</div>

@@ -23,36 +23,30 @@
 <body>
 
 <div class="container">
-  <div class="row clearfix">
-    <div class="col-sm-2 column"></div>
-    <div class="col-md-8 column">
-      <h1 align="center">Add New Hospital</h1>
-      <form action="#" th:action="@{/hospital}" th:object="${hospital}" modelAttribute="Hospital" id="Hospital" method="post">
-        <div class="form-group">
-          <label for="hospital">Hospital/Clinic Name</label>
-          <input type="text" class="form-control" id="hospital" name="name" path="name"/>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label for="region">Region</label>
-              <select class="form-control" id="region_id" name="region_id">
-                <option>Select a Region</option>
-                          <option value="1" name="region_id" path="region_id">Region1</option>
-                          <option value="2" name="region_id" path="region_id">Region2</option>
-                      </select>
-            </div>
-          </div>
-        </div>
-        &nbsp;
-        <div class="row" align="center">
-          <button type="submit" class="btn btn-lg btn-primary">Submit Form</button>
-          <button type="reset" class="btn btn-lg btn-default">Clear</button>
-        </div>
-      </form>
-    </div>
-    <div class="col-sm-2 column"></div>
-  </div>
+	<div class="row clearfix">
+    	<div class="col-sm-2 column"></div>
+    	<div class="col-md-8 column">
+      		<h1 align="center">Add New Hospital</h1>
+      		<form action="#" th:action="@{/hospital}" th:object="${hospital}" modelAttribute="Hospital" id="Hospital" method="post">
+        		<div class="form-group">
+          			<label for="hospital">Hospital/Clinic Name</label>
+          			<input type="text" class="form-control" id="hospital" name="name" path="name"/>
+        		</div>
+         		<div class="form-group">
+              		<label for="region_id">Region</label>
+                	<form:select class="form-control" path="regionList" id="region_id" name="region_id">
+                 		<form:option value="" label="Select a Region" disabled="true" selected="true" style="display: none;"/>
+                 		<form:options items="${regionList}" />
+                 	</form:select>
+            	</div>
+        		&nbsp;
+        		<div class="row" align="center">
+          			<button type="submit" class="btn btn-lg btn-primary">Save</button>
+        		</div>
+      		</form>
+    	</div>
+    	<div class="col-sm-2 column"></div>
+  	</div>
 </div>
 
 <script type="text/javascript">

@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html"; charset=ISO-8859-1">
-<title>CURE Clubfoot | Patients</title>
+<title>Clubfoot Registry | Patients</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -41,12 +41,12 @@
         	<c:if test="${not empty patients}">
             <c:forEach var="o" items="${patients}">
               <tr>
-                  <td><a href="view_patient_info">${o.id}</a></td>
+                  <td><a href="view_patient_info?id=${o.id}">${o.id}</a></td>
 				  <td>${o.patient_firstName}</td>
 				  <td>${o.patient_midName}</td>
 				  <td>${o.patient_lastName}</td>
-				  <td><a href="edit_patient">Edit</a></td>
-				  <td><a href="visit">Add Visit</a></td>
+				  <td><a href="edit_patient?id=${o.id}">Edit</a></td>
+				  <td><a href="visit?id=${o.id}">Add Visit</a></td>
               </tr>
             </c:forEach>
           </c:if>
@@ -59,7 +59,7 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<footer align="center">
-				<p>&copy; Some Copywrite Info</p>
+				<p>&copy; Some Copyright Info</p>
 			</footer>
 		</div>
 	</div>

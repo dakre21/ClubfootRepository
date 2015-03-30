@@ -1,7 +1,9 @@
 package com.packt.clubfootReg.domain.repository.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -21,6 +23,11 @@ import java.sql.PreparedStatement;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+/**
+ * 
+ * @author David
+ * This class represents the InMemoryVisitrepo class that uses CRUD actions (methods) to manipulate data in the database
+ */
 @Repository
 public class InMemoryVisitRepo implements VisitRepo{
 
@@ -33,34 +40,210 @@ public class InMemoryVisitRepo implements VisitRepo{
 
 	}
 	
-	private DataSource dataSource;
-	private JdbcTemplate jdbcTemplateObject;
-	private List<Visit> listOfVisits = new ArrayList<Visit>();
+	private DataSource dataSource; // Instantiation of the datasource object
+	private JdbcTemplate jdbcTemplateObject; // Instantiation of the JdbcTemplate object
+	private List<Visit> listOfVisits = new ArrayList<Visit>(); // Creation of a new list of users
 	
+	// JDBCTemplate subclass DataSource sets up the environment to allow data to be manipulated in this Spring app
 	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplateObject = new JdbcTemplate(dataSource);
-		
+		this.dataSource = dataSource; // Sets the current object this of the class's attribute dataSource eqal to the object of datasource
+		this.jdbcTemplateObject = new JdbcTemplate(dataSource); // Instantiation of the JDBCTemplateObject class which takes in the object of datasource to set up data synchronization
 	}
 
-	public Visit getVisit1(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	// This method effectively adds data that was saved to the model to the MySQL instance of the database
 	public void addVisit(Visit visit) {
-		listOfVisits.add(visit);
-		int id = visit.getId();
-		String query = "Insert into user values(?)";
-		Connection connection = null;
+		listOfVisits.add(visit); // Adds the object of the model "visit" to the list created above
 		
+		// The visit model has around 60 fields that are being retrieved in this instance of the repo class
+		// There are integers, strings, and date formatted information that is saved from the form to the model 
+		// That is going to be synchronized to the database
+		int visitId = this.getMaxVisitId() + 1;	// Gets the max integer value of the visit id
+		int patientId = visit.getPatientId(); // Gets the integer value of the visit id
+		Integer hospitalId = visit.getHospitalId();
+		Integer evaluatorId = visit.getEvaluatorId();
+		String dateOfVisit = visit.getDateOfVisit();
+		String isLastVisit = visit.getIsLastVisit();
+		String nextVisitDate = visit.getNextVisitDate();
+		String relapse = visit.getRelapse();
+		
+		Integer hindfootLeftVarus = visit.getHindfootLeftVarus();
+		Integer hindfootLeftCavus = visit.getHindfootLeftCavus();
+		Integer hindfootLeftAbductus = visit.getHindfootLeftAbductus();
+		Integer hindfootLeftEquinus = visit.getHindfootLeftEquinus();
+		Integer leftPC = visit.getLeftPC();
+		Integer leftEH = visit.getLeftEH();
+		Integer leftRE = visit.getLeftRE();
+		Integer leftMC = visit.getLeftPC();
+		Integer leftTHC = visit.getLeftEH();
+		Integer leftCLB = visit.getLeftRE();
+		String leftTreatment = visit.getLeftTreatment();
+		
+		Integer casterLeft = visit.getCasterLeft();
+		Integer castLeftNum = visit.getCastLeftNum();
+		Integer abductionLeft = visit.getAbductionLeft();
+		Integer dorsiflexionLeft = visit.getDorsiflexionLeft();
+		String braceLeft = visit.getBraceLeft();
+		String problemsLeft = visit.getProblemsLeft();
+		String actionsLeft = visit.getActionsLeft();
+		String surgeryLeft = visit.getSurgeryLeft();
+		String leftSurgeryComments = visit.getLeftSurgeryComments();
+		String otherLeft = visit.getOtherLeft();
+		
+		Integer hindfootRightVarus = visit.getHindfootRightVarus();
+		Integer hindfootRightCavus = visit.getHindfootRightCavus();
+		Integer hindfootRightAbductus = visit.getHindfootRightAbductus();
+		Integer hindfootRightEquinus = visit.getHindfootRightEquinus();
+		Integer rightPC = visit.getRightPC();
+		Integer rightEH = visit.getRightEH();
+		Integer rightRE = visit.getRightRE();
+		Integer rightMC = visit.getRightPC();
+		Integer rightTHC = visit.getRightEH();
+		Integer rightCLB = visit.getRightRE();
+		String rightTreatment = visit.getRightTreatment();
+		
+		Integer casterRight = visit.getCasterRight();
+		Integer castRightNum = visit.getCastRightNum();
+		Integer abductionRight = visit.getAbductionRight();
+		Integer dorsiflexionRight = visit.getDorsiflexionRight();
+		String braceRight = visit.getBraceRight();
+		String problemsRight = visit.getProblemsRight();
+		String actionsRight = visit.getActionsRight();
+		String surgeryRight = visit.getSurgeryRight();
+		String rightSurgeryComments = visit.getRightSurgeryComments();
+		String otherRight = visit.getOtherRight();
+		
+		String complications = visit.getComplications();
+		String description = visit.getDescription();
+		String treatmentComplications = visit.getTreatmentComplications();
+		String results = visit.getResults();
+		String comments = visit.getComments();
+		
+		String sql_visit = "Insert into visit (id, evaluator_id, patient_id, hospital_id, is_last_visit, " +
+					   	   "next_visit_date, relapse, complications, complications_description, " +
+					   	   "complications_results, general_comments) " +
+		                   "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into visit
+		
+		//String sql_left_foot = "Insert into foot (id, visit_id, laterality, varus, cavus, abductus, equinus, pc, eh, re, mc, thc, clb, " +
+		//					   "cast_number, abduction, dorsiflexion, brace_compliance, brace_problems, brace_action, surgery_other, " +
+		//					   "surgery_comment, other_details) " +
+		//					   "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		
+		String sql_left_foot = "Insert into foot (id, visit_id, laterality, varus, cavus, abductus, equinus, pc, eh, re, mc, thc, clb) " +
+   				               "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into left foot
+		
+		String sql_right_foot = "Insert into foot (id, visit_id, laterality, varus, cavus, abductus, equinus, pc, eh, re, mc, thc, clb) " +
+				   				"values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into right foot
+		
+		Connection connection = null;	// Instantiation of the connection to the database
+		PreparedStatement ps = null; // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database
+		
+		/**
+		 * The following contains a set of prepared statements to be prepared to be synchronized to the MySql database.
+		 * The prepared statements pull information that was saved to the model via the form submission.
+		 */
 		try {
-			connection = dataSource.getConnection();
-			PreparedStatement ps = connection.prepareStatement(query);
-			ps.setInt(1, id);
+			connection = dataSource.getConnection(); // Connection of the dataSource with the MySql sever
+			
+			// VISIT
+			ps = connection.prepareStatement(sql_visit);
+			ps.setInt(1, visitId);
+			/*
+			ps.setInt(2, 0);
+			ps.setInt(3, patientId);
+			ps.setInt(4, 1);
+			ps.setString(5, "No");
+			ps.setString(6, "2015-03-26");
+			ps.setString(7, "No");
+			ps.setString(8, "test");
+			ps.setString(9, "test");
+			ps.setString(10, "test");
+			ps.setString(11, "test");
+			*/
+			ps.setInt(2, evaluatorId);
+			ps.setInt(3, patientId);
+			ps.setInt(4, hospitalId);
+			ps.setString(5, isLastVisit);
+			ps.setString(6, nextVisitDate);
+			ps.setString(7, relapse);
+			ps.setString(8, complications);
+			ps.setString(9, description);
+			ps.setString(10, results);
+			ps.setString(11, comments);
 			ps.executeUpdate();
 			ps.close();
-		}catch (SQLException e) {
+			
+			// LEFT FOOT
+			ps = connection.prepareStatement(sql_left_foot);
+			ps.setInt(1, this.getMaxFootId() + 1);
+			ps.setInt(2, visitId);
+			ps.setString(3, "Left");
+			/*
+			ps.setInt(4, 1);
+			ps.setInt(5, 1);
+			ps.setInt(6, 20);
+			ps.setInt(7, 20);
+			ps.setInt(8, 1);
+			ps.setInt(9, 1);
+			ps.setInt(10, 1);
+			ps.setInt(11, 1);
+			ps.setInt(12, 1);
+			ps.setInt(13, 1);
+			*/
+			/*
+			ps.setInt(14, castLeftNum);
+			ps.setInt(15, abductionLeft);
+			ps.setInt(16, dorsiflexionLeft);
+			ps.setString(17, braceLeft);
+			ps.setString(18, problemsLeft);
+			ps.setString(19, actionsLeft);
+			ps.setString(20, surgeryLeft);
+			ps.setString(21, leftSurgeryComments);
+			ps.setString(22, otherLeft);
+			*/
+			ps.setInt(4, hindfootLeftVarus);
+			ps.setInt(5, hindfootLeftCavus);
+			ps.setInt(6, hindfootLeftAbductus);
+			ps.setInt(7, hindfootLeftEquinus);
+			ps.setInt(8, leftPC);
+			ps.setInt(9, leftEH);
+			ps.setInt(10, leftRE);
+			ps.setInt(11, leftMC);
+			ps.setInt(12, leftTHC);
+			ps.setInt(13, leftCLB);
+			ps.executeUpdate();
+			ps.close();
+			
+			
+			// RIGHT FOOT
+			ps = connection.prepareStatement(sql_right_foot);
+			ps.setInt(1, this.getMaxFootId() + 1);
+			ps.setInt(2, visitId);
+			ps.setString(3, "Right");
+			/*
+			ps.setInt(4, 1);
+			ps.setInt(5, 1);
+			ps.setInt(6, 20);
+			ps.setInt(7, 20);
+			ps.setInt(8, 1);
+			ps.setInt(9, 1);
+			ps.setInt(10, 1);
+			ps.setInt(11, 1);
+			ps.setInt(12, 1);
+			ps.setInt(13, 1);
+			*/
+			ps.setInt(4, hindfootRightVarus);
+			ps.setInt(5, hindfootRightCavus);
+			ps.setInt(6, hindfootRightAbductus);
+			ps.setInt(7, hindfootRightEquinus);
+			ps.setInt(8, rightPC);
+			ps.setInt(9, rightEH);
+			ps.setInt(10, rightRE);
+			ps.setInt(11, rightMC);
+			ps.setInt(12, rightTHC);
+			ps.setInt(13, rightCLB);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
  
 		} finally {
@@ -75,11 +258,15 @@ public class InMemoryVisitRepo implements VisitRepo{
 		
 	}
 
+	
 	public List<Visit> getVisit(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * Method the effectively deletes visit information stored in the database
+	 */
 	public void deleteVisit(int id) {
 		String query = "delete from visit where id = ?";
 		jdbcTemplateObject.update(query, id);
@@ -92,12 +279,21 @@ public class InMemoryVisitRepo implements VisitRepo{
 		
 	}
 
+	/**
+	 * Method that retrieves all Users data from a series of sql queries to the database, and puts it into a result set
+	 * to be viewed in the "view" pages
+	 */
 	@Override
 	public List<Visit> getAllVisits() {
-		Connection conn = null;
-		Visit visit = null;
-		List<Visit> visits = null;
+		Connection conn = null; // Resets the connection to the database
+		Visit visit = null; // Resets the model
+		List<Visit> visits = null; // Resets the list
 		
+		/**
+		 * Reseting the database connection to retrieve information that's stored in the mysql database
+		 * via queries that are sent through the open connection. The results of the data received by this class
+		 * is saved in a result set to be displayed in the jsp view. 
+		 */
 		try {
 			conn = dataSource.getConnection();
 			
@@ -119,10 +315,10 @@ public class InMemoryVisitRepo implements VisitRepo{
 			rs.close();
 			ps.close();
 			return visits;
-		} catch (SQLException e) {
+		} catch (SQLException e) { // Catches SQL exception errors
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
+			if (conn != null) { // Closes SQL connection 
 				try {
 				conn.close();
 				} catch (SQLException e) {}
@@ -130,9 +326,12 @@ public class InMemoryVisitRepo implements VisitRepo{
 		}
 	}
 
+	/**
+	 * Method that retrieves the max visit id
+	 */
 	@Override
 	public int getMaxVisitId() {
-		Connection conn = null;
+		Connection conn = null; // Resets the connection to the database
 		int max = 0;
 		
 		try {
@@ -144,7 +343,7 @@ public class InMemoryVisitRepo implements VisitRepo{
 			
 			if (rs.next()) {
 				max = rs.getInt(1);
-			}
+			} 
 			
 			rs.close();
 			ps.close();
@@ -160,4 +359,69 @@ public class InMemoryVisitRepo implements VisitRepo{
 		}
 	}
 
+	/**
+	 * Method that receives the max foot id from the database
+	 */
+	@Override
+	public int getMaxFootId() {
+		Connection conn = null; // Resets the connection to the database
+		int max = 0;
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select max(id) from foot";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				max = rs.getInt(1);
+			} 
+			
+			rs.close();
+			ps.close();
+			return max;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * Method that returns a mapped vector of int and string values for all hosptials
+	 */
+	public Map<Integer, String> getAllHospitals() {
+		Connection conn = null; // Resets the connection to the database
+		Map<Integer, String> hospitals = new LinkedHashMap<Integer,String>();
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select id, name from hospital";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				hospitals.put(rs.getInt("id"), rs.getString("name"));
+			}
+			
+			rs.close();
+			ps.close();
+			return hospitals;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
 }

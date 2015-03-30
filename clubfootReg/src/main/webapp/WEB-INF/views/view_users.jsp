@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html"; charset=ISO-8859-1">
-<title>CURE Clubfoot | Users</title>
+<title>Clubfoot Registry | Users</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -24,12 +24,12 @@
 	<div class="jumbotron">
 		<h1>
 			Users
-			<a role="button" class="btn btn-primary" href="adduser">Add New User</a>
+			<a role="button" class="btn btn-primary btn-lg" href="adduser">Add New User</a>
 		</h1>
+		<hr>
 		<table class='table table-striped'>
 		   	<thead>
 		   		<tr>
-		   			<th>ID</th>
 		    		<th>Username</th>
 		    		<th>Email</th>
 		    		<th>Hospital</th>
@@ -41,11 +41,11 @@
         	<c:if test="${not empty users}">
             <c:forEach var="o" items="${users}">
               <tr>
-                  <td>${o.id}</td>
                   <td>${o.user_name}</td>
                   <td>${o.email}</td>
-                  <td>${o.hospital_id}</td>
-                  <td>${o.role_id}</td>
+                  <td>${o.hospital_name}</td>
+                  <td>${o.role_name}</td>
+                  <td><a href="edit_user?id=${o.id}">Edit</a></td>
               </tr>
             </c:forEach>
           </c:if>
@@ -58,10 +58,11 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<footer align="center">
-				<p>&copy; Some Copywrite Info</p>
+				<p>&copy; Some Copyright Info</p>
 			</footer>
 		</div>
 	</div>
 </div>
+
 </body>
 </html> 

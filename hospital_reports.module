@@ -1,0 +1,3406 @@
+<?php
+
+/**
+ * Display help and module information
+ * @param path which path of the site we're displaying help
+ * @param arg array that holds the current path as would be returned from arg() function
+ * @return help text for the path
+ */
+
+/**
+ * Define global constnat to tell whether to caulcalate some fields based on patients newly evaulated or patients served
+ */
+define('BASED_ON_SERVED', 1);
+define('EXCLUDE_INDIAN_HOSPITALS', 1);
+global $language;
+#$t = get_t();
+$lang = $language->language;
+
+function hospital_reports_help($path, $arg) {
+  $output = '';  //declare your output variable
+  switch ($path) {
+    case "admin/help#hospital_reports":
+      $output = '<p>'.  t("Displays a report of hospital activity") .'</p>';
+      break;
+  }
+  return $output;
+} // function hospital_reports_help
+
+
+/**
+* Valid permissions for this module
+* @return array An array of valid permissions for the hospital_reports module
+*/
+function hospital_reports_perm() {
+  return array('access hospital_reports');
+} // function hospital_reports_perm
+
+
+/*
+*Gets user name from global $user
+*/
+function hospital_reports_get_user_lastaccess() {
+  global $user;
+  $lastaccess = $user->login;
+  return $lastaccess;
+}
+function hospital_reports_get_user_name() {
+  global $user;
+  $name = $user->name;
+  $name = $str = str_replace(" ", "_", $name); 
+  $name = $str = str_replace(".", "_", $name); 
+  $name = $str = str_replace("'", "_", $name); 
+  $name = $str = str_replace(",", "_", $name); 
+  return $name;
+}
+
+/*
+*Creates a form allowing the user to select the start and end dates
+*/
+function hospital_reports_review_selection() {
+  $form = array();
+  global $username;
+  $username = hospital_reports_get_user_name();
+  //CONTAINERS
+  $form['filter_container'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Filters'),
+    '#description' => t('Filter report results'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  $form['report_output_container'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Report Output'),
+    '#description' => t('Attributes to report'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  //if the user session has been active for more than 10 minutes, reset the
+  // start and end date to the default of now()
+  $user_lastaccess = variable_get('hospital_reports_user_lastaccess_'.$username, 0);
+  $diff_time = time() - $user_lastaccess;
+  
+   //$timestamp = time();
+   if ((!$user_lastaccess) ||  ($diff_time > 600)){
+     variable_del('hospital_reports_start_date_'.$username);
+     variable_del('hospital_reports_end_date_'.$username);
+     variable_del('hospital_reports_enrolled_patients_'.$username);
+     variable_del('hospital_reports_gender_'.$username);
+     variable_del('hospital_reports_laterality_'.$username);
+     variable_del('hospital_reports_family_'.$username);
+     variable_del('hospital_reports_treatment_stages_'.$username);
+     variable_del('hospital_reports_bracing_by_years_'.$username);
+     variable_del('hospital_reports_drop_out_rate_'.$username);
+     variable_del('hospital_reports_brace_compliance_'.$username);
+     variable_del('hospital_reports_tenotomies_'.$username);
+     variable_del('hospital_reports_casts_per_patient_'.$username);
+     variable_del('hospital_reports_many_casts_'.$username);
+     variable_del('hospital_reports_first_visit_age_'.$username);
+     variable_del('hospital_reports_evaluation_age_'.$username);
+     variable_del('hospital_reports_first_cast_age_'.$username);
+     variable_del('hospital_reports_relapse_'.$username);
+     variable_del('hospital_reports_total_visits_'.$username);
+     variable_del('hospital_reports_total_patients_served_'.$username);
+     variable_del('hospital_reports_gender_patients_served_'.$username);
+     variable_del('hospital_reports_visiting_patients_'.$username);
+     variable_del('hospital_reports_new_patients_'.$username);
+     variable_del('hospital_reports_new_visits_'.$username);
+     variable_del('hospital_reports_procedures_performed_'.$username);
+   }
+   $new_time = time();
+  $eval_or_visit_desc = "evaluated or visited";
+  if (BASED_ON_SERVED) {
+  }  else {
+     $eval_or_visit_desc = "evaluated";
+  }
+   variable_set('hospital_reports_user_lastaccess_'.$username, $new_time);
+  //FILTER ELEMENTS
+    $form['filter_container']['hospital_reports_start_date_'.$username] = array(
+      '#type' => 'date_popup',
+      '#title' => t('Start Date'),
+      '#date_format' => 'd/m/Y',
+      '#date_year_range' => '-20:+3',
+      '#default_value' => variable_get('hospital_reports_start_date_'.$username,'now'),
+    );
+
+    $form['filter_container']['hospital_reports_end_date_'.$username] = array(
+      '#type' => 'date_popup',
+      '#title' => t('End Date'),
+      '#date_format' => 'd/m/Y',
+      '#default_value' => variable_get('hospital_reports_end_date_'.$username,'now'),
+    );
+  $hospital_list = _hospital_reports_get_hospital_list_ordered_by_taxonomy();
+   
+  $hospital_list_size = count($hospital_list);
+  $select_size =10;
+  if ($select_size > $hospital_list_size) {
+     $select_size = $hospital_list_size;
+  }
+  $form['filter_container']['hospital_reports_filter_hospital_'.$username] = array(
+    '#type' => 'select',
+    '#title' => t('Hospital'),
+    '#options' => $hospital_list,
+    '#multiple' => true,
+    '#attributes'=>array('size'=>$select_size),
+    '#default_value' => variable_get('hospital_reports_filter_hospital_'.$username,0),
+  );
+
+  //OUTPUT ELEMENTS
+  drupal_add_js("
+    function checkUncheckAll(theElement){
+      var theForm = theElement.form, z = 0;
+      for(z=0; z<theForm.length;z++){
+        if(theForm[z].type == 'checkbox' && theForm[z].name != 'checkall'){
+          theForm[z].checked = theElement.checked;
+        }
+      }
+    }
+  ", 'inline');
+
+  $form['report_output_container']['checkall'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Select / Unselect all'),
+    '#attributes' => array('onclick' => 'checkUncheckAll(this);'),
+    '#weight' => -1,
+  );
+
+  $form['report_output_container']['hospital_reports_enrolled_patients_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Total number of patients enrolled during reporting period'),
+    '#description' => t('The total number of patients evaluated/enrolled between the start and end date.'),
+    '#default_value' => variable_get('hospital_reports_enrolled_patients_'.$username, 1),
+  );
+  $form['report_output_container']['hospital_reports_total_patients_served_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Total number of patients served'),
+    '#description' => t('The total number of patients evaluated and / or having visits between the start and end dates.'),
+    '#default_value' => variable_get('hospital_reports_total_patients_served_'.$username, 0),
+  );
+  $form['report_output_container']['hospital_reports_gender_patients_served_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Gender of patients served'),
+    '#description' => t('The number of male and female patients evaluated and / or having visits between the start and end date.'),
+    '#default_value' => variable_get('hospital_reports_gender_patients_served_'.$username, 0),
+  );
+
+  $laterality_desc = "evaluated or visited";
+  if (BASED_ON_SERVED) {
+  }  else {
+     $laterality_desc = "evaluated";
+  }
+  $form['report_output_container']['hospital_reports_laterality_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Laterality'),
+    '#description' => t("The number of unilateral and bilateral patients ".$laterality_desc." evaluated between the start and end date."),
+    '#default_value' => variable_get('hospital_reports_laterality_'.$username, 0),
+  );
+
+  $form['report_output_container']['hospital_reports_family_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Affected Relatives'),
+    '#description' => t('The number of patients evaluated between the start and end date that do or do not have relatives with clubfoot.'),
+    '#default_value' => variable_get('hospital_reports_family_'.$username, 0),
+  );
+
+  $form['report_output_container']['hospital_reports_treatment_stages_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Treatment stages'),
+    '#description' => t("The number of patients evaluated between the start and end date that are in the casting, tenotomy, or bracing stages of treatment.  Treatment stage is determined with the patient's most recent visit type. Patients in the casting stage have visited within three weeks of the end date.  Patients in the tenotomy stage have visited within four weeks of the end date.  Patients in the bracing stage have visited within six months of the end date."),
+    '#default_value' => variable_get('hospital_reports_treatment_stages_'.$username, 0),
+  );
+
+  $form['report_output_container']['hospital_reports_bracing_by_years_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Bracing Spanning One or More Years'),
+    '#description' => t("The number of patients with their last visit falling between the start and end date that have been in the bracing stage for one or more years.  This includes all patient who 1) have in their last visit a treatment of type bracing, other or referral.  2) Have had a continuous series of bracing visits starting from their last bracing visit and going back at least one year.  If the patient has had one or more visits with treatment type other or referral between two bracing visits, the time span is included between the two bracing visits.  If the patient's last visit/s was/were other or referral, then the count of the time span starts at the last bracing visit."),
+    '#default_value' => variable_get('hospital_reports_bracing_by_years_'.$username, 0),
+  );
+
+  $form['report_output_container']['hospital_reports_drop_out_rate_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Drop outs'),
+    '#description' => t('Finds patients who have dropped out of treatment.  Drop outs meet these requirements:') .
+                      '<li>' . t("Patient is in the casting or bracing stage of treatment.") .
+                      '<li>' . t("Patient's most recent visit is not marked as being their final visit.") .
+                      '<li>' . t("Casting drop outs have not had a visit within three weeks of the end date.  Bracing drop outs have not had a visit within six months of the end date."),
+    '#default_value' => variable_get('hospital_reports_drop_out_rate_'.$username, 0),
+  );
+
+  $form['report_output_container']['hospital_reports_tenotomies_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Tenotomies'),
+    '#description' => t("The number of patients who have and have not had tenotomies.  Excludes patients whose first visit was a B visit."),
+    '#default_value' => variable_get('hospital_reports_tenotomies_'.$username, 0),
+  );
+
+  $form['report_output_container']['hospital_reports_brace_compliance_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Brace compliance'),
+    '#description' => t("The brace compliance of the patients in the bracing stage of treatment."),
+    '#default_value' => variable_get('hospital_reports_brace_compliance_'.$username, 0),
+  );
+
+  $form['report_output_container']['hospital_reports_casts_per_patient_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Average number of casts per patient'),
+    '#description' => t("The average number of casting visits that patients have had.  Excludes patients whose first visit was a B visit."),
+    '#default_value' => variable_get('hospital_reports_casts_per_patient_'.$username, 0),
+  );
+
+  $form['report_output_container']['hospital_reports_many_casts_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Patients with 8+ casts'),
+    '#description' => t('Finds patients who have had eight or more casting visits and have not experienced relapse.'),
+    '#default_value' => variable_get('hospital_reports_many_casts_'.$username, 0),
+  );
+
+  $form['report_output_container']['hospital_reports_first_visit_age_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Age of first visit'),
+    '#description' => t('Finds the age of first visit for patients '.$eval_or_visit_desc.' between the start and end date.'),
+    '#default_value' => variable_get('hospital_reports_first_visit_age_'.$username, 0),
+  );
+
+  $form['report_output_container']['hospital_reports_evaluation_age_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Age of evaluation'),
+    '#description' => t('Finds the age of evaluation for patients '.$eval_or_visit_desc.' between the start and end date.'),
+    '#default_value' => variable_get('hospital_reports_evaluation_age_'.$username, 0),
+  );
+
+  $form['report_output_container']['hospital_reports_first_cast_age_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Age of first cast'),
+    '#description' => t('Finds the age of first casting visit for patients '.$eval_or_visit_desc.' between the start and end date.'),
+    '#default_value' => variable_get('hospital_reports_first_cast_age_'.$username, 0),
+  );
+  $relapse_desc = "Finds patients who have experienced relapse between the start and end date. Relapse is defined by having a casting visit after a bracing visit.";
+  if (BASED_ON_SERVED){
+
+  } else {
+
+  }
+  $form['report_output_container']['hospital_reports_relapse_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Relapses'),
+    '#description' => t('Finds patients who have experienced relapse between the start and end date. Relapse is defined by having a casting visit after a bracing visit.'),
+    '#default_value' => variable_get('hospital_reports_relapse_'.$username, 0),
+  );
+  
+
+  $form['report_output_container']['hospital_reports_total_visits_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Total number of visits'),
+    '#description' => t('The total number of visits that occurred between the start and end date.'),
+    '#default_value' => variable_get('hospital_reports_total_visits_'.$username, 0),
+  );
+
+  $form['report_output_container']['hospital_reports_visiting_patients_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Patients seen during report period'),
+    '#description' => t('The number of patients who had visits that occurred between the start and end dates.'),
+    '#default_value' => variable_get('hospital_reports_visiting_patients_'.$username, 0),
+  );
+
+  $form['report_output_container']['hospital_reports_new_patients_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Number of new patients in reporting period'),
+    '#description' => t('The number of patients with evaluation dates between the start and end dates.'),
+    '#default_value' => variable_get('hospital_reports_new_patients_'.$username, 0),
+  );
+
+  $form['report_output_container']['hospital_reports_new_visits_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Number of visits in the reporting period'),
+    '#description' => t('The number of visits that occurred between the start and end dates.'),
+    '#default_value' => variable_get('hospital_reports_new_visits_'.$username, 0),
+  );
+
+  $form['report_output_container']['hospital_reports_procedures_performed_'.$username] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Procedures performed within reporting period'),
+    '#description' => t('Counts the type of visits that occurred between the start and end dates.'),
+    '#default_value' => variable_get('hospital_reports_procedures_performed_'.$username, 0),
+  );
+
+  $form = system_settings_form($form);
+  $form['buttons']['submit']['#value'] = t('Run report');
+  return $form;
+} //end function hospital_reports_review_selection
+
+function hospital_reports_after_build($form, &$form_state) {
+  drupal_add_js(drupal_get_path('module', hospital_reports) . '/hospital_reports.js');
+  return $form;
+}
+
+function _hospital_reports_get_partner_hospitals_taxonomy_id() {
+  $taxonomies = taxonomy_get_vocabularies();
+  foreach ($taxonomies as $t) {
+    if ($t->name == "Partner hospitals") {
+      return $t->vid;
+    }
+  }
+}
+
+function _hospital_reports_get_hospital_list_ordered_by_taxonomy () {
+   global $regions_hospitals_to_hospitals;
+   global $hospital_country_list;
+   $regions_hospitals_to_hospitals  = array();
+   $hospital_country_list = array();
+   $hospital_selection_ordered_by_taxonomy = array("All" => "All");
+
+   $permitted_hospital_list = _hospital_reports_get_hospital_list();
+   $sorting_region_and_hospitals = array();
+   foreach ($permitted_hospital_list as $key => $value){ 
+     $final_region_name =$value;
+     $final_region_and_hospital_name ="";
+     $test_value = str_replace(' ', '', $value);
+     if (($test_value == "All") ||($test_value == "all")){
+       continue;
+     }
+     $parent = $value;
+     while (strlen($parent) > 0) {
+       $parent = hospital_reports_get_parent_taxonomy_element($parent);
+       if (strlen($parent) > 0) {
+         $final_region_name = $parent.", ".$final_region_name;
+         if (strlen($final_region_and_hospital_name) > 0){
+           $final_region_and_hospital_name = $parent.", ".$final_region_and_hospital_name;
+         } else {
+           $final_region_and_hospital_name = $parent;
+         }
+       }
+     }
+     $hospital_country_list[$value . ""] = $final_region_and_hospital_name;
+     $sorting_region_and_hospitals[$final_region_name] = $value;
+     $regions_hospitals_to_hospitals[$final_region_name .""] = $value . "";
+   }
+   ksort($sorting_region_and_hospitals);
+   foreach ($sorting_region_and_hospitals as $reg_hosp => $hosp){
+     if (in_array($hosp, $permitted_hospital_list)){
+       
+       if ($hospital_country_list[$hosp.""]){
+      $hospital_selection_ordered_by_taxonomy[array_search($hosp."", $permitted_hospital_list)] =  $hospital_country_list[$hosp.""].", ".$hosp."";
+    #      $hospital_selection_ordered_by_taxonomy[] = $hospital_country_list[$hosp.""].", ".$hosp."";
+       } else {
+      $hospital_selection_ordered_by_taxonomy[array_search($hosp."", $permitted_hospital_list)] = $hosp."";
+    #      $hospital_selection_ordered_by_taxonomy[] = $hosp."";
+       }
+     }
+   }
+   return $hospital_selection_ordered_by_taxonomy;
+}
+function _hospital_reports_get_hospital_list() {
+  $hospital_list = array(0 => 'All');
+  $roles_array = _icr_select_hospital_get_current_user_hospital_options();
+  $indian_hospitals_to_exclude = array();
+  if ($EXCLUDE_INDIAN_HOSPITALS) {
+    $indian_hospitals_to_exclude = get_indian_hospitals_to_exclude();
+  }
+  foreach($roles_array as $hospital) {
+    if ($hospital == 'Hospital da Baleia') {
+    } elseif (in_array($hospital, $indian_hospitals_to_exclude)) {
+    } else {
+      array_push($hospital_list, $hospital);
+    }
+  }
+  asort($hospital_list);
+
+  return $hospital_list;
+}
+
+function hospital_reports_get_parent_taxonomy_element($term_name) {
+  $query = "SELECT distinct td.name ";
+  $query .= " FROM ";
+  $query .= " term_data td, term_data td2, term_hierarchy th ";
+  $query .= " WHERE ";
+  $query .= " td.tid = th.parent and td2.tid = th.tid ";
+  $query .= " and td2.name  ='%s'";
+  $db_results = db_query($query, $term_name);
+  $results = db_fetch_object($db_results);
+  return $results->name;
+}
+
+function hospital_reports_get_hospitals_to_report() {
+  //Current User
+  global $user;
+  global $username;
+  global $hospital_country_list;
+
+  $username = hospital_reports_get_user_name();
+  //Get selected hospitals
+  $hospital_selection = variable_get('hospital_reports_filter_hospital_'.$username, "All");
+  //Get list of options
+  $permitted_hospital_list = _hospital_reports_get_hospital_list();
+  $hospital_name ="";
+  if (is_array($hospital_selection)){
+    $hospital_name = array();
+    foreach ($hospital_selection as $ridk => $ridv){
+       $hospital_name[$ridk] = $permitted_hospital_list[$ridv];
+    }
+  } else {
+    $hospital_name = $permitted_hospital_list[$hospital_selection];
+  }
+  $hospital_selection_ordered_by_taxonomy = array();
+
+  if(is_array($hospital_selection) && in_array("All", $hospital_selection)) {  
+    $hospital_selection_ordered_by_taxonomy = _hospital_reports_get_hospital_list_ordered_by_taxonomy();
+  } else {  
+     if (is_array($hospital_name)){
+        foreach ($hospital_name as $namek => $namev) {
+           if ($hospital_country_list[$namev]) {
+              array_push($hospital_selection_ordered_by_taxonomy, $hospital_country_list[$namev] . ", " . $namev);
+           } else {
+              array_push($hospital_selection_ordered_by_taxonomy, $namev);
+           }
+        }
+     } else { 
+        if ($hospital_country_list[$namev]) {
+           array_push($hospital_selection_ordered_by_taxonomy, $hospital_country_list[$namev] . ", " . $namev);
+        } else {
+           array_push($hospital_selection_ordered_by_taxonomy, $namev);
+        }
+     }
+  }
+  return $hospital_selection_ordered_by_taxonomy;
+}
+
+/**
+ * Implementation of hook_block().
+ * @param string $op one of "list", "view", "save" and "configure"
+ * @param integer $delta code to identify the block
+ * @param array $edit only for "save" operation
+*/
+function hospital_reports_block($op = 'list', $delta = 0, $edit = array()) {  
+  if($op == "list") {
+    // Generate listing of blocks from this module, for the admin/block page
+    $block = array();
+    $block[0]["info"] = t('Hospital Reports');
+    return $block;
+  }
+  else if ($op == 'view') {
+
+    // Generate our block content
+
+    // content variable that will be returned for display
+    $block_content = '';
+
+    $menu = drupal_get_form('hospital_reports_review_selection');
+    $block_content .= $menu;
+
+    //Current User
+    global $user;
+    global $username;
+    $username = hospital_reports_get_user_name();
+
+    // Get map of regions + hospital labels to roles
+    global $regions_hospitals_to_hospitals;
+
+    // CSS formatting of output
+    cache_clear_all(); 
+    drupal_add_css(drupal_get_path('module', 'hospital_reports') .'/hospital_reports.css', 'module');
+
+    // Get today's date
+    $timestamp = time();
+   
+    $entered_start_date = variable_get("hospital_reports_start_date_".$username, strftime("%F %T", $timestamp) );
+    $entered_end_date = variable_get("hospital_reports_end_date_".$username, strftime("%F %T", $timestamp) );
+    $entered_start_date = hospital_reports_entered_time_to_db_time($entered_start_date);
+    $entered_end_date = hospital_reports_entered_time_to_db_time($entered_end_date);
+
+    $format = "%FT%T";
+    $start_array = strptime($entered_start_date, $format);
+    $end_array = strptime($entered_end_date, $format);
+
+    //extract start time from array
+    $start_time = mktime(0, 0, 0,($start_array['tm_mon']+1),$start_array['tm_mday'], ($start_array['tm_year']+1900) );
+
+    //extract end time from array
+    $end_time = mktime(23, 59, 59,($end_array['tm_mon']+1),$end_array['tm_mday'], ($end_array['tm_year']+1900) );
+
+    //start date and end date for display
+    $start_date = date('F j\, Y',$start_time);
+    $end_date = date('F j\, Y',$end_time);
+    $block_content .= '<br />';
+    $block_content .= $start_date .  ' - ' . $end_date . '<br />';
+
+    //get list of hospitals to report on
+    
+    $roles_array = hospital_reports_get_hospitals_to_report();
+    //Write/open CSV file
+    hospital_reports_remove_old_csv();
+    hospital_reports_create_csv();
+    hospital_reports_write_csv_headers();
+    $file_path = hospital_reports_get_csv_filepath();
+    $file_name = hospital_reports_get_csv_filename();
+    $portal = base_path();
+    $block_content .= '<div class="csv-link"><a href="'. $portal . $file_path . $file_name .'">' . "Download .csv file" .'</a></div>';
+    //for each hospital
+    foreach($roles_array as $role ) {
+      //$comma_pos = strpos(",", $role);
+      //$role = substr($role, $comma_pos);
+      if ($role == "All") {
+         continue;
+      }
+      //PATIENTS AND VISITS
+      $enrolled_patient_count = 0;
+      $total_visit_count = 0;
+      $new_patient_count = 0;
+      $new_visit_count = 0;
+      $visiting_patient_count = 0;
+      //PROCEDURES
+      $casting_count = 0;
+      $tenotomy_count = 0;
+      $brace_count = 0;
+      $refer_count = 0;
+      $surgery_count = 0;
+      $other_count = 0;
+      //GENDER
+      $male_count = 0;
+      $female_count = 0;
+      //LATERALITY
+      $unilateral_count = 0;
+      $unilateral_right_count = 0;
+      $unilateral_left_count = 0;
+      $bilateral_count = 0;
+      //AFFECTED RELATIVES
+      $affected_relatives_yes_count = 0;
+      $affected_relatives_no_count = 0;
+      $affected_relatives_unsure_count = 0;
+      //CASTING
+      $casts_per_patient = 0;
+      $many_casts_count = 0;
+      //AGE OF FIRST VISIT
+      $visit_age_0_3_mo_count = 0;
+      $visit_age_3_6_mo_count = 0;
+      $visit_age_6_12_mo_count = 0;
+      $visit_age_1_2_yr_count = 0;
+      $visit_age_2_5_yr_count = 0;
+      $visit_age_5_10_yr_count = 0;
+      $visit_age_10_plus_yr_count = 0;
+      //AGE OF EVALUATION
+      $eval_age_0_3_mo_count = 0;
+      $eval_age_3_6_mo_count = 0;
+      $eval_age_6_12_mo_count = 0;
+      $eval_age_1_2_yr_count = 0;
+      $eval_age_2_5_yr_count = 0;
+      $eval_age_5_10_yr_count = 0;
+      $eval_age_10_plus_yr_count = 0;
+      //AGE OF FIRST CASTING
+      $casting_age_0_3_mo_count = 0;
+      $casting_age_3_6_mo_count = 0;
+      $casting_age_6_12_mo_count = 0;
+      $casting_age_1_2_yr_count = 0;
+      $casting_age_2_5_yr_count = 0;
+      $casting_age_5_10_yr_count = 0;
+      $casting_age_10_plus_yr_count = 0;
+      //DROP OUTS
+      $casting_dropout_count = 0;
+      $bracing_dropout_count = 0;
+      //TTREATMENT STAGES
+      $treatment_stage_casting_count = 0;
+      $treatment_stage_bracing_count = 0;
+      $treatment_stage_tenotomy_count = 0;
+      //RELAPSE
+      $relapse_count = 0;
+      //TENOTOMY
+      $tenotomy_pos_count = 0; 
+      $tenotomy_neg_count = 0;
+      $tenotomy_percent = 0;
+      //BRACE COMPLIANCE
+      $bracing_compliance_good_count = 0;
+      $bracing_compliance_fair_count = 0;
+      $bracing_compliance_poor_count = 0;
+      //CSV ARRAYS
+      $csv_row = array();
+      //exclude certain roles that don't correspond to hospitals
+      if(hospital_reports_excluded_role($role) == FALSE) {
+        //print hospital name
+        $role_modified = preg_replace("/member/", "", $role);
+        $block_content .= '<br /><span class="hospital-name">' . $role_modified . '</span><br />';
+        array_push($csv_row, $role_modified . " ");       
+ 
+        //get hospital's ID
+        $roles = user_roles(TRUE);
+        $hid = array_search($regions_hospitals_to_hospitals[$role] . " member", $roles);
+
+        //print hospital name, number of new patients, and number of treatments by type
+
+        $total_served_count = 0;
+        if ((hospital_reports_display_field('hospital_reports_total_patients_served_'.$username) == TRUE) ||
+            (hospital_reports_display_field('hospital_reports_gender_patients_served_'.$username) == TRUE) ||
+            (hospital_reports_display_field('hospital_reports_laterality_'.$username) == TRUE) ||
+            (hospital_reports_display_field('hospital_reports_family_'.$username) == TRUE) ||
+            (hospital_reports_display_field('hospital_reports_bracing_by_years_'.$username) == TRUE) ||
+            (hospital_reports_display_field('hospital_reports_drop_out_rate_'.$username) == TRUE) ||
+            (hospital_reports_display_field('hospital_reports_visiting_patients_'.$username) == TRUE) ||
+            (hospital_reports_display_field('hospital_reports_enrolled_patients_'.$username) == TRUE) ||
+            (hospital_reports_display_field('hospital_reports_casts_per_patient_'.$username) == TRUE) 
+           ) {
+           $total_served_count = hospital_reports_count_total_patients_served($hid, $entered_start_date, $entered_end_date);
+        }
+        if(hospital_reports_display_field('hospital_reports_enrolled_patients_'.$username) == TRUE) {
+          $enrolled_patient_count = hospital_reports_count_patients_enrolled();  // no params because data already marshalled
+          $block_content .= '<div class="primary-report"> Total number of new patients enrolled during reporting period: ' . $enrolled_patient_count . '</div>';
+
+          array_push($csv_row, $enrolled_patient_count);       
+        }  
+        if(hospital_reports_display_field('hospital_reports_total_patients_served_'.$username) == TRUE) {
+          $block_content .= '<div class="primary-report"> Total number of patients served in reporting period: ' . $total_served_count . '</div>';
+
+          array_push($csv_row, $total_served_count);      
+
+        }  
+        if(hospital_reports_display_field('hospital_reports_gender_patients_served_'.$username) == TRUE) {
+          $arr = hospital_reports_count_gender_patient_visit_union($hid, $entered_start_date, $entered_end_date);
+          $female_count = $arr['female'];
+          $male_count = $arr['male'];
+
+          $block_content .= '<div class="secondary-report">Gender of patients served in reporting period</div>'; 
+          $block_content .= '<div class="detail"> Male patients served: ' . $male_count . '</div>'; 
+          $block_content .= '<div class="detail"> Female patients served: ' . $female_count . '</div>'; 
+
+          array_push($csv_row, $male_count);       
+          array_push($csv_row, $female_count);       
+
+        }
+        // Patients Enrolled was here  
+        if(hospital_reports_display_field('hospital_reports_laterality_'.$username) == TRUE) {
+          $arr = hospital_reports_count_laterality_patient_visit_union($hid, $entered_start_date,  $entered_end_date);
+          $unilateral_left_count = $arr['unilateral_left'];
+          $unilateral_right_count = $arr['unilateral_right'];
+          $unilateral_count = $arr['unilateral'];
+          $bilateral_count = $arr['bilateral'];
+
+          $block_content .= '<div class="secondary-report">Laterality</div>'; 
+          $block_content .= '<div class="detail"> Left: ' . $unilateral_left_count . '</div>'; 
+          $block_content .= '<div class="detail"> Right: ' . $unilateral_right_count . '</div>'; 
+          $block_content .= '<div class="detail"> Unilateral: ' . $unilateral_count . '</div>'; 
+          $block_content .= '<div class="detail"> Bilateral: ' . $bilateral_count . '</div>'; 
+
+          array_push($csv_row, $unilateral_left_count);       
+          array_push($csv_row, $unilateral_right_count);       
+          array_push($csv_row, $unilateral_count);       
+          array_push($csv_row, $bilateral_count);       
+
+        }  
+        if(hospital_reports_display_field('hospital_reports_family_'.$username) == TRUE) {
+          $arr = hospital_reports_count_affected_relatives($hid, $entered_start_date,  $entered_end_date);
+          $affected_relatives_yes_count = $arr['yes'];
+          $affected_relatives_no_count = $arr['no'];
+          $affected_relatives_unsure_count = $arr['unsure'];
+
+          $block_content .= '<div class="secondary-report">Affected Relatives</div>'; 
+          $block_content .= '<div class="detail">Patients with affected relatives: ' . $affected_relatives_yes_count . '</div>'; 
+          $block_content .= '<div class="detail">Patients with no affected relatives: ' . $affected_relatives_no_count . '</div>'; 
+          $block_content .= '<div class="detail">Do not know if there are affected relatives: ' . $affected_relatives_unsure_count . '</div>'; 
+
+          array_push($csv_row, $affected_relatives_yes_count);       
+          array_push($csv_row, $affected_relatives_no_count);       
+          array_push($csv_row, $affected_relatives_unsure_count);       
+
+        }  
+        if (hospital_reports_display_field('hospital_reports_treatment_stages_'.$username) == TRUE) {
+          //find_treatment_stages does not use the entered_start_date because there are set time lengths
+          //into which a patient must fall in order that he/she be considered to be in a certain stage
+          $treatment_stage_casting_patients = hospital_reports_find_treatment_stages($hid, $entered_start_date, $entered_end_date, "C");
+          $treatment_stage_bracing_patients = hospital_reports_find_treatment_stages($hid, $entered_start_date, $entered_end_date, "B");
+          $treatment_stage_tenotomy_patients = hospital_reports_find_treatment_stages($hid, $entered_start_date, $entered_end_date, "T");
+          $last_visit_patients = hospital_reports_find_last_visits($hid, $entered_start_date, $entered_end_date, "T");
+          $treatment_stage_casting_count = count($treatment_stage_casting_patients);
+          $treatment_stage_bracing_count = count($treatment_stage_bracing_patients);
+          $treatment_stage_tenotomy_count = count($treatment_stage_tenotomy_patients);
+          $last_visit_count = count($last_visit_patients);
+
+          $block_content .= '<div class="secondary-report">Treatment Stages</div>'; 
+          $block_content .= '<div class="detail">Casting: ' . $treatment_stage_casting_count . '</div>'; 
+          if($treatment_stage_casting_count > 0) { 
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>List of patients in casting stage</legend>';
+
+            foreach ($treatment_stage_casting_patients as $nid){
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              // $patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+              unset($patient);
+              unset($nid);
+            }  
+
+            $block_content .= '</fieldset>';
+          }
+
+          $block_content .= '<div class="detail">Bracing: ' . $treatment_stage_bracing_count . '</div>'; 
+          if($treatment_stage_bracing_count > 0) { 
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>List of patients in bracing stage</legend>';
+          
+            foreach ($treatment_stage_bracing_patients as $nid){
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              //$patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              //$block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+              unset($patient);
+              unset($nid);
+            }  
+
+            $block_content .= '</fieldset>';
+          }
+
+          $block_content .= '<div class="detail">Tenotomy: ' . $treatment_stage_tenotomy_count . '</div>'; 
+          if($treatment_stage_tenotomy_count > 0) { 
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>List of patients in tenotomy stage</legend>';
+          
+            foreach ($treatment_stage_tenotomy_patients as $nid){
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              //$patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              //$block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+              unset($patient);
+              unset($nid);
+            }  
+
+            $block_content .= '</fieldset>';
+          }
+          array_push($csv_row, $treatment_stage_casting_count);       
+          array_push($csv_row, $treatment_stage_bracing_count);     
+          array_push($csv_row, $treatment_stage_tenotomy_count);     
+
+          $block_content .= '<div class="detail">Patients with last visit: ' . $last_visit_count . '</div>'; 
+          array_push($csv_row, $last_visit_count);
+          $num_of_reasons = array_count_values($last_visit_patients);
+          $reasons_in_form = array('Treatment completed', 'Treatment ceased due to other medical complications', 'Patient moved','Patient is deceased', 'No reason given');
+          foreach ($reasons_in_form as $reason){
+          #foreach ($num_of_reasons as $reason => $num){
+             $num =0;
+             if($num_of_reasons[$reason]) {
+               $num = $num_of_reasons[$reason];
+             }
+             array_push($csv_row, $num);
+             $block_content .= '<div class="detail"># with last visit reason \'' . $reason . '\': ' . $num . '</div>';
+             if ($num > 0){
+                $reason_ar = array_keys($last_visit_patients, $reason);
+                $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+                $block_content .= '<legend>List of patients with last visit, ' . $reason . '</legend>';
+                foreach ($reason_ar as $nid) {
+                   $patient_title = hospital_reports_get_title_from_nid($nid);
+              
+                   $nodeurl = url('node/' . $nid);
+                   $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title . '</a></div>';
+
+                   unset($patient);
+                   unset($nid);
+                }
+                $block_content .= '</fieldset>';
+             }
+          }  
+
+        }
+
+        if(hospital_reports_display_field('hospital_reports_bracing_by_years_'.$username) == TRUE) {
+          $patient_nids_one_year_or_more_with_bracing = hospital_reports_years_in_bracing($hid, $entered_start_date, $entered_end_date, "C");
+
+          array_push($csv_row, count($patient_nids_one_year_or_more_with_bracing));       
+
+          $block_content .= '<div class="detail">Patients continuously in bracing stage for one or more years: ' . count($patient_nids_one_year_or_more_with_bracing) . '</div>'; 
+          $display_these_num_years =array(1,2,3,4,5);
+          foreach ($display_these_num_years as $nid =>  $numy){
+             $numwy =0;
+             $patients_with_this_year_num =array_keys($patient_nids_one_year_or_more_with_bracing, $numy); 
+             if(count($patients_with_this_year_num) > 0){ 
+                $numwy = count($patients_with_this_year_num);
+             }
+             array_push($csv_row, $numwy);
+
+             $block_content .= '<div class="detail"># in bracing stage for ' . $numy . ' number of years: ' . $numwy . '</div>';
+             if ($numwy > 0){
+                $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+                $block_content .= '<legend>List of patients in bracing stage for ' . $numy. ' years </legend>';
+                foreach ($patients_with_this_year_num as $nid) {
+                   $patient_title = hospital_reports_get_title_from_nid($nid);
+              
+                   $nodeurl = url('node/' . $nid);
+                   $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title . '</a></div>';
+
+                   unset($patient);
+                   unset($nid);
+                }
+                $block_content .= '</fieldset>';
+             }
+          }  
+
+        }
+        if(hospital_reports_display_field('hospital_reports_drop_out_rate_'.$username) == TRUE) {
+          $casting_dropout_array = hospital_reports_count_drop_outs($hid, $entered_start_date, $entered_end_date, "C");
+          $bracing_dropout_array = hospital_reports_count_drop_outs($hid, $entered_start_date, $entered_end_date, "B");
+          $tenotomy_dropout_array = hospital_reports_count_drop_outs($hid, $entered_start_date, $entered_end_date, "T");
+          $casting_dropout_count = count($casting_dropout_array); 
+          $bracing_dropout_count = count($bracing_dropout_array);
+          $tenotomy_dropout_count = count($tenotomy_dropout_array);
+          
+          $block_content .= '<div class="secondary-report">Drop Outs</div>'; 
+          $block_content .= '<div class="detail">Casting: ' . $casting_dropout_count . '</div>';
+
+          array_push($csv_row, $casting_dropout_count);      
+
+          if($casting_dropout_count > 0) { 
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>List of casting drop outs </legend>';
+
+            foreach ($casting_dropout_array as $nid) {
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              //$patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              //$block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+              unset($patient);
+              unset($nid);
+            }  
+
+            $block_content .= '</fieldset>';
+          }
+
+          $block_content .= '<div class="detail">Bracing: ' . $bracing_dropout_count . '</div>'; 
+
+          array_push($csv_row, $bracing_dropout_count);      
+
+          if($bracing_dropout_count > 0) {
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>List of bracing drop outs </legend>';
+
+            foreach ($bracing_dropout_array as $nid) {
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              //$patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              //$block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+              unset($patient);
+              unset($nid);
+            }
+
+            $block_content .= '</fieldset>';
+          }  
+
+          $block_content .= '<div class="detail">Tenotomy: ' . $tenotomy_dropout_count . '</div>'; 
+
+          array_push($csv_row, $tenotomy_dropout_count);      
+
+          if($tenotomy_dropout_count > 0) {
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>List of tenotomy drop outs </legend>';
+
+            foreach ($tenotomy_dropout_array as $nid) {
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              //$patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              //$block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+              unset($patient);
+              unset($nid);
+            }
+
+            $block_content .= '</fieldset>';
+          }
+ 
+        }  
+
+        if(hospital_reports_display_field('hospital_reports_brace_compliance_'.$username) == TRUE) {
+          //get_bracing_compliance_by_quality uses find_treatment_stages, so it does not use a start date.
+          $good_compliance_patients = hospital_reports_get_bracing_compliance_by_quality($hid, $entered_start_date, $entered_end_date, "Good");
+          $fair_compliance_patients = hospital_reports_get_bracing_compliance_by_quality($hid, $entered_start_date, $entered_end_date, "Fair");
+          $poor_compliance_patients = hospital_reports_get_bracing_compliance_by_quality($hid, $entered_start_date, $entered_end_date, "Poor");
+          $bracing_compliance_good_count = count($good_compliance_patients);
+          $bracing_compliance_fair_count = count($fair_compliance_patients);
+          $bracing_compliance_poor_count = count($poor_compliance_patients);
+
+          $block_content .= '<div class="secondary-report">Brace Compliance</div>'; 
+
+          array_push($csv_row, $bracing_compliance_good_count);       
+          array_push($csv_row, $bracing_compliance_fair_count);       
+          array_push($csv_row, $bracing_compliance_poor_count);       
+
+          $block_content .= '<div class="detail">Good Brace Compliance: ' . $bracing_compliance_good_count . '</div>'; 
+          if($bracing_compliance_good_count > 0) { 
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>List of patients with good brace compliance</legend>';
+          
+            foreach ($good_compliance_patients as $nid){
+                $patient = node_load($nid, NULL, TRUE);
+                $nodeurl = url('node/' . $nid);
+                $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+
+                unset($patient);
+                unset($nid);
+              }
+            }  
+
+            $block_content .= '</fieldset>';
+          
+          $block_content .= '<div class="detail">Fair Brace Compliance: ' . $bracing_compliance_fair_count . '</div>'; 
+          if($bracing_compliance_fair_count > 0) { 
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>List of patients with fair brace compliance</legend>';
+          
+            foreach ($fair_compliance_patients as $nid){
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              //$patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              //$block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+                unset($patient);
+                unset($nid);
+              }
+            }  
+
+            $block_content .= '</fieldset>';
+
+          $block_content .= '<div class="detail">Poor Brace Compliance: ' . $bracing_compliance_poor_count . '</div>'; 
+          if($bracing_compliance_poor_count > 0) { 
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>List of patients with poor brace compliance</legend>';
+          
+            foreach ($poor_compliance_patients as $nid){
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              //$patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              //$block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+                unset($patient);
+                unset($nid);
+              }
+            }  
+
+            $block_content .= '</fieldset>';
+
+          }
+
+  
+        if(hospital_reports_display_field('hospital_reports_tenotomies_'.$username) == TRUE) {
+          $tenotomy_results = hospital_reports_find_bracing_tenotomies($hid, $entered_start_date, $entered_end_date);
+          $tenotomy_pos_count = count($tenotomy_results['yes']);
+          $tenotomy_neg_count = count($tenotomy_results['no']);
+
+          $block_content .= '<div class="secondary-report">Tenotomies</div>'; 
+
+          //Tenotomy was performed
+          $block_content .= '<div class="detail">Tenotomy performed: ' . $tenotomy_pos_count . '</div>'; 
+
+          array_push($csv_row, $tenotomy_pos_count);       
+
+          if($tenotomy_pos_count > 0) { 
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>List of bracing patients with tenotomy</legend>';
+
+            foreach ($tenotomy_results['yes'] as $nid){
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              //$patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              //$block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+              unset($patient);
+              unset($nid);
+            }  
+
+            $block_content .= '</fieldset>';
+          }
+
+          //Tenotomy was not performed
+          $block_content .= '<div class="detail">Tenotomy not performed: ' . $tenotomy_neg_count . '</div>'; 
+
+          array_push($csv_row, $tenotomy_neg_count);       
+
+          if($tenotomy_neg_count > 0) { 
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>List of bracing patients without tenotomy</legend>';
+
+            foreach ($tenotomy_results['no'] as $nid){
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              //$patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              //$block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+              unset($patient);
+              unset($nid);
+            }  
+
+            $block_content .= '</fieldset>';
+          }
+
+          //Percent Tenotomies
+          $denom = $tenotomy_neg_count + $tenotomy_pos_count;
+          if($denom > 0) {
+            $tenotomy_percent = $tenotomy_pos_count/$denom*100;
+          }
+          else {
+            $tenotomy_percent = 0;
+          }
+          $block_content .= '<div class="detail">Percent Tenotomies: ' . $tenotomy_percent . ' %' . '</div>'; 
+          array_push($csv_row, $tenotomy_percent);       
+
+        } 
+
+ 
+        if(hospital_reports_display_field('hospital_reports_casts_per_patient_'.$username) == TRUE) {
+          //Casting visits are counted only for those patients who are currently under bracing.  That is why B is passed here:
+          $casts_per_patient = hospital_reports_count_casts_per_patient($hid, $entered_end_date, "B");
+          $block_content .= '<div class="secondary-report">Average Casts/Patient</div>'; 
+          $block_content .= '<div class="detail"> Average number of casts per patient: ' . $casts_per_patient . '</div>'; 
+
+          array_push($csv_row, $casts_per_patient);      
+        }
+
+	if(hospital_reports_display_field('hospital_reports_many_casts_'.$username) == TRUE) {
+          $many_casts_results = hospital_reports_find_many_casts_patients($hid, $entered_start_date, $entered_end_date);
+          $many_casts_count = count($many_casts_results);
+          $block_content .= '<div class="secondary-report">8+ Casts</div>'; 
+          $block_content .= '<div class="detail"> Number of patients with 8+ casts: ' . $many_casts_count . '</div>'; 
+
+          array_push($csv_row, $many_casts_count);      
+
+          if($many_casts_count > 0) { 
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>List of patients with 8+ casts</legend>';
+
+            //foreach ($many_casts_results as $result){
+            //  $patient = node_load($result->nid, NULL, TRUE);
+            //  $nodeurl = url('node/' . $result->nid);
+            foreach ($many_casts_results as $nid){
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              //$patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              //$block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+              unset($patient_title);
+              unset($result);
+              unset($nid);
+            }  
+
+            $block_content .= '</fieldset>';
+          }
+
+        }
+  
+        if(hospital_reports_display_field('hospital_reports_first_visit_age_'.$username) == TRUE) {
+          $arr = hospital_reports_count_first_visit_age($hid,$entered_start_date, $entered_end_date);
+          $visit_age_0_3_mo_count = $arr['0_3_mo'];
+          $visit_age_3_6_mo_count = $arr['3_6_mo'];
+          $visit_age_6_12_mo_count = $arr['6_12_mo'];
+          $visit_age_1_2_yr_count = $arr['1_2_yr'];
+          $visit_age_2_5_yr_count = $arr['2_5_yr'];
+          $visit_age_5_10_yr_count = $arr['5_10_yr'];
+          $visit_age_10_plus_yr_count = $arr['10_plus_yr'];
+
+          $block_content .= '<div class="secondary-report">Age of first visit</div>'; 
+          $block_content .= '<div class="detail"> 0-3 months: ' . $visit_age_0_3_mo_count . '</div>'; 
+          $block_content .= '<div class="detail"> 3-6 months: ' . $visit_age_3_6_mo_count . '</div>';
+          $block_content .= '<div class="detail"> 6-12 months: ' . $visit_age_6_12_mo_count . '</div>'; 
+          $block_content .= '<div class="detail"> 1-2 years: ' . $visit_age_1_2_yr_count . '</div>'; 
+          $block_content .= '<div class="detail"> 2-5 years: ' . $visit_age_2_5_yr_count . '</div>'; 
+          $block_content .= '<div class="detail"> 5-10 years: ' . $visit_age_5_10_yr_count . '</div>'; 
+          $block_content .= '<div class="detail"> 10+ years: ' . $visit_age_10_plus_yr_count . '</div>'; 
+
+          array_push($csv_row, $visit_age_0_3_mo_count);      
+          array_push($csv_row, $visit_age_3_6_mo_count);      
+          array_push($csv_row, $visit_age_6_12_mo_count);      
+          array_push($csv_row, $visit_age_1_2_yr_count);      
+          array_push($csv_row, $visit_age_2_5_yr_count);      
+          array_push($csv_row, $visit_age_5_10_yr_count);      
+          array_push($csv_row, $visit_age_10_plus_yr_count);      
+
+        }  
+        if(hospital_reports_display_field('hospital_reports_evaluation_age_'.$username) == TRUE) {
+          $arr = hospital_reports_count_evaluation_age($hid, $entered_start_date, $entered_end_date);
+          $eval_age_0_3_mo_count = $arr['0_3_mo'];
+          $eval_age_3_6_mo_count = $arr['3_6_mo'];
+          $eval_age_6_12_mo_count = $arr['6_12_mo'];
+          $eval_age_1_2_yr_count = $arr['1_2_yr'];
+          $eval_age_2_5_yr_count = $arr['2_5_yr'];
+          $eval_age_5_10_yr_count = $arr['5_10_yr'];
+          $eval_age_10_plus_yr_count = $arr['10_plus_yr'];
+
+          $block_content .= '<div class="secondary-report">Age of evaluation</div>'; 
+          $block_content .= '<div class="detail"> 0-3 months: ' . $eval_age_0_3_mo_count . '</div>'; 
+          $block_content .= '<div class="detail"> 3-6 months: ' . $eval_age_3_6_mo_count . '</div>';
+          $block_content .= '<div class="detail"> 6-12 months: ' . $eval_age_6_12_mo_count . '</div>'; 
+          $block_content .= '<div class="detail"> 1-2 years: ' . $eval_age_1_2_yr_count . '</div>'; 
+          $block_content .= '<div class="detail"> 2-5 years: ' . $eval_age_2_5_yr_count . '</div>'; 
+          $block_content .= '<div class="detail"> 5-10 years: ' . $eval_age_5_10_yr_count . '</div>'; 
+          $block_content .= '<div class="detail"> 10+ years: ' . $eval_age_10_plus_yr_count . '</div>'; 
+
+          array_push($csv_row, $eval_age_0_3_mo_count);      
+          array_push($csv_row, $eval_age_3_6_mo_count);      
+          array_push($csv_row, $eval_age_6_12_mo_count);      
+          array_push($csv_row, $eval_age_1_2_yr_count);      
+          array_push($csv_row, $eval_age_2_5_yr_count);      
+          array_push($csv_row, $eval_age_5_10_yr_count);      
+          array_push($csv_row, $eval_age_10_plus_yr_count);      
+
+        }  
+        if(hospital_reports_display_field('hospital_reports_first_cast_age_'.$username) == TRUE) {
+          $arr = hospital_reports_count_first_cast_age($hid, $entered_start_date, $entered_end_date);
+          $casting_age_0_3_mo_count = $arr['0_3_mo'];
+          $casting_age_3_6_mo_count = $arr['3_6_mo'];
+          $casting_age_6_12_mo_count = $arr['6_12_mo'];
+          $casting_age_1_2_yr_count = $arr['1_2_yr'];
+          $casting_age_2_5_yr_count = $arr['2_5_yr'];
+          $casting_age_5_10_yr_count = $arr['5_10_yr'];
+          $casting_age_10_plus_yr_count = $arr['10_plus_yr'];
+
+          $block_content .= '<div class="secondary-report">Age of first cast</div>'; 
+          $block_content .= '<div class="detail"> 0-3 months: ' . $casting_age_0_3_mo_count . '</div>'; 
+          $block_content .= '<div class="detail"> 3-6 months: ' . $casting_age_3_6_mo_count . '</div>';
+          $block_content .= '<div class="detail"> 6-12 months: ' . $casting_age_6_12_mo_count . '</div>'; 
+          $block_content .= '<div class="detail"> 1-2 years: ' . $casting_age_1_2_yr_count . '</div>'; 
+          $block_content .= '<div class="detail"> 2-5 years: ' . $casting_age_2_5_yr_count . '</div>'; 
+          $block_content .= '<div class="detail"> 5-10 years: ' . $casting_age_5_10_yr_count . '</div>'; 
+          $block_content .= '<div class="detail"> 10+ years: ' . $casting_age_10_plus_yr_count . '</div>'; 
+
+          array_push($csv_row, $casting_age_0_3_mo_count);      
+          array_push($csv_row, $casting_age_3_6_mo_count);      
+          array_push($csv_row, $casting_age_6_12_mo_count);      
+          array_push($csv_row, $casting_age_1_2_yr_count);      
+          array_push($csv_row, $casting_age_2_5_yr_count);      
+          array_push($csv_row, $casting_age_5_10_yr_count);      
+          array_push($csv_row, $casting_age_10_plus_yr_count);      
+
+        }  
+        if(hospital_reports_display_field('hospital_reports_relapse_'.$username) == TRUE) {
+          $relapse_results = hospital_reports_find_relapsed_patients($hid, $entered_start_date,  $entered_end_date);
+          $relapse_count = count($relapse_results);
+          $block_content .= '<div class="secondary-report">Relapse</div>'; 
+          $block_content .= '<div class="detail"> Number of relapsed patients: ' . $relapse_count . '</div>'; 
+
+          array_push($csv_row, $relapse_count);      
+
+          if($relapse_count > 0) { 
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>List of relapsed patients </legend>';
+
+            //foreach ($relapse_results as $result){
+            foreach ($relapse_results as $nid){
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              //$patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              //$block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+              unset($patient_title);
+              unset($result);
+            }  
+
+            $block_content .= '</fieldset>';
+          }
+
+        }  
+        if(hospital_reports_display_field('hospital_reports_total_visits_'.$username) == TRUE) {
+          $total_visit_count = hospital_reports_count_visit_total($hid, $entered_start_date, $entered_end_date);
+          $block_content .= '<div class="primary-report"> Total number of visits: ' . $total_visit_count . '</div>';
+
+          array_push($csv_row, $total_visit_count);      
+
+        }  
+        if(hospital_reports_display_field('hospital_reports_visiting_patients_'.$username) == TRUE) {
+          $visiting_patient_count = hospital_reports_count_visiting_patients($hid, $entered_start_date, $entered_end_date);
+          $block_content .= '<div class="primary-report"> Number of patients seen in reporting period: ' . $visiting_patient_count . '</div>'; 
+
+          array_push($csv_row, $visiting_patient_count);      
+
+        }  
+        if(hospital_reports_display_field('hospital_reports_new_patients_'.$username) == TRUE) {
+          $new_patient_count = hospital_reports_count_new_patients($hid, $entered_start_date, $entered_end_date);
+          $block_content .= '<div class="primary-report"> Number of new patients in reporting period: ' . $new_patient_count . '</div>'; 
+
+          array_push($csv_row, $new_patient_count);      
+
+        }  
+        if(hospital_reports_display_field('hospital_reports_new_visits_'.$username) == TRUE) {
+          $new_visit_count = hospital_reports_count_new_visits($hid, $entered_start_date, $entered_end_date);
+          $block_content .= '<div class="primary-report"> Number of visits in reporting period: ' . $new_visit_count . '</div>'; 
+
+          array_push($csv_row, $new_visit_count);      
+
+        }  
+        if(hospital_reports_display_field('hospital_reports_procedures_performed_'.$username) == TRUE) {
+
+          $arr = hospital_reports_count_procedures($hid, $entered_start_date, $entered_end_date);
+          $casting_count = $arr['C'];
+          $tenotomy_count = $arr['T'];
+          $brace_count = $arr['B'];
+          $refer_count = $arr['R'];
+          $surgery_count = $arr['S'];
+          $other_count = $arr['O'];
+
+          $block_content .= '<div class="secondary-report">Procedures within reporting period</div>'; 
+
+          //Print Casting Output
+          $block_content .= '<div class="detail"> Number of castings: ' . $casting_count . '</div>'; 
+
+          array_push($csv_row, $casting_count);      
+
+          if($casting_count > 0) { 
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>Patients with casting visits </legend>';
+
+            $casting_list = $arr['C_list'];
+            //foreach ($casting_list as $result){
+            foreach ($casting_list as $nid){
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              //$patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              //$block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+              //unset($patient_title);
+              //unset($result);
+            }  
+
+            $block_content .= '</fieldset>';
+          }
+
+          //Print Tenotomy Output
+          $block_content .= '<div class="detail"> Number of tenotomies: ' . $tenotomy_count . '</div>'; 
+
+          array_push($csv_row, $tenotomy_count);      
+
+          if($tenotomy_count > 0) { 
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>Patients with tenotomy visits </legend>';
+
+            $tenotomy_list = $arr['T_list'];
+            //foreach ($tenotomy_list as $result){
+            foreach ($tenotomy_list as $nid){
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              //$patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              //$block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+              //unset($patient_title);
+              //unset($result);
+            } 
+
+            $block_content .= '</fieldset>';
+          }
+
+          //Print Refer Output
+          $block_content .= '<div class="detail"> Number of referrals: ' . $refer_count . '</div>'; 
+
+          array_push($csv_row, $refer_count);      
+
+          if($refer_count > 0) { 
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>Patients with referral visits </legend>';
+
+            $refer_list = $arr['R_list'];
+            //foreach ($refer_list as $result){
+            foreach ($refer_list as $nid){
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              //$patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              //$block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+              //unset($patient);
+              //unset($result);
+            } 
+
+            $block_content .= '</fieldset>';
+          }
+
+          //Print Brace Output
+          $block_content .= '<div class="detail"> Number of brace applications: ' . $brace_count . '</div>'; 
+
+          array_push($csv_row, $brace_count);      
+
+          if($brace_count > 0) { 
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>Patients with brace visits </legend>';
+
+            $brace_list = $arr['B_list'];
+            //foreach ($brace_list as $result){
+            foreach ($brace_list as $nid){
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              //$patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              //$block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+              //unset($patient);
+              //unset($result);
+            } 
+
+          }
+          //Print Number Brace Compliance         
+          $block_content .= '</fieldset>';
+ 
+          //Print Surgery Output
+          $block_content .= '<div class="detail"> Number of surgeries: ' . $surgery_count . '</div>'; 
+
+          array_push($csv_row, $surgery_count);      
+
+          if($surgery_count > 0) { 
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>Patients with surgery visits </legend>';
+
+            $surgery_list = $arr['S_list'];
+            //foreach ($surgery_list as $result){
+            foreach ($surgery_list as $nid){
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              //$patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              //$block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+              //unset($patient);
+              //unset($result);
+            } 
+
+            $block_content .= '</fieldset>';
+          }
+
+          //Print Other Treatment Output
+          $block_content .= '<div class="detail"> Number of other treatments: ' . $other_count . '</div>'; 
+
+          array_push($csv_row, $other_count);      
+
+          if($other_count > 0) { 
+            $block_content .= '<fieldset id="patient-list" class="collapsible collapsed">';
+            $block_content .= '<legend>Patients with other visits </legend>';
+
+            $other_list = $arr['O_list'];
+            //foreach ($other_list as $result){
+            foreach ($other_list as $nid){
+              $patient_title = hospital_reports_get_title_from_nid($nid);
+              //$patient = node_load($nid, NULL, TRUE);
+              $nodeurl = url('node/' . $nid);
+              //$block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient->title .'</a></div>';
+              $block_content .= '<div class="link"><a href="'. $nodeurl .'">' . $patient_title .'</a></div>';
+
+              //unset($patient);
+              //unset($result);
+            } 
+
+            $block_content .= '</fieldset>';
+          }
+          
+        } //end if procedures
+       
+        //write all of the data to the csv file 
+        hospital_reports_write_csv_row($csv_row);
+  
+      } //end if excluded role returns false
+    }
+    // Fill in the subject of our block which is the same whether or not
+    // the block has any real content
+    $block['subject'] = 'Hospital Reporting';
+
+    // check to see if there was any content before returning
+    //  the block view
+    if ($block_content == '') {   
+       $block['content'] = 'Sorry No Content';
+    }
+    else {
+      // set up the block
+      $block['content'] = $block_content;
+    }
+    return $block;
+  }
+}//end function
+
+
+function hospital_reports_get_bracing_compliance_by_quality($hid, $entered_start_date, $entered_end_date, $quality) {
+  $bracing_patients = hospital_reports_find_treatment_stages($hid, $entered_start_date, $entered_end_date, "B");
+  $list = array();
+
+  //for each patient
+  foreach($bracing_patients as $nid) {
+    //get most recent visit
+    $bracing_date_array = hospital_reports_get_latest_visit_date_by_type($nid, 'B');
+    $bracing_visit_date = $bracing_date_array->max_date;
+   
+    $latest_visit_nid_result = hospital_reports_get_latest_visit_nid($nid, $bracing_visit_date);
+
+    //for each latest visit
+    while ($visit_result = db_fetch_object($latest_visit_nid_result) ) {
+      $visit = node_load($visit_result->max_nid, NULL, TRUE);
+     
+     if($visit->field_brace_compliance_left[0]['value']== $quality || $visit->field_brace_compliance_right[0]['value']== $quality ) {
+       array_push($list, $nid);
+     }
+    }
+  }
+  return $list;
+}
+
+
+//Function to determine if form field is checked for display
+function hospital_reports_display_field($form_field_name) {
+  $form_field = variable_get($form_field_name, '');
+  if($form_field == 1) {
+    return TRUE;
+  }
+  else if ($form_field == 0) {
+    return FALSE;
+  }
+}//end function
+
+//Function to exclude certain roles that don't correspond to hospitals
+function hospital_reports_excluded_role($role) {
+  $excluded = FALSE;
+
+  if($role == 'authenticated user') {
+    $excluded = TRUE;
+  }
+  if($role == 'icr administrator') {
+    $excluded = TRUE;
+  }
+  if($role == 'Test Hospital 1 member') {
+    //$excluded = TRUE;
+  }
+  if($role =='Test Hospital 2 member') {
+    //$excluded = TRUE;
+  }
+  if($role == 'icr read only administrator') {
+    $excluded = TRUE;
+  }
+ 
+  return $excluded;
+}//end function hospital_reports_excluded_role
+
+//Function to count the total number of patients enrolled.
+function hospital_reports_count_patients_enrolled() {
+  $count = 0;
+  global $newly_enrolled_patient_nids;
+  $count = count($newly_enrolled_patient_nids);
+
+  return $count;
+} //end function hospital_reports_count_patients_enrolled
+
+//Function to query the number of enrolled patients
+function hospital_reports_query_enrolled_patients() {
+  global $newly_enrolled_patient_nids;
+  //return $enrolled_patient_result;
+  return $newly_enrolled_patient_nids;
+}
+
+//Function to query the number of patients created before a given date
+function hospital_reports_query_patients_created_before_date($hid, $end_time) {
+  $query = "SELECT node.nid, node.vid, node.created " . 
+           "FROM node " .
+           "INNER JOIN (content_type_patient INNER JOIN content_field_hospital ON content_type_patient.vid=content_field_hospital.vid) " . 
+           "ON node.vid=content_type_patient.vid " .
+           "WHERE content_field_hospital.field_hospital_value='%d' " .
+           "AND node.created <= '%d' " .
+           "AND node.status = 1";
+
+  $patients_before_date_result = db_query($query, $hid, $end_time); 
+  return $patients_before_date_result;
+}
+
+//Function to query the total number of visits
+function hospital_reports_query_visit_total($hospital_uid, $start_date, $end_date) {
+  $query = "SELECT node.nid, node.vid " . 
+           "FROM content_field_visit_date ".
+           "INNER JOIN (node " .
+           "INNER JOIN (content_type_visit " .
+           "INNER JOIN content_field_hospital " .
+           "ON content_type_visit.vid=content_field_hospital.vid) " . 
+           "ON node.vid=content_type_visit.vid) " .
+           "ON node.vid=content_field_visit_date.vid " .
+           "WHERE content_field_hospital.field_hospital_value='%d' " .
+           "AND content_field_visit_date.field_visit_date_value >= '%s' " .
+           "AND content_field_visit_date.field_visit_date_value <= '%s' " .
+           "AND node.status = 1 ";
+
+  $total_visits_result = db_query($query, $hospital_uid, $start_date, $end_date); 
+
+  return $total_visits_result;
+} //end function hospital_reports_query_visit_total
+
+//Function to count the total number of visits
+function hospital_reports_count_visit_total($hospital_uid, $start_date, $end_date) {
+  $count = 0;
+
+  $total_visits_result = hospital_reports_query_visit_total($hospital_uid, $start_date, $end_date);
+  $count = $total_visits_result->num_rows;
+  return $count;
+}
+
+//Function to count the total number of visits created before a given date
+function hospital_reports_count_visits_created_before_date($hospital_uid, $end_time) {
+  $count = 0;
+
+  $query = "SELECT node.nid, node.vid, node.created " . 
+           "FROM node " .
+           "INNER JOIN (content_type_visit INNER JOIN content_field_hospital ON content_type_visit.vid=content_field_hospital.vid) " . 
+           "ON node.vid=content_type_visit.vid " .
+           "WHERE content_field_hospital.field_hospital_value='%d' " .
+           "AND node.created <= '%d' " .
+           "AND node.status = 1 ";
+  global $total_visits_results;
+  $total_visits_result = db_query($query, $hospital_uid, $end_time); 
+  $count = $total_visits_result->num_rows;
+
+  return $count;
+} //end function hospital_reports_count_visits_created_before_date
+
+//Function to query the number of new patients
+function hospital_reports_query_new_patients($hospital_uid, $start_date, $end_date) {
+  $query = "SELECT node.nid, node.vid " . 
+           "FROM node " .
+           "INNER JOIN (content_type_patient INNER JOIN content_field_hospital ON content_type_patient.vid=content_field_hospital.vid) " . 
+           "ON node.vid=content_type_patient.vid " .
+           "WHERE content_field_hospital.field_hospital_value='%d' " .
+           "AND content_type_patient.field_evaluation_date_value >= '%s' " .
+           "AND content_type_patient.field_evaluation_date_value <= '%s' " .
+           "AND node.status = 1 ";
+
+  $new_patient_result = db_query($query, $hospital_uid, $start_date, $end_date); 
+  return $new_patient_result;
+}
+
+//Function to count the number of new patients
+function hospital_reports_count_new_patients($hospital_uid, $start_date, $end_date) {
+  $new_patient_result = hospital_reports_query_new_patients($hospital_uid, $start_date, $end_date);
+  $count = $new_patient_result->num_rows;
+  return $count;
+}
+
+//Function to query new visits
+function hospital_reports_query_new_visits($hospital_uid, $start_date, $end_date) {
+  $query = "SELECT node.nid, node.vid " . 
+           "FROM content_field_visit_date ".
+           "INNER JOIN (node " .
+           "INNER JOIN (content_type_visit " .
+           "INNER JOIN content_field_hospital " .
+           "ON content_type_visit.vid=content_field_hospital.vid) " . 
+           "ON node.vid=content_type_visit.vid) " .
+           "ON node.vid=content_field_visit_date.vid " .
+           "WHERE content_field_hospital.field_hospital_value='%d' " .
+           "AND content_field_visit_date.field_visit_date_value >= '%s' " .
+           "AND content_field_visit_date.field_visit_date_value <= '%s' " .
+           "AND node.status = 1 ";
+
+  $new_visit_result = db_query($query, $hospital_uid, $start_date, $end_date); 
+  return $new_visit_result;
+}
+
+//Function to count the number of new visits
+function hospital_reports_count_new_visits($hospital_uid, $start_date, $end_date) {
+  $new_visit_result = hospital_reports_query_new_visits($hospital_uid, $start_date, $end_date); 
+  return $new_visit_result->num_rows;
+}
+
+
+//Function to count gender
+
+function hospital_reports_count_total_patients_served($hospital_uid, $start_date, $end_date) {
+  global $u_combined;
+  $u_combined = hospital_reports_patient_visit_union_in_start_end_dates($hospital_uid, $start_date,  $end_date); 
+  hospital_reports_years_in_bracing($hospital_uid, $start_date, $end_date);
+  return (count($u_combined));
+}
+
+function hospital_reports_patient_visit_union_in_start_end_dates($hospital_uid, $start_date,  $end_date) {
+  $patient_nid_results = hospital_reports_query_new_patients($hospital_uid, $start_date, $end_date); 
+  global $newly_enrolled_patient_nids;
+  $newly_enrolled_patient_nids = array();
+  $count =0;
+  while ($row = db_fetch_object($patient_nid_results)) {
+    $nid = $row->nid;
+    $newly_enrolled_patient_nids[] = $nid;
+    $count++;
+  }
+  global $latest_visit_results_patient_nids;
+  $latest_visit_results_patient_nids = hospital_reports_get_latest_visit_dates($hospital_uid, $start_date, $end_date); 
+  $count =0;
+  global $parent_nids_from_latest_visits;
+  global $parent_nids_key_latest_visit_date_value;
+  $parent_nids_key_latest_visit_date_value =array();
+  $parent_nids_from_latest_visits = array();
+  while ($row = db_fetch_object($latest_visit_results_patient_nids)) {
+    $nid = $row->parent_nid;
+    $parent_nids_from_latest_visits[] = $nid;
+    $parent_nids_key_latest_visit_date_value[$nid] = $row->max_date;
+    $count++;
+  }
+  $combined_array = array_merge($newly_enrolled_patient_nids, $parent_nids_from_latest_visits);
+  $u_combined = array_unique($combined_array);
+  return $u_combined;
+}
+function hospital_reports_query_gender_patient_visit_union($hospital_uid, $start_date, $end_date, $gender){
+  global $u_combined;
+  $gender_num =array();
+  $gender = trim($gender);
+  foreach ($u_combined as $nid){
+    $pat_node = node_load($nid, NULL);
+    if ($pat_node->field_patient_sex[0]['value'] == $gender){
+      $gender_num[] = $nid;
+    }
+  }
+  return $gender_num;
+}
+
+function hospital_reports_count_gender_patient_visit_union($hospital_uid, $start_date, $end_date) {
+  $female_count = 0;
+  $male_count = 0;
+  $patient_gender_result = hospital_reports_query_gender_patient_visit_union($hospital_uid, $start_date, $end_date, "Male");
+  #$male_count = $patient_gender_result->num_rows;
+  $male_count = count($patient_gender_result);
+
+  $patient_gender_result = hospital_reports_query_gender_patient_visit_union($hospital_uid, $start_date, $end_date, "Female");
+  #$female_count = $patient_gender_result->num_rows;
+  $female_count = count($patient_gender_result);
+
+  $array = array(
+    "male" => $male_count,
+    "female" => $female_count,
+  );
+  return $array;
+}
+
+//Function to query laterality
+function hospital_reports_query_laterality_patient_visit_union($hospital_uid, $start_date, $end_date, $laterality) {
+  global $u_combined;
+  if (empty($u_combined)) {
+  } else {
+  }
+  $laterality_number =0;
+  if (empty($u_combined)) {
+  } else {
+    $placeholders = join(",", $u_combined);
+    $laterality = trim($laterality);
+    $query = "SELECT COUNT(distinct nid) FROM content_type_patient " .
+           " where content_type_patient.field_feet_affected_value = '%s' " .
+           " and nid IN ($placeholders) ";
+    $laterality_number = db_result(db_query($query, $laterality));
+  } 
+  return $laterality_number;
+}
+//Function to query laterality
+function hospital_reports_query_laterality($hospital_uid, $start_date,  $end_date, $laterality) {
+  $query = "SELECT node.nid " . 
+           "FROM node " .
+           "INNER JOIN (content_type_patient INNER JOIN content_field_hospital ON content_type_patient.vid=content_field_hospital.vid) " . 
+           "ON node.vid=content_type_patient.vid " .
+           "WHERE content_field_hospital.field_hospital_value='%d' " .
+           "AND content_type_patient.field_feet_affected_value='%s' " . 
+           "AND content_type_patient.field_evaluation_date_value >= '%s' " . 
+           "AND content_type_patient.field_evaluation_date_value <= '%s' " . 
+           "AND node.status = 1 ";
+
+  $laterality_result = db_query($query, $hospital_uid, $laterality, $start_date,  $end_date); 
+  return $laterality_result;
+}
+
+//Function to count the laterality
+function hospital_reports_count_laterality_patient_visit_union($hospital_uid, $start_date,  $end_date) {
+  $unilateral_left_count = 0;
+  $unilateral_right_count = 0;
+  $unilateral_count = 0;
+  $bilateral_count = 0;
+
+  $bilateral_count = hospital_reports_query_laterality_patient_visit_union($hospital_uid, $start_date,  $end_date, "Both");
+  //$bilateral_count = $laterality_result->num_rows;
+
+  $unilateral_left_count = hospital_reports_query_laterality_patient_visit_union($hospital_uid, $start_date,  $end_date, "Left");
+  $unilateral_right_count = hospital_reports_query_laterality_patient_visit_union($hospital_uid, $start_date,  $end_date, "Right");
+
+  //$unilateral_left_count = $laterality_result_left->num_rows;
+  //$unilateral_right_count = $laterality_result_right->num_rows;
+  //$unilateral_count = $laterality_result_left->num_rows + $laterality_result_right->num_rows;
+  $unilateral_count = $unilateral_left_count +  $unilateral_right_count;
+
+  $array = array(
+    "unilateral_left" => $unilateral_left_count,
+    "unilateral_right" => $unilateral_right_count,
+    "unilateral" => $unilateral_count,
+    "bilateral" => $bilateral_count,
+  );
+
+  return $array;
+}//end function
+
+function hospital_reports_query_affected_relatives_patient_visit_union($hospital_uid, $start_date,  $end_date, $relatives) {
+  $relatives_results = NULL;
+ 
+  global $u_combined;
+  if (empty($u_combined)){
+  } else {
+    $placeholders = join(",", $u_combined);
+    $relatives = trim($relatives);
+    if ($relatives == 'NULL'){
+      $query = "SELECT distinct nid FROM content_type_patient " .
+           " where content_type_patient.field_affected_relatives_value IS NULL " .
+           " and nid IN ($placeholders) ";
+    } else {
+      $query = "SELECT distinct nid FROM content_type_patient " .
+           " where content_type_patient.field_affected_relatives_value = '%s' " .
+           " and nid IN ($placeholders) ";
+    }
+    $relatives_result = db_query($query, $relatives);
+  }
+  return $relatives_result;
+}
+//Function to query the number of affected family members
+function hospital_reports_query_affected_relatives($hospital_uid, $start_date,  $end_date, $relatives) {
+  $query = "SELECT node.nid " . 
+           "FROM node " .
+           "INNER JOIN (content_type_patient INNER JOIN content_field_hospital ON content_type_patient.vid=content_field_hospital.vid) " . 
+           "ON node.vid=content_type_patient.vid " .
+           "WHERE content_field_hospital.field_hospital_value='%d' " .
+           "AND content_type_patient.field_affected_relatives_value='%s' " . 
+           "AND content_type_patient.field_evaluation_date_value >= '%s' " .
+           "AND content_type_patient.field_evaluation_date_value <= '%s' " .
+           "AND node.status = 1 ";
+
+  $relatives_result = db_query($query, $hospital_uid, $relatives, $start_date,  $end_date); 
+  return $relatives_result;
+}
+
+//Function to count the number of affected family members
+function hospital_reports_count_affected_relatives($hospital_uid, $start_date,  $end_date) {
+  $affected_relatives_yes_count = 0;
+  $affected_relatives_no_count = 0;
+  $affected_relatives_unsure_count = 0;
+
+
+  $relatives_result = hospital_reports_query_affected_relatives_patient_visit_union($hospital_uid, $start_date, $end_date, "yes");
+  if ($relatives_result) {
+    $affected_relatives_yes_count = $relatives_result->num_rows;
+  } else {
+    $affected_relatives_yes_count = 0;
+  }
+  $relatives_result = hospital_reports_query_affected_relatives_patient_visit_union($hospital_uid, $start_date,$end_date, "no");
+  if ($relatives_result) {
+    $affected_relatives_no_count = $relatives_result->num_rows;
+  } else {
+    $affected_relatives_no_count = 0;
+  }
+  $relatives_result = 
+     hospital_reports_query_affected_relatives_patient_visit_union($hospital_uid, $start_date, $end_date, "Unspecified");
+  $relatives_result = 
+     hospital_reports_query_affected_relatives_patient_visit_union($hospital_uid, $start_date, $end_date, "NULL");
+  if ($relatives_result) {
+    $affected_relatives_unsure_count = $relatives_result->num_rows;
+  } else {
+    $affected_relatives_unsure_count = 0;
+  }
+
+  $array = array(
+    "yes" => $affected_relatives_yes_count,
+    "no" => $affected_relatives_no_count,
+    "unsure" => $affected_relatives_unsure_count,
+  );
+
+  return $array;
+}//end function
+
+//Function to query patients with relapses
+function hospital_reports_query_relapse($hid, $start_date,  $end_date){
+  $query="SELECT DISTINCT parent_nid, field_relapse_value, field_hospital_value " .
+         "FROM relativity " .
+         "INNER JOIN (content_field_visit_date " .
+         "INNER JOIN (content_type_visit " .
+         "INNER JOIN content_field_hospital " .
+         "ON content_type_visit.vid = content_field_hospital.vid) " .
+         "ON content_field_visit_date.vid=content_type_visit.vid) " .
+         "ON relativity.nid=content_type_visit.nid " .
+         "WHERE field_relapse_value='yes' " .
+         "AND field_visit_date_value >='%s' " .
+         "AND field_visit_date_value <='%s' " .
+         "AND field_hospital_value ='%d'";
+
+  $relapse_result = db_query($query, $start_date, $end_date, $hid);
+  return $relapse_result; 
+} //end function hospital_reports_query_relapse
+
+//Function to determine if a patient has relapse
+function hospital_reports_patient_has_relapse($nid) {
+  //find most recent casting date
+  $casting_date_array = hospital_reports_get_latest_visit_date_by_type($nid, 'C');
+  $casting_visit_date = $casting_date_array->max_date;
+ 
+  //find earliest bracing date
+  $bracing_date_array = hospital_reports_get_earliest_visit_date_by_type($nid, 'B');
+  $bracing_visit_date = $bracing_date_array->min_date;
+
+  //if patient has a casting and a bracing visit
+  if($casting_visit_date != NULL && $bracing_visit_date != NULL) {
+
+    if($casting_visit_date > $bracing_visit_date){
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+//end function hospital_reports_patient_has_relapse
+
+//Function to find list of relapsed patients by finding those that had a casting visit after bracing
+function hospital_reports_find_relapsed_patients($hid, $start_date,  $end_date) {
+  $list = array();
+
+  //get a list of patients for the hospital
+  global $u_combined;
+  $enrolled_patient_result = $u_combined;  //change this bbrown
+  if (BASED_ON_SERVED){
+  } else {
+     $enrolled_patient_result = hospital_reports_query_enrolled_patients();  //change this bbrown
+  }
+  //for each patient
+  //while ($result = db_fetch_object($enrolled_patient_result) ) {
+  //  $relapsed_patient = hospital_reports_patient_has_relapse($result->nid);
+  foreach ($enrolled_patient_result as $nid) {
+    $relapsed_patient = hospital_reports_patient_has_relapse($nid);
+    if($relapsed_patient == TRUE) {
+      //add patient to relapse array
+      //array_push($list, $result);
+      array_push($list, $nid);
+    }
+  }
+  return $list;
+}
+
+/**
+ * Function to count the patients with relapses
+ * 
+ * @param hid       The hospital id
+ * @param end_date  The report's end date 
+ */
+function hospital_reports_count_relapse($hid, $start_date, $end_date){
+  $relapsed_patients = hospital_reports_find_relapsed_patients($hid, $start_date, $end_date);
+
+  return count($relapsed_patients); 
+} //end function hospital_reports_count_relapse
+
+
+/**
+ * Function to find a list of patients with many casts
+ * 
+ * @param hid       The hospital id
+ * @param end_date  The report's end date 
+ */
+function hospital_reports_find_many_casts_patients($hid, $start_date,  $end_date) {
+  $list = array();
+
+  //get a list of patients for the hospital
+  global $u_combined;
+  $enrolled_patient_result = $u_combined;
+  if (BASED_ON_SERVED){
+  } else {
+     $enrolled_patient_result = hospital_reports_query_enrolled_patients();  //change this bbrown
+  }
+ 
+  //for each patient
+  //while ($result = db_fetch_object($enrolled_patient_result) ) {
+    ////Check that they do not have relapse
+    //$relapsed_patient = hospital_reports_patient_has_relapse($result->nid);
+  foreach ($enrolled_patient_result as $nid) { 
+    //Check that they do not have relapse
+    $relapsed_patient = hospital_reports_patient_has_relapse($nid);
+    if($relapsed_patient == FALSE) {
+
+      //If patient has eight or more casting visits
+      //$casting_visits = hospital_reports_get_patient_casting_visits($result->nid);
+      $casting_visits = hospital_reports_get_patient_casting_visits($nid);
+      if($casting_visits->num_rows >= 8) {
+
+        //add patient to many casts array
+        //array_push($list, $result);
+        array_push($list, $nid);
+      }
+    }
+  }
+
+  return $list;
+}
+
+/**
+ * Function to count the patients with many casts
+ * 
+ * @param hid       The hospital id
+ * @param end_date  The report's end date 
+ */
+function hospital_reports_count_many_casts($hid, $start_date, $end_date){
+  $many_casts_patients = hospital_reports_find_many_casts_patients($hid, $start_date, $end_date);
+
+  return count($many_casts_patients); 
+} //end function hospitl_reports_count_many_casts
+
+/**
+ * Function to count the number of patients that visitied a clinic during a given time frame
+ * 
+ * @param hid         The hospital id
+ * @param start_date  The report's start date 
+ * @param end_date    The report's end date 
+ */
+function hospital_reports_count_visiting_patients($hid, $start_date, $end_date) {
+  $count = 0;
+  global $parent_nids_from_latest_visits;
+  $count = count($parent_nids_from_latest_visits);
+
+  return $count;
+}//end function hospital_reports_count_visiting_patients
+
+//Function to find the ages of patients when they recieved their first cast
+function hospital_reports_count_first_cast_age($hid, $start_date, $end_date) {
+  $casting_age_0_3_mo_count = 0;
+  $casting_age_3_6_mo_count = 0;
+  $casting_age_6_12_mo_count = 0;
+  $casting_age_1_2_yr_count = 0;
+  $casting_age_2_5_yr_count = 0;
+  $casting_age_5_10_yr_count = 0;
+  $casting_age_10_plus_yr_count = 0;
+  $age_3_mo = strtotime("3 months", 0);
+  $age_6_mo = strtotime("6 months", 0);
+  $age_1_yr = strtotime("1 year", 0);
+  $age_2_yr = strtotime("2 year", 0);
+  $age_5_yr = strtotime("5 year", 0);
+  $age_10_yr = strtotime("10 year", 0);
+
+  global $u_combined;
+  $enrolled_patient_result = $u_combined;
+  if (BASED_ON_SERVED){
+  } else {
+     $enrolled_patient_result = hospital_reports_query_enrolled_patients();  //change this bbrown
+  }
+
+  //for each patient
+  //while ($result = db_fetch_object($enrolled_patient_result) ) {
+    ////get date of birth
+    //$patient = node_load($result->nid, NULL, TRUE);
+  foreach ($enrolled_patient_result as $nid) {
+    //get date of birth
+    $patient = node_load($nid, NULL, TRUE);
+    $dob = $patient->field_patient_dob[0]['value'];
+
+    //find earliest casting date
+    $casting_date_array = hospital_reports_get_earliest_visit_date_by_type($nid, 'C');
+    $visit_date = $casting_date_array->min_date;
+
+    //Calculate age
+    $age = hospital_reports_calculate_age($dob, $visit_date);
+    if($age != NULL) {
+
+      //count ages here.
+      if($age>=0 && $age<=$age_3_mo) {
+        $casting_age_0_3_mo_count = $casting_age_0_3_mo_count + 1; 
+      }
+      else if($age>$age_3_mo && $age<=$age_6_mo) {
+        $casting_age_3_6_mo_count = $casting_age_3_6_mo_count + 1; 
+      }
+      else if($age>$age_6_mo && $age<=$age_1_yr) {
+        $casting_age_6_12_mo_count = $casting_age_6_12_mo_count + 1; 
+      }
+      else if($age>$age_1_yr && $age<=$age_2_yr) {
+        $casting_age_1_2_yr_count = $casting_age_1_2_yr_count + 1; 
+      }
+      else if($age>$age_2_yr && $age<=$age_5_yr) {
+        $casting_age_2_5_yr_count = $casting_age_2_5_yr_count + 1; 
+      }
+      else if($age>$age_5_yr && $age<=$age_10_yr) {
+        $casting_age_5_10_yr_count = $casting_age_5_10_yr_count + 1; 
+      }
+      else if($age>$age_10_yr) {
+        $casting_age_10_plus_yr_count = $casting_age_10_plus_yr_count + 1; 
+      }
+    }
+  }
+
+  $array = array(
+    "0_3_mo" => $casting_age_0_3_mo_count,
+    "3_6_mo" => $casting_age_3_6_mo_count,
+    "6_12_mo" => $casting_age_6_12_mo_count,
+    "1_2_yr" => $casting_age_1_2_yr_count, 
+    "2_5_yr" => $casting_age_2_5_yr_count,
+    "5_10_yr" => $casting_age_5_10_yr_count, 
+    "10_plus_yr" => $casting_age_10_plus_yr_count,
+  );
+
+  return $array;
+}//end function hospital_reports_count_first_cast_age
+
+//function to get date of birth
+function hospital_reports_get_dob($nid){
+  $query="SELECT field_patient_dob_value " .
+         "FROM content_type_patient " .
+         "JOIN node " .
+         "ON node.vid=content_type_patient.vid " .
+         "WHERE node.nid='%d'";
+
+  $dob_result = db_query($query, $nid);
+  $result = db_fetch_object($dob_result);
+
+  return $result->field_patient_dob_value;
+}
+
+//Function to find the ages of patients when they were first evaluated
+function hospital_reports_count_evaluation_age($hid, $start_date, $end_date) {
+  $eval_age_0_3_mo_count = 0;
+  $eval_age_3_6_mo_count = 0;
+  $eval_age_6_12_mo_count = 0;
+  $eval_age_1_2_yr_count = 0;
+  $eval_age_2_5_yr_count = 0;
+  $eval_age_5_10_yr_count = 0;
+  $eval_age_10_plus_yr_count = 0;
+  $age_3_mo = strtotime("3 months", 0);
+  $age_6_mo = strtotime("6 months", 0);
+  $age_1_yr = strtotime("1 year", 0);
+  $age_2_yr = strtotime("2 year", 0);
+  $age_5_yr = strtotime("5 year", 0);
+  $age_10_yr = strtotime("10 year", 0);
+  
+ global $u_combined;
+  $enrolled_patient_result = $u_combined;
+  if (BASED_ON_SERVED){
+  } else {  //Lauren (Dec 10th, 2014 wants ths based on new patients enrolled
+     $enrolled_patient_result = hospital_reports_query_enrolled_patients();  //change this bbrown
+  }
+  //for each patient
+  //while ($result = db_fetch_object($enrolled_patient_result) ) {
+    ////get date of birth
+    //$patient = node_load($result->nid, NULL, TRUE);
+  foreach ($enrolled_patient_result as $nid) { 
+    //get date of birth
+    $patient = node_load($nid, NULL, TRUE);
+    $dob = $patient->field_patient_dob[0]['value'];
+    $evaluation_date = $patient->field_evaluation_date['0']['value'];
+
+    //Calculate age
+    $age = hospital_reports_calculate_age($dob, $evaluation_date);
+    if(is_null($age)) {
+     //Check with Lauren on commenting this out.  bbrown
+    //    $eval_age_0_3_mo_count = $eval_age_0_3_mo_count + 1; 
+    } else {
+      //count ages here.
+      if($age>=0 && $age<=$age_3_mo) {
+        $eval_age_0_3_mo_count = $eval_age_0_3_mo_count + 1; 
+      }
+      else if($age>$age_3_mo && $age<=$age_6_mo) {
+        $eval_age_3_6_mo_count = $eval_age_3_6_mo_count + 1; 
+      }
+      else if($age>$age_6_mo && $age<=$age_1_yr) {
+        $eval_age_6_12_mo_count = $eval_age_6_12_mo_count + 1; 
+      }
+      else if($age>$age_1_yr && $age<=$age_2_yr) {
+        $eval_age_1_2_yr_count = $eval_age_1_2_yr_count + 1; 
+      }
+      else if($age>$age_2_yr && $age<=$age_5_yr) {
+        $eval_age_2_5_yr_count = $eval_age_2_5_yr_count + 1; 
+      }
+      else if($age>$age_5_yr && $age<=$age_10_yr) {
+        $eval_age_5_10_yr_count = $eval_age_5_10_yr_count + 1; 
+      }
+      else if($age>$age_10_yr) {
+        $eval_age_10_plus_yr_count = $eval_age_10_plus_yr_count + 1; 
+      }
+    }
+  }
+
+  $array = array(
+    "0_3_mo" => $eval_age_0_3_mo_count,
+    "3_6_mo" => $eval_age_3_6_mo_count,
+    "6_12_mo" => $eval_age_6_12_mo_count,
+    "1_2_yr" => $eval_age_1_2_yr_count, 
+    "2_5_yr" => $eval_age_2_5_yr_count,
+    "5_10_yr" => $eval_age_5_10_yr_count, 
+    "10_plus_yr" => $eval_age_10_plus_yr_count,
+  );
+  return $array;
+}//end function hospital_reports_count_evaluation_age
+
+//Function to find the ages of patients when they had their first visit
+function hospital_reports_count_first_visit_age($hid, $start_date, $end_date) {
+  $visit_age_0_3_mo_count = 0;
+  $visit_age_3_6_mo_count = 0;
+  $visit_age_6_12_mo_count = 0;
+  $visit_age_1_2_yr_count = 0;
+  $visit_age_2_5_yr_count = 0;
+  $visit_age_5_10_yr_count = 0;
+  $visit_age_10_plus_yr_count = 0;
+  $age_3_mo = strtotime("3 months", 0);
+  $age_6_mo = strtotime("6 months", 0);
+  $age_1_yr = strtotime("1 year", 0);
+  $age_2_yr = strtotime("2 year", 0);
+  $age_5_yr = strtotime("5 year", 0);
+  $age_10_yr = strtotime("10 year", 0);
+
+  global $u_combined;
+  $enrolled_patient_result = $u_combined;
+  if (BASED_ON_SERVED){
+  } else {
+     $enrolled_patient_result = hospital_reports_query_enrolled_patients();  //change this bbrown
+  }
+
+  //for each patient
+  //while ($result = db_fetch_object($enrolled_patient_result) ) {
+    ////get date of birth
+    //$patient = node_load($result->nid, NULL, TRUE);
+  foreach ($enrolled_patient_result as $nid) { 
+    //get date of birth
+    $patient = node_load($nid, NULL, TRUE);
+    $dob = $patient->field_patient_dob[0]['value'];
+
+    //find earliest visit date
+    $casting_date_array = hospital_reports_get_earliest_visit_date($nid);
+    $visit_date = $casting_date_array->min_date;
+
+    //Calculate age
+    $age = hospital_reports_calculate_age($dob, $visit_date);
+    if($age != NULL) {
+
+      //count ages here.
+      if($age>=0 && $age<=$age_3_mo) {
+        $visit_age_0_3_mo_count = $visit_age_0_3_mo_count + 1; 
+      }
+      else if($age>$age_3_mo && $age<=$age_6_mo) {
+        $visit_age_3_6_mo_count = $visit_age_3_6_mo_count + 1; 
+      }
+      else if($age>$age_6_mo && $age<=$age_1_yr) {
+        $visit_age_6_12_mo_count = $visit_age_6_12_mo_count + 1; 
+      }
+      else if($age>$age_1_yr && $age<=$age_2_yr) {
+        $visit_age_1_2_yr_count = $visit_age_1_2_yr_count + 1; 
+      }
+      else if($age>$age_2_yr && $age<=$age_5_yr) {
+        $visit_age_2_5_yr_count = $visit_age_2_5_yr_count + 1; 
+      }
+      else if($age>$age_5_yr && $age<=$age_10_yr) {
+        $visit_age_5_10_yr_count = $visit_age_5_10_yr_count + 1; 
+      }
+      else if($age>$age_10_yr) {
+        $visit_age_10_plus_yr_count = $visit_age_10_plus_yr_count + 1; 
+      }
+    }
+  }
+
+  $array = array(
+    "0_3_mo" => $visit_age_0_3_mo_count,
+    "3_6_mo" => $visit_age_3_6_mo_count,
+    "6_12_mo" => $visit_age_6_12_mo_count,
+    "1_2_yr" => $visit_age_1_2_yr_count, 
+    "2_5_yr" => $visit_age_2_5_yr_count,
+    "5_10_yr" => $visit_age_5_10_yr_count, 
+    "10_plus_yr" => $visit_age_10_plus_yr_count,
+  );
+
+  return $array;
+}//end function hospital_reports_count_first_visit_age
+
+//Function to get date of visit
+function hospital_reports_get_visit_date($visit_nid) {
+  $query = "SELECT field_visit_date_value as visit_date FROM " .
+         "content_type_visit, content_field_visit_date " .
+         "WHERE content_type_visit.nid=content_field_visit_date.nid " .
+         "AND content_type_visit.nid='%d'";
+
+  $query_result = db_query($query, $visit_nid); 
+  $visit_date = db_fetch_object($query_result);
+
+  return $visit_date;
+}
+//Function to get a patient's earliest visit date
+function hospital_reports_get_earliest_visit_date($patient_nid) {
+  $query="SELECT parent_nid, MIN(content_field_visit_date.field_visit_date_value) as min_date FROM " .
+         "content_field_visit_date INNER JOIN (relativity " .
+         "INNER JOIN (content_type_visit " .
+         "INNER JOIN node " .
+         "ON content_type_visit.vid = node.vid) " .
+         "ON relativity.nid = content_type_visit.nid) " .
+         "ON content_type_visit.vid=content_field_visit_date.vid " .
+         "WHERE parent_nid='%d'";
+
+  $query_result = db_query($query, $patient_nid);
+  $result = db_fetch_object($query_result);
+  return $result; 
+}
+
+//Function to get a patient's latest visit date NOT USED IN THIS MODULE
+function hospital_reports_get_latest_visit_date($patient_nid) {
+  $query="SELECT parent_nid, MAX(content_field_visit_date.field_visit_date_value) as max_date FROM " .
+         "content_field_visit_date INNER JOIN (relativity " .
+         "INNER JOIN (content_type_visit " .
+         "INNER JOIN node " .
+         "ON content_type_visit.vid = node.vid) " .
+         "ON relativity.nid = content_type_visit.nid) " .
+         "ON content_type_visit.vid=content_field_visit_date.vid " .
+         "WHERE parent_nid='%d'";
+
+/*
+  $query="SELECT parent_nid, MAX(content_field_visit_date.field_visit_date_value) as max_date FROM " .
+         "content_type_visit INNER JOIN (relativity " .
+         "INNER JOIN content_field_visit_date " .
+         "ON relativity.nid=content_field_visit_date.nid) " .
+         "ON content_type_visit.nid=content_field_visit_date.nid " .
+         "WHERE parent_nid='%d'";
+*/
+
+  $query_result = db_query($query, $patient_nid);
+  $result = db_fetch_object($query_result);
+  return $result; 
+}
+
+//Function to get a patient's latest visit date of a specific type
+function hospital_reports_get_latest_visit_date_by_type($patient_nid, $code) {
+  $type = hospital_reports_get_treatment_name_from_code($code);
+
+  $query="SELECT parent_nid, MAX(content_field_visit_date.field_visit_date_value) as max_date FROM " .
+         "node INNER JOIN (content_type_visit " .
+         "INNER JOIN (relativity " .
+         "INNER JOIN content_field_visit_date " .
+         "ON relativity.nid=content_field_visit_date.nid) " .
+         "ON content_type_visit.vid=content_field_visit_date.vid) " .
+         "ON node.vid=content_type_visit.vid " .
+         "WHERE parent_nid='%d' " .
+         "AND (field_treatment_left_value = '%s' OR field_treatment_right_value='%s')";
+
+  $query_result = db_query($query, $patient_nid, $type, $type);
+  $result = db_fetch_object($query_result);
+  return $result; 
+}
+
+//Function to get a patient's earliest visit date of a specific type
+function hospital_reports_get_earliest_visit_date_by_type($patient_nid, $code) {
+  $type = hospital_reports_get_treatment_name_from_code($code);
+
+  $query="SELECT parent_nid, MIN(content_field_visit_date.field_visit_date_value) as min_date FROM " .
+         "node INNER JOIN (content_type_visit " .
+         "INNER JOIN (relativity " .
+         "INNER JOIN content_field_visit_date " .
+         "ON relativity.nid=content_field_visit_date.nid) " .
+         "ON content_type_visit.vid=content_field_visit_date.vid) " .
+         "ON node.vid=content_type_visit.vid " .
+         "WHERE parent_nid='%d' " .
+         "AND (field_treatment_left_value = '%s' OR field_treatment_right_value='%s')";
+
+  $query_result = db_query($query, $patient_nid, $type, $type);
+  $result = db_fetch_object($query_result);
+  return $result; 
+}
+
+//Function to convert entered time to date
+function hospital_reports_entered_time_to_date($entered_time) {
+  $entered_time_format = "%F %T";
+  $date_format = "%F";
+
+  $entered_time_array = strptime($entered_time, $entered_time_format);
+  $entered_unix = mktime(00, 00, 00,($entered_time_array['tm_mon']+1),$entered_time_array['tm_mday'], ($entered_time_array['tm_year']+1900) );
+
+  $converted_time = strftime($date_format, $entered_unix);
+  
+  return $converted_time;
+}
+
+//Function to convert entered time to db time
+function hospital_reports_entered_time_to_db_time($entered_time) {
+  $entered_time_format = "%F %T";
+  $db_time_format = "%FT%T";
+
+  $entered_time_array = strptime($entered_time, $entered_time_format);
+  $entered_unix = mktime(00, 00, 00,($entered_time_array['tm_mon']+1),$entered_time_array['tm_mday'], ($entered_time_array['tm_year']+1900) );
+
+  $converted_time = strftime($db_time_format, $entered_unix);
+  
+  return $converted_time;
+}
+
+//Function to calculate a patient's age at a given time
+function hospital_reports_calculate_age($dob, $visit){
+
+  //If there was no casting visit for the patient
+  if($dob=="" || $visit=="") {
+    return NULL;
+  }
+
+#  $visit_array = strptime($visit, $format);
+ # $dob_array = strptime($dob, $format);
+
+  //extract visit and dob from array
+  $visit_unix = hospital_reports_get_unix_time_from_mysql_date($visit);
+  $dob_unix = hospital_reports_get_unix_time_from_mysql_date($dob);
+
+  $age = $visit_unix-$dob_unix;
+
+  return $age;
+}//end function hospital_reports_calculate_age
+
+//Function to calculate a patient's age based on a selected date
+function hospital_reports_calculate_age_from_entered_date($dob, $visit){
+
+  //If there was no casting visit for the patient
+  if($dob=="" || $visit=="") {
+    return NULL;
+  }
+
+  //extract visit and dob from array
+  $visit_unix = hospital_reports_get_unix_time_from_mysql_date($visit);
+  $dob_unix = hospital_reports_get_unix_time_from_mysql_date($dob);
+
+  $age = $visit_unix-$dob_unix;
+
+  return $age;
+}//end function hospital_reports_calculate_age_from_entered_date
+
+
+//Function to find patients with last visit
+function hospital_reports_find_last_visits($hid, $entered_start_time,  $end_time, $treatment_type) {
+  global $parent_nids_key_latest_visit_date_value;
+  $p_nids_and_last_visit_reason = array();
+  foreach ($parent_nids_key_latest_visit_date_value as $p_nid => $max_date) {
+    $latest_visit_nid_result = hospital_reports_get_latest_visit_nid($p_nid, $max_date);
+    //for each latest visit
+    while ($visit_result = db_fetch_object($latest_visit_nid_result) ) {
+        $visit = node_load($visit_result->max_nid, NULL, TRUE);
+        //if it is not the patient's final visit
+        if($visit->field_is_last_visit[0]['value'] == "Yes"){
+          //if visit is of treatment type
+          $reason ='';
+          $reason = $visit->field_last_visit_reason[0]['value'];
+          if (!$reason){
+             $reason = "No reason given";
+          } elseif ($reason == ''){
+             $reason = "No reason given";
+          }
+          $p_nids_and_last_visit_reason[$p_nid] = $reason; 
+        }
+    }
+  }
+  return $p_nids_and_last_visit_reason;
+} //end function treatment stages
+
+//Function to find patients in a given stage of treatment
+function hospital_reports_find_treatment_stages($hid, $entered_start_time,  $end_time, $treatment_type) {
+  $DEBUG = 0;
+  if ($DEBUG == 1){
+     $log = fopen("tmp/find_treatment_stages.log", "w");
+     fwrite($log, "entered_start_date:...".$entered_start_time."...\n");
+  } 
+  //get the time to subtract
+  $start_time = hospital_reports_find_treatment_stages_start_time($end_time, $treatment_type);    
+  if ($DEBUG == 1)  fwrite($log, "computed start_time: ...".$start_time."...\n");
+  if ($entered_start_time > $start_time){
+    if ($DEBUG == 1) fwrite($log, "entered time is newer than computed start time, so use it\n");
+    $start_time = $entered_start_time;
+  }
+  if ($DEBUG == 1) fclose($log);
+  //get the name of the treatment
+  $treatment_name = hospital_reports_get_treatment_name_from_code($treatment_type);
+
+  $count = 0;
+  $list = array();
+
+  //$end_time = hospital_reports_entered_time_to_db_time($end_time);
+
+  global $latest_visit_results_patient_nids;
+  $latest_visits_result = hospital_reports_get_latest_visit_dates($hid, $start_time, $end_time); 
+
+  //for each latest visit
+  while ($result = db_fetch_object($latest_visits_result) ) {
+    //get the nid of the latest visit
+   $latest_visit_nid_result = hospital_reports_get_latest_visit_nid($result->parent_nid, $result->max_date);
+    //for each latest visit
+    while ($visit_result = db_fetch_object($latest_visit_nid_result) ) {
+      $visit = node_load($visit_result->max_nid, NULL, TRUE);
+      if($visit->field_treatment_left[0]['value']==$treatment_name || $visit->field_treatment_right[0]['value']==$treatment_name) {
+        $count = $count + 1;
+        array_push($list, $result->parent_nid);
+      }
+    }
+  }
+  return $list;
+} //end function treatment stages
+
+//Function to find patients in the bracing stage that have or have not had tenotomies
+function hospital_reports_find_bracing_tenotomies($hid, $start_time, $end_time) {
+  $tenotomy_pos_list = array();
+  $tenotomy_neg_list = array();
+
+  //Get patients in the bracing, bracing drop out, tenotomy, and tenotomy drop out stage of treatment
+  $treatment_stages_b_result = hospital_reports_find_treatment_stages($hid, $start_time,  $end_time, "B");
+  $treatment_stages_t_result = hospital_reports_find_treatment_stages($hid, $start_time,  $end_time, "T");
+  $drop_out_b_result = hospital_reports_count_drop_outs($hid, $start_time, $end_time, "B");
+  $drop_out_t_result = hospital_reports_count_drop_outs($hid, $start_time, $end_time, "T");
+
+  $patient_array = array_merge($treatment_stages_b_result, $treatment_stages_t_result, $drop_out_b_result, $drop_out_t_result);
+
+  //for each patient
+  foreach($patient_array as $nid) {
+    //get first visit type
+    $first_visit = hospital_reports_first_visit_type($nid);
+
+    //if first visit type is not bracing
+    if(hospital_reports_first_visit_is_bracing($first_visit) == FALSE){
+      $tenotomy_date_array = hospital_reports_get_earliest_visit_date_by_type($nid, "T"); 
+
+      //if patient had a tenotomy
+      if($tenotomy_date_array->parent_nid != NULL) {
+        array_push($tenotomy_pos_list, $nid);
+      }
+      else {
+        array_push($tenotomy_neg_list, $nid);
+      }
+    }
+  }
+
+  $array = array(
+    "yes" => $tenotomy_pos_list,
+    "no" => $tenotomy_neg_list,
+  );
+  return $array;
+}
+
+function hospital_reports_first_visit_is_bracing($visit){
+  $b_visit = FALSE;
+
+  if($visit["left"] == "B - Brace application"){
+    $b_visit = TRUE;
+  }
+  if($visit["right"] == "B - Brace application"){
+    $b_visit = TRUE;
+  }
+
+  return $b_visit;
+}
+
+
+//Function to count the number of drop outs
+function hospital_reports_count_drop_outs_any($hid) {
+   return "THe HID IS $hid";
+}
+function hospital_reports_years_in_bracing($hid, $start_time, $end_time) {
+  $end_time_unix = hospital_reports_get_unix_time_from_mysql_date($end_time);
+  //get the name of the treatment
+  $count = 0;
+  $patient_nids_one_year_or_more_with_bracing = array();
+
+  //for each patient
+  global $parent_nids_key_latest_visit_date_value;
+  #global $parent_nids_key_latest_visit_type_left_value;
+  #global $parent_nids_key_latest_visit_type_right_value;
+  #The max_date is actually not used, since we are no longer using here at least the get_latest_visit_nid function.  
+  #We might change this, thgouh, and use this function, since there is a possibility of there being more that one 
+  #visit per patient on the same date, and we would then want to use the one with the largest nid, since that would most
+  #likely, but not necessarily, be the latest visit of the two.  -  bbrown
+  foreach ($parent_nids_key_latest_visit_date_value as $p_nid => $max_date) {
+    $latest_visit_nid_result = hospital_reports_get_latest_visit_nid($p_nid, $max_date);
+    $use_as_earliest_bracing_date = '';
+    $use_max_date ='';
+    while ($first_visit_result = db_fetch_object($latest_visit_nid_result) ) {
+      $first_visit_node = node_load($first_visit_result->max_nid, NULL, TRUE);
+      $first_left_tx = $first_visit_node->field_treatment_left[0]['value'];;
+      $first_right_tx = $first_visit_node->field_treatment_right[0]['value'];; 
+      if($first_left_tx=='B - Brace application' || $first_right_tx =='B - Brace application' 
+       || $first_left_tx=='O - Other' || $first_right_tx=='O - Other' 
+       || $first_left_tx=='R - Refer' || $first_right_tx=='R - Refer' ){ 
+       // Get all visit for patient 
+        $all_visits_for_p_result = hospital_reports_get_patient_visit_date_tx_type_desc($p_nid);
+        //for each latest visit
+        while ($subsequent_visit_result = db_fetch_object($all_visits_for_p_result) ) {
+          $date = $subsequent_visit_result->visit_date;
+          $left_tx = $subsequent_visit_result->left_tx;
+          $right_tx = $subsequent_visit_result->right_tx;
+          if($left_tx=='B - Brace application' || $right_tx =='B - Brace application' 
+          || $left_tx=='O - Other' || $right_tx=='O - Other' 
+          || $left_tx=='R - Refer' || $right_tx=='R - Refer' ){ 
+            if($left_tx=='B - Brace application' || $right_tx =='B - Brace application') { 
+              if ($use_max_date ==''){
+                $date_unix = hospital_reports_get_unix_time_from_mysql_date($date);
+                if ($date_unix <= $end_time_unix){
+                  $use_max_date = $date;
+                }
+              }
+              $use_as_earliest_bracing_date = $date;
+            }   
+          } else {
+            break;
+          }
+        }
+      } // end if last visit is bracing or other or refer 
+    }
+    if (($use_as_earliest_bracing_date == '') || ($use_max_date == '')) {
+    } else {
+       $floor_years = hospital_reports_get_floor_years_from_dates($use_max_date, $use_as_earliest_bracing_date);
+       if ($floor_years > 0){
+         $patient_nids_one_year_or_more_with_bracing[$p_nid] = $floor_years; 
+       } 
+    }
+  }
+  return $patient_nids_one_year_or_more_with_bracing;
+} //end function drop outs
+
+function hospital_reports_get_floor_years_from_dates($start_time, $end_time){
+  $end_time_unix = hospital_reports_get_unix_time_from_mysql_date($end_time);
+  $start_time_unix = hospital_reports_get_unix_time_from_mysql_date($start_time);
+  #subtract a month from the start time:
+    $start_time_unix_mod = strtotime("+1 month", $start_time_unix);
+  $difference =  abs($end_time_unix - $start_time_unix_mod);
+  $years =  ($difference / 31536000);
+  return floor($years);
+}
+function hospital_reports_get_unix_time_from_form_date($form_date){
+  $entered_time_format = "%F %T";
+  $time_array = strptime($form_date, $entered_time_format);
+  $time_unix = mktime(00, 00, 00,($time_array['tm_mon']+1),$time_array['tm_mday'], ($time_array['tm_year']+1900) );
+  return $time_unix;
+}
+function hospital_reports_get_unix_time_from_mysql_date($mysql_date){
+  $format = "%FT%T";
+  $time_array = strptime($mysql_date, $format);
+  $time_unix = mktime(00, 00, 00,($time_array['tm_mon']+1),$time_array['tm_mday'], ($time_array['tm_year']+1900) );
+  return $time_unix;
+}
+
+function hospital_reports_count_drop_outs($hid, $start_time, $end_time, $treatment_type) {
+  //get the name of the treatment
+  $DEBUG = 0;
+  if ($DEBUG) $log = fopen("tmp/count_drop_outs.log", "a");
+  if ($DEBUG) fwrite($log, "___________________________________\n");
+  $treatment_name = hospital_reports_get_treatment_name_from_code($treatment_type);
+  $count = 0;
+  $list = array();
+
+  //for each patient
+  global $parent_nids_key_latest_visit_date_value;
+  foreach ($parent_nids_key_latest_visit_date_value as $p_nid => $max_date) {
+    //get the nid of the latest visia
+    $latest_visit_nid_result = hospital_reports_get_latest_visit_nid($p_nid, $max_date);
+    
+      //for each latest visit
+      while ($visit_result = db_fetch_object($latest_visit_nid_result) ) {
+        $visit = node_load($visit_result->max_nid, NULL, TRUE);
+        //if it is not the patient's final visit
+        if($visit->field_is_last_visit[0]['value'] != "Yes"){
+          //if visit is of treatment type
+ 
+         $left_tx = $visit->field_treatment_left[0]['value'];;
+         $right_tx = $visit->field_treatment_right[0]['value'];; 
+         if( $left_tx=='O - Other' || $right_tx=='O - Other' 
+             || $left_tx=='R - Refer' || $right_tx=='R - Refer' ){ 
+          if ($DEBUG) fwrite($log, "For patient nid: ".$p_nid."\n");
+          if ($DEBUG) fwrite($log, "VIsit with max nid: ".$visit->nid."\n");
+          if ($DEBUG) fwrite($log, "Either Its left tx is Other or Refer: ".$visit->field_treatment_left[0]['value']."\n");
+          if ($DEBUG) fwrite($log, "Or its right tx is Other or Refer: ".$visit->field_treatment_right[0]['value']."\n");
+          //bbrown TODO: If the treatment type is referral or other, get the last treatment type that was not one of those two.
+              
+            $all_visits_for_p_result = hospital_reports_get_patient_visit_date_tx_type_desc($p_nid);
+            //for each latest visit
+            while ($subsequent_visit_result = db_fetch_object($all_visits_for_p_result) ) {
+              $date = $subsequent_visit_result->visit_date;
+              $left_tx = $subsequent_visit_result->left_tx;
+              $right_tx = $subsequent_visit_result->right_tx;
+              
+              if( $left_tx=='O - Other' || $right_tx=='O - Other' 
+                || $left_tx=='R - Refer' || $right_tx=='R - Refer' ){ 
+              } else {
+                if ($DEBUG) fwrite($log, $subsequent_visit_result->visit_date.", Got tx other than Other or Refer: ".$left_tx."\n");
+                if ($DEBUG) fwrite($log, $subsequent_visit_result->visit_date.", Got tx other than Other or Refer: ".$right_tx."\n");
+                 break;
+              }
+            }
+         }
+
+         if($left_tx == $treatment_name || $right_tx == $treatment_name) {
+            //determine if the visit is drop out based on dates
+            $drop_out_status = hospital_reports_is_visit_drop_out($max_date, $end_time, $treatment_type);
+     
+            //if drop out, increase count
+            if($drop_out_status == TRUE) {
+              $count = $count + 1;
+              array_push($list, $p_nid);
+            }
+          }
+        }
+      }
+  }
+  if ($DEBUG) fclose($log);
+  return $list;
+} //end function drop outs
+
+//function to check if visit qualifies as drop out
+function hospital_reports_is_visit_drop_out($visit_date, $end_date, $treatment_type) {
+  if($treatment_type == "C") {
+    $interval = strtotime("3 week", 0);
+  }
+  else if($treatment_type == "B") {
+    $interval = strtotime("6 month", 0);
+  }
+  else if($treatment_type == "T") {
+    $interval = strtotime("4 week", 0);
+  }
+
+  $time_from_end = hospital_reports_calculate_age_from_entered_date($visit_date, $end_date);
+
+  if($time_from_end <= $interval) {
+    return FALSE;
+  }
+  else {
+    return TRUE;
+  }
+}
+  
+//Function to count the average number of casts/patient for those in bracing
+function hospital_reports_count_casts_per_patient($hid, $end_time, $treatment_type) {
+  //get the time to subtract
+  $start_time = hospital_reports_find_treatment_stages_start_time($end_time, $treatment_type);    
+
+  //get the name of the treatment
+  $treatment_name = hospital_reports_get_treatment_name_from_code($treatment_type);
+
+  $patient_count = 0;
+  $visit_count = 0;
+
+  $latest_visits_result = hospital_reports_get_latest_visit_dates($hid, $start_time, $end_time); 
+
+  //for each latest visit
+  while ($result = db_fetch_object($latest_visits_result) ) {
+    //get the nid of the latest visit
+    $latest_visit_nid_result = hospital_reports_get_latest_visit_nid($result->parent_nid, $result->max_date);
+    //for each latest visit
+    while ($visit_result = db_fetch_object($latest_visit_nid_result) ) {
+      $visit = node_load($visit_result->max_nid, NULL, TRUE);
+      //if the patient is in bracing
+      if($visit->field_treatment_left[0]['value']==$treatment_name || $visit->field_treatment_right[0]['value']==$treatment_name) {
+        //if the patient's first visit was not bracing
+        $first_visit = hospital_reports_first_visit_type($result->parent_nid);
+        if(hospital_reports_first_visit_is_bracing($first_visit) == FALSE){
+          $patient_count = $patient_count + 1;
+          //get the number of casting visits for that patient
+          $casting_visit_result = hospital_reports_get_patient_casting_visits($result->parent_nid);
+          $num_visits = $casting_visit_result->num_rows;
+          $visit_count = $visit_count + $num_visits;
+        }
+      }
+    }
+
+  }
+  if($patient_count == 0) {
+    return 0;
+  }
+
+  $average = $visit_count/$patient_count;  
+  return $average;
+} //end function casts per patient
+
+function hospital_reports_get_patient_visit_date_tx_type_desc($patient_nid) {
+  $query = "SELECT parent_nid, n.nid, cfvd.field_visit_date_value as visit_date, ctv.field_treatment_left_value as left_tx, ctv.field_treatment_right_value as right_tx  " .
+           "FROM relativity r, node n, content_type_visit ctv, content_field_visit_date cfvd  " .
+           "WHERE r.nid = n.nid   " .
+           "AND n.vid = ctv.vid   " .
+           "AND cfvd.vid = ctv.vid   " .
+           "AND r.parent_nid  = '%d' " .
+           "ORDER BY cfvd.field_visit_date_value DESC ";
+
+  $visits_result = db_query($query, $patient_nid); 
+  return $visits_result;
+}
+//function to get a list of casting visits for a particular patient
+function hospital_reports_get_patient_casting_visits($patient_nid) {
+  $query = "SELECT parent_nid, node.nid, content_type_visit.field_treatment_left_value, content_type_visit.field_treatment_right_value " .
+           "FROM relativity " .
+           "INNER JOIN( node " .
+           "INNER JOIN content_type_visit " .
+           "ON node.vid=content_type_visit.vid) " .
+           "ON relativity.nid=node.nid " .
+           "WHERE parent_nid='%d' " .
+           "AND (field_treatment_left_value = 'C - manipulation &amp; Casting' OR field_treatment_right_value='C - manipulation &amp; Casting')";
+
+  $casting_visits_result = db_query($query, $patient_nid); 
+
+  return $casting_visits_result;
+}
+
+//function to get the latest visit date for each of a hospital's patients during a given time frame
+function hospital_reports_get_latest_visit_dates($hid, $start_time, $end_time) {
+  $latest_visits_query = "SELECT parent_nid, field_visit_date_value as max_date " .
+                      "FROM " .
+                      "(SELECT relativity.parent_nid, field_visit_date_value " .
+                      "FROM relativity, content_field_visit_date, content_field_hospital, node " .
+                      "WHERE relativity.nid = node.nid " .
+                      "AND node.vid = content_field_hospital.vid " .
+                      "AND node.vid = content_field_visit_date.vid  " .
+                     "AND content_field_hospital.field_hospital_value='%d' " .
+                     "AND field_visit_date_value>='%s' " .
+                     "AND node.status = 1 " .
+                     "AND field_visit_date_value<='%s' ORDER BY field_visit_date_value DESC) as t1 " .
+                     "group by parent_nid";
+
+  $latest_visits_result = db_query($latest_visits_query, $hid, $start_time, $end_time); 
+  return $latest_visits_result;
+}
+
+//function to get the latest nid for a patient's latest_visit_date
+function hospital_reports_get_latest_visit_nid($patient_nid, $max_time) {
+  $query = "SELECT relativity.parent_nid, max(content_field_visit_date.nid) as max_nid FROM " .
+           "relativity INNER JOIN content_field_visit_date " .
+           "ON relativity.nid=content_field_visit_date.nid " .
+           "WHERE parent_nid='%d' " .
+           "AND field_visit_date_value='%s' " .
+           "GROUP BY parent_nid " .
+           "ORDER BY parent_nid"; 
+  $query_result = db_query($query, $patient_nid, $max_time); 
+  return $query_result;
+}
+
+//function to get the earliest nid for a patient's earliest_visit_date
+function hospital_reports_get_earliest_visit_nid($patient_nid, $min_time) {
+
+  $query = "SELECT relativity.parent_nid, min(content_field_visit_date.nid) as min_nid FROM " .
+           "relativity INNER JOIN content_field_visit_date " .
+           "ON relativity.nid=content_field_visit_date.nid " .
+           "WHERE parent_nid='%d' " .
+           "AND field_visit_date_value='%s' " .
+           "GROUP BY parent_nid " .
+           "ORDER BY parent_nid";
+
+  $query_result = db_query($query, $patient_nid, $min_time); 
+
+  return $query_result;
+}
+
+//function to determine a patient's first visit type
+function hospital_reports_first_visit_type($patient_nid){
+  $array = array(
+    "left" => NULL,
+    "right" => NULL,
+  );
+
+  $date_array = hospital_reports_get_earliest_visit_date($patient_nid);
+  $visit_date = $date_array->min_date;
+
+  //if the patient has no visits entered, return NULL
+  if($visit_date == NULL){
+    return $array;
+  }
+
+  $visit_array = hospital_reports_get_earliest_visit_nid($patient_nid, $visit_date);
+  $visit_obj = db_fetch_object($visit_array);
+  $visit_nid = $visit_obj->min_nid;
+
+  //get the visit type
+  $visit = node_load($visit_nid, NULL, TRUE);
+  $left = $visit->field_treatment_left[0]['value'];
+  $right = $visit->field_treatment_right[0]['value'];
+
+  $array[left] = $left; 
+  $array[right] = $right;
+
+  return $array; 
+}
+
+//function to calculate start time for treatment stages query
+function hospital_reports_find_treatment_stages_start_time($end_time, $treatment_type) {
+ $format = "%FT%T";
+  $end_array = strptime($end_time, $format);
+
+  //extract end time from array
+  $end_time_unix = mktime(00, 00, 00,($end_array['tm_mon']+1),$end_array['tm_mday'], ($end_array['tm_year']+1900) );
+
+  if($treatment_type == 'C') {
+    //subtract 3 weeks
+    $start_time_mod = strtotime("-3 week", $end_time_unix);
+  }
+  else if($treatment_type == 'B') {
+    //subtract 6 months
+    $start_time_mod = strtotime("-6 month", $end_time_unix);
+  }
+  else if($treatment_type == 'T') {
+    //subtract 6 months
+    $start_time_mod = strtotime("-4 week", $end_time_unix);
+  }
+ 
+  $start_time = strftime($format, $start_time_mod);
+  return $start_time;
+}
+#function hospital_reports_find_treatment_stages_start_time($end_time, $treatment_type) {
+#  $end_time_unix = hospital_reports_get_unix_time_from_mysql_date($end_time);
+
+#  if($treatment_type == 'C') {
+#    //subtract 3 weeks
+#    $start_time_mod = strtotime("-3 week", $end_time_unix);
+#  }
+#  else if($treatment_type == 'B') {
+#    //subtract 6 months
+#    $start_time_mod = strtotime("-6 month", $end_time_unix);
+#  }
+#  else if($treatment_type == 'T') {
+#    //subtract 6 months
+#    $start_time_mod = strtotime("-4 week", $end_time_unix);
+#  }
+ 
+#  $start_time = strftime($format, $start_time_mod);
+#  return $start_time;
+#}
+
+function hospital_reports_get_title_from_nid($nid) {
+  $result = db_query("SELECT title FROM {node} WHERE nid=%d", $nid);
+  $title = db_result($result);
+  return $title;
+}
+
+//function to get the full name of the treatment based on letter code
+function hospital_reports_get_treatment_name_from_code($code) {
+  $treatment_name = "";
+
+  //find treatment type
+  if($code == 'C') {
+    $treatment_name = 'C - manipulation &amp; Casting';
+  }
+  else if($code == 'T') {
+    $treatment_name = 'T - Tenotomy';
+  }
+  else if($code == 'B') {
+    $treatment_name = 'B - Brace application';
+  }
+  else if($code == 'R') {
+   $treatment_name = 'R - Refer';
+  }
+  else if($code == 'S') {
+   $treatment_name = 'S - Surgery';
+  }
+  else if($code == 'O') {
+   $treatment_name = 'O - Other';
+  }
+
+  return $treatment_name;
+}
+
+//Function to find a node's parent
+function hospital_reports_query_parent($child_nid) {
+  $query = "SELECT parent_nid as nid FROM " .
+           "relativity " .
+           "WHERE nid='%d'";
+
+  $query_result = db_query($query, $child_nid); 
+  $parent_nid = db_result($query_result);
+ //$parent_nid = db_fetch_object($query_result);
+ 
+  return $parent_nid;
+}
+
+//Function to count the number of treatments
+function hospital_reports_count_procedures($hospital_uid, $start_date, $end_date) {
+  //COUNTS
+  $casting_count = 0;
+  $tenotomy_count = 0;
+  $brace_count = 0;
+  $refer_count = 0;
+  $surgery_count = 0;
+  $other_count = 0;
+
+  //LISTS
+  $casting_list = array();
+  $tenotomy_list = array();
+  $brace_list = array();
+  $refer_list = array();
+  $surgery_list = array();
+  $other_list = array();
+
+  $new_visit_result = hospital_reports_query_new_visits($hospital_uid, $start_date, $end_date);
+
+  //for each visit
+  while ($result = db_fetch_object($new_visit_result) ) {
+    
+    $visit = node_load($result->nid, NULL, TRUE);
+    $left = $visit->field_treatment_left[0]['value'];
+
+    $right = $visit->field_treatment_right[0]['value'];
+    $parent_nid = hospital_reports_query_parent($result->nid);
+ 
+    $foot = hospital_reports_get_treated_foot($left, $right);
+    $special_case = hospital_reports_differing_treatments($left, $right);
+
+    //if there are differing treatments for the visit, count both treatments
+    if($special_case == FALSE) {
+      $max_count = 1;
+    }
+    else {
+     $max_count = 2;
+    }
+   
+    //find treatment type
+    for ($i = 0; $i < $max_count; $i++) {
+      if($special_case == TRUE){
+        if($i == 0){
+          $foot = $left;
+        }
+        else if($i == 1){
+          $foot = $right;
+        }
+      }
+
+      if($foot == 'C - manipulation &amp; Casting') {
+         $casting_count = $casting_count + 1;
+         //if(array_search($parent_nid, $casting_list) === FALSE) {
+         if(in_array($parent_nid, $casting_list) === FALSE) {
+           array_push($casting_list, $parent_nid); 
+         }
+         
+      }
+      else if ($foot == 'T - Tenotomy') {
+        $tenotomy_count = $tenotomy_count + 1;
+        if(array_search($parent_nid, $tenotomy_list) === FALSE) {
+          array_push($tenotomy_list, $parent_nid);
+        } 
+      }
+      else if ($foot == 'R - Refer') {
+        $refer_count = $refer_count + 1;
+        if(array_search($parent_nid, $refer_list) === FALSE) {
+          array_push($refer_list, $parent_nid);
+        }
+      }
+      else if ($foot == 'S - Surgery') {
+        $surgery_count = $surgery_count + 1;
+        if(array_search($parent_nid, $surgery_list) === FALSE) {
+          array_push($surgery_list, $parent_nid);
+        } 
+      }
+      else if ($foot == 'B - Brace application') {
+        $brace_count = $brace_count + 1;
+        if(array_search($parent_nid, $brace_list) === FALSE) {
+          array_push($brace_list, $parent_nid);
+        } 
+      }
+      else if ($foot == 'O - Other') {
+        $other_count = $other_count + 1;
+        if(array_search($parent_nid, $other_list) === FALSE) {
+          array_push($other_list, $parent_nid);
+        } 
+      }
+
+      if($special_case == TRUE) {
+        $foot = $left;
+      }
+    }//end for
+  }//end while
+
+  $array = array(
+    "C" => $casting_count,
+    "C_list" => $casting_list,
+    "T" => $tenotomy_count,
+    "T_list" => $tenotomy_list,
+    "B" => $brace_count,
+    "B_list" => $brace_list,
+    "R" => $refer_count,
+    "R_list" => $refer_list,
+    "S" => $surgery_count,
+    "S_list" => $surgery_list,
+    "O" => $other_count,
+    "O_list" => $other_list,
+  );
+  
+  return $array;
+} //end function
+
+//Function to get the foot treated during a visit
+function hospital_reports_get_treated_foot($left, $right) {
+    $foot = '';
+
+    if($left !=NULL && $right == NULL) {         
+       $foot = $left;
+    }
+    else if($left == NULL && $right != NULL) {   
+      $foot = $right;
+    }
+    else if ($left != NULL && $right != NULL) {  
+      if($left == $right) {
+        $foot = $left;
+      }
+      else if ($left != $right && $right == 'None') {
+        $foot = $left;
+      }
+      else if ($left != $right && $left == 'None') {
+        $foot = $right;
+      }
+      else if ($left != $right) {
+        $foot = $left;
+      }
+    }
+
+  return $foot;
+}//end function hospital_reports_get_treated_foot
+
+//Function to determine if there are differing treatments on a single visit
+function hospital_reports_differing_treatments($left, $right) {
+  $special_case = FALSE;
+
+  if($left != NULL && $right != NULL) {  
+    if($left != $right) {
+      $special_case = TRUE;
+    }
+  }
+
+  return $special_case;
+} //end function hospital_reports_differing_treamtents
+
+//Function to write row to csv file
+function hospital_reports_write_csv_row($arr) {
+  $fp = hospital_reports_open_csv();
+
+  $csv_fields = array();
+  $csv_fields[0]   = array();
+
+  foreach($arr as $value) {
+    $csv_fields[0][] = $value;
+  }
+
+  foreach ($csv_fields as $fields) {
+    fputcsv($fp, $fields);
+  }
+  hospital_reports_close_csv($fp);
+}
+
+//Function to generate array of csv headers
+function hospital_reports_get_header_array() {
+  global $username;
+  $arr = array();
+    array_push($arr, "Hospital/Clinic");
+
+  if(hospital_reports_display_field('hospital_reports_enrolled_patients_'.$username) == TRUE) {
+    array_push($arr, "Total # of Enrolled Patients");
+  }
+  if(hospital_reports_display_field('hospital_reports_total_patients_served_'.$username) == TRUE) {
+    array_push($arr, "Total # of Patients Served During Period");
+  }
+  if(hospital_reports_display_field('hospital_reports_gender_patients_served_'.$username) == TRUE) {
+    array_push($arr, "Male Patients Served During Period");
+    array_push($arr, "Female Patients Served During Period");
+  }
+  if(hospital_reports_display_field('hospital_reports_laterality_'.$username) == TRUE) {
+    array_push($arr, "Left");
+    array_push($arr, "Right");
+    array_push($arr, "Unilateral");
+    array_push($arr, "Bilateral");
+  }
+  if(hospital_reports_display_field('hospital_reports_family_'.$username) == TRUE) {
+    array_push($arr, "Has Affected Relatives");
+    array_push($arr, "Does Not Have Affected Relatives");
+    array_push($arr, "Don't Know If They Have Affected Relatives");
+  }
+  if(hospital_reports_display_field('hospital_reports_treatment_stages_'.$username) == TRUE) {
+    array_push($arr, "C Treatment Stage");
+    array_push($arr, "B Treatment Stage");
+    array_push($arr, "T Treatment Stage");
+    array_push($arr, "Patients with Last Visits");
+    array_push($arr, "Treatment completed");
+    array_push($arr, "Treatment ceased due to other medical complications");
+    array_push($arr, "Patient moved");
+    array_push($arr, "Patient is deceased");
+    array_push($arr, "No Reason Given for Last Treatment");
+  }
+  if(hospital_reports_display_field('hospital_reports_bracing_by_years_'.$username) == TRUE) {
+    array_push($arr, "Total Patients in Bracing for a Year of More");
+    array_push($arr, "Patients in Bracing for 1 Year");
+    array_push($arr, "Patients in Bracing for 2 Year");
+    array_push($arr, "Patients in Bracing for 3 Year");
+    array_push($arr, "Patients in Bracing for 4 Year");
+    array_push($arr, "Patients in Bracing for 5 Year");
+  }
+  if(hospital_reports_display_field('hospital_reports_drop_out_rate_'.$username) == TRUE) {
+    array_push($arr, "Casting Drop Outs");
+    array_push($arr, "Bracing Drop Outs");
+    array_push($arr, "Tenotomy Drop Outs");
+  }
+  if(hospital_reports_display_field('hospital_reports_brace_compliance_'.$username) == TRUE) {
+    array_push($arr, "Good Brace Compliance");
+    array_push($arr, "Fair Brace Compliance");
+    array_push($arr, "Poor Brace Compliance");
+  }
+  if(hospital_reports_display_field('hospital_reports_tenotomies_'.$username) == TRUE) {
+    array_push($arr, "Tenotomy Performed");
+    array_push($arr, "Tenotomy Not Performed");
+    array_push($arr, "Tenotomy Average");
+  }
+  if(hospital_reports_display_field('hospital_reports_casts_per_patient_'.$username) == TRUE) {
+    array_push($arr, "Average Casts/Patient");
+  }
+  if(hospital_reports_display_field('hospital_reports_many_casts_'.$username) == TRUE) {
+    array_push($arr, "8+ Casts");
+  }
+  if(hospital_reports_display_field('hospital_reports_first_visit_age_'.$username) == TRUE) {
+    array_push($arr, "0-3mo First Visit Age");
+    array_push($arr, "3-6mo First Visit Age");
+    array_push($arr, "6-12mo First Visit Age");
+    array_push($arr, "1-2yr First Visit Age");
+    array_push($arr, "2-5yr First Visit Age");
+    array_push($arr, "5-10yr First Visit Age");
+    array_push($arr, "10+yr First Visit Age");
+  }
+  if(hospital_reports_display_field('hospital_reports_evaluation_age_'.$username) == TRUE) {
+    array_push($arr, "0-3mo Evaluation Age");
+    array_push($arr, "3-6mo Evaluation Age");
+    array_push($arr, "6-12mo Evaluation Age");
+    array_push($arr, "1-2yr Evaluation Age");
+    array_push($arr, "2-5yr Evaluation Age");
+    array_push($arr, "5-10yr Evaluation Age");
+    array_push($arr, "10+yr Evaluation Age");
+  }
+  if(hospital_reports_display_field('hospital_reports_first_cast_age_'.$username) == TRUE) {
+    array_push($arr, "0-3mo First Cast Age");
+    array_push($arr, "3-6mo First Cast Age");
+    array_push($arr, "6-12mo First Cast Age");
+    array_push($arr, "1-2yr First Cast Age");
+    array_push($arr, "2-5yr First Cast Age");
+    array_push($arr, "5-10yr First Cast Age");
+    array_push($arr, "10+yr First Cast Age");
+  }
+  if(hospital_reports_display_field('hospital_reports_relapse_'.$username) == TRUE) {
+    array_push($arr, "Relapse");
+  }
+  if(hospital_reports_display_field('hospital_reports_total_visits_'.$username) == TRUE) {
+    array_push($arr, "Total # of Visits");
+  }
+  if(hospital_reports_display_field('hospital_reports_visiting_patients_'.$username) == TRUE) {
+    array_push($arr, "Patients Seen During Period");
+  }
+  if(hospital_reports_display_field('hospital_reports_new_patients_'.$username) == TRUE) {
+    array_push($arr, "New Patients During Period");
+  }
+  if(hospital_reports_display_field('hospital_reports_new_visits_'.$username) == TRUE) {
+    array_push($arr, "Visits in Reporting Period");
+  }
+  if(hospital_reports_display_field('hospital_reports_procedures_performed_'.$username) == TRUE) {
+    array_push($arr, "C Procedures Performed During Period");
+    array_push($arr, "T Procedures Performed During Period");
+    array_push($arr, "R Procedures Performed During Period");
+    array_push($arr, "B Procedures Performed During Period");
+    array_push($arr, "S Procedures Performed During Period");
+    array_push($arr, "O Procedures Performed During Period");
+  }
+
+  return $arr;
+}
+
+//Function to write headers to csv file
+function hospital_reports_write_csv_headers() {
+  global $username;
+  $fp = hospital_reports_open_csv();
+
+  $arr = hospital_reports_get_header_array();
+
+  $csv_fields = array();
+  $csv_fields[0]   = array();
+
+  foreach($arr as $value) {
+    $csv_fields[0][] = $value;
+  }
+
+  foreach ($csv_fields as $fields) {
+    fputcsv($fp, $fields);
+  }
+  hospital_reports_close_csv($fp);
+}
+
+//Function to write path if it does not exist
+function hospital_reports_make_path($path) {
+  //Test if path exists
+  if (is_dir($path) || file_exists($path)) {
+    return;
+  }
+  //No, create it
+  mkdir($path, 02770, true);
+ }
+
+//Function to get csv filepath
+function hospital_reports_get_csv_filepath() {
+  //global $user;
+  global $rand_string;
+  $user_path = hospital_reports_get_csv_user_path();
+  $rand_dir = $rand_string . "/";
+  $file_path = $user_path . $user_dir . $rand_dir;
+
+  return $file_path;
+}
+
+//Function to get csv user path
+function hospital_reports_get_csv_user_path() {
+  global $user;
+  $folder_path = "sites/default/files/reporting/hospital/";
+  $user_dir = $user->name . "/";
+
+  $file_path = $folder_path . $user_dir;
+
+  return $file_path;
+}
+
+//Function to remove user's old csv files
+function hospital_reports_remove_old_csv() {
+  $user_path = hospital_reports_get_csv_user_path();
+  if(is_dir($user_path) != FALSE) {
+    hospital_reports_recursive_delete($user_path);
+  }
+}
+
+//Function to delete folder's contents
+function hospital_reports_recursive_delete($dir) {
+  $mydir = opendir($dir);
+  while(false !== ($file = readdir($mydir))) {
+    if($file != "." && $file != "..") {
+      chmod($dir.$file, 0777);
+      if(is_dir($dir.$file)) {
+        chdir('.');
+        hospital_reports_recursive_delete($dir.$file.'/');
+        rmdir($dir.$file) or DIE("couldn't delete $dir$file<br />");
+      }
+      else {
+        unlink($dir.$file) or DIE("couldn't delete $dir$file<br />");
+      }
+    }
+  }
+  closedir($mydir);
+}
+
+//Function to get csv filename
+//called by hospital_reportS_open_csv
+//called by hospital_reportS_create_csv
+function hospital_reports_get_csv_filename() {
+  global $user;
+  global $username;
+  $entered_start_date = variable_get("hospital_reports_start_date_".$username, strftime("%F %T", $timestamp) );
+  $start_date = hospital_reports_entered_time_to_date($entered_start_date);
+
+  $entered_end_date = variable_get("hospital_reports_end_date_".$username, strftime("%F %T", $timestamp) );
+  $end_date = hospital_reports_entered_time_to_date($entered_end_date);
+
+  $file_name = $user->name . "_" . $start_date . "_" . $end_date . '.csv';
+  return $file_name;
+}
+
+//Function to create csv file
+function hospital_reports_create_csv(){
+  hospital_reports_set_csv_rand_path();
+  $file_path = hospital_reports_get_csv_filepath();
+  $file_name = hospital_reports_get_csv_filename();
+
+  //if base directory esists
+    //remove all contents
+
+  //add directory for file
+  hospital_reports_make_path($file_path);
+
+  //add file
+  $file_handle = fopen($file_path . $file_name, 'w') or print_r("Can't open CSV file.");
+  fclose($file_handle);
+}
+
+//Function to open the csv file and return the handle
+function hospital_reports_open_csv() {
+  $file_path = hospital_reports_get_csv_filepath();
+  $file_name = hospital_reports_get_csv_filename();
+  
+  $file = $file_path . $file_name;
+
+  $fp = fopen($file, 'a+');
+  if($fp == FALSE) {
+    print_r("fopen failed");
+    return FALSE;
+  }
+  return $fp;
+}
+
+//Function to close csv file
+function hospital_reports_close_csv($fp) {
+  if (is_null($fp)){
+  } else if (is_bool($fp)) {
+  } else if (get_resource_type($fp) == 'stream') {
+    fclose($fp);
+  }
+}
+
+//Function to set the random csv filepath
+function hospital_reports_set_csv_rand_path() {
+  global $rand_string;
+  $rand_string = hospital_reports_random_string(30,5);
+}
+
+function hospital_reports_random_string($length, $strength) {
+  $vowels = 'aeuy';
+  $consonants = 'bdghjmnpqrstvz';
+  if ($strength >= 1) {
+    $consonants .= 'BDGHJLMNPQRSTVWXZ';
+  }
+  if ($strength >= 2) {
+    $vowels .= "AEUY";
+  }
+  if ($strength >= 4) {
+    $consonants .= '23456789';
+  }
+  if ($strength >= 8) {
+    $consonants .= '@#$%';
+  }
+
+  $password = '';
+  $alt = time() % 2;
+  for ($i = 0; $i < $length; $i++) {
+    if ($alt == 1) {
+      $password .= $consonants[(rand() % strlen($consonants))];
+      $alt = 0;
+    } else {
+      $password .= $vowels[(rand() % strlen($vowels))];
+      $alt = 1;
+    }
+  }
+  return $password;
+}
+function get_indian_hospitals_to_exclude() {
+   //The list WAS missing hospitals from  Gajraraja on.  I went from the hosp_map.txt file to get the original list.  
+   //APparently no all the hositals made it to that list.  Gandhi Medical College, Sanjay, and Aurangabad have no patients on miraclefeet   
+  $indian_hospitals = array('Sasoon',
+  'Sion',
+  'Wadia',
+  'District Hospital Nashik',
+  'Indira Gandhi Memorial Hospital Bhiwandi, Thane',
+  'Civil Hospital Satara',
+  'District Hospital Buldhana',
+  'Orthopedic Hospital, Parbhani',
+  'Civil Hospital Bhandara',
+  'District Hospital Osmanabad',
+  'Aundh Civil Hospital, Pune',
+  'Bharati Vidyapeeth Hospital, Pune',
+  'Smt. Kashibai Navale Medical College & General Hospital',
+  'Wadia Thursday',
+  'Dr. Sampurnanand Medical College',
+  'JLN Medical College',
+  'Kota Government Medical College',
+  'Rabindra Nath Tagore Medical College',
+  'Sardar Patel Medical College',
+  'SMS Medical College',
+  'Gauhati Medical College and Hospital',
+  'Laxmi Bai Medical College',
+  'Gajraraja Medical College',
+  'Gandhi Medical College',
+  'Govt. Medical College, Nagpur',
+  'Govt. Medical College, Kolhapur',
+  'GOVERNMENT MEDICAL COLLEGE, NANDED',
+  'Lata Mangeshkar Hospital, Nagpur',
+  'Government Medical College, Nanded (Wednesday)',
+  'St. George Medical College, Lucknow',
+  'Baba Raghavdas Medical College, Gorakhpu',
+  'Sarojini Medical College, Agra',
+  'Lala Lajpat Rai Medical Colleg, Kanpur',
+  'Government Medical College, Dhule',
+  'Gajraraja Medical College',
+  'Gandhi Medical College',
+  'Sanjay Gandhi Medical College',
+  'Govt. Medical College, Aurangabad',
+  'Arunachal State Hospital',
+  'Civil Hospital Aizawl',
+  'RIMS Imphal' 
+);
+  return $indian_hospitals;
+}
