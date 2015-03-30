@@ -101,11 +101,11 @@
   }
   function pregCompFalse(){
 	  $('#preg_complications_explained1').hide();
-	  $('#preg_complications_explained').hide();
+	  $('#pregnancy_complications_explained').hide();
   }
   function pregCompTrue(){
 	  $('#preg_complications_explained1').show();
-	  $('#preg_complications_explained').show();
+	  $('#pregnancy_complications_explained').show();
   }
   function referralFnTrue(){
 	  $('#referral_hospital_name1').show();
@@ -126,6 +126,8 @@
   function referralOtherTrue(){
 	  $('#referral_other1').show();
 	  $('#referral_other').show();
+	  $('#referral_hospital_name1').hide();
+	  $('#referral_hospital_name').hide();
   }
   function prevTreatmentTrue(){
 	  $('#previous_treatments_num1').show();
