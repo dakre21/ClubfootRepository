@@ -216,6 +216,7 @@
 								  	<td>${o.leftPC}</td>
 								  	<td>${o.rightPC}</td>
 								  	<td><a href="view_visit_info?id=${o.id}">View Details</a></td>
+								  	<td><a href="edit_visit?id=${o.id}">Edit Visit</a></td>
 				              	</tr>
 				            </c:forEach>
 				    	</c:if>
