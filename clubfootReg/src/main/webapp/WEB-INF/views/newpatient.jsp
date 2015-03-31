@@ -81,15 +81,20 @@
   }
   function guardianHandlerTrue(){
 	  $('fieldset.guardian_check').show();
+	  $('second_guardian_phone1').prop('required', true);
   }
   function guardianHandlerFalse(){
 	  $('fieldset.guardian_check').hide();
+	  $('second_guardian_phone1').prop('required', false);
   }
   function guardianEmergencyTrue(){
 	  $('fieldset.emergency_contact').show();
+	  $('other_guardian_phone1').prop('required', true);
+
   }
   function guardianEmergencyFalse(){
 	  $('fieldset.emergency_contact').hide();
+	  $('other_guardian_phone1').prop('required', false);
   }
   function guardianDeformityTrue(){
 	  $('#deformity_history_num1').show();
@@ -114,6 +119,8 @@
 	  $('#referral_doc_name').show();
 	  $('#referral_other1').hide();
 	  $('#referral_other').hide();
+	  $('#referral_other').prop('required',false);
+
   }
   function referralFnFalse(){
 	  $('#referral_hospital_name1').hide();
@@ -122,6 +129,8 @@
 	  $('#referral_doc_name').hide();
 	  $('#referral_other1').hide();
 	  $('#referral_other').hide();
+	  $('#referral_other').prop('required',false);
+
   }
   function referralOtherTrue(){
 	  $('#referral_other1').show();
@@ -130,6 +139,8 @@
 	  $('#referral_hospital_name').hide();
 	  $('#referral_doc_name1').hide();
 	  $('#referral_doc_name').hide();
+	  $('#referral_other').prop('required',true);
+
   }
   function prevTreatmentTrue(){
 	  $('#previous_treatments_num1').show();
@@ -295,7 +306,11 @@
 				<input type="radio" name="second_guardian_relationship" value="unspecified1" path="second_guardian_relationship"> Unspecified <br>
 			
 				<label for="second_guardian_phone1"><em>*</em>Phone number 1: </label>
+<<<<<<< HEAD
 				<input type="telephone" name="second_guardian_phone1" class="form-control" path="second_guardian_phone1" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number" >
+=======
+				<input type="telephone" name="second_guardian_phone1" class="form-control" path="second_guardian_phone1" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
+>>>>>>> haha
 				<label for="second_guardian_phone2">Phone number 2: </label>
 				<input type="telephone" name="second_guardian_phone2" class="form-control" path="second_guardian_phone2" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
 				</div>

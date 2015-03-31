@@ -199,6 +199,7 @@
 					   	<thead>
 					   		<tr>
 					    		<!-- <th>Date of visit (dd/mm/yyyy)</th> -->
+					    		<th>ID</th>
 					    		<th>Treatment (left)</th>
 					    		<th>Treatment (right)</th>
 					    		<th>Pirani score (left)</th>

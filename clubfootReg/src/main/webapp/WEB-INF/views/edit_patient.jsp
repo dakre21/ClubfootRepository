@@ -165,11 +165,12 @@
 	  if ("${patient.second_guardian_last}") {
 	    document.getElementById("secondGuardianYes").checked = true;
 		$('fieldset.guardian_check').show();
+		$('second_guardian_phone1').prop('required', true);
 	  }
       else {
 		document.getElementById("secondGuardianNo").checked = true;
       }
-	  
+      
 	  switch ("${patient.emergency_contact}") {
 	  	case "primary":
 	  		document.getElementById("emergencyPrimary").checked = true;
@@ -180,6 +181,8 @@
 	  	case "other":
 	  		document.getElementById("emergencyOther").checked = true;
 	  		$('fieldset.emergency_contact').show();
+	  		$('other_guardian_phone1').prop('required', true);
+
 	  		break;
 	  	default:
 	  		document.getElementById("emergencyUnspecified").checked = true;
@@ -198,7 +201,8 @@
 	    document.getElementById("defUn").checked = true;
 	  }
 	  
-	  if ("${patient.pregnancy_complications_explained}") {
+
+	  if ("${patient.pregnancy_complications_explained}"){
 		document.getElementById("pregCompYes").checked = true;
 		$('#preg_complications_explained1').show();
 	    $('#pregnancy_complications_explained').show();
@@ -258,6 +262,8 @@
 	  		document.getElementById("refOther").checked = true;
 	  		$('#referral_other1').hide();
 	  		$('#referral_other').hide();
+	  		$('#referral_other').prop('required',true);
+
 			break;
 		default:
 			document.getElementById("refUn").checked = true;
@@ -287,18 +293,18 @@
 	  else
 		document.getElementById("deformityUn").checked = true;
 	  
-	  if ("${patient.previous_treatments_num}" > 0) {
+	  if ("${patient.previous_treatments_num}" > 0){
 	    document.getElementById("prevYes").checked = true;
 		$('div.prev_treat').hide();
 	  }
-	  else if ("${patient.previous_treatments_num}" == 0) {
+	  else if ("${patient.previous_treatments_num}" == 0){
 		document.getElementById("prevNo").checked = true;
 	  }
-	  else {
+	  else{
 		document.getElementById("prevUn").checked = true;
 	  }
 	  
-	  if ("${patient.diagnosis_prenatally_week}") {
+	  if ("${patient.diagnosis_prenatally_week}"){
 	    document.getElementById("diagYes").checked = true;
 		 $('#diagnosis_prenatally_week1').show();
 	     $('#diagnosis_prenatally_week').show();
@@ -319,15 +325,20 @@
   }
   function guardianHandlerTrue(){
 	  $('fieldset.guardian_check').show();
+	  $('second_guardian_phone1').prop('required', true);
   }
   function guardianHandlerFalse(){
 	  $('fieldset.guardian_check').hide();
+	  $('second_guardian_phone1').prop('required', false);
   }
   function guardianEmergencyTrue(){
 	  $('fieldset.emergency_contact').show();
+	  $('other_guardian_phone1').prop('required', true);
+
   }
   function guardianEmergencyFalse(){
 	  $('fieldset.emergency_contact').hide();
+	  $('other_guardian_phone1').prop('required', false);
   }
   function guardianDeformityTrue(){
 	  $('#deformity_history_num1').show();
@@ -352,6 +363,8 @@
 	  $('#referral_doc_name').show();
 	  $('#referral_other1').hide();
 	  $('#referral_other').hide();
+	  $('#referral_other').prop('required',false);
+
   }
   function referralFnFalse(){
 	  $('#referral_hospital_name1').hide();
@@ -360,10 +373,14 @@
 	  $('#referral_doc_name').hide();
 	  $('#referral_other1').hide();
 	  $('#referral_other').hide();
+	  $('#referral_other').prop('required',false);
+
+
   }
   function referralOtherTrue(){
 	  $('#referral_other1').show();
 	  $('#referral_other').show();
+	  $('#referral_other').prop('required',true);
 	  $('#referral_hospital_name1').hide();
 	  $('#referral_hospital_name').hide();
 	  $('#referral_doc_name1').hide();
@@ -654,6 +671,7 @@
 			<input type="text" name="referral_hospital_name" path="referral_hospital_name" id="referral_hospital_name" value = "${patient.referral_hospital_name}">
 			<label for="referral_other" id="referral_other1"><em>*</em>Please specify: </label>
 			<input type="text" name="referral_other" path="referral_other" id="referral_other" value = "${patient.referral_other}" >
+
 			</div>
 			</div>
 		</fieldset>
