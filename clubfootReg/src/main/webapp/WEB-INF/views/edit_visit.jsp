@@ -102,8 +102,6 @@
 	  $('#results1').hide();
 	  $('#treatmentComplications1').hide();
 
-  }
-
   if ("${visit.isLastVisit}" == "Yes")
 	document.getElementById("lvYes").checked = true;
   else if("${visit.isLastVisit}" == "No")
@@ -176,6 +174,7 @@
   else if("${visit.leftCLB}" == 0)
 	document.getElementById("leftCLB3").checked = true;
 
+  /*
   if ("${visit.leftTreatment}" == "None")
 	document.getElementById("LT1").checked = true;
   else if("${visit.leftTreatment}" == "C - Manipulation & Casting")
@@ -211,6 +210,7 @@
 	document.getElementById("SL9").checked = true;
   else if("${visit.surgeryLeft}" == "Other")
 	document.getElementById("SL10").checked = true;
+*/
 
   if ("${visit.hindfootRightVarus}" == 1)
 	document.getElementById("hindfootRightVarusVarus").checked = true;
@@ -222,11 +222,11 @@
 	document.getElementById("hindfootRightVarusNA").checked = true;
 
   if ("${visit.hindfootRightCavus}" == 1)
-	document.getElementById("hindfootRightCanvusP").checked = true;
+	document.getElementById("hindfootRightCavusP").checked = true;
   else if("${visit.hindfootRightCavus}" == 2)
-	document.getElementById("hindfootRightCanvusC").checked = true;
+	document.getElementById("hindfootRightCavusC").checked = true;
   else if("${visit.hindfootRightCavus}" == 0)
-	document.getElementById("hindfootRightCanvusNA").checked = true;
+	document.getElementById("hindfootRightCavusNA").checked = true;
 
   if ("${visit.rightPC}" == 1)
 	document.getElementById("rightPC1").checked = true;
@@ -269,7 +269,7 @@
 	document.getElementById("rightCLB2").checked = true;
   else if("${visit.rightCLB}" == 0)
 	document.getElementById("rightCLB3").checked = true;
-
+/*
   if ("${visit.rightTreatment}" == "None")
 	document.getElementById("RT1").checked = true;
   else if("${visit.rightTreatment}" == "C - Manipulation & Casting")
@@ -305,7 +305,7 @@
 	document.getElementById("SR9").checked = true;
   else if("${visit.surgeryRight}" == "Other")
 	document.getElementById("SR10").checked = true;
-
+*/
   if ("${visit.complications}" == "No")
 	document.getElementById("compNo").checked = true;
   else if("${visit.complications}" == "Yes")
@@ -313,7 +313,12 @@
   else if("${visit.complications}" == "Unspecified")
 	document.getElementById("compUn").checked = true;
 
-  
+  $("#hospitalId").val("${visit.hospitalId}");
+  $("#evaluatorId").val("${visit.evaluatorId}");
+
+  document.getElementById("comments").value = "${visit.comments}";
+
+  }  
 
   function braceLeftTrue(){
 	  $('#castLeftNum').hide();
@@ -947,10 +952,10 @@
 				</div>
 			</fieldset>
 		</div>
-	
+		
 		<div class = "form-group">
 			<label for="comments">Comments: </label>
-			<textarea name = "comments" class = "form-control" path = "comments" value = "${visit.comments}"></textarea><br>
+			<textarea id="comments" name = "comments" class = "form-control" path = "comments" value = "${visit.comments}"></textarea><br>
 			<!-- <input type="text" name="comments" class="form-control" path="comments"> <br>-->
 		</div>
 	

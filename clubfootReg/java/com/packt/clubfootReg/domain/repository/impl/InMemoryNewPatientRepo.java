@@ -22,11 +22,14 @@ import com.packt.clubfootReg.domain.repository.newPatientRepo;
 
 import javax.sql.DataSource;
 
+import java.io.IOException;
 import java.sql.Connection; 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 //import java.sql.Date;
+
+
 
 
 
@@ -163,6 +166,9 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			
 			address_id = getMaxAddressID()+1;
 			patient_id = getMaxPersonID()+1;
+			
+			
+			//this.addPhoto(newpatient.getFileName().getBytes());
 			
 			// ADDRESS
 			ps = conn.prepareStatement(sql_address); // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database and establishment of the sql query
@@ -385,7 +391,11 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		} catch (SQLException e) { // Catches SQL exception errors
 			throw new RuntimeException(e);
  
-		} finally {
+		} //catch (IOException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		//} 
+		finally {
 			if (conn != null) { // Closes SQL connection 
 				try {
 					conn.close();
@@ -1146,6 +1156,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 	
 	@Override
 	public void addPhoto(byte[] bytes) {
+		System.out.println("MAKES IT HERE!!!!!!!!");
 		Connection connection = null;	// Instantiation of the database connection
 		try{
 			connection = dataSource.getConnection();	// Connection of the dataSource with the MySql sever
