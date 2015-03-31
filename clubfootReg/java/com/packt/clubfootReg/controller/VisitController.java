@@ -90,7 +90,7 @@ public class VisitController {
 	public ModelAndView editVisitForm(HttpServletRequest request) {
 	    int visit_id = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call and finds "id"
 	    Visit visit = visitRepo.getVisit(visit_id);	// Method call oneditrepo to get the edit id
-	    ModelAndView model = new ModelAndView("edit_patient");	// Instantiation of ModelAndView and passes "edit_visit" view to it
+	    ModelAndView model = new ModelAndView("edit_visit");	// Instantiation of ModelAndView and passes "edit_visit" view to it
 	    model.addObject("visit", visit);	// Adds the object visit to the model
 	    return model;	// Returns the model
 	}

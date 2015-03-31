@@ -516,8 +516,8 @@
 		<legend>Feet pre-treatments photo(s)</legend>
 			<div class="col-md-12">
 			<div class="form-group">
-			<label for="file">Upload photo of patient here: </label>
-			<input type="file" class="btn btn-lg btn-default" id="file" name="file" path="file"><br>
+			<label for="fileName">Upload photo of patient here: </label>
+			<input type="file" class="btn btn-lg btn-default" id="fileName" name="fileName" path="fileName"><br>
 			<button type="submit" class="btn btn-lg btn-default" for="add_photo" id="add_photo" value="Upload">Add another photo</button>
 			</div>
 			</div>
