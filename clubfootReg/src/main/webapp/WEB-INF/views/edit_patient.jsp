@@ -27,31 +27,26 @@
 	  	font-family: arial;
 	  	font-style: normal;
 	  }
-
 	  h1 {
 	  	font-size: x-large;
 	  	font-style: bold;
 	  	line-height: 1.5;
 	  	text-decoration: underline;
 	  }
-
 	  fieldset {
 	  	margin-bottom: 15px;
 	  	padding: 10px;
   	  	text-align: left;
   	  	border: 2px groove;
 	  }
-
 	  legend {
 	  	padding: 0px 3px;
 	  	font-weight: bold;
 	  	font-variant: small-caps;
 	  }
-
 	  em{
 	  	color: red;
 	  }
-
 	  input[type=submit] {
   		width: 150px;
   		padding: 10px;
@@ -167,17 +162,10 @@
 		$('fieldset.guardian_check').show();
 		$('second_guardian_phone1').prop('required', true);
 	  }
-<<<<<<< HEAD
       else {
 		document.getElementById("secondGuardianNo").checked = true;
       }
-	  
-=======
-
-      else{
-		document.getElementById("secondGuardianNo").checked = true;
-	  }
->>>>>>> haha
+      
 	  switch ("${patient.emergency_contact}") {
 	  	case "primary":
 	  		document.getElementById("emergencyPrimary").checked = true;
@@ -189,13 +177,11 @@
 	  		document.getElementById("emergencyOther").checked = true;
 	  		$('fieldset.emergency_contact').show();
 	  		$('other_guardian_phone1').prop('required', true);
-
 	  		break;
 	  	default:
 	  		document.getElementById("emergencyUnspecified").checked = true;
 	  		break;
       }
-
 	  if ("${patient.deformity_history_num}" > 0) {
 	    document.getElementById("defYes").checked = true;
 	    $('#deformity_history_num1').show();
@@ -208,20 +194,12 @@
 	    document.getElementById("defUn").checked = true;
 	  }
 	  
-<<<<<<< HEAD
-	  if ("${patient.pregnancy_complications_explained}") {
-=======
 	  if ("${patient.pregnancy_complications_explained}"){
->>>>>>> haha
 		document.getElementById("pregCompYes").checked = true;
 		$('#preg_complications_explained1').show();
 	    $('#pregnancy_complications_explained').show();
 	  }
-<<<<<<< HEAD
   	  else {
-=======
-  	  else
->>>>>>> haha
     	document.getElementById("pregCompNo").checked = true;
   	  }
 	  
@@ -231,7 +209,6 @@
 	   	document.getElementById("pregAlcNo").checked = true;
 	  else
 		document.getElementById("pregAlcUn").checked = true;
-
 	  if ("${patient.pregnancy_smoke}" == "Yes")
 		document.getElementById("pregSmokeYes").checked = true;
 	  else if ("${patient.pregnancy_smoke}" == "No")
@@ -277,7 +254,6 @@
 	  		$('#referral_other1').hide();
 	  		$('#referral_other').hide();
 	  		$('#referral_other').prop('required',true);
-
 			break;
 		default:
 			document.getElementById("refUn").checked = true;
@@ -307,20 +283,6 @@
 	  else
 		document.getElementById("deformityUn").checked = true;
 	  
-<<<<<<< HEAD
-	  if ("${patient.previous_treatments_num}" > 0) {
-	    document.getElementById("prevYes").checked = true;
-		$('div.prev_treat').hide();
-	  }
-	  else if ("${patient.previous_treatments_num}" == 0) {
-		document.getElementById("prevNo").checked = true;
-	  }
-	  else {
-		document.getElementById("prevUn").checked = true;
-	  }
-	  
-	  if ("${patient.diagnosis_prenatally_week}") {
-=======
 	  if ("${patient.previous_treatments_num}" > 0){
 	    document.getElementById("prevYes").checked = true;
 		$('div.prev_treat').hide();
@@ -333,7 +295,6 @@
 	  }
 	  
 	  if ("${patient.diagnosis_prenatally_week}"){
->>>>>>> haha
 	    document.getElementById("diagYes").checked = true;
 		 $('#diagnosis_prenatally_week1').show();
 	     $('#diagnosis_prenatally_week').show();
@@ -341,12 +302,7 @@
 	     $('#prenatallyDiagNO').show();
 	     $('#prenatallyDiagUn').show();
 	  }
-<<<<<<< HEAD
 	  else {
-=======
-
-	  else{
->>>>>>> haha
 		document.getElementById("diagNo").checked = true;
 	  }
 	  
@@ -368,7 +324,6 @@
   function guardianEmergencyTrue(){
 	  $('fieldset.emergency_contact').show();
 	  $('other_guardian_phone1').prop('required', true);
-
   }
   function guardianEmergencyFalse(){
 	  $('fieldset.emergency_contact').hide();
@@ -398,7 +353,6 @@
 	  $('#referral_other1').hide();
 	  $('#referral_other').hide();
 	  $('#referral_other').prop('required',false);
-
   }
   function referralFnFalse(){
 	  $('#referral_hospital_name1').hide();
@@ -408,8 +362,6 @@
 	  $('#referral_other1').hide();
 	  $('#referral_other').hide();
 	  $('#referral_other').prop('required',false);
-
-
   }
   function referralOtherTrue(){
 	  $('#referral_other1').show();
@@ -424,13 +376,11 @@
 	  $('#previous_treatments_num1').show();
 	  $('#previous_treatments_num').show();
 	  $('div.prev_treat').show();
-
   }
   function prevTreatmentFalse(){
 	  $('#previous_treatments_num1').hide();
 	  $('#previous_treatments_num').hide();
 	  $('div.prev_treat').hide();
-
   }
   function diagPrenatTrue(){
 	  $('#diagnosis_prenatally_week1').show();
@@ -704,11 +654,8 @@
 			<label for="referral_hospital_name" id="referral_hospital_name1">Hospital/clinic name: </label>
 			<input type="text" name="referral_hospital_name" path="referral_hospital_name" id="referral_hospital_name" value = "${patient.referral_hospital_name}">
 			<label for="referral_other" id="referral_other1"><em>*</em>Please specify: </label>
-<<<<<<< HEAD
 			<input type="text" name="referral_other" path="referral_other" id="referral_other" value = "${patient.referral_other}" >
-=======
-			<input type="text" name="referral_other" path="referral_other" id="referral_other" value = "${patient.referral_other}">
->>>>>>> haha
+
 			</div>
 			</div>
 		</fieldset>
