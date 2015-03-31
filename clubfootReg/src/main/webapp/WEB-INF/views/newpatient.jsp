@@ -165,12 +165,12 @@
 		<div class="form-group">
 			<p><i>Please complete the form. Mandatory fields are marked with a </i><em>*</em></p>
 			<label for="guardianConsent"><em>*</em>Does the parent or guardian consent to being included: </label>
-			<input type="radio" name="guardianConsent" value="1" path="guardianConsent"> Yes
-			<input type="radio" name="guardianConsent" value="0" path="guardianConsent"> No <br>
+			<input type="radio" name="guardianConsent" value="1" path="guardianConsent" required>  Yes
+			<input type="radio" name="guardianConsent" value="0" path="guardianConsent" required> No <br>
 
 			<label for="photoConsent"><em>*</em>Does the parent or guardian consent to photographs of the patient being used for CURE evaluation and marketing purposes: </label>
-			<input type="radio" name="photoConsent" value="1" path="photoConsent"> Yes
-			<input type="radio" name="photoConsent" value="0" path="photoConsent"> No <br>
+			<input type="radio" name="photoConsent" value="1" path="photoConsent" required> Yes
+			<input type="radio" name="photoConsent" value="0" path="photoConsent" required> No <br>
 			
 			<label for="hospital">Hospital</label>
 			<form:select class="form-control" path="hospitalList" id="hospital" name="hospital">
@@ -186,16 +186,16 @@
 			<div class="col-md-12">
 			<div class="form-group">
 			<label for="patient_lastName"><em>*</em>Last name/Surname: </label>
-			<input type="name" name="patient_lastName" class="form-control" path="patient_lastName" >
+			<input type="name" name="patient_lastName" class="form-control" path="patient_lastName" required >
 
 			<label for="patient_firstName"><em>  *</em>First name: </label>
-			<input type="name" name="patient_firstName" class="form-control" path="patient_firstName" >
+			<input type="name" name="patient_firstName" class="form-control" path="patient_firstName" required >
 
 			<label for="patient_midName">   Middle name: </label>
 			<input type="name" name="patient_midName" class="form-control" path="patient_midName"> <br>
 
 			<label for="sex"><em>*</em>Sex: </label>
-			<input type="radio" name="sex" value="male" path="sex" > Male
+			<input type="radio" name="sex" value="male" path="sex" required> Male
 			<input type="radio" name="sex" value="female" path="sex" > Female <br>
 
 			<label for="race">Race: </label>
@@ -208,7 +208,7 @@
 			<input type="radio" name="race" value="unspecified" path="race"> Unspecified <br>
 
 			<label for="dob"><em>*</em>Date of birth: </label>
-			<input type="date" name="dob" id="dob" class="form-control" path="dob" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
+			<input type="date" name="dob" id="dob" class="form-control" path="dob" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy" required> 
 			<label for="tribe">Tribe: </label>
 			<input type="text" name="tribe" class="form-control" path="tribe">
 			</div>
@@ -264,7 +264,7 @@
 			<input type="radio" name="guardian_relationship" value="unspecified1" path="guardian_relationship"> Unspecified <br>
 
 			<label for="guardian_phone1"><em>*</em>Phone number 1: </label>
-			<input type="telephone" name="guardian_phone1" class="form-control"  path="guardian_phone1" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
+			<input type="telephone" name="guardian_phone1" class="form-control"  path="guardian_phone1" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number" required>
 			<label for="guardian_phone2">Phone number 2: </label>
 			<input type="telephone" name="guardian_phone2" class="form-control"  path="guardian_phone2" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number"> <br>
 			<label for="guardian_check">Secondary parent/guardian: </label>
@@ -295,7 +295,7 @@
 				<input type="radio" name="second_guardian_relationship" value="unspecified1" path="second_guardian_relationship"> Unspecified <br>
 			
 				<label for="second_guardian_phone1"><em>*</em>Phone number 1: </label>
-				<input type="telephone" name="second_guardian_phone1" class="form-control" path="second_guardian_phone1" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
+				<input type="telephone" name="second_guardian_phone1" class="form-control" path="second_guardian_phone1" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number" required>
 				<label for="second_guardian_phone2">Phone number 2: </label>
 				<input type="telephone" name="second_guardian_phone2" class="form-control" path="second_guardian_phone2" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
 				</div>
@@ -332,7 +332,7 @@
 				<input type="radio" name="other_guardian_relationship" value="unspecified1" path="other_guardian_relationship"> Unspecified <br>
 			
 				<label for="other_guardian_phone1"><em>*</em>Phone number 1: </label>
-				<input type="telephone" name="other_guardian_phone1" class="form-control" path="other_guardian_phone1" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
+				<input type="telephone" name="other_guardian_phone1" class="form-control" path="other_guardian_phone1" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number" required>
 				<label for="other_guardian_phone2">Phone number 2: </label>
 				<input type="telephone" name="other_guardian_phone2" class="form-control" path="other_guardian_phone2" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
 				</div>
@@ -403,7 +403,7 @@
 			<label for="referral_hospital_name" id="referral_hospital_name1">Hospital/clinic name: </label>
 			<input type="text" name="referral_hospital_name" path="referral_hospital_name" id="referral_hospital_name">
 			<label for="referral_other" id="referral_other1"><em>*</em>Please specify: </label>
-			<input type="text" name="referral_other" path="referral_other" id="referral_other">
+			<input type="text" name="referral_other" path="referral_other" id="referral_other" required>
 			</div>
 			</div>
 		</fieldset>
@@ -424,18 +424,18 @@
 			<br>
 			
 			<label for="evaluation_date"><em>*</em>Evaluation date (dd/mm/yyyy): </label>
-			<input type="date" name="evaluation_date" class="form-control" path="evaluation_date" > <br>
+			<input type="date" name="evaluation_date" class="form-control" path="evaluation_date" required> <br>
 			
 			<label for="feet"><em>*</em>Feet affected: </label>
-			<input type="radio" name="feet" value="Left" path="feet" > Left
-			<input type="radio" name="feet" value="Right" path="feet" > Right
-			<input type="radio" name="feet" value="Both" path="feet" > Both <br>
+			<input type="radio" name="feet" value="Left" path="feet" required> Left
+			<input type="radio" name="feet" value="Right" path="feet" required> Right
+			<input type="radio" name="feet" value="Both" path="feet" required> Both <br>
 			
 			<label for="diagnosis"><em>*</em>Diagnosis: </label>
-			<input type="radio" name="diagnosis" value="Idiopathic Clubfoot" path="diagnosis" > Idiopathic Clubfoot
-			<input type="radio" name="diagnosis" value="Syndromic Clubfoot" path="diagnosis" > Syndromic Clubfoot
-			<input type="radio" name="diagnosis" value="Neuropathic Clubfoot" path="diagnosis" > Neuropathic Clubfoot
-			<input type="radio" name="diagnosis" value="Other" path="diagnosis" > Other <br>
+			<input type="radio" name="diagnosis" value="Idiopathic Clubfoot" path="diagnosis" required> Idiopathic Clubfoot
+			<input type="radio" name="diagnosis" value="Syndromic Clubfoot" path="diagnosis" required> Syndromic Clubfoot
+			<input type="radio" name="diagnosis" value="Neuropathic Clubfoot" path="diagnosis" required> Neuropathic Clubfoot
+			<input type="radio" name="diagnosis" value="Other" path="diagnosis" required> Other <br>
 			
 			<label for="deformity_at_birth">Deformity present at birth: </label>
 			<input type="radio" name="deformity_at_birth" value="Yes" path="deformity_at_birth"> Yes
