@@ -1101,11 +1101,11 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "select a.id, b.treatment, b.pc, b.laterality " +
-						 "from visit a " +
-						 "inner join foot b on a.id = b.visit_id " +
-						 "where a.patient_id = ? " +
-						 "order by a.id, b.laterality";
+			String sql = "Select a.id, max(b.id), b.treatment, b.pc, b.laterality, c.treatment, c.pc, c.laterality " +
+					     "from visit a " +
+					     "join foot b on a.id = b.visit_id " +
+					     "join foot c on a.id = c.visit_id " +
+					     "where a.patient_id = 3 and b.id <> c.id";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, patient_id);
 			ResultSet rs = ps.executeQuery();
