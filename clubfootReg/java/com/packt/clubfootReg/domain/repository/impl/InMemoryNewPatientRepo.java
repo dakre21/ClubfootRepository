@@ -29,15 +29,6 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 //import java.sql.Date;
 
-
-
-
-
-
-
-
-
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -1198,10 +1189,10 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 	}
 
 	@Override
-	public List<ReportsPatients> getAllPatientsReports() {
+	public List<newPatient> getAllPatientsReports() {
 		Connection conn = null; // Resets the connection to the database
-		ReportsPatients patient = null; // Resets the model
-		List<ReportsPatients> rp = null; // Resets the list
+		newPatient patient = null; // Resets the model
+		List<newPatient> rp = null; // Resets the list
 		
 		/**
 		 * Reseting the database connection to retrieve information that's stored in the mysql database
@@ -1212,8 +1203,12 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-		   String sql = " ";
-		   
+			String sql = "Select a.id, a.consent_inclusion, a.consent_photos, a.hospital_id, b.first_name, b.last_name, " +
+		            		"b.middle_name, a.dob, a.evaluator_id, a.evaluation_date, a.feet_affected, a.diagnosis, " +
+		            		"a.sex, a.race " +
+		            	 "from patient a " +
+		            	 "inner join abstract_person b on a.id = b.id " +
+		            	 "order by a.id";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
@@ -1223,10 +1218,11 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			}
 			
 			while (rs.next()) {
-				patient = new ReportsPatients(
-					rs.getInt("id")
-				);
-			
+				patient = new newPatient();
+				patient.setId(rs.getInt("id"));
+				patient.setPatient_firstName(rs.getString("first_name"));
+				patient.setPatient_lastName(rs.getString("last_name"));
+				patient.setPatient_midName(rs.getString("middle_name"));
 				rp.add(patient);
 			}
 			
