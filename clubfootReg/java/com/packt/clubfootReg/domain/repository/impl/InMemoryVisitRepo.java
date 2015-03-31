@@ -304,6 +304,11 @@ public class InMemoryVisitRepo implements VisitRepo{
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
+			PreparedStatement ps2 = null;
+			ResultSet rs2 = null;
+			PreparedStatement ps3 = null;
+			ResultSet rs3 = null;
+			
 			if (rs.last()) {
 			  visits = new ArrayList<>(rs.getRow());
 			  rs.beforeFirst(); 
@@ -311,12 +316,38 @@ public class InMemoryVisitRepo implements VisitRepo{
 			
 			while (rs.next()) {
 				visit = new Visit(
-					rs.getInt("id")
+					rs.getInt("patient_id")
 				);
+				visit.setId(rs.getInt("id"));
+				visit.setPatientId(rs.getInt("patient_id"));
+				visit.setHospitalId(rs.getInt("hospital_id"));
+				
+				String sql2 = "Select * from foot where visit_id = ? and laterality = 'Left'";
+				ps2 = conn.prepareStatement(sql2);
+				ps2.setInt(1, rs.getInt("id"));
+				rs2 = ps2.executeQuery();
+				
+				if (rs2.next()) {
+					visit.setLeftTreatment(rs2.getString("treatment"));
+				}
+				
+				String sql3 = "Select * from foot where visit_id = ? and laterality = 'Right'";
+				ps3 = conn.prepareStatement(sql3);
+				ps3.setInt(1, rs.getInt("id"));
+				rs3 = ps3.executeQuery();
+				
+				if (rs3.next()) {
+					visit.setRightTreatment(rs3.getString("treatment"));
+				}
+				
 				visits.add(visit);
 			}
 			rs.close();
 			ps.close();
+			rs2.close();
+			ps2.close();
+			rs3.close();
+			ps3.close();
 			return visits;
 		} catch (SQLException e) { // Catches SQL exception errors
 			throw new RuntimeException(e);
@@ -597,7 +628,7 @@ public class InMemoryVisitRepo implements VisitRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-		   String sql = " ";
+		    String sql = "Select *";
 		   
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
