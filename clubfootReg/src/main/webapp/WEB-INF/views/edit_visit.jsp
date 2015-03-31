@@ -179,7 +179,7 @@
   else if("${visit.leftCLB}" == 0)
 	document.getElementById("leftCLB3").checked = true;
 
-  /*
+ 
   if ("${visit.leftTreatment}" == "None")
 	document.getElementById("LT1").checked = true;
   else if("${visit.leftTreatment}" == "C - Manipulation & Casting")
@@ -194,7 +194,7 @@
 	document.getElementById("LT6").checked = true;
   else if("${visit.leftTreatment}" == "O - Other")
 	document.getElementById("LT7").checked = true;
-
+/*
   if ("${visit.surgeryLeft}" == "Posterior Release")
 	document.getElementById("SL1").checked = true;
   else if("${visit.surgeryLeft}" == "Medial Release")
@@ -274,7 +274,7 @@
 	document.getElementById("rightCLB2").checked = true;
   else if("${visit.rightCLB}" == 0)
 	document.getElementById("rightCLB3").checked = true;
-/*
+
   if ("${visit.rightTreatment}" == "None")
 	document.getElementById("RT1").checked = true;
   else if("${visit.rightTreatment}" == "C - Manipulation & Casting")
@@ -289,7 +289,7 @@
 	document.getElementById("RT6").checked = true;
   else if("${visit.rightTreatment}" == "O - Other")
 	document.getElementById("RT7").checked = true;
-
+/*
   if ("${visit.surgeryRight}" == "Posterior Release")
 	document.getElementById("SR1").checked = true;
   else if("${visit.surgeryRight}" == "Medial Release")
