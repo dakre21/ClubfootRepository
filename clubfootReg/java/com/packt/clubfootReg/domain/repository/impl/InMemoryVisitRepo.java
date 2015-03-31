@@ -477,24 +477,24 @@ public class InMemoryVisitRepo implements VisitRepo{
 				visit.setPatientId(rs.getInt("patient_id"));
 				visit.setHospitalId(rs.getInt("hospital_id"));
 				//visit.setDateOfVisit(rs.getString("dateOfVisit"));
-				visit.setIsLastVisit(rs.getString("isLastVisit"));
-				visit.setNextVisitDate(rs.getString("nextVisitDate"));
+				visit.setIsLastVisit(rs.getString("is_last_visit"));
+				visit.setNextVisitDate(rs.getString("next_visit_date"));
 				visit.setRelapse(rs.getString("relapse"));
 				visit.setComplications(rs.getString("complications"));
-				visit.setComments(rs.getString("comments"));
-				visit.setDescription(rs.getString("description"));
-				visit.setTreatmentComplications(rs.getString("treatmentComplications"));
-				visit.setResults(rs.getString("results"));
+				visit.setComments(rs.getString("general_comments"));
+				visit.setDescription(rs.getString("complications_description"));
+				//visit.setTreatmentComplications(rs.getString("treatmentComplications"));
+				visit.setResults(rs.getString("complications_results"));
 				
-				visit.setCasterLeft(rs.getInt("casterLeft"));
-				visit.setCastLeftNum(rs.getInt("castLeftNum"));
-				visit.setCasterRight(rs.getInt("casterRight"));
-				visit.setCastRightNum(rs.getInt("castRightNum"));
+				//visit.setCasterLeft(rs.getInt("casterLeft"));
+				visit.setCastLeftNum(rs.getInt("primary_caster_left_id"));
+				//visit.setCasterRight(rs.getInt("casterRight"));
+				visit.setCastRightNum(rs.getInt("primary_caster_right_id"));
 				
 			}
 			
-			rs.close();
 			ps.close();
+			rs.close();
 			
 			String sql1 = "select * from foot where visit_id = ? and laterality = 'left'";	
 			PreparedStatement ps1 = conn.prepareStatement(sql1);
@@ -502,36 +502,35 @@ public class InMemoryVisitRepo implements VisitRepo{
 			ResultSet rs1 = ps1.executeQuery();
 			
 			if(rs1.next()){
-				visit.setHindfootLeftVarus(rs.getInt("hindfootLeftVarus"));
-				visit.setHindfootLeftCavus(rs.getInt("hindfootLeftCavus"));
-				visit.setHindfootLeftAbductus(rs.getInt("hindfootLeftAbductus"));
-				visit.setHindfootLeftEquinus(rs.getInt("hindfootLeftEquinus"));
-				visit.setLeftPC(rs.getInt("leftPC"));
-				visit.setLeftEH(rs.getInt("leftEH"));
-				visit.setLeftRE(rs.getInt("leftRE"));
-				visit.setLeftMC(rs.getInt("leftMC"));
-				visit.setLeftTHC(rs.getInt("leftTHC"));
-				visit.setLeftCLB(rs.getInt("leftCLB"));
-				visit.setLeftTreatment(rs.getString("leftTreatment"));
-				visit.setAbductionLeft(rs.getInt("abductionLeft"));
-				visit.setDorsiflexionLeft(rs.getInt("dorsiflexionLeft"));
-				visit.setBraceLeft(rs.getString("braceLeft"));
-				//visit.setProblemsLeft(rs.getString("problemsLeft"));
-				//visit.setActionsLeft(rs.getString("actionsLeft"));
-				visit.setSurgeryLeft(rs.getString("surgeryLeft"));
-				visit.setMidfootLeftTalar(rs.getString("midfootLeftTalar"));
-				visit.setMidfootLeftMedial(rs.getString("midfootLeftMedial"));
-				visit.setMidfootLeftEquinus(rs.getString("midfootLeftEquinus"));
-				visit.setMidfootLeftHeel(rs.getString("midfootLeftHeel"));
-				visit.setMidfootLeftLateral(rs.getString("midfootLeftLateral"));
-				visit.setOtherLeft(rs.getString("otherLeft"));
-				visit.setMidfootLeftPosterior(rs.getString("midfootLeftPosterior"));
-				visit.setLeftSurgeryComments(rs.getString("leftSurgeryComments"));
-				
+				visit.setHindfootLeftVarus(rs1.getInt("varus"));
+				visit.setHindfootLeftCavus(rs1.getInt("cavus"));
+				visit.setHindfootLeftAbductus(rs1.getInt("abductus"));
+				visit.setHindfootLeftEquinus(rs1.getInt("equinus"));
+				visit.setLeftPC(rs1.getInt("pc"));
+				visit.setLeftEH(rs1.getInt("eh"));
+				visit.setLeftRE(rs1.getInt("re"));
+				visit.setLeftMC(rs1.getInt("mc"));
+				visit.setLeftTHC(rs1.getInt("thc"));
+				visit.setLeftCLB(rs1.getInt("clb"));
+				visit.setLeftTreatment(rs1.getString("treatment"));
+				visit.setAbductionLeft(rs1.getInt("abduction"));
+				visit.setDorsiflexionLeft(rs1.getInt("dorsiflexion"));
+				visit.setBraceLeft(rs1.getString("brace_compliance"));
+				//visit.setProblemsLeft(rs1.getString("problemsLeft"));
+				//visit.setActionsLeft(rs1.getString("actionsLeft"));
+				visit.setSurgeryLeft(rs1.getString("surgery_other"));
+				//visit.setMidfootLeftTalar(rs1.getString("talar"));
+				//visit.setMidfootLeftMedial(rs1.getString("medial"));
+				visit.setMidfootLeftEquinus(rs1.getString("equinus"));
+				//visit.setMidfootLeftHeel(rs1.getString("heel"));
+				//visit.setMidfootLeftLateral(rs1.getString("lateral"));
+				visit.setOtherLeft(rs1.getString("other_details"));
+				//visit.setMidfootLeftPosterior(rs1.getString("posterior"));
+				visit.setLeftSurgeryComments(rs1.getString("surgery_comment"));
 			}
 			
-			rs1.close();
 			ps1.close();
+			rs1.close();
 			
 			String sql2 = "select * from foot where visit_id = ? and laterality = 'right'";	
 			PreparedStatement ps2 = conn.prepareStatement(sql2);
@@ -539,35 +538,35 @@ public class InMemoryVisitRepo implements VisitRepo{
 			ResultSet rs2 = ps2.executeQuery();
 			
 			if(rs2.next()){
-				visit.setHindfootRightVarus(rs.getInt("hindfootRightVarus"));
-				visit.setHindfootRightCavus(rs.getInt("hindfootRightCavus"));
-				visit.setHindfootRightAbductus(rs.getInt("hindfootRightAbductus"));
-				visit.setHindfootRightEquinus(rs.getInt("hindfootRightEquinus"));
-				visit.setRightPC(rs.getInt("rightPC"));
-				visit.setRightEH(rs.getInt("rightEH"));
-				visit.setRightRE(rs.getInt("rightRE"));
-				visit.setRightMC(rs.getInt("rightMC"));
-				visit.setRightTHC(rs.getInt("rightTHC"));
-				visit.setRightCLB(rs.getInt("rightCLB"));
-				visit.setRightTreatment(rs.getString("rightTreatment"));
-				visit.setAbductionRight(rs.getInt("abductionRight"));
-				visit.setDorsiflexionRight(rs.getInt("dorsiflexionRight"));
-				visit.setBraceRight(rs.getString("braceRight"));
-				//visit.setProblemsRight(rs.getString("problemsRight"));
-				//visit.setActionsRight(rs.getString("actionsRight"));
-				visit.setSurgeryRight(rs.getString("surgeryRight"));
-				visit.setRightSurgeryComments(rs.getString("rightSurgeryComments"));
-				visit.setOtherRight(rs.getString("otherRight"));
-				visit.setMidfootRightPosterior(rs.getString("midfootRightPosterior"));
-				visit.setMidfootRightHeel(rs.getString("midfootRightHeel"));
-				visit.setMidfootRightEquinus(rs.getString("midfootRightEquinus"));
-				visit.setMidfootRightMedial(rs.getString("midfootRightMedial"));
-				visit.setMidfootRightTalar(rs.getString("midfootRightTalar"));
-				visit.setMidfootRightLateral(rs.getString("midfootRightLateral"));
+				visit.setHindfootRightVarus(rs2.getInt("varus"));
+				visit.setHindfootRightCavus(rs2.getInt("cavus"));
+				visit.setHindfootRightAbductus(rs2.getInt("abductus"));
+				visit.setHindfootRightEquinus(rs2.getInt("equinus"));
+				visit.setRightPC(rs2.getInt("pc"));
+				visit.setRightEH(rs2.getInt("eh"));
+				visit.setRightRE(rs2.getInt("re"));
+				visit.setRightMC(rs2.getInt("mc"));
+				visit.setRightTHC(rs2.getInt("thc"));
+				visit.setRightCLB(rs2.getInt("clb"));
+				visit.setRightTreatment(rs2.getString("treatment"));
+				visit.setAbductionRight(rs2.getInt("abduction"));
+				visit.setDorsiflexionRight(rs2.getInt("dorsiflexion"));
+				visit.setBraceRight(rs2.getString("brace_compliance"));
+				//visit.setProblemsRight(rs2.getString("problemsRight"));
+				//visit.setActionsRight(rs2.getString("actionsRight"));
+				visit.setSurgeryRight(rs2.getString("surgery_other"));
+				//visit.setMidfootRightTalar(rs2.getString("talar"));
+				//visit.setMidfootRightMedial(rs2.getString("medial"));
+				visit.setMidfootRightEquinus(rs2.getString("equinus"));
+				//visit.setMidfootRightHeel(rs2.getString("heel"));
+				//visit.setMidfootRightLateral(rs2.getString("lateral"));
+				visit.setOtherRight(rs2.getString("other_details"));
+				//visit.setMidfootRightPosterior(rs2.getString("posterior"));
+				visit.setRightSurgeryComments(rs2.getString("surgery_comment"));
 			}
 			
-			rs2.close();
 			ps2.close();
+			rs2.close();
 			
 			return visit;
 		} catch (SQLException e) {
