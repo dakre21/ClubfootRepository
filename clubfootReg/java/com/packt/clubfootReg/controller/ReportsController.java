@@ -64,14 +64,21 @@ public class ReportsController {
 		model.addAttribute("visit_reports", visitRepo.getAllVisitsReports());
 		return "visit_reports";// Returns the view_visit_info page
 	}
-	
+	/*
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value="/patient_reports", method=RequestMethod.GET)	// Posts the visit form information to the database
 	public String patientReports(@ModelAttribute("patient_reports") newPatient newpatient, Model model) {
 		//newpatientRepo.addPatient(newpatient);	// Visitrepo adds visit object to the interface
 		//model.addAttribute("patient_reports", newpatientRepo.getPatient(newpatient.getId()));	// Gets the visit id from the interface method getVisit and adds it to the attribute of the model
-		model.addAttribute("patients_reports", newpatientRepo.getAllPatientsReports());	// Adds all patients from the getAllPatients method
+		//model.addAttribute("patients_reports", newpatientRepo.getAllPatientsReports());	// Adds all patients from the getAllPatients method
 		return "patient_reports";// Returns the view_visit_info page
+	}*/
+	
+	// Annotation for mapping web requests to specific handler classes/methods
+	@RequestMapping(value = "/patient_reports", method = RequestMethod.GET)	// Gets the view_patients form
+	public String viewPatientsForm(Model model){
+		model.addAttribute("patients", newpatientRepo.getAllPatients());	// Adds all patients from the getAllPatients method
+		return "patient_reports";	// Returns view_patients view
 	}
 	
 	// Annotation for mapping web requests to specific handler classes/methods
