@@ -27,31 +27,26 @@
 	  	font-family: arial;
 	  	font-style: normal;
 	  }
-
 	  h1 {
 	  	font-size: x-large;
 	  	font-style: bold;
 	  	line-height: 1.5;
 	  	text-decoration: underline;
 	  }
-
 	  fieldset {
 	  	margin-bottom: 15px;
 	  	padding: 10px;
   	  	text-align: left;
   	  	border: 2px groove;
 	  }
-
 	  legend {
 	  	padding: 0px 3px;
 	  	font-weight: bold;
 	  	font-variant: small-caps;
 	  }
-
 	  em{
 	  	color: red;
 	  }
-
 	  input[type=submit] {
   		width: 150px;
   		padding: 10px;
@@ -182,13 +177,11 @@
 	  		document.getElementById("emergencyOther").checked = true;
 	  		$('fieldset.emergency_contact').show();
 	  		$('other_guardian_phone1').prop('required', true);
-
 	  		break;
 	  	default:
 	  		document.getElementById("emergencyUnspecified").checked = true;
 	  		break;
       }
-
 	  if ("${patient.deformity_history_num}" > 0) {
 	    document.getElementById("defYes").checked = true;
 	    $('#deformity_history_num1').show();
@@ -200,7 +193,6 @@
 	  else {
 	    document.getElementById("defUn").checked = true;
 	  }
-	  
 
 	  if ("${patient.pregnancy_complications_explained}"){
 		document.getElementById("pregCompYes").checked = true;
@@ -217,7 +209,6 @@
 	   	document.getElementById("pregAlcNo").checked = true;
 	  else
 		document.getElementById("pregAlcUn").checked = true;
-
 	  if ("${patient.pregnancy_smoke}" == "Yes")
 		document.getElementById("pregSmokeYes").checked = true;
 	  else if ("${patient.pregnancy_smoke}" == "No")
@@ -263,7 +254,6 @@
 	  		$('#referral_other1').hide();
 	  		$('#referral_other').hide();
 	  		$('#referral_other').prop('required',true);
-
 			break;
 		default:
 			document.getElementById("refUn").checked = true;
@@ -334,7 +324,6 @@
   function guardianEmergencyTrue(){
 	  $('fieldset.emergency_contact').show();
 	  $('other_guardian_phone1').prop('required', true);
-
   }
   function guardianEmergencyFalse(){
 	  $('fieldset.emergency_contact').hide();
@@ -364,7 +353,6 @@
 	  $('#referral_other1').hide();
 	  $('#referral_other').hide();
 	  $('#referral_other').prop('required',false);
-
   }
   function referralFnFalse(){
 	  $('#referral_hospital_name1').hide();
@@ -374,8 +362,6 @@
 	  $('#referral_other1').hide();
 	  $('#referral_other').hide();
 	  $('#referral_other').prop('required',false);
-
-
   }
   function referralOtherTrue(){
 	  $('#referral_other1').show();
@@ -390,13 +376,11 @@
 	  $('#previous_treatments_num1').show();
 	  $('#previous_treatments_num').show();
 	  $('div.prev_treat').show();
-
   }
   function prevTreatmentFalse(){
 	  $('#previous_treatments_num1').hide();
 	  $('#previous_treatments_num').hide();
 	  $('div.prev_treat').hide();
-
   }
   function diagPrenatTrue(){
 	  $('#diagnosis_prenatally_week1').show();
