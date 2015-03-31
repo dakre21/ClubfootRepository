@@ -25,15 +25,23 @@
 		<table class='table table-striped'>
 		   	<thead>
 		   		<tr>
-		   			<th>Visit id</th>
+		   			<th>Visit ID</th>
+		   			<th>Patient ID</th>
+		   			<th>Treatment Left</th>
+		   			<th>Treatment Right</th>
+		   			<th>Hospital/Clinic</th>
 		    	</tr>
 		    </thead>
 	   
 	    	<tbody>
-        	<c:if test="${not empty visit}">
-            <c:forEach var="o" items="${visit}">
+        	<c:if test="${not empty visit_reports}">
+            <c:forEach var="o" items="${visit_reports}">
               <tr>
-                  <td>${o.visits}</td>
+                  <td><a href="view_visit_info?id=${o.id}">${o.id}</a></td>
+                  <td>${o.patientId}</td>
+                  <td>${o.leftTreatment}</td>
+                  <td>${o.rightTreatment}</td>
+                  <td>${o.hospitalId}</td>
               </tr>
             </c:forEach>
           </c:if>
