@@ -85,6 +85,23 @@ public class VisitController {
 		return model;	// Returns the model
 	}
 	
+	// Annotation for mapping web requests to specific handler classes/methods
+	@RequestMapping(value = "/edit_visit", method = RequestMethod.GET)	// Gets the edit_edit form
+	public ModelAndView editVisitForm(HttpServletRequest request) {
+	    int visit_id = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call and finds "id"
+	    Visit visit = visitRepo.getVisit(visit_id);	// Method call oneditrepo to get the edit id
+	    ModelAndView model = new ModelAndView("edit_patient");	// Instantiation of ModelAndView and passes "edit_visit" view to it
+	    model.addObject("visit", visit);	// Adds the object visit to the model
+	    return model;	// Returns the model
+	}
+	
+	// Annotation for mapping web requests to specific handler classes/methods
+	@RequestMapping(value="/edit_visit", method=RequestMethod.POST)	// Returns the edit_visit form
+    public String editVisitSubmit(@ModelAttribute("editVisit") Visit visit, Model model) {
+        visitRepo.updateVisit(visit);	// Method call to update visit information
+        model.addAttribute("visit", visitRepo.getVisit(visit.getId()));	// Model adds the attribute of visit by id
+        return "view_visit_info";	// Returns view_visit_info
+    }
 	/*
 	@RequestMapping(value = "/visit", method = RequestMethod.POST)
 	public String visitSubmitForm(@ModelAttribute("visit") Visit visit, Model model){

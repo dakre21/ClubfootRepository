@@ -278,7 +278,199 @@ public class InMemoryVisitRepo implements VisitRepo{
 	}
 
 	public void updateVisit(Visit visit) {
-		// TODO Auto-generated method stub
+		listOfVisits.add(visit); // Adds the object of the model "visit" to the list created above
+		
+		// The visit model has around 60 fields that are being retrieved in this instance of the repo class
+		// There are integers, strings, and date formatted information that is saved from the form to the model 
+		// That is going to be synchronized to the database
+		int visitId = this.getMaxVisitId() + 1;	// Gets the max integer value of the visit id
+		int patientId = visit.getPatientId(); // Gets the integer value of the visit id
+		Integer hospitalId = visit.getHospitalId();
+		Integer evaluatorId = visit.getEvaluatorId();
+		String dateOfVisit = visit.getDateOfVisit();
+		String isLastVisit = visit.getIsLastVisit();
+		String nextVisitDate = visit.getNextVisitDate();
+		String relapse = visit.getRelapse();
+		
+		Integer hindfootLeftVarus = visit.getHindfootLeftVarus();
+		Integer hindfootLeftCavus = visit.getHindfootLeftCavus();
+		Integer hindfootLeftAbductus = visit.getHindfootLeftAbductus();
+		Integer hindfootLeftEquinus = visit.getHindfootLeftEquinus();
+		Integer leftPC = visit.getLeftPC();
+		Integer leftEH = visit.getLeftEH();
+		Integer leftRE = visit.getLeftRE();
+		Integer leftMC = visit.getLeftPC();
+		Integer leftTHC = visit.getLeftEH();
+		Integer leftCLB = visit.getLeftRE();
+		String leftTreatment = visit.getLeftTreatment();
+		
+		Integer casterLeft = visit.getCasterLeft();
+		Integer castLeftNum = visit.getCastLeftNum();
+		Integer abductionLeft = visit.getAbductionLeft();
+		Integer dorsiflexionLeft = visit.getDorsiflexionLeft();
+		String braceLeft = visit.getBraceLeft();
+		String problemsLeft = visit.getProblemsLeft();
+		String actionsLeft = visit.getActionsLeft();
+		String surgeryLeft = visit.getSurgeryLeft();
+		String leftSurgeryComments = visit.getLeftSurgeryComments();
+		String otherLeft = visit.getOtherLeft();
+		
+		Integer hindfootRightVarus = visit.getHindfootRightVarus();
+		Integer hindfootRightCavus = visit.getHindfootRightCavus();
+		Integer hindfootRightAbductus = visit.getHindfootRightAbductus();
+		Integer hindfootRightEquinus = visit.getHindfootRightEquinus();
+		Integer rightPC = visit.getRightPC();
+		Integer rightEH = visit.getRightEH();
+		Integer rightRE = visit.getRightRE();
+		Integer rightMC = visit.getRightPC();
+		Integer rightTHC = visit.getRightEH();
+		Integer rightCLB = visit.getRightRE();
+		String rightTreatment = visit.getRightTreatment();
+		
+		Integer casterRight = visit.getCasterRight();
+		Integer castRightNum = visit.getCastRightNum();
+		Integer abductionRight = visit.getAbductionRight();
+		Integer dorsiflexionRight = visit.getDorsiflexionRight();
+		String braceRight = visit.getBraceRight();
+		String problemsRight = visit.getProblemsRight();
+		String actionsRight = visit.getActionsRight();
+		String surgeryRight = visit.getSurgeryRight();
+		String rightSurgeryComments = visit.getRightSurgeryComments();
+		String otherRight = visit.getOtherRight();
+		
+		String complications = visit.getComplications();
+		String description = visit.getDescription();
+		String treatmentComplications = visit.getTreatmentComplications();
+		String results = visit.getResults();
+		String comments = visit.getComments();
+		
+		String sql_visit = "Update visit set evaluator_id = ?, patient_id = ?, hospital_id = ?, is_last_visit = ?, " +
+			   	   "next_visit_date = ?, relapse = ?, complications = ?, complications_description = ?, " +
+			   	   "complications_results = ?, general_comments = ?, where id = ?";
+		
+		String sql_left_foot = "Update foot set visit_id = ?, laterality = ?, varus = ?, cavus = ?, abductus = ?, equinus = ? " +
+					"pc = ?, eh = ?, re = ?, mc = ?, thc = ?, clb = ?, where id = ?";
+		
+		String sql_right_foot = "Update foot set visit_id = ?, laterality = ?, varus = ?, cavus = ?, abductus = ?, equinus = ? " +
+				"pc = ?, eh = ?, re = ?, mc = ?, thc = ?, clb = ?, where id = ?";
+
+		Connection connection = null;
+		PreparedStatement ps = null;
+		
+		try {
+			connection = dataSource.getConnection(); // Connection of the dataSource with the MySql sever
+			
+			// VISIT
+			ps = connection.prepareStatement(sql_visit);
+			ps.setInt(1, visitId);
+			/*
+			ps.setInt(2, 0);
+			ps.setInt(3, patientId);
+			ps.setInt(4, 1);
+			ps.setString(5, "No");
+			ps.setString(6, "2015-03-26");
+			ps.setString(7, "No");
+			ps.setString(8, "test");
+			ps.setString(9, "test");
+			ps.setString(10, "test");
+			ps.setString(11, "test");
+			*/
+			ps.setInt(2, evaluatorId);
+			ps.setInt(3, patientId);
+			ps.setInt(4, hospitalId);
+			ps.setString(5, isLastVisit);
+			ps.setString(6, nextVisitDate);
+			ps.setString(7, relapse);
+			ps.setString(8, complications);
+			ps.setString(9, description);
+			ps.setString(10, results);
+			ps.setString(11, comments);
+			ps.executeUpdate();
+			ps.close();
+			
+			// LEFT FOOT
+			ps = connection.prepareStatement(sql_left_foot);
+			ps.setInt(1, this.getMaxFootId() + 1);
+			ps.setInt(2, visitId);
+			ps.setString(3, "Left");
+			/*
+			ps.setInt(4, 1);
+			ps.setInt(5, 1);
+			ps.setInt(6, 20);
+			ps.setInt(7, 20);
+			ps.setInt(8, 1);
+			ps.setInt(9, 1);
+			ps.setInt(10, 1);
+			ps.setInt(11, 1);
+			ps.setInt(12, 1);
+			ps.setInt(13, 1);
+			*/
+			/*
+			ps.setInt(14, castLeftNum);
+			ps.setInt(15, abductionLeft);
+			ps.setInt(16, dorsiflexionLeft);
+			ps.setString(17, braceLeft);
+			ps.setString(18, problemsLeft);
+			ps.setString(19, actionsLeft);
+			ps.setString(20, surgeryLeft);
+			ps.setString(21, leftSurgeryComments);
+			ps.setString(22, otherLeft);
+			*/
+			ps.setInt(4, hindfootLeftVarus);
+			ps.setInt(5, hindfootLeftCavus);
+			ps.setInt(6, hindfootLeftAbductus);
+			ps.setInt(7, hindfootLeftEquinus);
+			ps.setInt(8, leftPC);
+			ps.setInt(9, leftEH);
+			ps.setInt(10, leftRE);
+			ps.setInt(11, leftMC);
+			ps.setInt(12, leftTHC);
+			ps.setInt(13, leftCLB);
+			ps.executeUpdate();
+			ps.close();
+			
+			
+			// RIGHT FOOT
+			ps = connection.prepareStatement(sql_right_foot);
+			ps.setInt(1, this.getMaxFootId() + 1);
+			ps.setInt(2, visitId);
+			ps.setString(3, "Right");
+			/*
+			ps.setInt(4, 1);
+			ps.setInt(5, 1);
+			ps.setInt(6, 20);
+			ps.setInt(7, 20);
+			ps.setInt(8, 1);
+			ps.setInt(9, 1);
+			ps.setInt(10, 1);
+			ps.setInt(11, 1);
+			ps.setInt(12, 1);
+			ps.setInt(13, 1);
+			*/
+			ps.setInt(4, hindfootRightVarus);
+			ps.setInt(5, hindfootRightCavus);
+			ps.setInt(6, hindfootRightAbductus);
+			ps.setInt(7, hindfootRightEquinus);
+			ps.setInt(8, rightPC);
+			ps.setInt(9, rightEH);
+			ps.setInt(10, rightRE);
+			ps.setInt(11, rightMC);
+			ps.setInt(12, rightTHC);
+			ps.setInt(13, rightCLB);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+ 
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		return;
 		
 	}
 
