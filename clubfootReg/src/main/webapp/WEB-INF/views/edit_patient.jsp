@@ -454,7 +454,7 @@
 			<input id="raceUn" type="radio" name="race" value="unspecified" path="race"> Unspecified <br>
 
 			<label for="dob"><em>*</em>Date of birth: </label>
-			<input type="date" name="dob" id="dob" class="form-control" path="dob" > 
+			<input type="date" name="dob" id="dob" class="form-control" path="dob" value= "${patient.dob}" > 
 			<label for="tribe">Tribe: </label>
 			<input type="text" name="tribe" class="form-control" path="tribe" value = "${patient.tribe}">
 			</div>

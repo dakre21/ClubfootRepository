@@ -102,14 +102,17 @@
 	  $('#results1').hide();
 	  $('#treatmentComplications1').hide();
 
-  }
-
-  if ("${visit.isLastVisit}" == "Yes")
+  if ("${visit.isLastVisit}" == "Yes"){
 	document.getElementById("lvYes").checked = true;
-  else if("${visit.isLastVisit}" == "No")
+  }
+  else if("${visit.isLastVisit}" == "No"){
 	document.getElementById("lvNo").checked = true;
-  else if("${visit.isLastVisit}" == "Unspecified")
+	$('#nextVisitDate').show();
+	$('#dateOfNextVisit1').show();
+  }
+  else if("${visit.isLastVisit}" == "Unspecified"){
 	document.getElementById("lvUn").checked = true;
+  }
 
   if ("${visit.relapse}" == "Yes")
 	document.getElementById("relapseYes").checked = true;
@@ -176,6 +179,7 @@
   else if("${visit.leftCLB}" == 0)
 	document.getElementById("leftCLB3").checked = true;
 
+ 
   if ("${visit.leftTreatment}" == "None")
 	document.getElementById("LT1").checked = true;
   else if("${visit.leftTreatment}" == "C - Manipulation & Casting")
@@ -190,7 +194,7 @@
 	document.getElementById("LT6").checked = true;
   else if("${visit.leftTreatment}" == "O - Other")
 	document.getElementById("LT7").checked = true;
-
+/*
   if ("${visit.surgeryLeft}" == "Posterior Release")
 	document.getElementById("SL1").checked = true;
   else if("${visit.surgeryLeft}" == "Medial Release")
@@ -211,6 +215,7 @@
 	document.getElementById("SL9").checked = true;
   else if("${visit.surgeryLeft}" == "Other")
 	document.getElementById("SL10").checked = true;
+*/
 
   if ("${visit.hindfootRightVarus}" == 1)
 	document.getElementById("hindfootRightVarusVarus").checked = true;
@@ -222,11 +227,11 @@
 	document.getElementById("hindfootRightVarusNA").checked = true;
 
   if ("${visit.hindfootRightCavus}" == 1)
-	document.getElementById("hindfootRightCanvusP").checked = true;
+	document.getElementById("hindfootRightCavusP").checked = true;
   else if("${visit.hindfootRightCavus}" == 2)
-	document.getElementById("hindfootRightCanvusC").checked = true;
+	document.getElementById("hindfootRightCavusC").checked = true;
   else if("${visit.hindfootRightCavus}" == 0)
-	document.getElementById("hindfootRightCanvusNA").checked = true;
+	document.getElementById("hindfootRightCavusNA").checked = true;
 
   if ("${visit.rightPC}" == 1)
 	document.getElementById("rightPC1").checked = true;
@@ -284,7 +289,7 @@
 	document.getElementById("RT6").checked = true;
   else if("${visit.rightTreatment}" == "O - Other")
 	document.getElementById("RT7").checked = true;
-
+/*
   if ("${visit.surgeryRight}" == "Posterior Release")
 	document.getElementById("SR1").checked = true;
   else if("${visit.surgeryRight}" == "Medial Release")
@@ -305,15 +310,33 @@
 	document.getElementById("SR9").checked = true;
   else if("${visit.surgeryRight}" == "Other")
 	document.getElementById("SR10").checked = true;
-
-  if ("${visit.complications}" == "No")
+*/
+  if ("${visit.complications}" == "No"){
 	document.getElementById("compNo").checked = true;
-  else if("${visit.complications}" == "Yes")
+  }
+  else if("${visit.complications}" == "Yes"){
 	document.getElementById("compYes").checked = true;
+	$('#description').show();
+	$('#results').show();
+	$('#treatmentComplications').show();
+	$('#description1').show();
+	$('#results1').show();
+	$('#treatmentComplications1').show();
+  }
   else if("${visit.complications}" == "Unspecified")
+  {
 	document.getElementById("compUn").checked = true;
+  }
 
+  $("#hospitalId").val("${visit.hospitalId}");
+  $("#evaluatorId").val("${visit.evaluatorId}");
+
+  document.getElementById("dateOfVisit").value = "${visit.dateOfVisit}"; 
+  document.getElementById("nextVisitDate").value = "${visit.nextVisitDate}";
   
+  document.getElementById("comments").value = "${visit.comments}";
+
+  }  
 
   function braceLeftTrue(){
 	  $('#castLeftNum').hide();
@@ -658,12 +681,6 @@
                 <form:options items="${evaluatorList}" />
             </form:select>
             <br>
-		  	
-		  	<!-- 
-	  		<label for = "evaluatorId"><em>*</em>Name of Evaluator:</label>
-	  		<input type="text" name="evaluatorId" class="form-control" path="evaluatorId" >
-	  		<a href="evaluator">Add evaluator</a> <br>
-	  		-->
 	  		
 	  		<label for="dateOfVisit"><em>*</em>Date of visit: </label>
 			<input type="date" name="dateOfVisit" id="dateOfVisit" class="form-control" path="dateOfVisit" placeholder="dd/mm/yyyy"   validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
@@ -743,7 +760,6 @@
 				<INPUT TYPE="radio" id = "leftCLB3" NAME="leftCLB" path="leftCLB" VALUE="0">0	
 			</fieldset>
 			
-			<!--
 			<fieldset>
 				<label for = "leftTreatment"><em>*</em>Treatment: </label>	
 				<INPUT TYPE="radio" id = "LT1" NAME="leftTreatment" path="leftTreatment" onClick = "noneLeftTrue()" VALUE="None">None
@@ -753,7 +769,8 @@
 				<INPUT TYPE="radio" id = "LT5" NAME="leftTreatment" path="leftTreatment" onClick = "referLeftTrue()" VALUE="R - Refer">R - Refer
 				<INPUT TYPE="radio" id = "LT6" NAME="leftTreatment" path="leftTreatment" onClick = "surgeryLeftTrue()" VALUE="S - Surgery">S - Surgery
 				<INPUT TYPE="radio" id = "LT7" NAME="leftTreatment" path="leftTreatment" onClick = "otherLeftTrue()" VALUE="O - Other">O - Other<br>
-				
+			</fieldset>
+			<!-- 
 				<label for = "casterLeft" id = "casterLeft1">Caster: </label>
 	  			<input type="text" name="casterLeft" id = "casterLeft" class="form-control" path="casterLeft" value = "${visit.casterLeft}">
 	  			
@@ -864,7 +881,7 @@
 				<INPUT TYPE="radio" id = "rightCLB3" NAME="rightCLB" path="rightCLB" VALUE="0">0	
 			</fieldset>
 			
-			<!--
+			
 			<fieldset>
 				<label for = "rightTreatment"><em>*</em>Treatment: </label>	
 				<INPUT TYPE="radio" id = "RT1" NAME="rightTreatment" path="rightTreatment" onClick = "noneRightTrue()" VALUE="none">None
@@ -874,6 +891,8 @@
 				<INPUT TYPE="radio" id = "RT5" NAME="rightTreatment" path="rightTreatment" onClick = "referRightTrue()" VALUE="R - Refer">R - Refer
 				<INPUT TYPE="radio" id = "RT6" NAME="rightTreatment" path="rightTreatment" onClick = "surgeryRightTrue()" VALUE="S-Surgery">S - Surgery
 				<INPUT TYPE="radio" id = "RT7" NAME="rightTreatment" path="rightTreatment" onClick = "otherRightTrue()" VALUE="O-Other">O - Other<br>
+			</fieldset>
+			<!-- 
 				<label for = "casterRight" id = "casterRight1">Caster: </label>
 	  			<input type="text" name="casterRight" id = "casterRight" class="form-control" path="casterRight" value = "${visit.casterRight}">
 	  			<label for = "castRightNum" id = "castRightNum1">Casting Number: </label>
@@ -947,10 +966,10 @@
 				</div>
 			</fieldset>
 		</div>
-	
+		
 		<div class = "form-group">
 			<label for="comments">Comments: </label>
-			<textarea name = "comments" class = "form-control" path = "comments" value = "${visit.comments}"></textarea><br>
+			<textarea id="comments" name = "comments" class = "form-control" path = "comments" value = "${visit.comments}"></textarea><br>
 			<!-- <input type="text" name="comments" class="form-control" path="comments"> <br>-->
 		</div>
 	

@@ -261,12 +261,6 @@ public class InMemoryVisitRepo implements VisitRepo{
 		
 	}
 
-/*	
-	public List<Visit> getVisit(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}*/
-
 	/**
 	 * Method the effectively deletes visit information stored in the database
 	 */
@@ -283,7 +277,7 @@ public class InMemoryVisitRepo implements VisitRepo{
 		// The visit model has around 60 fields that are being retrieved in this instance of the repo class
 		// There are integers, strings, and date formatted information that is saved from the form to the model 
 		// That is going to be synchronized to the database
-		int visitId = this.getMaxVisitId() + 1;	// Gets the max integer value of the visit id
+		int visitId = visit.getId();	// Gets the max integer value of the visit id
 		int patientId = visit.getPatientId(); // Gets the integer value of the visit id
 		Integer hospitalId = visit.getHospitalId();
 		Integer evaluatorId = visit.getEvaluatorId();
@@ -344,15 +338,18 @@ public class InMemoryVisitRepo implements VisitRepo{
 		String results = visit.getResults();
 		String comments = visit.getComments();
 		
-		String sql_visit = "Update visit set evaluator_id = ?, patient_id = ?, hospital_id = ?, is_last_visit = ?, " +
-			   	   "next_visit_date = ?, relapse = ?, complications = ?, complications_description = ?, " +
-			   	   "complications_results = ?, general_comments = ?, where id = ?";
+		String sql_visit = "Update visit set evaluator_id = ?, hospital_id = ?, visit_date = ?, is_last_visit = ?, " +
+			   	   			  "next_visit_date = ?, relapse = ?, complications = ?, complications_description = ?, " +
+			   	   			  "complications_treatment = ?, complications_results = ?, general_comments = ? " +
+			   	   			  "where id = ?";
 		
-		String sql_left_foot = "Update foot set visit_id = ?, laterality = ?, varus = ?, cavus = ?, abductus = ?, equinus = ? " +
-					"pc = ?, eh = ?, re = ?, mc = ?, thc = ?, clb = ?, where id = ?";
+		String sql_left_foot = "Update foot set varus = ?, cavus = ?, abductus = ?, equinus = ?, " +
+						       	  "pc = ?, eh = ?, re = ?, mc = ?, thc = ?, clb = ?, treatment = ? " +
+						       "Where visit_id = ? and laterality = 'left'";
 		
-		String sql_right_foot = "Update foot set visit_id = ?, laterality = ?, varus = ?, cavus = ?, abductus = ?, equinus = ? " +
-				"pc = ?, eh = ?, re = ?, mc = ?, thc = ?, clb = ?, where id = ?";
+		String sql_right_foot = "Update foot set varus = ?, cavus = ?, abductus = ?, equinus = ?, " +
+				                   "pc = ?, eh = ?, re = ?, mc = ?, thc = ?, clb = ?, treatment = ? " +
+				                "Where visit_id = ? and laterality = 'right'";
 
 		Connection connection = null;
 		PreparedStatement ps = null;
@@ -362,101 +359,52 @@ public class InMemoryVisitRepo implements VisitRepo{
 			
 			// VISIT
 			ps = connection.prepareStatement(sql_visit);
-			ps.setInt(1, visitId);
-			/*
-			ps.setInt(2, 0);
-			ps.setInt(3, patientId);
-			ps.setInt(4, 1);
-			ps.setString(5, "No");
-			ps.setString(6, "2015-03-26");
-			ps.setString(7, "No");
-			ps.setString(8, "test");
-			ps.setString(9, "test");
-			ps.setString(10, "test");
-			ps.setString(11, "test");
-			*/
-			ps.setInt(2, evaluatorId);
-			ps.setInt(3, patientId);
-			ps.setInt(4, hospitalId);
-			ps.setString(5, isLastVisit);
-			ps.setString(6, nextVisitDate);
-			ps.setString(7, relapse);
-			ps.setString(8, complications);
-			ps.setString(9, description);
+			ps.setInt(1, evaluatorId);
+			ps.setInt(2, hospitalId);
+			ps.setString(3, dateOfVisit);
+			ps.setString(4, isLastVisit);
+			ps.setString(5, nextVisitDate);
+			ps.setString(6, relapse);
+			ps.setString(7, complications);
+			ps.setString(8, description);
+			ps.setString(9, treatmentComplications);
 			ps.setString(10, results);
 			ps.setString(11, comments);
+			ps.setInt(12, visitId);
 			ps.executeUpdate();
 			ps.close();
 			
 			// LEFT FOOT
 			ps = connection.prepareStatement(sql_left_foot);
-			ps.setInt(1, this.getMaxFootId() + 1);
-			ps.setInt(2, visitId);
-			ps.setString(3, "Left");
-			/*
-			ps.setInt(4, 1);
-			ps.setInt(5, 1);
-			ps.setInt(6, 20);
-			ps.setInt(7, 20);
-			ps.setInt(8, 1);
-			ps.setInt(9, 1);
-			ps.setInt(10, 1);
-			ps.setInt(11, 1);
-			ps.setInt(12, 1);
-			ps.setInt(13, 1);
-			*/
-			/*
-			ps.setInt(14, castLeftNum);
-			ps.setInt(15, abductionLeft);
-			ps.setInt(16, dorsiflexionLeft);
-			ps.setString(17, braceLeft);
-			ps.setString(18, problemsLeft);
-			ps.setString(19, actionsLeft);
-			ps.setString(20, surgeryLeft);
-			ps.setString(21, leftSurgeryComments);
-			ps.setString(22, otherLeft);
-			*/
-			ps.setInt(4, hindfootLeftVarus);
-			ps.setInt(5, hindfootLeftCavus);
-			ps.setInt(6, hindfootLeftAbductus);
-			ps.setInt(7, hindfootLeftEquinus);
-			ps.setInt(8, leftPC);
-			ps.setInt(9, leftEH);
-			ps.setInt(10, leftRE);
-			ps.setInt(11, leftMC);
-			ps.setInt(12, leftTHC);
-			ps.setInt(13, leftCLB);
+			ps.setInt(1, hindfootLeftVarus);
+			ps.setInt(2, hindfootLeftCavus);
+			ps.setInt(3, hindfootLeftAbductus);
+			ps.setInt(4, hindfootLeftEquinus);
+			ps.setInt(5, leftPC);
+			ps.setInt(6, leftEH);
+			ps.setInt(7, leftRE);
+			ps.setInt(8, leftMC);
+			ps.setInt(9, leftTHC);
+			ps.setInt(10, leftCLB);
+			ps.setString(11, leftTreatment);
+			ps.setInt(12, visitId);
 			ps.executeUpdate();
 			ps.close();
 			
-			
 			// RIGHT FOOT
 			ps = connection.prepareStatement(sql_right_foot);
-			ps.setInt(1, this.getMaxFootId() + 1);
-			ps.setInt(2, visitId);
-			ps.setString(3, "Right");
-			/*
-			ps.setInt(4, 1);
-			ps.setInt(5, 1);
-			ps.setInt(6, 20);
-			ps.setInt(7, 20);
-			ps.setInt(8, 1);
-			ps.setInt(9, 1);
-			ps.setInt(10, 1);
-			ps.setInt(11, 1);
-			ps.setInt(12, 1);
-			ps.setInt(13, 1);
-			*/
-			ps.setInt(4, hindfootRightVarus);
-			ps.setInt(5, hindfootRightCavus);
-			ps.setInt(6, hindfootRightAbductus);
-			ps.setInt(7, hindfootRightEquinus);
-			ps.setInt(8, rightPC);
-			ps.setInt(9, rightEH);
-			ps.setInt(10, rightRE);
-			ps.setInt(11, rightMC);
-			ps.setInt(12, rightTHC);
-			ps.setInt(13, rightCLB);
+			ps.setInt(1, hindfootRightVarus);
+			ps.setInt(2, hindfootRightCavus);
+			ps.setInt(3, hindfootRightAbductus);
+			ps.setInt(4, hindfootRightEquinus);
+			ps.setInt(5, rightPC);
+			ps.setInt(6, rightEH);
+			ps.setInt(7, rightRE);
+			ps.setInt(8, rightMC);
+			ps.setInt(9, rightTHC);
+			ps.setInt(10, rightCLB);
+			ps.setString(11, rightTreatment);
+			ps.setInt(12, visitId);
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
@@ -618,6 +566,37 @@ public class InMemoryVisitRepo implements VisitRepo{
 		}
 	}
 	
+	
+	public String getLateralityForPatient(int id) {
+		Connection conn = null; // Resets the connection to the database
+		String lat = "";
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select feet_affected from patient where id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				lat = rs.getString(1);
+			} 
+			
+			rs.close();
+			ps.close();
+			return lat;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
+	
 	/**
 	 * 
 	 * Method that returns a mapped vector of int and string values for all hosptials
@@ -701,14 +680,14 @@ public class InMemoryVisitRepo implements VisitRepo{
 				visit.setCasterRight(rs.getInt("primary_caster_right_id"));
 				visit.setPatientId(rs.getInt("patient_id"));
 				visit.setHospitalId(rs.getInt("hospital_id"));
-				//visit.setDateOfVisit(rs.getString("dateOfVisit"));
+				visit.setDateOfVisit(rs.getString("visit_date"));
 				visit.setIsLastVisit(rs.getString("is_last_visit"));
 				visit.setNextVisitDate(rs.getString("next_visit_date"));
 				visit.setRelapse(rs.getString("relapse"));
 				visit.setComplications(rs.getString("complications"));
 				visit.setComments(rs.getString("general_comments"));
 				visit.setDescription(rs.getString("complications_description"));
-				//visit.setTreatmentComplications(rs.getString("treatmentComplications"));
+				visit.setTreatmentComplications(rs.getString("complications_treatment"));
 				visit.setResults(rs.getString("complications_results"));
 				
 				//visit.setCasterLeft(rs.getInt("casterLeft"));
