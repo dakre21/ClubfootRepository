@@ -148,7 +148,6 @@
 
   }
   else if("${visit.laterality}" == "Both"){
-  }
   	$('div.leftFoot').show();
 	$('div.rightFoot').show();
 	$('#rightPC').prop('required', true);
@@ -167,7 +166,8 @@
 	$('#leftTreatment').prop('required', true);
   }
   
-
+  }
+  
   function braceLeftTrue(){
 	  $('#castLeftNum').hide();
 	  $('#casterLeft').hide();
