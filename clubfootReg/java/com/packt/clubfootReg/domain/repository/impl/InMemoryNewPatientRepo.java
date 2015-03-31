@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository;
 
 import com.packt.clubfootReg.domain.Evaluator;
 import com.packt.clubfootReg.domain.Hospital;
+import com.packt.clubfootReg.domain.ReportsPatients;
+import com.packt.clubfootReg.domain.ReportsVisits;
 import com.packt.clubfootReg.domain.Visit;
 import com.packt.clubfootReg.domain.newPatient;
 import com.packt.clubfootReg.domain.repository.newPatientRepo;
@@ -25,6 +27,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 //import java.sql.Date;
+
+
 
 
 
@@ -1162,6 +1166,53 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		}
 		
 		
+	}
+
+	@Override
+	public List<ReportsPatients> getAllPatientsReports() {
+		Connection conn = null; // Resets the connection to the database
+		ReportsPatients patient = null; // Resets the model
+		List<ReportsPatients> rp = null; // Resets the list
+		
+		/**
+		 * Reseting the database connection to retrieve information that's stored in the mysql database
+		 * via queries that are sent through the open connection. The results of the data received by this class
+		 * is saved in a result set to be displayed in the jsp view. 
+		 */
+		
+		try {
+			conn = dataSource.getConnection();
+			
+		   String sql = " ";
+		   
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.last()) {
+			  rp = new ArrayList<>(rs.getRow());
+			  rs.beforeFirst(); 
+			}
+			
+			while (rs.next()) {
+				patient = new ReportsPatients(
+					rs.getInt("id")
+				);
+			
+				rp.add(patient);
+			}
+			
+			ps.close();
+			rs.close();
+			return rp;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
 	}
 	
 }

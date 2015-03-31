@@ -70,7 +70,7 @@ public class ReportsController {
 	public String patientReports(@ModelAttribute("patient_reports") newPatient newpatient, Model model) {
 		//newpatientRepo.addPatient(newpatient);	// Visitrepo adds visit object to the interface
 		//model.addAttribute("patient_reports", newpatientRepo.getPatient(newpatient.getId()));	// Gets the visit id from the interface method getVisit and adds it to the attribute of the model
-		model.addAttribute("patients_reports", newpatientRepo.getAllPatients());	// Adds all patients from the getAllPatients method
+		model.addAttribute("patients_reports", newpatientRepo.getAllPatientsReports());	// Adds all patients from the getAllPatients method
 		return "patient_reports";// Returns the view_visit_info page
 	}
 	
