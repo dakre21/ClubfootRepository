@@ -61,7 +61,7 @@ public class ReportsController {
 	public String visitReports(@ModelAttribute("visit_reports") Visit visit, Model model) {
 		//visitRepo.addVisit(visit);	// Visitrepo adds visit object to the interface
 		//model.addAttribute("visit_reports", visitRepo.getVisit(visit.getId()));	// Gets the visit id from the interface method getVisit and adds it to the attribute of the model
-		model.addAttribute("visit_reports", visitRepo.getAllVisits());
+		model.addAttribute("visit_reports", visitRepo.getAllVisitsReports());
 		return "visit_reports";// Returns the view_visit_info page
 	}
 	

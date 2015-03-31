@@ -205,7 +205,6 @@
 		        </c:forEach>
 		   	</c:if>
 		</div>
->>>>>>> jake
 	</div>
 
 	<hr>

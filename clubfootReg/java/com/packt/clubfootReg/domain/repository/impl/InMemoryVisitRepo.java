@@ -10,6 +10,8 @@ import javax.sql.DataSource;
 import org.springframework.stereotype.Repository;
 
 import com.packt.clubfootReg.domain.Hospital;
+import com.packt.clubfootReg.domain.ReportsHospital;
+import com.packt.clubfootReg.domain.ReportsVisits;
 import com.packt.clubfootReg.domain.Visit;
 import com.packt.clubfootReg.domain.newPatient;
 import com.packt.clubfootReg.domain.repository.VisitRepo;
@@ -570,6 +572,53 @@ public class InMemoryVisitRepo implements VisitRepo{
 			ps2.close();
 			
 			return visit;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
+
+	@Override
+	public List<ReportsVisits> getAllVisitsReports() {
+		Connection conn = null; // Resets the connection to the database
+		ReportsVisits visit = null; // Resets the model
+		List<ReportsVisits> rv = null; // Resets the list
+		
+		/**
+		 * Reseting the database connection to retrieve information that's stored in the mysql database
+		 * via queries that are sent through the open connection. The results of the data received by this class
+		 * is saved in a result set to be displayed in the jsp view. 
+		 */
+		
+		try {
+			conn = dataSource.getConnection();
+			
+		   String sql = " ";
+		   
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.last()) {
+			  rv = new ArrayList<>(rs.getRow());
+			  rs.beforeFirst(); 
+			}
+			
+			while (rs.next()) {
+				visit = new ReportsVisits(
+					rs.getInt("id")
+				);
+			
+				rv.add(visit);
+			}
+			
+			ps.close();
+			rs.close();
+			return rv;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {

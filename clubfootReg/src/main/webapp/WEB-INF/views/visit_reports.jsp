@@ -55,23 +55,15 @@
 		</h1>
 		<hr>
 		<a role="button" class="btn btn-primary btn-lg">Generate Report</a>
-	<!-- 	<table class='table table-striped'>
-		   	<thead>
-		   		<tr>
-		   			<th>Visit id</th>
-		    	</tr>
-		    </thead>
-	   
-	    	<tbody>
-        	<c:if test="${not empty visit}">
-            <c:forEach var="o" items="${visit}">
-              <tr>
-                  <td>${o.visits}</td>
-              </tr>
-            </c:forEach>
-          </c:if>
-	      </tbody>
-	  </table>-->
+	<div class="row">
+		<div class="col-xl-12">
+			<c:if test="${not empty visit_reports}">
+		    	<c:forEach var="o" items="${visit_reports}">
+		    	
+		    	</c:forEach>
+		    </c:if>
+		</div>
+	</div>
 	</div>	
 
 	<hr>
