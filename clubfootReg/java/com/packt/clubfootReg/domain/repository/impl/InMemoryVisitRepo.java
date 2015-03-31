@@ -261,12 +261,6 @@ public class InMemoryVisitRepo implements VisitRepo{
 		
 	}
 
-/*	
-	public List<Visit> getVisit(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}*/
-
 	/**
 	 * Method the effectively deletes visit information stored in the database
 	 */
@@ -283,7 +277,7 @@ public class InMemoryVisitRepo implements VisitRepo{
 		// The visit model has around 60 fields that are being retrieved in this instance of the repo class
 		// There are integers, strings, and date formatted information that is saved from the form to the model 
 		// That is going to be synchronized to the database
-		int visitId = this.getMaxVisitId() + 1;	// Gets the max integer value of the visit id
+		int visitId = visit.getId();	// Gets the max integer value of the visit id
 		int patientId = visit.getPatientId(); // Gets the integer value of the visit id
 		Integer hospitalId = visit.getHospitalId();
 		Integer evaluatorId = visit.getEvaluatorId();
@@ -344,15 +338,18 @@ public class InMemoryVisitRepo implements VisitRepo{
 		String results = visit.getResults();
 		String comments = visit.getComments();
 		
-		String sql_visit = "Update visit set evaluator_id = ?, patient_id = ?, hospital_id = ?, is_last_visit = ?, " +
-			   	   "next_visit_date = ?, relapse = ?, complications = ?, complications_description = ?, " +
-			   	   "complications_results = ?, general_comments = ?, where id = ?";
+		String sql_visit = "Update visit set evaluator_id = ?, hospital_id = ?, visit_date = ?, is_last_visit = ?, " +
+			   	   			  "next_visit_date = ?, relapse = ?, complications = ?, complications_description = ?, " +
+			   	   			  "complications_treatment = ?, complications_results = ?, general_comments = ? " +
+			   	   			  "where id = ?";
 		
-		String sql_left_foot = "Update foot set visit_id = ?, laterality = ?, varus = ?, cavus = ?, abductus = ?, equinus = ? " +
-					"pc = ?, eh = ?, re = ?, mc = ?, thc = ?, clb = ?, where id = ?";
+		String sql_left_foot = "Update foot set varus = ?, cavus = ?, abductus = ?, equinus = ?, " +
+						       	  "pc = ?, eh = ?, re = ?, mc = ?, thc = ?, clb = ?, treatment = ? " +
+						       "Where visit_id = ? and laterality = 'left'";
 		
-		String sql_right_foot = "Update foot set visit_id = ?, laterality = ?, varus = ?, cavus = ?, abductus = ?, equinus = ? " +
-				"pc = ?, eh = ?, re = ?, mc = ?, thc = ?, clb = ?, where id = ?";
+		String sql_right_foot = "Update foot set varus = ?, cavus = ?, abductus = ?, equinus = ?, " +
+				                   "pc = ?, eh = ?, re = ?, mc = ?, thc = ?, clb = ?, treatment = ? " +
+				                "Where visit_id = ? and laterality = 'right'";
 
 		Connection connection = null;
 		PreparedStatement ps = null;
@@ -362,70 +359,52 @@ public class InMemoryVisitRepo implements VisitRepo{
 			
 			// VISIT
 			ps = connection.prepareStatement(sql_visit);
-
 			ps.setInt(1, evaluatorId);
-			ps.setInt(2, patientId);
-			ps.setInt(3, hospitalId);
+			ps.setInt(2, hospitalId);
+			ps.setString(3, dateOfVisit);
 			ps.setString(4, isLastVisit);
 			ps.setString(5, nextVisitDate);
 			ps.setString(6, relapse);
 			ps.setString(7, complications);
 			ps.setString(8, description);
-			ps.setString(9, results);
-			ps.setString(10, comments);
-			ps.setInt(11, visitId);
+			ps.setString(9, treatmentComplications);
+			ps.setString(10, results);
+			ps.setString(11, comments);
+			ps.setInt(12, visitId);
 			ps.executeUpdate();
 			ps.close();
 			
 			// LEFT FOOT
 			ps = connection.prepareStatement(sql_left_foot);
-
-			ps.setInt(1, visitId);
-			ps.setString(2, "Left");
-
-			/*
-			ps.setInt(14, castLeftNum);
-			ps.setInt(15, abductionLeft);
-			ps.setInt(16, dorsiflexionLeft);
-			ps.setString(17, braceLeft);
-			ps.setString(18, problemsLeft);
-			ps.setString(19, actionsLeft);
-			ps.setString(20, surgeryLeft);
-			ps.setString(21, leftSurgeryComments);
-			ps.setString(22, otherLeft);
-			*/
-			ps.setInt(3, hindfootLeftVarus);
-			ps.setInt(4, hindfootLeftCavus);
-			ps.setInt(5, hindfootLeftAbductus);
-			ps.setInt(6, hindfootLeftEquinus);
-			ps.setInt(7, leftPC);
-			ps.setInt(8, leftEH);
-			ps.setInt(9, leftRE);
-			ps.setInt(10, leftMC);
-			ps.setInt(11, leftTHC);
-			ps.setInt(12, leftCLB);
-			ps.setInt(13, this.getMaxFootId() + 1);
+			ps.setInt(1, hindfootLeftVarus);
+			ps.setInt(2, hindfootLeftCavus);
+			ps.setInt(3, hindfootLeftAbductus);
+			ps.setInt(4, hindfootLeftEquinus);
+			ps.setInt(5, leftPC);
+			ps.setInt(6, leftEH);
+			ps.setInt(7, leftRE);
+			ps.setInt(8, leftMC);
+			ps.setInt(9, leftTHC);
+			ps.setInt(10, leftCLB);
+			ps.setString(11, leftTreatment);
+			ps.setInt(12, visitId);
 			ps.executeUpdate();
 			ps.close();
 			
-			
 			// RIGHT FOOT
 			ps = connection.prepareStatement(sql_right_foot);
-
-			ps.setInt(1, visitId);
-			ps.setString(2, "Right");
-
-			ps.setInt(3, hindfootRightVarus);
-			ps.setInt(4, hindfootRightCavus);
-			ps.setInt(5, hindfootRightAbductus);
-			ps.setInt(6, hindfootRightEquinus);
-			ps.setInt(7, rightPC);
-			ps.setInt(8, rightEH);
-			ps.setInt(9, rightRE);
-			ps.setInt(10, rightMC);
-			ps.setInt(11, rightTHC);
-			ps.setInt(12, rightCLB);
-			ps.setInt(13, this.getMaxFootId() + 1);
+			ps.setInt(1, hindfootRightVarus);
+			ps.setInt(2, hindfootRightCavus);
+			ps.setInt(3, hindfootRightAbductus);
+			ps.setInt(4, hindfootRightEquinus);
+			ps.setInt(5, rightPC);
+			ps.setInt(6, rightEH);
+			ps.setInt(7, rightRE);
+			ps.setInt(8, rightMC);
+			ps.setInt(9, rightTHC);
+			ps.setInt(10, rightCLB);
+			ps.setString(11, rightTreatment);
+			ps.setInt(12, visitId);
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {

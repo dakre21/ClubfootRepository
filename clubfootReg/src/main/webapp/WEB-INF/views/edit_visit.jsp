@@ -663,12 +663,6 @@
                 <form:options items="${evaluatorList}" />
             </form:select>
             <br>
-		  	
-		  	<!-- 
-	  		<label for = "evaluatorId"><em>*</em>Name of Evaluator:</label>
-	  		<input type="text" name="evaluatorId" class="form-control" path="evaluatorId" >
-	  		<a href="evaluator">Add evaluator</a> <br>
-	  		-->
 	  		
 	  		<label for="dateOfVisit"><em>*</em>Date of visit: </label>
 			<input type="date" name="dateOfVisit" id="dateOfVisit" class="form-control" path="dateOfVisit" placeholder="dd/mm/yyyy"   validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
@@ -748,7 +742,6 @@
 				<INPUT TYPE="radio" id = "leftCLB3" NAME="leftCLB" path="leftCLB" VALUE="0">0	
 			</fieldset>
 			
-			<!--
 			<fieldset>
 				<label for = "leftTreatment"><em>*</em>Treatment: </label>	
 				<INPUT TYPE="radio" id = "LT1" NAME="leftTreatment" path="leftTreatment" onClick = "noneLeftTrue()" VALUE="None">None
@@ -758,7 +751,8 @@
 				<INPUT TYPE="radio" id = "LT5" NAME="leftTreatment" path="leftTreatment" onClick = "referLeftTrue()" VALUE="R - Refer">R - Refer
 				<INPUT TYPE="radio" id = "LT6" NAME="leftTreatment" path="leftTreatment" onClick = "surgeryLeftTrue()" VALUE="S - Surgery">S - Surgery
 				<INPUT TYPE="radio" id = "LT7" NAME="leftTreatment" path="leftTreatment" onClick = "otherLeftTrue()" VALUE="O - Other">O - Other<br>
-				
+			</fieldset>
+			<!-- 
 				<label for = "casterLeft" id = "casterLeft1">Caster: </label>
 	  			<input type="text" name="casterLeft" id = "casterLeft" class="form-control" path="casterLeft" value = "${visit.casterLeft}">
 	  			
@@ -869,7 +863,7 @@
 				<INPUT TYPE="radio" id = "rightCLB3" NAME="rightCLB" path="rightCLB" VALUE="0">0	
 			</fieldset>
 			
-			<!--
+			
 			<fieldset>
 				<label for = "rightTreatment"><em>*</em>Treatment: </label>	
 				<INPUT TYPE="radio" id = "RT1" NAME="rightTreatment" path="rightTreatment" onClick = "noneRightTrue()" VALUE="none">None
@@ -879,6 +873,8 @@
 				<INPUT TYPE="radio" id = "RT5" NAME="rightTreatment" path="rightTreatment" onClick = "referRightTrue()" VALUE="R - Refer">R - Refer
 				<INPUT TYPE="radio" id = "RT6" NAME="rightTreatment" path="rightTreatment" onClick = "surgeryRightTrue()" VALUE="S-Surgery">S - Surgery
 				<INPUT TYPE="radio" id = "RT7" NAME="rightTreatment" path="rightTreatment" onClick = "otherRightTrue()" VALUE="O-Other">O - Other<br>
+			</fieldset>
+			<!-- 
 				<label for = "casterRight" id = "casterRight1">Caster: </label>
 	  			<input type="text" name="casterRight" id = "casterRight" class="form-control" path="casterRight" value = "${visit.casterRight}">
 	  			<label for = "castRightNum" id = "castRightNum1">Casting Number: </label>
