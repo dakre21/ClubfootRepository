@@ -362,49 +362,27 @@ public class InMemoryVisitRepo implements VisitRepo{
 			
 			// VISIT
 			ps = connection.prepareStatement(sql_visit);
-			ps.setInt(1, visitId);
-			/*
-			ps.setInt(2, 0);
-			ps.setInt(3, patientId);
-			ps.setInt(4, 1);
-			ps.setString(5, "No");
-			ps.setString(6, "2015-03-26");
-			ps.setString(7, "No");
-			ps.setString(8, "test");
-			ps.setString(9, "test");
-			ps.setString(10, "test");
-			ps.setString(11, "test");
-			*/
-			ps.setInt(2, evaluatorId);
-			ps.setInt(3, patientId);
-			ps.setInt(4, hospitalId);
-			ps.setString(5, isLastVisit);
-			ps.setString(6, nextVisitDate);
-			ps.setString(7, relapse);
-			ps.setString(8, complications);
-			ps.setString(9, description);
-			ps.setString(10, results);
-			ps.setString(11, comments);
+
+			ps.setInt(1, evaluatorId);
+			ps.setInt(2, patientId);
+			ps.setInt(3, hospitalId);
+			ps.setString(4, isLastVisit);
+			ps.setString(5, nextVisitDate);
+			ps.setString(6, relapse);
+			ps.setString(7, complications);
+			ps.setString(8, description);
+			ps.setString(9, results);
+			ps.setString(10, comments);
+			ps.setInt(11, visitId);
 			ps.executeUpdate();
 			ps.close();
 			
 			// LEFT FOOT
 			ps = connection.prepareStatement(sql_left_foot);
-			ps.setInt(1, this.getMaxFootId() + 1);
-			ps.setInt(2, visitId);
-			ps.setString(3, "Left");
-			/*
-			ps.setInt(4, 1);
-			ps.setInt(5, 1);
-			ps.setInt(6, 20);
-			ps.setInt(7, 20);
-			ps.setInt(8, 1);
-			ps.setInt(9, 1);
-			ps.setInt(10, 1);
-			ps.setInt(11, 1);
-			ps.setInt(12, 1);
-			ps.setInt(13, 1);
-			*/
+
+			ps.setInt(1, visitId);
+			ps.setString(2, "Left");
+
 			/*
 			ps.setInt(14, castLeftNum);
 			ps.setInt(15, abductionLeft);
@@ -416,47 +394,38 @@ public class InMemoryVisitRepo implements VisitRepo{
 			ps.setString(21, leftSurgeryComments);
 			ps.setString(22, otherLeft);
 			*/
-			ps.setInt(4, hindfootLeftVarus);
-			ps.setInt(5, hindfootLeftCavus);
-			ps.setInt(6, hindfootLeftAbductus);
-			ps.setInt(7, hindfootLeftEquinus);
-			ps.setInt(8, leftPC);
-			ps.setInt(9, leftEH);
-			ps.setInt(10, leftRE);
-			ps.setInt(11, leftMC);
-			ps.setInt(12, leftTHC);
-			ps.setInt(13, leftCLB);
+			ps.setInt(3, hindfootLeftVarus);
+			ps.setInt(4, hindfootLeftCavus);
+			ps.setInt(5, hindfootLeftAbductus);
+			ps.setInt(6, hindfootLeftEquinus);
+			ps.setInt(7, leftPC);
+			ps.setInt(8, leftEH);
+			ps.setInt(9, leftRE);
+			ps.setInt(10, leftMC);
+			ps.setInt(11, leftTHC);
+			ps.setInt(12, leftCLB);
+			ps.setInt(13, this.getMaxFootId() + 1);
 			ps.executeUpdate();
 			ps.close();
 			
 			
 			// RIGHT FOOT
 			ps = connection.prepareStatement(sql_right_foot);
-			ps.setInt(1, this.getMaxFootId() + 1);
-			ps.setInt(2, visitId);
-			ps.setString(3, "Right");
-			/*
-			ps.setInt(4, 1);
-			ps.setInt(5, 1);
-			ps.setInt(6, 20);
-			ps.setInt(7, 20);
-			ps.setInt(8, 1);
-			ps.setInt(9, 1);
-			ps.setInt(10, 1);
-			ps.setInt(11, 1);
-			ps.setInt(12, 1);
-			ps.setInt(13, 1);
-			*/
-			ps.setInt(4, hindfootRightVarus);
-			ps.setInt(5, hindfootRightCavus);
-			ps.setInt(6, hindfootRightAbductus);
-			ps.setInt(7, hindfootRightEquinus);
-			ps.setInt(8, rightPC);
-			ps.setInt(9, rightEH);
-			ps.setInt(10, rightRE);
-			ps.setInt(11, rightMC);
-			ps.setInt(12, rightTHC);
-			ps.setInt(13, rightCLB);
+
+			ps.setInt(1, visitId);
+			ps.setString(2, "Right");
+
+			ps.setInt(3, hindfootRightVarus);
+			ps.setInt(4, hindfootRightCavus);
+			ps.setInt(5, hindfootRightAbductus);
+			ps.setInt(6, hindfootRightEquinus);
+			ps.setInt(7, rightPC);
+			ps.setInt(8, rightEH);
+			ps.setInt(9, rightRE);
+			ps.setInt(10, rightMC);
+			ps.setInt(11, rightTHC);
+			ps.setInt(12, rightCLB);
+			ps.setInt(13, this.getMaxFootId() + 1);
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
