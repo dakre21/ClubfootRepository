@@ -10,6 +10,14 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+<script>
+	function generateReport() {
+		
+		
+	}
+</script>
+
 <style type="text/css">
   body {
     padding-top: 70px;
@@ -23,6 +31,8 @@
 
 <div class="container">
 	<div class="jumbotron">
+		<h1>Patient Report</h1>
+		<hr>
 		<div class="form-group">
 			<label for="sex">Gender: </label>
 			<input type="radio" name="sex" value="male" path="sex" > Male
@@ -36,6 +46,17 @@
 			<input type="radio" name="race" value="mixed" path="race"> Mixed
 			<input type="radio" name="race" value="other" path="race"> Other
 			<input type="radio" name="race" value="unspecified" path="race"> Unspecified <br>
+			
+			<label for="race">Relatives with clubfoot? </label>
+			<input type="radio" name="yes" value="yes" path="yes"> Yes
+			<input type="radio" name="no" value="no" path="no"> No
+			<input type="radio" name="unsure" value="unspecified" path="unsure"> Unspecified <br>
+			
+			<label for="hospital_id">Hospital</label>
+			<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
+            	<form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
+                <form:options items="${hospitalList}" />
+            </form:select><br>
 
 			<label for="race">Before/After </label>
 			<input type="radio" name="after" value="after" path="after"> After
@@ -43,7 +64,7 @@
 			<input type="radio" name="on" value="on" path="on"> On <br>
 			
 			<label for="dob">Date of birth: </label>
-			<input type="date" name="dob" id="dob" class="form-control" path="dob" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
+			<input type="date" name="dob" id="dob" class="form-control" path="dob" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> <br>
 			
 			<label for="race">Before/After </label>
 			<input type="radio" name="after_eval" value="after_eval" path="after_eval"> After
@@ -51,50 +72,37 @@
 			<input type="radio" name="on_eval" value="on_eval" path="on"> On <br>
 			
 			<label for="dob">Evaluation date: </label>
-			<input type="date" name="eval_date" id="eval_date" class="form-control" path="eval_date" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
-			
-			<label for="race">Relatives with clubfoot? </label>
-			<input type="radio" name="yes" value="yes" path="yes"> Yes
-			<input type="radio" name="no" value="no" path="no"> No
-			<input type="radio" name="unsure" value="unsure" path="unsure"> Unsure
-			
-			<div class="form-group">
-					<label for="hospital_id">Hospital</label>
-					<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
-                    <form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
-                    <form:options items="${hospitalList}" />
-                    </form:select><br>
+			<input type="date" name="eval_date" id="eval_date" class="form-control" path="eval_date" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> <br> 
             
-            
-		<a role="button" class="btn btn-primary btn-lg">Generate Report</a>
+            <a role="button" class="btn btn-primary btn-lg" onclick="generateReport()">Generate Report</a>
 		</div>
-		<hr>
-		<table class='table table-striped'>
-		   	<thead>
-		   		<tr>
-		    		<th>ID</th>
-		    		<th>First Name</th>
-		    		<th>Middle Name</th>
-		    		<th>Last Name</th>
-		    	</tr>
-		    </thead>
-	   
-	    	<tbody>
-        	<c:if test="${not empty patients}">
-            <c:forEach var="o" items="${patients}">
-              <tr>
-                  <td><a href="view_patient_info?id=${o.id}">${o.id}</a></td>
-				  <td>${o.patient_firstName}</td>
-				  <td>${o.patient_midName}</td>
-				  <td>${o.patient_lastName}</td>
-				  <td><a href="edit_patient?id=${o.id}">Edit</a></td>
-				  <td><a href="visit?id=${o.id}">Add Visit</a></td>
-              </tr>
-            </c:forEach>
-          </c:if>
-	      </tbody>
-	  </table>
-	</div>	
+	</div>
+	
+	<br>
+		
+	<table id="patients_table" class='table table-striped'>
+	   	<thead>
+	   		<tr>
+	    		<th>ID</th>
+	    		<th>First Name</th>
+	    		<th>Middle Name</th>
+	    		<th>Last Name</th>
+	    	</tr>
+	    </thead>
+   
+    	<tbody>
+	       	<c:if test="${not empty patients}">
+	        	<c:forEach var="o" items="${patients}">
+	            	<tr>
+	                	<td><a href="view_patient_info?id=${o.id}">${o.id}</a></td>
+				  		<td>${o.patient_firstName}</td>
+				  		<td>${o.patient_midName}</td>
+				  		<td>${o.patient_lastName}</td>
+	             	</tr>
+	           	</c:forEach>
+	        </c:if>
+      	</tbody>
+	</table>	
 
 	<hr>
 
