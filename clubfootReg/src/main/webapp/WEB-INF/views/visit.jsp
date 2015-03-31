@@ -101,10 +101,11 @@
 	  $('#description1').hide();
 	  $('#results1').hide();
 	  $('#treatmentComplications1').hide();
-	  $('div.leftFoot').hide();
-	  $('div.rightFoot').hide();
-  //alert("${visit.laterality}");
+	  
+	  //document.getElementById('leftFoot').hide();
+	  //document.getElementById('rightFoot').hide();
 
+	  
   if ("${visit.laterality}" == "Left"){
 	$('div.leftFoot').show();
 	$('#rightPC').prop('required', false);
@@ -121,6 +122,7 @@
 	$('#leftCLB').prop('required', true);
 	$('#rightTreatment').prop('required', false);
 	$('#leftTreatment').prop('required', true);
+	$('div.rightFoot').hide();
 
 	
 
@@ -142,6 +144,7 @@
 	$('#leftCLB').prop('required', false);
 	$('#rightTreatment').prop('required', true);
 	$('#leftTreatment').prop('required', false);
+	$('div.leftFoot').hide();
 
   }
   else if("${visit.laterality}" == "Both"){
@@ -511,7 +514,7 @@
 		  	
 		  	
 		  	<label for="hospitalId"><em>*</em>Hospital/Clinic: </label>
-			<form:select class="form-control" path="hospitalList" id="hospitalId" name="hospitalId" required>
+			<form:select class="form-control" path="hospitalList" id="hospitalId" name="hospitalId">
             	<form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
                 <form:options items="${hospitalList}" />
        		</form:select>
@@ -550,7 +553,7 @@
 		
 		<div class = "form-group">
 			<!--  <button class='toggle'>Hide Left Foot</button>-->
-			<div class = "leftFoot">
+			<div id="leftFoot" class="leftFoot">
  			<fieldset>
 				<legend>Left Foot</legend>
 				<!--  <form>-->
@@ -619,8 +622,8 @@
 				<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "referLeftTrue()" VALUE="R - Refer">R - Refer
 				<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "surgeryLeftTrue()" VALUE="S - Surgery">S - Surgery
 				<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "otherLeftTrue()" VALUE="O - Other">O - Other<br>
-			</fieldset>
-			<!--  
+			
+			
 				<label for = "casterLeft" id = "casterLeft1">Caster: </label>
 	  			<input type="text" name="casterLeft" id = "casterLeft" class="form-control" path="casterLeft">
 	  			
@@ -667,14 +670,14 @@
 		  			<input type="text" name="leftSurgeryComments" id = "leftSurgeryComments" class="form-control" path="leftSurgeryComments">	
 			    </div>
 	  		</fieldset>
-	  		-->
+	  		
 	  	</div>
 		</div>
 		
 		
 		<div class = "form-group">
 			<!-- <button class='toggle'>Hide Right Foot</button> -->
-			<div class = "rightFoot">
+			<div id="rightFoot" class = "rightFoot">
 			<fieldset> 
 				<legend>Right Foot</legend>
 				
