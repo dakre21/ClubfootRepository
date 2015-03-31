@@ -325,7 +325,6 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 				rh.add(hospital);
 			}
 			
-			
 			ps.close();
 			rs.close();
 			return rh;

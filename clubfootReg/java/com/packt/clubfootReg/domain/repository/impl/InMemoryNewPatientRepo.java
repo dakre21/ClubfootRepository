@@ -1116,17 +1116,23 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			}
 			
 			while (rs.next()) {
+				
+				
+				
+				visit = new Visit(patient_id);
+				visit.setId(rs.getInt("id"));
+				
+				
 				if (rs.getString("laterality").equalsIgnoreCase("Left")) {
-					visit = new Visit(patient_id);
-					visit.setId(rs.getInt("id"));
 					visit.setLeftTreatment(rs.getString("treatment"));
 					visit.setLeftPC(rs.getInt("pc"));
 				} 
 				else {
 					visit.setRightTreatment(rs.getString("treatment"));
 					visit.setRightPC(rs.getInt("pc"));
-					visits.add(visit);
 				}
+				
+				visits.add(visit);
 			}
 			
 			rs.close();
