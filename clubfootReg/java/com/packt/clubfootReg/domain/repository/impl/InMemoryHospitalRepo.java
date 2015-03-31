@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.packt.clubfootReg.domain.Evaluator;
 import com.packt.clubfootReg.domain.Hospital;
+import com.packt.clubfootReg.domain.ReportsHospital;
 import com.packt.clubfootReg.domain.repository.HospitalRepo;
 
 import java.sql.Connection; 
@@ -277,6 +278,56 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 			rs.close();
 			ps.close();
 			return regions;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
+
+	@Override
+	public List<ReportsHospital> getAllHospitalsReports() {
+		Connection conn = null; // Resets the connection to the database
+		ReportsHospital hospital = null; // Resets the model
+		List<ReportsHospital> rh = null; // Resets the list
+		
+		/**
+		 * Reseting the database connection to retrieve information that's stored in the mysql database
+		 * via queries that are sent through the open connection. The results of the data received by this class
+		 * is saved in a result set to be displayed in the jsp view. 
+		 */
+		
+		try {
+			conn = dataSource.getConnection();
+			
+		   String sql = "Select a.name as hospitalName, c.name as regionName, count(*) as numOfPatients " + 
+					"from hospital a " + "inner join patient b on a.id = b.hospital_id " + "inner join region c on a.region_id = c.id ";
+		
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			ps.close();
+			
+			if (rs.last()) {
+			  rh = new ArrayList<>(rs.getRow());
+			  rs.beforeFirst(); 
+			}
+			
+			while (rs.next()) {
+				hospital = new ReportsHospital(
+					rs.getString("hospitalName"),
+					rs.getString("regionName"),
+					rs.getInt("numOfPatients")
+				);
+				rh.add(hospital);
+			}
+			rs.close();
+			
+			return rh;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {

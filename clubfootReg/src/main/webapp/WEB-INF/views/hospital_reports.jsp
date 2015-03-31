@@ -54,7 +54,6 @@
 			Hospital Report
 		</h1>
 		<hr>
-	
 		<div class="form-group">
 					<label for="hospital_id">Hospital</label>
 					<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
@@ -68,7 +67,8 @@
 		<label for="all">All Hospitals</label>
 		<input type="checkbox" name="all" id="all" path="all"> <br>
 		<a role="button" class="btn btn-primary btn-lg">Generate Report</a>
-		<!-- <table class='table table-striped'>
+		
+		<table class='table table-striped'>
 		   	<thead>
 		   		<tr>
 		    		<th>Hospital/Clinic Name</th>
@@ -77,17 +77,18 @@
 		    </thead>
 	   
 	    	<tbody>
-        	<c:if test="${not empty hospitals}">
-            <c:forEach var="o" items="${hospitals}">
+        	<c:if test="${not empty hospital_reports}">
+            <c:forEach var="o" items="${hospital_reports}">
               <tr>
-                  <td>${o.name}</td>
-                  <td>${o.region_name}</td>
-                  <td><a href="edit_hospital?id=${o.id}">Edit</a></td>
+                  <td>${o.hospitalName}</td>
+                  <td>${o.regionName}</td>
+                  <td>${o.numOfPatients}</td>
+        
               </tr>
             </c:forEach>
           </c:if>
 	      </tbody>
-	  </table>-->
+	  </table>
 	</div>	
 	</div>
 

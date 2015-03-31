@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import com.packt.clubfootReg.domain.Hospital;
+import com.packt.clubfootReg.domain.ReportsHospital;
 
 /**
  * 
@@ -21,5 +22,7 @@ public interface HospitalRepo {
 	void updateHospital(Hospital hospital); // UpdateHospital method which takes in the hospital object
 	int getMaxHospitalID();	// Method that returns the maxhospitalid
 	List<Hospital> getAllHospitals();	// Map object that has a vector of Integer and String values which getsAllHospitals
+	List<ReportsHospital> getAllHospitalsReports();
+	//Map<Integer, String> getHRP();
 	Map<Integer, String> getAllRegions();
 }
