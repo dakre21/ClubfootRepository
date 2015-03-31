@@ -149,8 +149,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		String sql_abstract_person_pg = "Insert into abstract_person (id, created, first_name, last_name, middle_name) "
 								      + "values (?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into abstract_person
 		String sql_associate_pg = "Insert into associate (id) values (?)"; // First sql statement that contains the information to query into associate person
-		String sql_patient_associates_pg = "Insert into patient_associates (patient_id, associate_id, relationship_to_patient, is_emergency_contact) "
-							             + "values (?, ?, ?, ?)"; // First sql statement that contains the information to query into associate person guardian
+		String sql_patient_associates_pg = "Insert into patient_associates (patient_id, associate_id, relationship_to_patient, phone1, phone2, is_emergency_contact) "
+							             + "values (?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into associate person guardian
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); // Sets up the date format for data to be properly synchronized to the database
 		Date date = new Date(); // Instantiation of the Date class
@@ -318,10 +318,12 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			*/
 			
 			ps.setString(3, guardian_relationship);
+			ps.setString(4, guardian_phone1);
+			ps.setString(5, guardian_phone2);
 			if(emergency_contact.equalsIgnoreCase("Primary")) {
-				ps.setInt(4, 1);
+				ps.setInt(6, 1);
 			} else {
-				ps.setInt(4, 0);
+				ps.setInt(6, 0);
 			}
 			ps.executeUpdate();
 			ps.close();
@@ -348,10 +350,12 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				ps.setInt(1, patient_id);
 				ps.setInt(2, pg_id);
 				ps.setString(3, second_guardian_relationship);
+				ps.setString(4, second_guardian_phone1);
+				ps.setString(5, second_guardian_phone2);
 				if(emergency_contact.equalsIgnoreCase("Secondary")) {
-					ps.setInt(4, 1);
+					ps.setInt(6, 1);
 				} else {
-					ps.setInt(4, 0);
+					ps.setInt(6, 0);
 				}
 				ps.executeUpdate();
 				ps.close();
@@ -379,10 +383,12 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				ps.setInt(1, patient_id);
 				ps.setInt(2, pg_id);
 				ps.setString(3, other_guardian_relationship);
+				ps.setString(4, other_guardian_phone1);
+				ps.setString(5, other_guardian_phone2);
 				if(emergency_contact.equalsIgnoreCase("Other")) {
-					ps.setInt(4, 1);
+					ps.setInt(6, 1);
 				} else {
-					ps.setInt(4, 0);
+					ps.setInt(6, 0);
 				}
 				ps.executeUpdate();
 				ps.close();
@@ -502,7 +508,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 							 "deformity_at_birth = ?, prenatal_week = ?, prenatal_confirmed = ?, sex = ?, race = ? " +
 							 "where id = ?";
 		
-		String sql_patient_associates = "Update patient_associates set relationship_to_patient = ?, is_emergency_contact = ? " +
+		String sql_patient_associates = "Update patient_associates set relationship_to_patient = ?, phone1 = ?, phone2 = ?, is_emergency_contact = ? " +
 										"where patient_id = ? and associate_id = ?";
 		
 		Connection conn = null;
@@ -622,13 +628,15 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				// PATIENT ASSOCIATES
 				ps = conn.prepareStatement(sql_patient_associates);
 				ps.setString(1, guardian_relationship);
+				ps.setString(2, guardian_phone1);
+				ps.setString(3, guardian_phone2);
 				if(emergency_contact.equalsIgnoreCase("Primary")) {
-					ps.setInt(2, 1);
+					ps.setInt(4, 1);
 				} else {
-					ps.setInt(2, 0);
+					ps.setInt(4, 0);
 				}
-				ps.setInt(3, id);
-				ps.setInt(4, associate_ids[0]);
+				ps.setInt(5, id);
+				ps.setInt(6, associate_ids[0]);
 				ps.executeUpdate();
 				ps.close();
 			}
@@ -647,13 +655,15 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				// PATIENT ASSOCIATES
 				ps = conn.prepareStatement(sql_patient_associates);
 				ps.setString(1, second_guardian_relationship);
+				ps.setString(2, second_guardian_phone1);
+				ps.setString(3, second_guardian_phone2);
 				if(emergency_contact.equalsIgnoreCase("Secondary")) {
-					ps.setInt(2, 1);
+					ps.setInt(4, 1);
 				} else {
-					ps.setInt(2, 0);
+					ps.setInt(4, 0);
 				}
-				ps.setInt(3, id);
-				ps.setInt(4, associate_ids[1]);
+				ps.setInt(5, id);
+				ps.setInt(6, associate_ids[1]);
 				ps.executeUpdate();
 				ps.close();
 			}
@@ -672,13 +682,15 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				// PATIENT ASSOCIATES
 				ps = conn.prepareStatement(sql_patient_associates);
 				ps.setString(1, other_guardian_relationship);
+				ps.setString(2, other_guardian_phone1);
+				ps.setString(3, other_guardian_phone2);
 				if(emergency_contact.equalsIgnoreCase("Other")) {
-					ps.setInt(2, 1);
+					ps.setInt(4, 1);
 				} else {
-					ps.setInt(2, 0);
+					ps.setInt(4, 0);
 				}
-				ps.setInt(3, id);
-				ps.setInt(4, associate_ids[2]);
+				ps.setInt(5, id);
+				ps.setInt(6, associate_ids[2]);
 				ps.executeUpdate();
 				ps.close();
 			}
@@ -766,7 +778,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			
 			
 			// Guardian/Emergency Contact Info
-			sql = "select a.id, b.relationship_to_patient, b.is_emergency_contact, c.is_affected, d.first_name, d.last_name, d.middle_name " +
+			sql = "select a.id, b.relationship_to_patient, b.phone1, b.phone2, b.is_emergency_contact, c.is_affected, d.first_name, d.last_name, d.middle_name " +
 				  "from patient a " +
 				  "inner join patient_associates b on a.id = b.patient_id " +
 				  "inner join associate c on b.associate_id = c.id " +
@@ -780,6 +792,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			while (rs3.next()) {
 				if (count == 0) {
 					patient.setGuardian_relationship(rs3.getString("relationship_to_patient"));
+					patient.setGuardian_phone1(rs3.getString("phone1"));
+					patient.setGuardian_phone2(rs3.getString("phone2"));
 					patient.setGuardian_firstName(rs3.getString("first_Name"));
 					patient.setGuardian_lastName(rs3.getString("last_name"));
 					patient.setGuardian_midName(rs3.getString("middle_name"));
@@ -789,6 +803,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				}
 				else if (count == 1) {
 					patient.setSecond_guardian_relationship(rs3.getString("relationship_to_patient"));
+					patient.setSecond_guardian_phone1(rs3.getString("phone1"));
+					patient.setSecond_guardian_phone2(rs3.getString("phone2"));
 					patient.setSecond_guardian_first(rs3.getString("first_Name"));
 					patient.setSecond_guardian_last(rs3.getString("last_name"));
 					patient.setSecond_guardian_mid(rs3.getString("middle_name"));
@@ -798,6 +814,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				}
 				else {
 					patient.setOther_guardian_relationship(rs3.getString("relationship_to_patient"));
+					patient.setOther_guardian_phone1(rs3.getString("phone1"));
+					patient.setOther_guardian_phone2(rs3.getString("phone2"));
 					patient.setOther_guardian_first(rs3.getString("first_Name"));
 					patient.setOther_guardian_last(rs3.getString("last_name"));
 					patient.setOther_guardian_mid(rs3.getString("middle_name"));

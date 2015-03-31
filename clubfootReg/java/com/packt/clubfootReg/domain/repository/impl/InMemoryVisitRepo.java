@@ -649,14 +649,14 @@ public class InMemoryVisitRepo implements VisitRepo{
 				visit.setCasterRight(rs.getInt("primary_caster_right_id"));
 				visit.setPatientId(rs.getInt("patient_id"));
 				visit.setHospitalId(rs.getInt("hospital_id"));
-				//visit.setDateOfVisit(rs.getString("dateOfVisit"));
+				visit.setDateOfVisit(rs.getString("visit_date"));
 				visit.setIsLastVisit(rs.getString("is_last_visit"));
 				visit.setNextVisitDate(rs.getString("next_visit_date"));
 				visit.setRelapse(rs.getString("relapse"));
 				visit.setComplications(rs.getString("complications"));
 				visit.setComments(rs.getString("general_comments"));
 				visit.setDescription(rs.getString("complications_description"));
-				//visit.setTreatmentComplications(rs.getString("treatmentComplications"));
+				visit.setTreatmentComplications(rs.getString("complications_treatment"));
 				visit.setResults(rs.getString("complications_results"));
 				
 				//visit.setCasterLeft(rs.getInt("casterLeft"));

@@ -71,10 +71,10 @@
 			<div class = "form-group">
 				<label><b>Hospital/Clinic:&nbsp;</b></label><label>${visit.hospitalId}</label><br>
 				<label><b>Name of Evaluator:&nbsp;</b></label><label>${visit.evaluatorId}</label><br>
-				<label><b>Date of Visit:&nbsp;</b></label><label>   </label><br>
-				<label><b>Date of Next Visit:&nbsp;</b></label><label>   </label><br>
-				<label><b>Is this the Patient's Final Visit:&nbsp;</b></label><label>   </label><br>
-				<label><b>Did the Patient Experience a relapse:&nbsp;</b></label><label>${visit.relapse }</label><br>
+				<label><b>Date of Visit:&nbsp;</b></label><label>${visit.dateOfVisit}</label><br>
+				<label><b>Date of Next Visit:&nbsp;</b></label><label>${visit.nextVisitDate}</label><br>
+				<label><b>Is this the Patient's Final Visit:&nbsp;</b></label><label>${visit.isLastVisit}</label><br>
+				<label><b>Did the Patient Experience a relapse:&nbsp;</b></label><label>${visit.relapse}</label><br>
 			</div>
 
 			<div class = "form-group">
@@ -101,8 +101,6 @@
 		
 					<legend>Treatment</legend>
 						<label><b>Type:&nbsp;</b></label><label>${visit.leftTreatment }   </label><br>
-						<!--  	<label><b>Pending on type:&nbsp;</b></label><label>   </label><br>
-							<label><b>Pending on type:&nbsp;</b></label><label>   </label><br> -->
   				</fieldset>
 			</div>
 			
@@ -130,9 +128,6 @@
 		
 					<legend>Treatment</legend>
 						<label><b>Type:&nbsp;</b></label><label>${visit.rightTreatment }   </label><br>
-						<!--  	
-						<label><b>Pending on type:&nbsp;</b></label><label>   </label><br>
-						<label><b>Pending on type:&nbsp;</b></label><label>   </label><br> -->
   				</fieldset>
 			</div>
 
