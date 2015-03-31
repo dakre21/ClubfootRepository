@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import com.packt.clubfootReg.domain.ReportsHospital;
+import com.packt.clubfootReg.domain.ReportsPatients;
 import com.packt.clubfootReg.domain.Visit;
 import com.packt.clubfootReg.domain.newPatient;
 
@@ -27,6 +29,7 @@ public interface newPatientRepo {
 	int getMaxAddressID();// Method that returns the maxaddressid
 	int[] getAssociateIDsForPatient(int id);	// Method that returns associateidforpatient
 	void addPhoto(byte[] bytes);
+	List<ReportsPatients> getAllPatientsReports();
 	Map<Integer, String> getAllHospitals();
 	Map<Integer, String> getAllEvaluators();
 	List<Visit> getVisitsForPatient(int patient_id);
