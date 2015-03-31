@@ -1117,18 +1117,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			
 			while (rs.next()) {
 				visit = new Visit(
-					rs.getInt("id"),
-					rs.getInt("consent_inclusion"),
-					rs.getInt("consent_photos"),
-					rs.getInt("hospital_id"),
-					rs.getString("first_name"),
-					rs.getString("last_name"),
-					rs.getString("middle_name"),
-					rs.getString("dob"),
-					rs.getInt("evaluator_id"),
-					rs.getString("evaluation_date"),
-					rs.getString("feet_affected"),
-					rs.getString("diagnosis")
+
 				);
 				visits.add(visit);
 			}
