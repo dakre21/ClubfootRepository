@@ -194,6 +194,10 @@
 	    document.getElementById("defUn").checked = true;
 	  }
 	  
+<<<<<<< HEAD
+=======
+
+>>>>>>> 28c75c2bb1ba1d7d84de318de16d30052f61bbbb
 	  if ("${patient.pregnancy_complications_explained}"){
 		document.getElementById("pregCompYes").checked = true;
 		$('#preg_complications_explained1').show();
