@@ -1,5 +1,10 @@
 package com.packt.clubfootReg.domain;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  * 
  * @author David
@@ -91,6 +96,7 @@ public class Visit {
 	private String description;
 	private String treatmentComplications;
 	private String results;
+	private String laterality;
 	
 	public Visit() {
 		// TODO Auto-generated constructor stub
@@ -112,6 +118,15 @@ public class Visit {
 		// TODO Auto-generated method stub
 
 	}
+	
+	
+	public String getLaterality(){
+		return laterality;
+	}
+	public void setLaterality(String laterality){
+		this.laterality = laterality;
+	}
+	
 	public Integer getCasterLeft(){
 		return casterLeft;
 	}
