@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html"; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
@@ -101,7 +101,67 @@
 	  $('#description1').hide();
 	  $('#results1').hide();
 	  $('#treatmentComplications1').hide();
+	  $('div.leftFoot').hide();
+	  $('div.rightFoot').hide();
+  //alert("${visit.laterality}");
 
+  if ("${visit.laterality}" == "Left"){
+	$('div.leftFoot').show();
+	$('#rightPC').prop('required', false);
+	$('#leftPC').prop('required', true);
+    $('#rightEH').prop('required', false);
+	$('#leftEH').prop('required', true);
+	$('#rightRE').prop('required', false);
+	$('#leftRE').prop('required', true);
+	$('#rightMC').prop('required', false);
+	$('#leftMC').prop('required', true);
+	$('#rightTHC').prop('required', false);
+	$('#leftTHC').prop('required', true);
+	$('#rightCLB').prop('required', false);
+	$('#leftCLB').prop('required', true);
+	$('#rightTreatment').prop('required', false);
+	$('#leftTreatment').prop('required', true);
+
+	
+
+  }
+  else if("${visit.laterality}" == "Right"){
+
+	$('div.rightFoot').show();
+	$('#rightPC').prop('required', true);
+	$('#leftPC').prop('required', false);
+    $('#rightEH').prop('required', true);
+	$('#leftEH').prop('required', false);
+	$('#rightRE').prop('required', true);
+	$('#leftRE').prop('required', false);
+	$('#rightMC').prop('required', true);
+	$('#leftMC').prop('required', false);
+	$('#rightTHC').prop('required', true);
+	$('#leftTHC').prop('required', false);
+	$('#rightCLB').prop('required', true);
+	$('#leftCLB').prop('required', false);
+	$('#rightTreatment').prop('required', true);
+	$('#leftTreatment').prop('required', false);
+
+  }
+  else if("${visit.laterality}" == "Both"){
+  }
+  	$('div.leftFoot').show();
+	$('div.rightFoot').show();
+	$('#rightPC').prop('required', true);
+	$('#leftPC').prop('required', true);
+    $('#rightEH').prop('required', true);
+	$('#leftEH').prop('required', true);
+	$('#rightRE').prop('required', true);
+	$('#leftRE').prop('required', true);
+	$('#rightMC').prop('required', true);
+	$('#leftMC').prop('required', true);
+	$('#rightTHC').prop('required', true);
+	$('#leftTHC').prop('required', true);
+	$('#rightCLB').prop('required', true);
+	$('#leftCLB').prop('required', true);
+	$('#rightTreatment').prop('required', true);
+	$('#leftTreatment').prop('required', true);
   }
   
 
@@ -398,6 +458,11 @@
 	  $('#description1').show();
 	  $('#results1').show();
 	  $('#treatmentComplications1').show();
+	  $('#treatmentComplications').prop('required', true);
+	  $('#description').prop('required', true);
+
+
+
 	  
   }
   function complicationsFalse(){
@@ -407,18 +472,23 @@
 	  $('#description1').hide();
 	  $('#results1').hide();
 	  $('#treatmentComplications1').hide();
+	  $('#treatmentComplications').prop('required', false);
+	  $('#description').prop('required', false);
   }
   
   function lastVisitTrue(){
 	  $('#nextVisitDate').hide();
 	  $('#dateOfNextVisit1').hide();
+	  $('#nextVisitDate').prop('required', false);
+
   }
   function lastVisitFalse(){
 	  $('#nextVisitDate').show();
 	  $('#dateOfNextVisit1').show();
+	  $('#nextVisitDate').prop('required', true);
+
   }
   
-  //alert("${visit.laterality}");
   
   </script>
   <jsp:include page="navbar.jsp" />
@@ -441,7 +511,7 @@
 		  	
 		  	
 		  	<label for="hospitalId"><em>*</em>Hospital/Clinic: </label>
-			<form:select class="form-control" path="hospitalList" id="hospitalId" name="hospitalId">
+			<form:select class="form-control" path="hospitalList" id="hospitalId" name="hospitalId" required>
             	<form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
                 <form:options items="${hospitalList}" />
        		</form:select>
@@ -461,7 +531,7 @@
 	  		-->
 	  		
 	  		<label for="dateOfVisit"><em>*</em>Date of visit: </label>
-			<input type="date" name="dateOfVisit" id="dateOfVisit" class="form-control" path="dateOfVisit" placeholder="dd/mm/yyyy"   validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
+			<input type="date" name="dateOfVisit" id="dateOfVisit" class="form-control" path="dateOfVisit" placeholder="dd/mm/yyyy"   validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy" required> 
 	  		<br>
 	  		
 		  	<label for = "isLastVisit">Is this the patient's final treatment visit? </label>
@@ -480,6 +550,7 @@
 		
 		<div class = "form-group">
 			<!--  <button class='toggle'>Hide Left Foot</button>-->
+			<div class = "leftFoot">
  			<fieldset>
 				<legend>Left Foot</legend>
 				<!--  <form>-->
@@ -597,11 +668,13 @@
 			    </div>
 	  		</fieldset>
 	  		-->
+	  	</div>
 		</div>
 		
 		
 		<div class = "form-group">
 			<!-- <button class='toggle'>Hide Right Foot</button> -->
+			<div class = "rightFoot">
 			<fieldset> 
 				<legend>Right Foot</legend>
 				
@@ -713,15 +786,16 @@
 			</fieldset>
 			-->
 		</div>
+		</div>
 	
 		<div class = "form-group">
 			<fieldset>
 				<legend>Complications</legend>
 				
 				<label for = "complications"><em>*</em>Were there any complications? </label>	
-				<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsFalse()"VALUE="No">No
-				<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsTrue()" VALUE="Yes">Yes
-				<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsFalse()" VALUE="Unspecified">Unspecified<br>
+				<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsFalse()"VALUE="No" required>No
+				<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsTrue()" VALUE="Yes" required>Yes
+				<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsFalse()" VALUE="Unspecified" required>Unspecified<br>
 				
 				<label for = "description" id = "description1"><em>*</em>Description of complication(s): </label>
 	  			<input type="text" name="description" id = "description" class="form-control" path="description">
