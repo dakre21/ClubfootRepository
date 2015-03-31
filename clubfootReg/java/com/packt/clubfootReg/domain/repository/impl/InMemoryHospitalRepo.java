@@ -310,7 +310,6 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
-			ps.close();
 			
 			if (rs.last()) {
 			  rh = new ArrayList<>(rs.getRow());
@@ -325,8 +324,10 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 				);
 				rh.add(hospital);
 			}
-			rs.close();
 			
+			
+			ps.close();
+			rs.close();
 			return rh;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

@@ -69,21 +69,22 @@
 		<a role="button" class="btn btn-primary btn-lg">Generate Report</a>
 		
 		<table class='table table-striped'>
-		   	<thead>
-		   		<tr>
-		    		<th>Hospital/Clinic Name</th>
-		    		<th>Region</th>
-		    	</tr>
-		    </thead>
 	   
 	    	<tbody>
         	<c:if test="${not empty hospital_reports}">
             <c:forEach var="o" items="${hospital_reports}">
+              <thead>
+		   		<tr>
+		    		<th>${o.hospitalName}</th>
+		    	</tr>
+		    </thead>
+		      <tr>
+		      		<th>Region</th>
+		    		<th>Number of patients</th>
+		      </tr>
               <tr>
-                  <td>${o.hospitalName}</td>
                   <td>${o.regionName}</td>
                   <td>${o.numOfPatients}</td>
-        
               </tr>
             </c:forEach>
           </c:if>
