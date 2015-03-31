@@ -435,18 +435,29 @@
 		  	
 		  	<input type="hidden" class="form-control" name="patientId" path="patientId" value="${visit.patientId}">
 		  	
-		  	<label for="hospital"><em>*</em>Hospital/Clinic: </label>
-			<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
+		  	<label for="hospitalId"><em>*</em>Hospital/Clinic: </label>
+			<form:select class="form-control" path="hospitalList" id="hospitalId" name="hospitalId">
             	<form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
                 <form:options items="${hospitalList}" />
        		</form:select>
+		  	<br>
 		  	
+		  	<label for="evaluatorId">Evaluator</label>
+			<form:select class="form-control" path="evaluatorList" id="evaluatorId" name="evaluatorId">
+            	<form:option value="" label="Select an Evaluator" disabled="true" selected="true" style="display: none;"/>
+                <form:options items="${evaluatorList}" />
+            </form:select>
+            <br>
+		  	
+		  	<!-- 
 	  		<label for = "evaluatorId"><em>*</em>Name of Evaluator:</label>
 	  		<input type="text" name="evaluatorId" class="form-control" path="evaluatorId" >
 	  		<a href="evaluator">Add evaluator</a> <br>
+	  		-->
 	  		
 	  		<label for="dateOfVisit"><em>*</em>Date of visit: </label>
 			<input type="date" name="dateOfVisit" id="dateOfVisit" class="form-control" path="dateOfVisit" placeholder="dd/mm/yyyy"   validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
+	  		<br>
 	  		
 		  	<label for = "isLastVisit">Is this the patient's final treatment visit? </label>
 			<INPUT TYPE="radio" NAME="isLastVisit" path="isLastVisit" onClick = "lastVisitTrue()" VALUE="Yes">Yes

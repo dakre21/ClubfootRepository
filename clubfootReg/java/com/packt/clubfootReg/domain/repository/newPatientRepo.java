@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import com.packt.clubfootReg.domain.Visit;
 import com.packt.clubfootReg.domain.newPatient;
 
 /**
@@ -28,4 +29,5 @@ public interface newPatientRepo {
 	void addPhoto(byte[] bytes);
 	Map<Integer, String> getAllHospitals();
 	Map<Integer, String> getAllEvaluators();
+	List<Visit> getVisitsForPatient(int patient_id);
 }

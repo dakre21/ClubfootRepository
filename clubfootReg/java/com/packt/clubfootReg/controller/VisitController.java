@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.packt.clubfootReg.domain.Visit;
+import com.packt.clubfootReg.domain.newPatient;
 import com.packt.clubfootReg.domain.repository.HospitalRepo;
 import com.packt.clubfootReg.domain.repository.VisitRepo;
 import com.packt.clubfootReg.domain.repository.newPatientRepo;
@@ -48,8 +49,9 @@ public class VisitController {
 	
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value = "/visit", method = RequestMethod.GET)	// Gets the visit view
-	public ModelAndView editPatientForm(HttpServletRequest request) {
-	    Visit visit = new Visit(Integer.parseInt(request.getParameter("id")));	// Instantiation of visit and passes parses an integer from the getParameter method for "id"
+	public ModelAndView addVisitForm(HttpServletRequest request) {
+		int patient_id = Integer.parseInt(request.getParameter("id"));
+	    Visit visit = new Visit(patient_id);	// Instantiation of visit and passes parses an integer from the getParameter method for "id"
 	    ModelAndView model = new ModelAndView("visit");	// Model passes the "visit" view to it
 		model.addObject("visit", visit);	// Adds an object called visit to the model
 	    return model;// Returns the model 
@@ -84,12 +86,17 @@ public class VisitController {
         visitRepo.addVisit(visit);
 		return "view_visit";
 	}*/
-	/*
+	
 	@ModelAttribute("hospitalList")
 	public Map<Integer, String> populateHospitalSelect() {
 	    return visitRepo.getAllHospitals();
 	}
-	*/
+	
+	@ModelAttribute("evaluatorList")
+	public Map<Integer, String> populateEvaluatorSelect() {
+	    return visitRepo.getAllEvaluators();
+	}
+	
 	public VisitController() {
 		// TODO Auto-generated constructor stub
 	}

@@ -206,16 +206,18 @@
 
 					    	</tr>
 					    </thead>
-				    	<tbody>
-			              	<tr>
-			                	<td></td>
-							  	<td></td>
-							  	<td></td>
-							 	<td></td>
-							  	<td></td>
-							  	<td><a href="">View Details</a></td>
-			              	</tr>
-				      	</tbody>
+				    	<c:if test="${not empty visits}">
+				            <c:forEach var="o" items="${visits}">
+				            	<tr>
+								  	<td>${o.dateOfVisit}</td>
+								  	<td>${o.leftTreatment}</td>
+								  	<td>${o.rightTreatment}</td>
+								  	<td>${o.leftPC}</td>
+								  	<td>${o.rightPC}</td>
+								  	<td><a href="view_visit_info?id=${o.id}">View Details</a></td>
+				              	</tr>
+				            </c:forEach>
+				    	</c:if>
 				  	</table>
 				</div>
 			</fieldset>
