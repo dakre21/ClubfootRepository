@@ -53,6 +53,7 @@ public class VisitController {
 	public ModelAndView addVisitForm(HttpServletRequest request) {
 		int patient_id = Integer.parseInt(request.getParameter("id"));
 	    Visit visit = new Visit(patient_id);	// Instantiation of visit and passes parses an integer from the getParameter method for "id"
+	    visit.setLaterality(visitRepo.getLateralityForPatient(patient_id));
 	    ModelAndView model = new ModelAndView("visit");	// Model passes the "visit" view to it
 		model.addObject("visit", visit);	// Adds an object called visit to the model
 	    return model;// Returns the model 
@@ -78,10 +79,9 @@ public class VisitController {
 	public ModelAndView view_visit_infoForm(HttpServletRequest request){
 		ModelAndView model = new ModelAndView("view_visit_info");	// Passes the view_patient_info view to the model
 		int visit_id = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call
-		    
 		Visit visit = visitRepo.getVisit(visit_id);	// Gets patient_id from newpatient repo's method getPatient
+		//visit.setLaterality(visitRepo.getLateralityWithVisitId(visit_id));
 		model.addObject("visit", visit);	// Adds an object called patient to the model
-		    
 		return model;	// Returns the model
 	}
 	
@@ -90,6 +90,7 @@ public class VisitController {
 	public ModelAndView editVisitForm(HttpServletRequest request) {
 	    int visit_id = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call and finds "id"
 	    Visit visit = visitRepo.getVisit(visit_id);	// Method call oneditrepo to get the edit id
+	    //visit.setLaterality(visitRepo.getLateralityWithVisitId(visit_id));
 	    ModelAndView model = new ModelAndView("edit_visit");	// Instantiation of ModelAndView and passes "edit_visit" view to it
 	    model.addObject("visit", visit);	// Adds the object visit to the model
 	    return model;	// Returns the model

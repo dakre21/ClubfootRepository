@@ -417,6 +417,9 @@
 	  $('#nextVisitDate').show();
 	  $('#dateOfNextVisit1').show();
   }
+  
+  //alert("${visit.laterality}");
+  
   </script>
   <jsp:include page="navbar.jsp" />
 </head>
@@ -434,6 +437,8 @@
 			<p><i>Please complete the form. Mandatory fields are marked with a </i><em>*</em></p>
 		  	
 		  	<input type="hidden" class="form-control" name="patientId" path="patientId" value="${visit.patientId}">
+		  	
+		  	
 		  	
 		  	<label for="hospitalId"><em>*</em>Hospital/Clinic: </label>
 			<form:select class="form-control" path="hospitalList" id="hospitalId" name="hospitalId">

@@ -28,4 +28,5 @@ public interface VisitRepo {
 	List<ReportsVisits> getAllVisitsReports();
 	Map<Integer, String> getAllHospitals();
 	Map<Integer, String> getAllEvaluators();
+	String getLateralityForPatient(int id);
 }

@@ -566,6 +566,37 @@ public class InMemoryVisitRepo implements VisitRepo{
 		}
 	}
 	
+	
+	public String getLateralityForPatient(int id) {
+		Connection conn = null; // Resets the connection to the database
+		String lat = "";
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select feet_affected from patient where id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				lat = rs.getString(1);
+			} 
+			
+			rs.close();
+			ps.close();
+			return lat;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
+	
 	/**
 	 * 
 	 * Method that returns a mapped vector of int and string values for all hosptials
