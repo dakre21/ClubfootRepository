@@ -30,6 +30,7 @@ import java.sql.PreparedStatement;
 
 
 
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -549,8 +550,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			
 			ps.setString(1, diagnosis);
 			ps.setString(2, diagnosis_comments);
-			//ps.setInt(3, evaluator); /// <--- THIS IS NOT WORKING
-			ps.setInt(3, 0);
+			ps.setInt(3, evaluator);
 			ps.setInt(4, hospital);
 			ps.setString(5, feet);
 			ps.setString(6, evaluation_date);
@@ -1101,13 +1101,13 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "select a.id, a.consent_inclusion, a.consent_photos, a.hospital_id, b.first_name, b.last_name, " +
-		    		            "b.middle_name, a.dob, a.evaluator_id, a.evaluation_date, a.feet_affected, a.diagnosis, " +
-		    		            "a.sex, a.race " +
-		    		     "from patient a " +
-		    		     "inner join abstract_person b on a.id = b.id " +
-		    		     "order by a.id";
+			String sql = "select a.id, b.treatment, b.pc, b.laterality " +
+						 "from visit a " +
+						 "inner join foot b on a.id = b.visit_id " +
+						 "where a.patient_id = ? " +
+						 "order by a.id, b.laterality";
 			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, patient_id);
 			ResultSet rs = ps.executeQuery();
 			
 			if (rs.last()) {
@@ -1116,22 +1116,19 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			}
 			
 			while (rs.next()) {
-				visit = new Visit(
-					rs.getInt("id"),
-					rs.getInt("consent_inclusion"),
-					rs.getInt("consent_photos"),
-					rs.getInt("hospital_id"),
-					rs.getString("first_name"),
-					rs.getString("last_name"),
-					rs.getString("middle_name"),
-					rs.getString("dob"),
-					rs.getInt("evaluator_id"),
-					rs.getString("evaluation_date"),
-					rs.getString("feet_affected"),
-					rs.getString("diagnosis")
-				);
-				visits.add(visit);
+				if (rs.getString("laterality").equalsIgnoreCase("Left")) {
+					visit = new Visit(patient_id);
+					visit.setId(rs.getInt("id"));
+					visit.setLeftTreatment(rs.getString("treatment"));
+					visit.setLeftPC(rs.getInt("pc"));
+				} 
+				else {
+					visit.setRightTreatment(rs.getString("treatment"));
+					visit.setRightPC(rs.getInt("pc"));
+					visits.add(visit);
+				}
 			}
+			
 			rs.close();
 			ps.close();
 			return visits;
