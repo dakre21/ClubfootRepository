@@ -102,12 +102,17 @@
 	  $('#results1').hide();
 	  $('#treatmentComplications1').hide();
 
-  if ("${visit.isLastVisit}" == "Yes")
+  if ("${visit.isLastVisit}" == "Yes"){
 	document.getElementById("lvYes").checked = true;
-  else if("${visit.isLastVisit}" == "No")
+  }
+  else if("${visit.isLastVisit}" == "No"){
 	document.getElementById("lvNo").checked = true;
-  else if("${visit.isLastVisit}" == "Unspecified")
+	$('#nextVisitDate').show();
+	$('#dateOfNextVisit1').show();
+  }
+  else if("${visit.isLastVisit}" == "Unspecified"){
 	document.getElementById("lvUn").checked = true;
+  }
 
   if ("${visit.relapse}" == "Yes")
 	document.getElementById("relapseYes").checked = true;
@@ -306,12 +311,22 @@
   else if("${visit.surgeryRight}" == "Other")
 	document.getElementById("SR10").checked = true;
 */
-  if ("${visit.complications}" == "No")
+  if ("${visit.complications}" == "No"){
 	document.getElementById("compNo").checked = true;
-  else if("${visit.complications}" == "Yes")
+  }
+  else if("${visit.complications}" == "Yes"){
 	document.getElementById("compYes").checked = true;
+	$('#description').show();
+	$('#results').show();
+	$('#treatmentComplications').show();
+	$('#description1').show();
+	$('#results1').show();
+	$('#treatmentComplications1').show();
+  }
   else if("${visit.complications}" == "Unspecified")
+  {
 	document.getElementById("compUn").checked = true;
+  }
 
   $("#hospitalId").val("${visit.hospitalId}");
   $("#evaluatorId").val("${visit.evaluatorId}");

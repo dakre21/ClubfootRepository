@@ -533,7 +533,7 @@
 				<INPUT TYPE="radio" NAME="leftCLB" path="leftCLB" VALUE="0">0	
 			</fieldset>
 			
-			<!-- 
+			
 			<fieldset>
 				<label for = "leftTreatment"><em>*</em>Treatment: </label>	
 				<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "noneLeftTrue()" VALUE="None">None
@@ -543,7 +543,8 @@
 				<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "referLeftTrue()" VALUE="R - Refer">R - Refer
 				<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "surgeryLeftTrue()" VALUE="S - Surgery">S - Surgery
 				<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "otherLeftTrue()" VALUE="O - Other">O - Other<br>
-				
+			</fieldset>
+			<!--  
 				<label for = "casterLeft" id = "casterLeft1">Caster: </label>
 	  			<input type="text" name="casterLeft" id = "casterLeft" class="form-control" path="casterLeft">
 	  			
@@ -654,7 +655,7 @@
 				<INPUT TYPE="radio" NAME="rightCLB" path="rightCLB" VALUE="0">0	
 			</fieldset>
 			
-			<!-- 
+			
 			<fieldset>
 				<label for = "rightTreatment"><em>*</em>Treatment: </label>	
 				<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "noneRightTrue()" VALUE="none">None
@@ -664,6 +665,9 @@
 				<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "referRightTrue()" VALUE="R - Refer">R - Refer
 				<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "surgeryRightTrue()" VALUE="S-Surgery">S - Surgery
 				<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "otherRightTrue()" VALUE="O-Other">O - Other<br>
+			</fieldset>
+			<!--  	
+				
 				<label for = "casterRight" id = "casterRight1">Caster: </label>
 	  			<input type="text" name="casterRight" id = "casterRight" class="form-control" path="casterRight">
 	  			<label for = "castRightNum" id = "castRightNum1">Casting Number: </label>
