@@ -75,12 +75,12 @@
 	<input type = "hidden" name = "submitted" value = "true" />
 		<div class = "form-group">
 		
-			<label><b>Hospital/Clinic:&nbsp</b></label><label>   </label><br>
-			<label><b>Name of Evaluator:&nbsp</b></label><label>   </label><br>
+			<label><b>Hospital/Clinic:&nbsp</b></label><label>${visit.hospital_id }   </label><br>
+			<label><b>Name of Evaluator:&nbsp</b></label><label>${visit.evaluator_id }   </label><br>
 			<label><b>Date of Visit:&nbsp</b></label><label>   </label><br>
 			<label><b>Date of Next Visit:&nbsp</b></label><label>   </label><br>
 			<label><b>Is this the Patient's Final Visit:&nbsp</b></label><label>   </label><br>
-			<label><b>Did the Patient Experience a relapse:&nbsp</b></label><label>   </label><br>
+			<label><b>Did the Patient Experience a relapse:&nbsp</b></label><label>${visit.relapse }   </label><br>
 	
 		</div>
 
@@ -88,34 +88,34 @@
  			<fieldset>
 				<legend>Left Foot</legend>
 
-					<label><b>Varus:&nbsp</b></label><label>   </label><br>
-					<label><b>Cavus:&nbsp</b></label><label>   </label><br>
-					<label><b>Degrees Abductus:&nbsp</b></label><label>   </label><br>
-					<label><b>Degrees Equinus:&nbsp</b></label><label>   </label><br>
+					<label><b>Varus:&nbsp</b></label><label>${visit.hindfootLeftVarus }   </label><br>
+					<label><b>Cavus:&nbsp</b></label><label>${visit.hindfootLeftCarus }  </label><br>
+					<label><b>Degrees Abductus:&nbsp</b></label><label>${visit.hindfootLeftAbductus }   </label><br>
+					<label><b>Degrees Equinus:&nbsp</b></label><label> ${visit.hindfootLeftEquinus }  </label><br>
   
   					<fieldset>
 						<legend> Pirani Scores (Hindfoot) </legend>
 
-							<label><b>Posterior crease:&nbsp</b></label><label>   </label><br>
-							<label><b>Empty Heel:&nbsp</b></label><label>   </label><br>
-							<label><b>Rigid Equinus:&nbsp</b></label><label>   </label><br>
+							<label><b>Posterior crease:&nbsp</b></label><label>${visit.leftPC }   </label><br>
+							<label><b>Empty Heel:&nbsp</b></label><label>${visit.leftEH }   </label><br>
+							<label><b>Rigid Equinus:&nbsp</b></label><label>${visit.leftRE }   </label><br>
 
 					</fieldset>
 		
 					<fieldset>
 						<legend> Pirani Scores (Midfoot) </legend>
 
-							<label><b>Medial crease:&nbsp</b></label><label>   </label><br>
-							<label><b>Talar Head Coverage:&nbsp</b></label><label>   </label><br>
-							<label><b>Curved Lateral Border:&nbsp</b></label><label>   </label><br>
+							<label><b>Medial crease:&nbsp</b></label><label>${visit.leftMC }   </label><br>
+							<label><b>Talar Head Coverage:&nbsp</b></label><label>${visit.leftTHC }   </label><br>
+							<label><b>Curved Lateral Border:&nbsp</b></label><label>${visit.leftCLB }   </label><br>
 
 					</fieldset>
 		
 						<legend>Treatment</legend>
 
-							<label><b>Type:&nbsp</b></label><label>   </label><br>
-							<label><b>Pending on type:&nbsp</b></label><label>   </label><br>
-							<label><b>Pending on type:&nbsp</b></label><label>   </label><br>
+							<label><b>Type:&nbsp</b></label><label>${visit.leftTreatment }   </label><br>
+						<!--  	<label><b>Pending on type:&nbsp</b></label><label>   </label><br>
+							<label><b>Pending on type:&nbsp</b></label><label>   </label><br> -->
   			
 					</fieldset>
 		</div>
@@ -124,34 +124,34 @@
  			<fieldset>
 				<legend>Right Foot</legend>
 
-					<label><b>Varus:&nbsp</b></label><label>   </label><br>
-					<label><b>Cavus:&nbsp</b></label><label>   </label><br>
-					<label><b>Degrees Abductus:&nbsp</b></label><label>   </label><br>
-					<label><b>Degrees Equinus:&nbsp</b></label><label>   </label><br>
+					<label><b>Varus:&nbsp</b></label><label>${visit.hindfootRightVarus }   </label><br>
+					<label><b>Cavus:&nbsp</b></label><label>${visit.hindfootRightCarus }   </label><br>
+					<label><b>Degrees Abductus:&nbsp</b></label><label>${visit.hindfootRightAbductus }   </label><br>
+					<label><b>Degrees Equinus:&nbsp</b></label><label>${visit.hindfootRightEquinus }   </label><br>
   
   					<fieldset>
 						<legend> Pirani Scores (Hindfoot) </legend>
 
-							<label><b>Posterior crease:&nbsp</b></label><label>   </label><br>
-							<label><b>Empty Heel:&nbsp</b></label><label>   </label><br>
-							<label><b>Rigid Equinus:&nbsp</b></label><label>   </label><br>
+							<label><b>Posterior crease:&nbsp</b></label><label>${visit.rightPC }   </label><br>
+							<label><b>Empty Heel:&nbsp</b></label><label>${visit.rightEH }   </label><br>
+							<label><b>Rigid Equinus:&nbsp</b></label><label>${visit.rightRE }   </label><br>
 
 					</fieldset>
 		
 					<fieldset>
 						<legend> Pirani Scores (Midfoot) </legend>
 
-							<label><b>Medial crease:&nbsp</b></label><label>   </label><br>
-							<label><b>Talar Head Coverage:&nbsp</b></label><label>   </label><br>
-							<label><b>Curved Lateral Border:&nbsp</b></label><label>   </label><br>
+							<label><b>Medial crease:&nbsp</b></label><label>${visit.rightMC }   </label><br>
+							<label><b>Talar Head Coverage:&nbsp</b></label><label>${visit.rightTHC }   </label><br>
+							<label><b>Curved Lateral Border:&nbsp</b></label><label> ${visit.rightCLB }  </label><br>
 
 					</fieldset>
 		
 						<legend>Treatment</legend>
 
-							<label><b>Type:&nbsp</b></label><label>   </label><br>
-							<label><b>Pending on type:&nbsp</b></label><label>   </label><br>
-							<label><b>Pending on type:&nbsp</b></label><label>   </label><br>
+							<label><b>Type:&nbsp</b></label><label>${visit.rightTreatment }   </label><br>
+						<!--  	<label><b>Pending on type:&nbsp</b></label><label>   </label><br>
+							<label><b>Pending on type:&nbsp</b></label><label>   </label><br>-->
   			
 					</fieldset>
 		</div>
@@ -160,10 +160,10 @@
 			<fieldset>
 				<legend>Complications</legend>
 
-					<label><b>Were there any Complications:&nbsp</b></label><label>   </label><br>
-					<label><b>Description of Complication(s):&nbsp</b></label><label>   </label><br>
-					<label><b>Treatment of Complication(s):&nbsp</b></label><label>   </label><br>
-					<label><b>Results after Treatment:&nbsp</b></label><label>   </label><br>
+					<label><b>Were there any Complications:&nbsp</b></label><label>${visit.comments }   </label><br>
+					<label><b>Description of Complication(s):&nbsp</b></label><label>${visit.complications }   </label><br>
+					<label><b>Treatment of Complication(s):&nbsp</b></label><label>${visit.treatmentComplications }   </label><br>
+					<label><b>Results after Treatment:&nbsp</b></label><label>${visit.results }   </label><br>
 
 			</fieldset>
 		</div>
@@ -175,15 +175,7 @@
 			</div>
 			</div>
 		</div>
-	<div class = "form-group">
-
-		<label><b>Comments:&nbsp</b></label><label>   </label><br>
 	
-	</div>
-	<div class="row" align="center">
-		<button type="submit" class="btn btn-lg btn-primary">Submit Form</button>
-		<button type="reset" class="btn btn-lg btn-default">Clear</button>
-</div>
 	</div>
 	</div>
 	</div>

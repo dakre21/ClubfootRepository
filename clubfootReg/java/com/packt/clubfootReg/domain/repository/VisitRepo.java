@@ -16,7 +16,8 @@ import com.packt.clubfootReg.domain.Visit;
 public interface VisitRepo {
 	void addVisit(Visit visit); // addVisit method to add the model data to the database
 	void setDataSource(DataSource ds); // Sets up the dataSource for the database synch
-	List<Visit> getVisit(int id);	// getVisit method that passes the int value for id
+	//List<Visit> getVisit(int id);	// getVisit method that passes the int value for id
+	Visit getVisit(int id);
 	void deleteVisit(int id);	// DeleteVisit method which takes the id value 
 	List<Visit> getAllVisits();	// List object that contains the getAllVisits method
 	void updateVisit(Visit visit);	// UpdateVisit method which takes in the visit object

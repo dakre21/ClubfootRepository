@@ -1,5 +1,6 @@
 package com.packt.clubfootReg.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,8 +75,14 @@ public class VisitController {
 	
 	// Annotation for mapping web requests to specific handler classes/methods	
 	@RequestMapping(value = "/view_visit_info", method = RequestMethod.GET)	// Get the view_visit_info page info
-	public String view_visit_infoForm(Model model){
-		return "view_visit_info";	// Returns the view_visit_info page
+	public ModelAndView view_visit_infoForm(HttpServletRequest request){
+		ModelAndView model = new ModelAndView("view_patient_info");	// Passes the view_patient_info view to the model
+		int visit_id = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call
+		    
+		Visit visit = visitRepo.getVisit(visit_id);	// Gets patient_id from newpatient repo's method getPatient
+		model.addObject("visit", visit);	// Adds an object called patient to the model
+		    
+		return model;	// Returns the model
 	}
 	
 	/*
