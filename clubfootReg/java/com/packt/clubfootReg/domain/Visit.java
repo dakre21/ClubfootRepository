@@ -334,7 +334,7 @@ public class Visit {
 		return hospitalId;
 	}
 
-	public void setHospital_id(Integer hospitalId) {
+	public void setHospitalId(Integer hospitalId) {
 		this.hospitalId = hospitalId;
 	}
 

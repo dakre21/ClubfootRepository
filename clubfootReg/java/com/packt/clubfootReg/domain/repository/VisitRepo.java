@@ -22,5 +22,6 @@ public interface VisitRepo {
 	void updateVisit(Visit visit);	// UpdateVisit method which takes in the visit object
 	int getMaxVisitId();	// Method that returns the maxvisitid
 	int getMaxFootId();	// Method that returns the maxfootid
-	//Map<Integer, String> getAllHospitals();
+	Map<Integer, String> getAllHospitals();
+	Map<Integer, String> getAllEvaluators();
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.packt.clubfootReg.domain.Evaluator;
 import com.packt.clubfootReg.domain.Hospital;
+import com.packt.clubfootReg.domain.Visit;
 import com.packt.clubfootReg.domain.newPatient;
 import com.packt.clubfootReg.domain.repository.newPatientRepo;
 
@@ -24,6 +25,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 //import java.sql.Date;
+
 
 
 
@@ -1086,6 +1088,64 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		}
 	}
 
+	public List<Visit> getVisitsForPatient(int patient_id) {
+		Connection conn = null; // Resets the connection to the database
+		Visit visit = null; // Resets the model
+		List<Visit> visits = null; // Resets the list
+		
+		/**
+		 * Reseting the database connection to retrieve information that's stored in the mysql database
+		 * via queries that are sent through the open connection. The results of the data received by this class
+		 * is saved in a result set to be displayed in the jsp view. 
+		 */
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "select a.id, a.consent_inclusion, a.consent_photos, a.hospital_id, b.first_name, b.last_name, " +
+		    		            "b.middle_name, a.dob, a.evaluator_id, a.evaluation_date, a.feet_affected, a.diagnosis, " +
+		    		            "a.sex, a.race " +
+		    		     "from patient a " +
+		    		     "inner join abstract_person b on a.id = b.id " +
+		    		     "order by a.id";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.last()) {
+			  visits = new ArrayList<>(rs.getRow());
+			  rs.beforeFirst(); 
+			}
+			
+			while (rs.next()) {
+				visit = new Visit(
+					rs.getInt("id"),
+					rs.getInt("consent_inclusion"),
+					rs.getInt("consent_photos"),
+					rs.getInt("hospital_id"),
+					rs.getString("first_name"),
+					rs.getString("last_name"),
+					rs.getString("middle_name"),
+					rs.getString("dob"),
+					rs.getInt("evaluator_id"),
+					rs.getString("evaluation_date"),
+					rs.getString("feet_affected"),
+					rs.getString("diagnosis")
+				);
+				visits.add(visit);
+			}
+			rs.close();
+			ps.close();
+			return visits;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
+	
 	@Override
 	public void addPhoto(byte[] bytes) {
 		Connection connection = null;	// Instantiation of the database connection

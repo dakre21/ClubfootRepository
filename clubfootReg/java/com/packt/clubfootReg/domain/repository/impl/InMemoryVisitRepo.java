@@ -424,4 +424,35 @@ public class InMemoryVisitRepo implements VisitRepo{
 			}
 		}
 	}
+	
+	public Map<Integer, String> getAllEvaluators() {
+		Connection conn = null; // Resets the connection to the database
+		Map<Integer, String> evaluators = new LinkedHashMap<Integer,String>();
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "Select a.id, concat(b.last_name, ', ', b.first_name, ' ', left(b.middle_name, 1)) as name " + 
+						 "From evaluator a inner join abstract_person b on a.id = b.id " +
+						 "Order by b.last_name";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				evaluators.put(rs.getInt("id"), rs.getString("name"));
+			}
+			
+			rs.close();
+			ps.close();
+			return evaluators;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
 }

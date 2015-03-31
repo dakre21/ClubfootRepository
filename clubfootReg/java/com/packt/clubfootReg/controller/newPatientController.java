@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.packt.clubfootReg.domain.Visit;
 import com.packt.clubfootReg.domain.newPatient;
 import com.packt.clubfootReg.domain.repository.HospitalRepo;
 import com.packt.clubfootReg.domain.repository.newPatientRepo;
@@ -126,10 +128,15 @@ public class newPatientController {
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value = "/view_patient_info", method = RequestMethod.GET)	// Gets the view_patient_info form 
 	public ModelAndView viewPatientInfoForm(HttpServletRequest request) {
-	    int patient_id = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call
-	    newPatient patient = newpatientrepo.getPatient(patient_id);	// Gets patient_id from newpatient repo's method getPatient
 	    ModelAndView model = new ModelAndView("view_patient_info");	// Passes the view_patient_info view to the model
+	    int patient_id = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call
+	    
+	    newPatient patient = newpatientrepo.getPatient(patient_id);	// Gets patient_id from newpatient repo's method getPatient
 	    model.addObject("patient", patient);	// Adds an object called patient to the model
+	    
+	    List<Visit> visits = newpatientrepo.getVisitsForPatient(patient_id);	// Gets patient_id from newpatient repo's method getPatient
+	    model.addObject("visits", visits);	// Adds an object called patient to the model
+	    
 	    return model;	// Returns the model
 	}
 	
