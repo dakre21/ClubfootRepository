@@ -76,7 +76,7 @@ public class VisitController {
 	// Annotation for mapping web requests to specific handler classes/methods	
 	@RequestMapping(value = "/view_visit_info", method = RequestMethod.GET)	// Get the view_visit_info page info
 	public ModelAndView view_visit_infoForm(HttpServletRequest request){
-		ModelAndView model = new ModelAndView("view_patient_info");	// Passes the view_patient_info view to the model
+		ModelAndView model = new ModelAndView("view_visit_info");	// Passes the view_patient_info view to the model
 		int visit_id = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call
 		    
 		Visit visit = visitRepo.getVisit(visit_id);	// Gets patient_id from newpatient repo's method getPatient
