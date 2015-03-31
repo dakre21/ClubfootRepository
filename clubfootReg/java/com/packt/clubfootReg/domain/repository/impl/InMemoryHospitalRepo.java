@@ -305,7 +305,8 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 			conn = dataSource.getConnection();
 			
 		   String sql = "Select a.name as hospitalName, c.name as regionName, count(*) as numOfPatients " + 
-					"from hospital a " + "inner join patient b on a.id = b.hospital_id " + "inner join region c on a.region_id = c.id ";
+					"from hospital a " + "inner join patient b on a.id = b.hospital_id " + "inner join region c on a.region_id = c.id " +
+				    "group by a.name, c.name";
 		
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
