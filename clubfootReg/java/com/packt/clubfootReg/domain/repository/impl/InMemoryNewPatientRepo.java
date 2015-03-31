@@ -1101,11 +1101,12 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "Select a.id, max(b.id), b.treatment, b.pc, b.laterality, c.treatment, c.pc, c.laterality " +
+			String sql = "Select a.id, max(b.id), b.treatment as leftTreatment, b.pc as leftPC, " +
+								"c.treatment as rightTreatment, c.pc as rightPC " +
 					     "from visit a " +
 					     "join foot b on a.id = b.visit_id " +
 					     "join foot c on a.id = c.visit_id " +
-					     "where a.patient_id = 3 and b.id <> c.id";
+					     "where a.patient_id = ? and b.id <> c.id";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, patient_id);
 			ResultSet rs = ps.executeQuery();
@@ -1116,22 +1117,12 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			}
 			
 			while (rs.next()) {
-				
-				
-				
 				visit = new Visit(patient_id);
 				visit.setId(rs.getInt("id"));
-				
-				
-				if (rs.getString("laterality").equalsIgnoreCase("Left")) {
-					visit.setLeftTreatment(rs.getString("treatment"));
-					visit.setLeftPC(rs.getInt("pc"));
-				} 
-				else {
-					visit.setRightTreatment(rs.getString("treatment"));
-					visit.setRightPC(rs.getInt("pc"));
-				}
-				
+				visit.setLeftTreatment(rs.getString("leftTreatment"));
+				visit.setLeftPC(rs.getInt("leftPC"));
+				visit.setRightTreatment(rs.getString("rightTreatment"));
+				visit.setRightPC(rs.getInt("rightPC"));
 				visits.add(visit);
 			}
 			

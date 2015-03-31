@@ -167,17 +167,10 @@
 		$('fieldset.guardian_check').show();
 		$('second_guardian_phone1').prop('required', true);
 	  }
-<<<<<<< HEAD
       else {
 		document.getElementById("secondGuardianNo").checked = true;
       }
-	  
-=======
-
-      else{
-		document.getElementById("secondGuardianNo").checked = true;
-	  }
->>>>>>> haha
+      
 	  switch ("${patient.emergency_contact}") {
 	  	case "primary":
 	  		document.getElementById("emergencyPrimary").checked = true;
@@ -208,20 +201,13 @@
 	    document.getElementById("defUn").checked = true;
 	  }
 	  
-<<<<<<< HEAD
-	  if ("${patient.pregnancy_complications_explained}") {
-=======
+
 	  if ("${patient.pregnancy_complications_explained}"){
->>>>>>> haha
 		document.getElementById("pregCompYes").checked = true;
 		$('#preg_complications_explained1').show();
 	    $('#pregnancy_complications_explained').show();
 	  }
-<<<<<<< HEAD
   	  else {
-=======
-  	  else
->>>>>>> haha
     	document.getElementById("pregCompNo").checked = true;
   	  }
 	  
@@ -307,20 +293,6 @@
 	  else
 		document.getElementById("deformityUn").checked = true;
 	  
-<<<<<<< HEAD
-	  if ("${patient.previous_treatments_num}" > 0) {
-	    document.getElementById("prevYes").checked = true;
-		$('div.prev_treat').hide();
-	  }
-	  else if ("${patient.previous_treatments_num}" == 0) {
-		document.getElementById("prevNo").checked = true;
-	  }
-	  else {
-		document.getElementById("prevUn").checked = true;
-	  }
-	  
-	  if ("${patient.diagnosis_prenatally_week}") {
-=======
 	  if ("${patient.previous_treatments_num}" > 0){
 	    document.getElementById("prevYes").checked = true;
 		$('div.prev_treat').hide();
@@ -333,7 +305,6 @@
 	  }
 	  
 	  if ("${patient.diagnosis_prenatally_week}"){
->>>>>>> haha
 	    document.getElementById("diagYes").checked = true;
 		 $('#diagnosis_prenatally_week1').show();
 	     $('#diagnosis_prenatally_week').show();
@@ -341,12 +312,7 @@
 	     $('#prenatallyDiagNO').show();
 	     $('#prenatallyDiagUn').show();
 	  }
-<<<<<<< HEAD
 	  else {
-=======
-
-	  else{
->>>>>>> haha
 		document.getElementById("diagNo").checked = true;
 	  }
 	  
@@ -704,11 +670,8 @@
 			<label for="referral_hospital_name" id="referral_hospital_name1">Hospital/clinic name: </label>
 			<input type="text" name="referral_hospital_name" path="referral_hospital_name" id="referral_hospital_name" value = "${patient.referral_hospital_name}">
 			<label for="referral_other" id="referral_other1"><em>*</em>Please specify: </label>
-<<<<<<< HEAD
 			<input type="text" name="referral_other" path="referral_other" id="referral_other" value = "${patient.referral_other}" >
-=======
-			<input type="text" name="referral_other" path="referral_other" id="referral_other" value = "${patient.referral_other}">
->>>>>>> haha
+
 			</div>
 			</div>
 		</fieldset>
