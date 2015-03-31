@@ -1,10 +1,14 @@
 package com.packt.clubfootReg.controller;
 
+import java.awt.List;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -17,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.packt.clubfootReg.domain.Hospital;
 import com.packt.clubfootReg.domain.Visit;
 import com.packt.clubfootReg.domain.newPatient;
+import com.packt.clubfootReg.domain.ReportsHospital;
 import com.packt.clubfootReg.domain.repository.EvaluatorRepo;
 import com.packt.clubfootReg.domain.repository.HospitalRepo;
 import com.packt.clubfootReg.domain.repository.VisitRepo;
@@ -42,11 +47,21 @@ public class ReportsController {
 	@Autowired
 	private EvaluatorRepo evaluatorRepo;
 	
+	// This initializes spring's "webdatabinder" class to bind web request parameters to the java bean objects to receive the incoming data 
+	@InitBinder
+	public void initialiseBinder(WebDataBinder binder){
+		binder.setDisallowedFields("unitsInOrder", "discontinued");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");	// Instantiation of SimpleDateFormat for the database to properly synch data in that format
+		sdf.setLenient(true);	// Method call to setLenient and passes boolean value "true" to it
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));	// Binder binds the date format set up earlier to registerCustomEditor class
+	}
+	
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value="/visit_reports", method=RequestMethod.GET)	// Posts the visit form information to the database
 	public String visitReports(@ModelAttribute("visit_reports") Visit visit, Model model) {
 		//visitRepo.addVisit(visit);	// Visitrepo adds visit object to the interface
 		//model.addAttribute("visit_reports", visitRepo.getVisit(visit.getId()));	// Gets the visit id from the interface method getVisit and adds it to the attribute of the model
+		model.addAttribute("visit_reports", visitRepo.getAllVisits());
 		return "visit_reports";// Returns the view_visit_info page
 	}
 	
@@ -55,14 +70,16 @@ public class ReportsController {
 	public String patientReports(@ModelAttribute("patient_reports") newPatient newpatient, Model model) {
 		//newpatientRepo.addPatient(newpatient);	// Visitrepo adds visit object to the interface
 		//model.addAttribute("patient_reports", newpatientRepo.getPatient(newpatient.getId()));	// Gets the visit id from the interface method getVisit and adds it to the attribute of the model
+		model.addAttribute("patients_reports", newpatientRepo.getAllPatients());	// Adds all patients from the getAllPatients method
 		return "patient_reports";// Returns the view_visit_info page
 	}
 	
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value="/hospital_reports", method=RequestMethod.GET)	// Posts the visit form information to the database
-	public String patientReports(Model model) {
+	public String hospitalReports(@ModelAttribute("hospital_reports") Hospital hospital, Model model) {
 		//hospitalRepo.addHospital(hospital);	// Visitrepo adds visit object to the interface
 		//model.addAttribute("hospital_reports", hospitalRepo.getHospital(hospital.getId()));	// Gets the visit id from the interface method getVisit and adds it to the attribute of the model
+		model.addAttribute("hospital_reports", hospitalRepo.getAllHospitalsReports());
 		return "hospital_reports";// Returns the view_visit_info page
 	}
 	
@@ -70,6 +87,7 @@ public class ReportsController {
 	public Map<Integer, String> populateHospitalSelect() {
 	    return evaluatorRepo.getAllHospitals();
 	}
+
 	
 	/*
 	// This initializes spring's "webdatabinder" class to bind web request parameters to the java bean objects to receive the incoming data 
