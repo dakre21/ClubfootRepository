@@ -70,8 +70,8 @@
 		
 		<table class='table table-striped'>
 	   
-	    	<tbody>
-        	<c:if test="${not empty hospital_reports}">
+	      <tbody>
+          <c:if test="${not empty hospital_reports}">
             <c:forEach var="o" items="${hospital_reports}">
               <thead>
 		   		<tr>
