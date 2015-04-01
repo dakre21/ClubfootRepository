@@ -52,6 +52,7 @@
 	<div class="jumbotron">
 		<h1>Hospital Report</h1>
 		<hr>
+		<form action="#" th:action="@{/hospital_reports}"  modelAttribute="hospital_id" method="post" id="filterHospitals">
 		<div class="form-group">
 			<label for="hospital_id">Hospital</label>
 			<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
@@ -59,6 +60,9 @@
                 <form:options items="${hospitalList}" />
             </form:select>
             
+            <br>
+            
+            <!-- 
 			<label for="dob">Start date: </label>
 			<input type="date" name="start" id="start" class="form-control" path="start" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
 			
@@ -67,15 +71,17 @@
 			
 			<label for="all">All Hospitals</label>
 			<input type="checkbox" name="all" id="all" path="all"> <br>
+			-->
 			
-			<a role="button" class="btn btn-primary btn-lg">Generate Report</a>
-		</div>	
+			<button type="submit" class="btn btn-primary btn-lg">Generate Report</button>
+		</div>
+		</form>	
 	</div>
 	
 	<div class="row">
 		<div class="col-xl-12">
-			<c:if test="${not empty hospital_reports}">
-		    	<c:forEach var="o" items="${hospital_reports}">
+			<c:if test="${not empty hospitals}">
+		    	<c:forEach var="o" items="${hospitals}">
 					<ul>
 						<li class="hospName">${o.hospitalName}
 							<ul>
@@ -105,11 +111,12 @@
 										</li>
 										<li>Treatment Stages
 											<ul>
-												<li>Casting: 0</li>
-												<li>Bracing: 0</li>
-												<li>Tenotomy: 0</li>
+												<li>Casting: ${o.treatmentC}</li>
+												<li>Bracing: ${o.treatmentB}</li>
+												<li>Tenotomy: ${o.treatmentT}</li>
 											</ul>
 										</li>
+										<!-- 
 										<li>Drop Outs
 											<ul>
 												<li>Casting: 0</li>
@@ -180,8 +187,9 @@
 											</ul>
 										</li>					
 									</ul>
-								</li>
+								</li>-->
 								<li>Total Number of Visits: ${o.numOfVisits}</li>
+								<!-- 
 								<li>Number of patients seen in reporting period: 0</li>
 								<li>Number of new patients in reporting period: 0</li>
 								<li>Number of visits in reporting period: 0
@@ -197,7 +205,7 @@
 											</ul>
 										</li>
 									</ul>
-								</li>
+								</li>-->
 							</ul>
 						</li>
 					</ul>

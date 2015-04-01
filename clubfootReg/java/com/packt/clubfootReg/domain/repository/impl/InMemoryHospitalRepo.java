@@ -290,7 +290,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	}
 
 	@Override
-	public List<ReportsHospital> getAllHospitalsReports() {
+	public List<ReportsHospital> getAllHospitalsReports(int hospital_id) {
 		Connection conn = null; // Resets the connection to the database
 		ReportsHospital hospital = null; // Resets the model
 		List<ReportsHospital> rh = null; // Resets the list
@@ -304,7 +304,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-		   String sql = "Select a.name as hospitalName, c.name as regionName, count(*) as numOfPatients, " +
+		    String sql = "Select a.name as hospitalName, c.name as regionName, count(*) as numOfPatients, " +
 				   			"(select count(*) from patient where a.id = hospital_id and sex = 'male') as numOfMales, " +
 				   			"(select count(*) from patient where a.id = hospital_id and sex = 'female') as numOfFemales, " +
 				   			"(select count(*) from patient where a.id = hospital_id and feet_affected = 'Left') as latLeft, " +
@@ -314,12 +314,21 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 				   			"(select count(*) from patient where a.id = hospital_id and affected_relatives > 0) as affectedRels, " +
 				   			"(select count(*) from patient where a.id = hospital_id and affected_relatives = 0) as affectedRelsNot, " +
 				   			"(select count(*) from patient where a.id = hospital_id and affected_relatives is null) as affectedRelsIDK, " +
-				   			"(select count(*) from visit where a.id = hospital_id) as numOfVisits " +
-				   		"from hospital a " +
-				   		"inner join patient b on a.id = b.hospital_id " +
-				   		"inner join region c on a.region_id = c.id " +
-				   		"group by a.name, c.name";
-		   
+				   			"(select count(*) from visit where a.id = hospital_id) as numOfVisits, " +
+				   			"(select count(*) from foot d inner join visit e on d.visit_id = e.id where a.id = e.hospital_id and left(treatment, 1) = 'C') as treatmentC, " +
+				   		    "(select count(*) from foot d inner join visit e on d.visit_id = e.id where a.id = e.hospital_id and left(treatment, 1) = 'B') as treatmentB, " +
+				   		    "(select count(*) from foot d inner join visit e on d.visit_id = e.id where a.id = e.hospital_id and left(treatment, 1) = 'T') as treatmentT " +
+				   		 "from hospital a " +
+				   		 "inner join patient b on a.id = b.hospital_id " +
+				   		 "inner join region c on a.region_id = c.id ";
+		    
+		    if (hospital_id != 0) {
+		    	sql = sql + "where a.id = " + hospital_id + " group by a.name, c.name";
+		    } 
+		    else {
+		    	sql = sql + "group by a.name, c.name";
+		    }
+				   		 
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
@@ -344,6 +353,9 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 				hospital.setAffectedRelsNot(rs.getInt("affectedRelsNot"));
 				hospital.setAffectedRelsIDK(rs.getInt("affectedRelsIDK"));
 				hospital.setNumOfVisits(rs.getInt("numOfVisits"));
+				hospital.setTreatmentC(rs.getInt("treatmentC"));
+				hospital.setTreatmentB(rs.getInt("treatmentB"));
+				hospital.setTreatmentT(rs.getInt("treatmentT"));
 				rh.add(hospital);
 			}
 			

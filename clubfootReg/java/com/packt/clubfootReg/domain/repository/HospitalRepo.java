@@ -22,7 +22,7 @@ public interface HospitalRepo {
 	void updateHospital(Hospital hospital); // UpdateHospital method which takes in the hospital object
 	int getMaxHospitalID();	// Method that returns the maxhospitalid
 	List<Hospital> getAllHospitals();	// Map object that has a vector of Integer and String values which getsAllHospitals
-	List<ReportsHospital> getAllHospitalsReports();
+	List<ReportsHospital> getAllHospitalsReports(int hospital_id);
 	//Map<Integer, String> getHRP();
 	Map<Integer, String> getAllRegions();
 }
