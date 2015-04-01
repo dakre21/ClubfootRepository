@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.packt.clubfootReg.domain.Hospital;
 import com.packt.clubfootReg.domain.ReportsPatients;
+import com.packt.clubfootReg.domain.ReportsVisits;
 import com.packt.clubfootReg.domain.Visit;
 import com.packt.clubfootReg.domain.newPatient;
 import com.packt.clubfootReg.domain.ReportsHospital;
@@ -64,10 +65,15 @@ public class ReportsController {
 	
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value="/visit_reports", method=RequestMethod.GET)	// Posts the visit form information to the database
-	public String visitReports(@ModelAttribute("visit_reports") Visit visit, Model model) {
-		//visitRepo.addVisit(visit);	// Visitrepo adds visit object to the interface
-		//model.addAttribute("visit_reports", visitRepo.getVisit(visit.getId()));	// Gets the visit id from the interface method getVisit and adds it to the attribute of the model
-		model.addAttribute("visit_reports", visitRepo.getAllVisits());
+	public String visitReports(Model model) {
+		model.addAttribute("visit_reports", visitRepo.getAllVisitsReports(null));
+		return "visit_reports";// Returns the view_visit_info page
+	}
+	
+	// Annotation for mapping web requests to specific handler classes/methods
+	@RequestMapping(value="/visit_reports", method=RequestMethod.POST)	// Posts the visit form information to the database
+	public String visitReportsFilter(@ModelAttribute("filters") ReportsVisits filter, Model model) {
+		model.addAttribute("visit_reports", visitRepo.getAllVisitsReports(filter));
 		return "visit_reports";// Returns the view_visit_info page
 	}
 	

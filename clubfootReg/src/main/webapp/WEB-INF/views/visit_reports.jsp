@@ -22,7 +22,9 @@
 
 <div class="container">
 	<div class="jumbotron">
+		<form action="#" th:action="@{/visit_reports}"  modelAttribute="filters" method="post" id="filterVisits">
 		<div class="form-group">
+			
 			<label for="hospital_id">Hospital</label>
 			<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
             	<form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
@@ -66,8 +68,9 @@
 			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "surgeryRightTrue()" VALUE="S-Surgery">S - Surgery
 			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "otherRightTrue()" VALUE="O-Other">O - Other<br>
 			
-			<a role="button" class="btn btn-primary btn-lg">Generate Report</a>
+			<button class="btn btn-primary btn-lg" type="submit">Generate Report</button>
 		</div>	
+		</form>
 	
 		<table class='table table-striped'>
 		   	<thead>
@@ -84,10 +87,9 @@
         	<c:if test="${not empty visit_reports}">
             <c:forEach var="o" items="${visit_reports}">
               <tr>
-                  <td><a href="view_visit_info?id=${o.id}">${o.id}</a></td>
-                  <td>${o.patientId}</td>
-                  <td>${o.leftTreatment}</td>
-                  <td>${o.rightTreatment}</td>
+                  <td>${o.id}</td>
+                 <!--  <td>${o.leftTreatment}</td>
+                  <td>${o.rightTreatment}</td>-->
                   <td>${o.hospitalId}</td>
               </tr>
             </c:forEach>

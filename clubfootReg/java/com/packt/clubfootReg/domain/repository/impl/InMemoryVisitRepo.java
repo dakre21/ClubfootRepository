@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
 
+import com.mysql.jdbc.CallableStatement;
 import com.packt.clubfootReg.domain.Hospital;
 import com.packt.clubfootReg.domain.ReportsHospital;
 import com.packt.clubfootReg.domain.ReportsVisits;
@@ -785,10 +786,10 @@ public class InMemoryVisitRepo implements VisitRepo{
 	}
 
 	@Override
-	public List<ReportsVisits> getAllVisitsReports() {
+	public List<Visit> getAllVisitsReports(ReportsVisits filter) {
 		Connection conn = null; // Resets the connection to the database
-		ReportsVisits visit = null; // Resets the model
-		List<ReportsVisits> rv = null; // Resets the list
+		Visit visit = null; // Resets the model
+		List<Visit> rv = null; // Resets the list
 		
 		/**
 		 * Reseting the database connection to retrieve information that's stored in the mysql database
@@ -796,30 +797,84 @@ public class InMemoryVisitRepo implements VisitRepo{
 		 * is saved in a result set to be displayed in the jsp view. 
 		 */
 		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
 		try {
 			conn = dataSource.getConnection();
 			
-		    String sql = "Select *";
-		   
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery();
-			
-			if (rs.last()) {
-			  rv = new ArrayList<>(rs.getRow());
-			  rs.beforeFirst(); 
+			if (filter == null) {
+				String sql = "select * from visit ";
+				ps = conn.prepareStatement(sql);
+				rs = ps.executeQuery();
 			}
-			
-			while (rs.next()) {
-				visit = new ReportsVisits(
-					rs.getInt("id")
-				);
-			
-				rv.add(visit);
+			else {
+				CallableStatement cs = (CallableStatement) conn.prepareCall("{call filterVisitReport(?, ?, ?, ?, ?)}");
+				
+				Integer hospital_id = filter.getHospital_id();
+				String complications = filter.getComplications();
+				String relapse = filter.getRelapse();
+				String leftTreatment = filter.getLeftTreatment();
+				String rightTreatment = filter.getRightTreatment();
+				
+				if(hospital_id != null){
+					cs.setInt(1, hospital_id);
+				}else{
+					cs.setInt(1, 0);
+				}
+				if(complications != null){
+					cs.setString(2, complications);
+				}else{
+					cs.setString(2, null);
+				}
+				if (relapse != null) {
+					if (relapse.equalsIgnoreCase("yes")) {
+						cs.setString(3, "yes");
+					}
+					else if (relapse.equalsIgnoreCase("no")) {
+						cs.setString(3, "no");
+					}
+					else {
+						cs.setString(3, "unspecified");
+					}
+					} else { 
+						cs.setString(3, "null"); 
+					}
+				/*
+				if(leftTreatment != null){
+					cs.setString(4, leftTreatment);
+				}else{
+					cs.setString(4, null);
+				}
+				if(rightTreatment != null){
+					cs.setString(5, rightTreatment);
+				}else{
+					cs.setString(5, null);
+				}*/
+				
+				cs.execute();
+				rs = cs.getResultSet();
 			}
+				
+				if (rs.last()) {
+					rv = new ArrayList<>(rs.getRow());
+					rs.beforeFirst(); 
+				}
+				
+				while (rs.next()) {
+					visit = new Visit();
+					visit.setId(rs.getInt("id"));
+				//	visit.setLeftTreatment(rs.getString("treatment"));
+				//	visit.setRightTreatment(rs.getString("treatment"));
+					visit.setHospitalId(rs.getInt("hospital_id"));
+					rv.add(visit);
+				}
 			
-			ps.close();
-			rs.close();
-			return rv;
+				if (ps != null)
+					ps.close();
+			
+				rs.close();
+				return rv;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {

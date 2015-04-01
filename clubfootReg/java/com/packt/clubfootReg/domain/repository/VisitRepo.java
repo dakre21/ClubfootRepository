@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 
 import com.packt.clubfootReg.domain.Hospital;
 import com.packt.clubfootReg.domain.ReportsHospital;
+import com.packt.clubfootReg.domain.ReportsPatients;
 import com.packt.clubfootReg.domain.ReportsVisits;
 import com.packt.clubfootReg.domain.Visit;
 
@@ -25,8 +26,8 @@ public interface VisitRepo {
 	void updateVisit(Visit visit);	// UpdateVisit method which takes in the visit object
 	int getMaxVisitId();	// Method that returns the maxvisitid
 	int getMaxFootId();	// Method that returns the maxfootid
-	List<ReportsVisits> getAllVisitsReports();
 	Map<Integer, String> getAllHospitals();
 	Map<Integer, String> getAllEvaluators();
 	String getLateralityForPatient(int id);
+	List<Visit> getAllVisitsReports(ReportsVisits filter);
 }
