@@ -13,7 +13,7 @@
 
 <script>
 	function generateReport() {
-		
+		  
 		
 	}
 </script>
@@ -33,6 +33,7 @@
 	<div class="jumbotron">
 		<h1>Patient Report</h1>
 		<hr>
+		<form action="#" th:action="@{/patient_reports}"  modelAttribute="filters" method="post" id="filterPatients">
 		<div class="form-group">
 			<label for="sex">Gender: </label>
 			<input type="radio" name="sex" value="male" path="sex" > Male
@@ -47,10 +48,10 @@
 			<input type="radio" name="race" value="other" path="race"> Other
 			<input type="radio" name="race" value="unspecified" path="race"> Unspecified <br>
 			
-			<label for="race">Relatives with clubfoot? </label>
-			<input type="radio" name="yes" value="yes" path="yes"> Yes
-			<input type="radio" name="no" value="no" path="no"> No
-			<input type="radio" name="unsure" value="unspecified" path="unsure"> Unspecified <br>
+			<label for="relatives">Relatives with clubfoot? </label>
+			<input type="radio" name="relatives" value="yes" path="relatives"> Yes
+			<input type="radio" name="relatives" value="no" path="relatives"> No
+			<input type="radio" name="relatives" value="unspecified" path="relatives"> Unspecified <br>
 			
 			<label for="hospital_id">Hospital</label>
 			<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
@@ -58,24 +59,25 @@
                 <form:options items="${hospitalList}" />
             </form:select><br>
 
-			<label for="race">Before/After </label>
-			<input type="radio" name="after" value="after" path="after"> After
-			<input type="radio" name="before" value="before" path="before"> Before
-			<input type="radio" name="on" value="on" path="on"> On <br>
+			<label for="dobSel">Before/After </label>
+			<input type="radio" name="dobSel" value="after" path="dobSel"> After
+			<input type="radio" name="dobSel" value="before" path="dobSel"> Before
+			<input type="radio" name="dobSel" value="on" path="dobSel"> On <br>
 			
 			<label for="dob">Date of birth: </label>
 			<input type="date" name="dob" id="dob" class="form-control" path="dob" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> <br>
 			
-			<label for="race">Before/After </label>
-			<input type="radio" name="after_eval" value="after_eval" path="after_eval"> After
-			<input type="radio" name="before_eval" value="before_eval" path="before_eval"> Before
-			<input type="radio" name="on_eval" value="on_eval" path="on"> On <br>
+			<label for="eval_dateSel">Before/After </label>
+			<input type="radio" name="eval_dateSel" value="after" path="eval_dateSel"> After
+			<input type="radio" name="eval_dateSel" value="before" path="eval_dateSel"> Before
+			<input type="radio" name="eval_dateSel" value="on" path="eval_dateSel"> On <br>
 			
-			<label for="dob">Evaluation date: </label>
+			<label for="eval_date">Evaluation date: </label>
 			<input type="date" name="eval_date" id="eval_date" class="form-control" path="eval_date" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> <br> 
             
-            <a role="button" class="btn btn-primary btn-lg" onclick="generateReport()">Generate Report</a>
+            <button class="btn btn-primary btn-lg" type="submit">Generate Report</button>
 		</div>
+		</form>
 	</div>
 	
 	<br>

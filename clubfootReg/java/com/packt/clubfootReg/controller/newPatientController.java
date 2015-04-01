@@ -77,8 +77,17 @@ public class newPatientController{
 	
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value="/newpatient", method=RequestMethod.POST)	// Returns the newpatient form data to the model
-    public String newPatientSubmit(@ModelAttribute("newPatient") newPatient newpatient, Model model,
-            @RequestParam("file") CommonsMultipartFile file) {
+    public String newPatientSubmit(@ModelAttribute("newPatient") newPatient newpatient, Model model) {
+        newpatientrepo.addPatient(newpatient);	// Method call to the addPatient class and passes the newpatient object to it
+        model.addAttribute("patients", newpatientrepo.getAllPatients());	// Receives all patients via a method call from repo to the model attribute patients
+        return "view_patients";	// Returns the view_patient view
+    }
+	
+	/*
+	 * 
+String fileName,
+            @RequestParam("file") MultipartFile file) {
+>>>>>>> jake
 		  if (!file.isEmpty()) {
 	            try {
 	            	BufferedImage bytes = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
@@ -95,12 +104,7 @@ public class newPatientController{
 	        } else {
 	        	System.out.println("No file uploaded");
 	        }
-        newpatientrepo.addPatient(newpatient);	// Method call to the addPatient class and passes the newpatient object to it
-        model.addAttribute("patients", newpatientrepo.getAllPatients());	// Receives all patients via a method call from repo to the model attribute patients
-        return "view_patients";	// Returns the view_patient view
-    }
-	
-	/*
+
 	@RequestMapping(value="/edit_patient", method=RequestMethod.GET)
     public String editPatientForm(Model model) {
         model.addAttribute("patient", newpatientrepo.getPatient(77));
