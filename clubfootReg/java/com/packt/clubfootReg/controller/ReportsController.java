@@ -87,17 +87,21 @@ public class ReportsController {
 	@RequestMapping(value="/patient_reports", method=RequestMethod.POST)	
     public String filterPatientsSubmit(@ModelAttribute("filters") ReportsPatients filters, Model model) {
         model.addAttribute("patients", newpatientRepo.getAllPatientsReports(filters));	
+        model.addAttribute("filters", filters);
         return "patient_reports";	
     }
 	
-	// Annotation for mapping web requests to specific handler classes/methods
-	@RequestMapping(value="/hospital_reports", method=RequestMethod.GET)	// Posts the visit form information to the database
-	public String hospitalReports(@ModelAttribute("hospital_reports") Hospital hospital, Model model) {
-		//hospitalRepo.addHospital(hospital);	// Visitrepo adds visit object to the interface
-		//model.addAttribute("hospital_reports", hospitalRepo.getHospital(hospital.getId()));	// Gets the visit id from the interface method getVisit and adds it to the attribute of the model
-		model.addAttribute("hospital_reports", hospitalRepo.getAllHospitalsReports());
-		return "hospital_reports";// Returns the view_visit_info page
+	@RequestMapping(value="/hospital_reports", method=RequestMethod.GET)
+	public String hospitalReports(Model model) {
+		model.addAttribute("hospitals", hospitalRepo.getAllHospitalsReports(0));
+		return "hospital_reports";
 	}
+	
+	@RequestMapping(value="/hospital_reports", method=RequestMethod.POST)	
+    public String filterHospitalsSubmit(@ModelAttribute("hospital_id") int hospital_id, Model model) {
+        model.addAttribute("hospitals", hospitalRepo.getAllHospitalsReports(hospital_id));	
+        return "hospital_reports";	
+    }
 	
 	@ModelAttribute("hospitalList")
 	public Map<Integer, String> populateHospitalSelect() {

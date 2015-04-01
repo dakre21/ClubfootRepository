@@ -10,19 +10,46 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-
-<script>
-	function generateReport() {
-		  
-		
-	}
-</script>
-
 <style type="text/css">
   body {
     padding-top: 70px;
   }
 </style>
+<script>
+	window.onload = function(){
+		if("${filters.sex}" == "male")
+			document.getElementById("male").checked = true;
+		else if("${filters.sex}" == "female")
+			document.getElementById("female").checked = true;
+		
+		if("${filters.race}" == "asian")
+			document.getElementById("asian").checked = true;
+		else if("${filters.race}" == "white")
+			document.getElementById("white").checked = true;
+		else if("${filters.race}" == "black")
+			document.getElementById("black").checked = true;
+		else if("${filters.race}" == "indian")
+			document.getElementById("indian").checked = true;
+		else if("${filters.race}" == "mixed")
+			document.getElementById("mixed").checked = true;
+		else if("${filters.race}" == "other")
+			document.getElementById("other").checked = true;
+		else if("${filters.race}" == "unspecified")
+			document.getElementById("unspecified").checked = true;
+		
+		if("${filters.relatives}" == "yes")
+			document.getElementById("relYes").checked = true;
+		else if("${filters.relatives}" == "no")
+			document.getElementById("relNo").checked = true;
+		else if("${filters.relatives}" == "unspecified")
+			document.getElementById("relUn").checked = true;
+		
+	    if("${filters.hospital_id}" > 0 )
+			document.getElementById("hospital_id").value = "${filters.hospital_id}";
+		else		
+			document.getElementById("hospital_id").value = "";
+	}
+</script>
 	<jsp:include page="navbar.jsp" />
 </head>
 
@@ -36,29 +63,29 @@
 		<form action="#" th:action="@{/patient_reports}"  modelAttribute="filters" method="post" id="filterPatients">
 		<div class="form-group">
 			<label for="sex">Gender: </label>
-			<input type="radio" name="sex" value="male" path="sex" > Male
-			<input type="radio" name="sex" value="female" path="sex" > Female <br>
+			<input type="radio" id = "male" name="sex" value="male" path="sex" > Male
+			<input type="radio" id = "female" name="sex" value="female" path="sex" > Female <br>
 
 			<label for="race">Race: </label>
-			<input type="radio" name="race" value="asian" path="race"> Asian
-			<input type="radio" name="race" value="white" path="race"> Caucasian (White) 
-			<input type="radio" name="race" value="black" path="race"> African (Black)
-			<input type="radio" name="race" value="indian" path="race"> Asian (Indian)
-			<input type="radio" name="race" value="mixed" path="race"> Mixed
-			<input type="radio" name="race" value="other" path="race"> Other
-			<input type="radio" name="race" value="unspecified" path="race"> Unspecified <br>
+			<input type="radio" id = "asian" name="race" value="asian" path="race"> Asian
+			<input type="radio" id = "white" name="race" value="white" path="race"> Caucasian (White) 
+			<input type="radio" id = "black" name="race" value="black" path="race"> African (Black)
+			<input type="radio" id = "indian" name="race" value="indian" path="race"> Asian (Indian)
+			<input type="radio" id = "mixed" name="race" value="mixed" path="race"> Mixed
+			<input type="radio" id = "other" name="race" value="other" path="race"> Other
+			<input type="radio" id = "unspecified" name="race" value="unspecified" path="race"> Unspecified <br>
 			
 			<label for="relatives">Relatives with clubfoot? </label>
-			<input type="radio" name="relatives" value="yes" path="relatives"> Yes
-			<input type="radio" name="relatives" value="no" path="relatives"> No
-			<input type="radio" name="relatives" value="unspecified" path="relatives"> Unspecified <br>
+			<input type="radio" id = "relYes" name="relatives" value="yes" path="relatives"> Yes
+			<input type="radio" id = "relNo" name="relatives" value="no" path="relatives"> No
+			<input type="radio" id = "relUn" name="relatives" value="unspecified" path="relatives"> Unspecified <br>
 			
 			<label for="hospital_id">Hospital</label>
 			<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
-            	<form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
+            	<form:option  id = "selected" value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
                 <form:options items="${hospitalList}" />
             </form:select><br>
-
+			<!-- 
 			<label for="dobSel">Before/After </label>
 			<input type="radio" name="dobSel" value="after" path="dobSel"> After
 			<input type="radio" name="dobSel" value="before" path="dobSel"> Before
@@ -74,7 +101,7 @@
 			
 			<label for="eval_date">Evaluation date: </label>
 			<input type="date" name="eval_date" id="eval_date" class="form-control" path="eval_date" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> <br> 
-            
+            -->
             <button class="btn btn-primary btn-lg" type="submit">Generate Report</button>
 		</div>
 		</form>

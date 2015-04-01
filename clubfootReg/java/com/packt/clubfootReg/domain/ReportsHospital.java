@@ -16,6 +16,9 @@ public class ReportsHospital {
 	private int affectedRelsNot;
 	private int affectedRelsIDK;
 	private int numOfVisits;
+	private int treatmentC;
+	private int treatmentB;
+	private int treatmentT;
 	
 	public ReportsHospital() {
 		// TODO Auto-generated constructor stub
@@ -25,6 +28,30 @@ public class ReportsHospital {
 		this.hospitalName = hospitalName;
 		this.regionName = regionName;
 		this.numOfPatients = numOfPatients;
+	}
+	
+	
+	public int getTreatmentC() {
+		return treatmentC;
+	}
+	public void setTreatmentC(int treatmentC) {
+		this.treatmentC = treatmentC;
+	}
+	
+	
+	public int getTreatmentB() {
+		return treatmentB;
+	}
+	public void setTreatmentB(int treatmentB) {
+		this.treatmentB = treatmentB;
+	}
+	
+	
+	public int getTreatmentT() {
+		return treatmentT;
+	}
+	public void setTreatmentT(int treatmentT) {
+		this.treatmentT = treatmentT;
 	}
 	
 	
