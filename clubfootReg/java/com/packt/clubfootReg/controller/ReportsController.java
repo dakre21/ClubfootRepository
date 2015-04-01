@@ -74,6 +74,7 @@ public class ReportsController {
 	@RequestMapping(value="/visit_reports", method=RequestMethod.POST)	// Posts the visit form information to the database
 	public String visitReportsFilter(@ModelAttribute("filters") ReportsVisits filter, Model model) {
 		model.addAttribute("visit_reports", visitRepo.getAllVisitsReports(filter));
+		model.addAttribute("filters", filter);
 		return "visit_reports";// Returns the view_visit_info page
 	}
 	
