@@ -103,6 +103,7 @@
 			<input type="date" name="eval_date" id="eval_date" class="form-control" path="eval_date" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> <br> 
             -->
             <button class="btn btn-primary btn-lg" type="submit">Generate Report</button>
+            <button class="btn btn-primary btn-lg" type="reset">Clear</button>
 		</div>
 		</form>
 	</div>

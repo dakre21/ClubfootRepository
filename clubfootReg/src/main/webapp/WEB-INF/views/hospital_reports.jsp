@@ -41,9 +41,17 @@
 	text-decoration:none;
 
 }
-
-
 </style>
+
+<script>
+window.onload = function() {
+	if("${hospital_id}" > 0 )
+		document.getElementById("hospital_id").value = "${hospital_id}";
+	else		
+		document.getElementById("hospital_id").value = "";
+}
+</script>
+
 <title>Clubfoot Registry | Hospital Reports</title>
 	<jsp:include page="navbar.jsp" />
 </head>

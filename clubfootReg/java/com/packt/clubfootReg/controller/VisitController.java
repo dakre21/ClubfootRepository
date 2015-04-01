@@ -34,6 +34,7 @@ public class VisitController {
 	// Tells the Dispatcher-context to "wire" or inject an instance of UserRepo for this controller class
 	@Autowired
 	private VisitRepo visitRepo;	// An instantiation of VisitRepo interface
+	private newPatientRepo newPatientRepo;
 	
 	// This initializes spring's "webdatabinder" class to bind web request parameters to the java bean objects to receive the incoming data 
 	@InitBinder
@@ -63,8 +64,8 @@ public class VisitController {
 	@RequestMapping(value="/visit", method=RequestMethod.POST)	// Posts the visit form information to the database
     public String addVisitSubmit(@ModelAttribute("visit") Visit visit, Model model) {
         visitRepo.addVisit(visit);	// Visitrepo adds visit object to the interface
-        model.addAttribute("visit", visitRepo.getVisit(visit.getId()));	// Gets the visit id from the interface method getVisit and adds it to the attribute of the model
-        return "view_visit_info";// Returns the view_visit_info page
+        model.addAttribute("patients", visitRepo.getAllPatients());
+        return "view_patients";// Returns the view_visit_info page
     }
 	
 	// Annotation for mapping web requests to specific handler classes/methods

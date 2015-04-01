@@ -14,6 +14,62 @@
     padding-top: 70px;
   }
 </style>
+<script>
+	window.onload = function(){
+		
+		if("${filters.hospital_id}" > 0)
+			document.getElementById("hospital_id").value = "${filters.hospital_id}";
+		else
+			document.getElementById("hospital_id").value = "";
+		
+		
+		if("${filters.complications}" == "No")
+			document.getElementById("compNo").checked = true;
+		else if("${filters.complications}" == "Yes")
+			document.getElementById("compYes").checked = true;
+		else if("${filters.complications}" == "Unspecified")
+			document.getElementById("compUn").checked = true;
+		
+		if("${filters.relapse}" == "No")
+			document.getElementById("relNo").checked = true;
+		else if("${filters.relapse}" == "Yes")
+			document.getElementById("relYes").checked = true;
+		else if("${filters.relapse}" == "Unspecified")
+			document.getElementById("relUn").checked = true;
+		
+		if("${filters.leftTreatment}" == "None")
+			document.getElementById("leftN").checked = true;
+		else if("${filters.leftTreatment}" == "C - Manipulation & Casting")
+			document.getElementById("leftC").checked = true;
+		else if("${filters.leftTreatment}" == "T - Tenotomy")
+			document.getElementById("leftT").checked = true;
+		else if("${filters.leftTreatment}" == "B - Brace Application")
+			document.getElementById("leftB").checked = true;
+		else if("${filters.leftTreatment}" == "R - Refer")
+			document.getElementById("leftR").checked = true;
+		else if("${filters.leftTreatment}" == "S - Surgery")
+			document.getElementById("leftS").checked = true;
+		else if("${filters.leftTreatment}" == "O - Other")
+			document.getElementById("leftO").checked = true;
+		
+		if("${filters.rightTreatment}" == "None")
+			document.getElementById("rightN").checked = true;
+		else if("${filters.rightTreatment}" == "C - Manipulation & Casting")
+			document.getElementById("rightC").checked = true;
+		else if("${filters.rightTreatment}" == "T - Tenotomy")
+			document.getElementById("rightT").checked = true;
+		else if("${filters.rightTreatment}" == "B - Brace Application")
+			document.getElementById("rightB").checked = true;
+		else if("${filters.rightTreatment}" == "R - Refer")
+			document.getElementById("rightR").checked = true;
+		else if("${filters.rightTreatment}" == "S - Surgery")
+			document.getElementById("rightS").checked = true;
+		else if("${filters.rightTreatment}" == "O - Other")
+			document.getElementById("rightO").checked = true;
+		
+
+	}
+</script>
 	<jsp:include page="navbar.jsp" />
 </head>
 
@@ -45,34 +101,35 @@
 			-->
 			
 			<label for = "complications"><em>*</em>Were there any complications? </label>	
-			<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsFalse()"VALUE="No">No
-			<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsTrue()" VALUE="Yes">Yes
-			<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsUnspecified()" VALUE="Unspecified">Unspecified<br>
+			<INPUT TYPE="radio" id = "compNo" NAME="complications" path="complications" onClick = "complicationsFalse()"VALUE="No">No
+			<INPUT TYPE="radio" id = "compYes" NAME="complications" path="complications" onClick = "complicationsTrue()" VALUE="Yes">Yes
+			<INPUT TYPE="radio" id = "compUn" NAME="complications" path="complications" onClick = "complicationsUnspecified()" VALUE="Unspecified">Unspecified<br>
 				
 			<label for = "relapse"><em>*</em>Did the patient experience any relapses? </label>	
-			<INPUT TYPE="radio" NAME="relapse" path="relapse" onClick = "relapseFalse()"VALUE="No">No
-			<INPUT TYPE="radio" NAME="relapse" path="relapse" onClick = "relapseTrue()" VALUE="Yes">Yes
-			<INPUT TYPE="radio" NAME="relapse" path="relapse" onClick = "relapseUnspecified()" VALUE="Unspecified">Unspecified<br>
+			<INPUT TYPE="radio" id = "relNo" NAME="relapse" path="relapse" onClick = "relapseFalse()"VALUE="No">No
+			<INPUT TYPE="radio" id = "relYes" NAME="relapse" path="relapse" onClick = "relapseTrue()" VALUE="Yes">Yes
+			<INPUT TYPE="radio" id = "relUn" NAME="relapse" path="relapse" onClick = "relapseUnspecified()" VALUE="Unspecified">Unspecified<br>
 				
 			<label for = "leftTreatment"><em>*</em>Left foot treatment: </label>	
-			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "noneLeftTrue()" VALUE="None">None
-			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "castingLeftTrue()"VALUE="C - Manipulation & Casting">C - Manipulation & Casting
-			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "tenotomyLeftTrue()" VALUE="T - Tenotomy">T - Tenotomy
-			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "braceLeftTrue()" VALUE="B - Brace Application">B - Brace Application
-			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "referLeftTrue()" VALUE="R - Refer">R - Refer
-			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "surgeryLeftTrue()" VALUE="S - Surgery">S - Surgery
-			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "otherLeftTrue()" VALUE="O - Other">O - Other<br>
+			<INPUT TYPE="radio" id = "leftN" NAME="leftTreatment" path="leftTreatment" onClick = "noneLeftTrue()" VALUE="None">None
+			<INPUT TYPE="radio" id = "leftC" NAME="leftTreatment" path="leftTreatment" onClick = "castingLeftTrue()"VALUE="C - Manipulation & Casting">C - Manipulation & Casting
+			<INPUT TYPE="radio" id = "leftT" NAME="leftTreatment" path="leftTreatment" onClick = "tenotomyLeftTrue()" VALUE="T - Tenotomy">T - Tenotomy
+			<INPUT TYPE="radio" id = "leftB" NAME="leftTreatment" path="leftTreatment" onClick = "braceLeftTrue()" VALUE="B - Brace Application">B - Brace Application
+			<INPUT TYPE="radio" id = "leftR" NAME="leftTreatment" path="leftTreatment" onClick = "referLeftTrue()" VALUE="R - Refer">R - Refer
+			<INPUT TYPE="radio" id = "leftS" NAME="leftTreatment" path="leftTreatment" onClick = "surgeryLeftTrue()" VALUE="S - Surgery">S - Surgery
+			<INPUT TYPE="radio" id = "leftO" NAME="leftTreatment" path="leftTreatment" onClick = "otherLeftTrue()" VALUE="O - Other">O - Other<br>
 			
 			<label for = "rightTreatment"><em>*</em>Right foot treatment: </label>	
-			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "noneRightTrue()" VALUE="none">None
-			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "castingRightTrue()"VALUE="C - Manipulation & Casting">C - Manipulation & Casting
-			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "tenotomyRightTrue()" VALUE="T - Tenotomy">T - Tenotomy
-			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "braceRightTrue()" VALUE="B - Brace Application">B - Brace Application
-			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "referRightTrue()" VALUE="R - Refer">R - Refer
-			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "surgeryRightTrue()" VALUE="S-Surgery">S - Surgery
-			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "otherRightTrue()" VALUE="O-Other">O - Other<br>
+			<INPUT TYPE="radio" id = "rightN" NAME="rightTreatment" path="rightTreatment" onClick = "noneRightTrue()" VALUE="None">None
+			<INPUT TYPE="radio" id = "rightC" NAME="rightTreatment" path="rightTreatment" onClick = "castingRightTrue()"VALUE="C - Manipulation & Casting">C - Manipulation & Casting
+			<INPUT TYPE="radio" id = "rightT" NAME="rightTreatment" path="rightTreatment" onClick = "tenotomyRightTrue()" VALUE="T - Tenotomy">T - Tenotomy
+			<INPUT TYPE="radio" id = "rightB" NAME="rightTreatment" path="rightTreatment" onClick = "braceRightTrue()" VALUE="B - Brace Application">B - Brace Application
+			<INPUT TYPE="radio" id = "rightR" NAME="rightTreatment" path="rightTreatment" onClick = "referRightTrue()" VALUE="R - Refer">R - Refer
+			<INPUT TYPE="radio" id = "rightS" NAME="rightTreatment" path="rightTreatment" onClick = "surgeryRightTrue()" VALUE="S-Surgery">S - Surgery
+			<INPUT TYPE="radio" id = "rightO" NAME="rightTreatment" path="rightTreatment" onClick = "otherRightTrue()" VALUE="O-Other">O - Other<br>
 			<br>
 			<button class="btn btn-primary btn-lg" type="submit">Generate Report</button>
+			<button class="btn btn-primary btn-lg" type="reset">Clear</button>
 		</div>	
 		</form>
 	</div>

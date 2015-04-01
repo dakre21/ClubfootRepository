@@ -10,6 +10,7 @@ import com.packt.clubfootReg.domain.ReportsHospital;
 import com.packt.clubfootReg.domain.ReportsPatients;
 import com.packt.clubfootReg.domain.ReportsVisits;
 import com.packt.clubfootReg.domain.Visit;
+import com.packt.clubfootReg.domain.newPatient;
 
 /**
  * 
@@ -30,4 +31,5 @@ public interface VisitRepo {
 	Map<Integer, String> getAllEvaluators();
 	String getLateralityForPatient(int id);
 	List<Visit> getAllVisitsReports(ReportsVisits filter);
+	List<newPatient> getAllPatients();
 }

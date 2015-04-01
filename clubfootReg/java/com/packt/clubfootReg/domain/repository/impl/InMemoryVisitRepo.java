@@ -122,21 +122,21 @@ public class InMemoryVisitRepo implements VisitRepo{
 		String results = visit.getResults();
 		String comments = visit.getComments();
 		
-		String sql_visit = "Insert into visit (id, evaluator_id, patient_id, hospital_id, is_last_visit, " +
-					   	   "next_visit_date, relapse, complications, complications_description, " +
+		String sql_visit = "Insert into visit (id, evaluator_id, patient_id, hospital_id, visit_date, is_last_visit, " +
+					   	   "next_visit_date, relapse, complications, complications_description, complications_treatment, " +
 					   	   "complications_results, general_comments) " +
-		                   "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into visit
+		                   "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into visit
 		
 		//String sql_left_foot = "Insert into foot (id, visit_id, laterality, varus, cavus, abductus, equinus, pc, eh, re, mc, thc, clb, " +
 		//					   "cast_number, abduction, dorsiflexion, brace_compliance, brace_problems, brace_action, surgery_other, " +
 		//					   "surgery_comment, other_details) " +
 		//					   "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
-		String sql_left_foot = "Insert into foot (id, visit_id, laterality, varus, cavus, abductus, equinus, pc, eh, re, mc, thc, clb) " +
-   				               "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into left foot
+		String sql_left_foot = "Insert into foot (id, visit_id, laterality, varus, cavus, abductus, equinus, pc, eh, re, mc, thc, treatment, clb) " +
+   				               "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into left foot
 		
-		String sql_right_foot = "Insert into foot (id, visit_id, laterality, varus, cavus, abductus, equinus, pc, eh, re, mc, thc, clb) " +
-				   				"values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into right foot
+		String sql_right_foot = "Insert into foot (id, visit_id, laterality, varus, cavus, abductus, equinus, pc, eh, re, mc, thc, treatment, clb) " +
+				   				"values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into right foot
 		
 		Connection connection = null;	// Instantiation of the connection to the database
 		PreparedStatement ps = null; // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database
@@ -166,13 +166,15 @@ public class InMemoryVisitRepo implements VisitRepo{
 			ps.setInt(2, evaluatorId);
 			ps.setInt(3, patientId);
 			ps.setInt(4, hospitalId);
-			ps.setString(5, isLastVisit);
-			ps.setString(6, nextVisitDate);
-			ps.setString(7, relapse);
-			ps.setString(8, complications);
-			ps.setString(9, description);
-			ps.setString(10, results);
-			ps.setString(11, comments);
+			ps.setString(5, dateOfVisit);
+			ps.setString(6, isLastVisit);
+			ps.setString(7, nextVisitDate);
+			ps.setString(8, relapse);
+			ps.setString(9, complications);
+			ps.setString(10, description);
+			ps.setString(11, treatmentComplications);
+			ps.setString(12, results);
+			ps.setString(13, comments);
 			ps.executeUpdate();
 			ps.close();
 			
@@ -213,7 +215,8 @@ public class InMemoryVisitRepo implements VisitRepo{
 			ps.setInt(10, leftRE);
 			ps.setInt(11, leftMC);
 			ps.setInt(12, leftTHC);
-			ps.setInt(13, leftCLB);
+			ps.setString(13, leftTreatment);
+			ps.setInt(14, leftCLB);
 			ps.executeUpdate();
 			ps.close();
 			
@@ -244,7 +247,8 @@ public class InMemoryVisitRepo implements VisitRepo{
 			ps.setInt(10, rightRE);
 			ps.setInt(11, rightMC);
 			ps.setInt(12, rightTHC);
-			ps.setInt(13, rightCLB);
+			ps.setString(13, rightTreatment);
+			ps.setInt(14, rightCLB);
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
@@ -887,6 +891,64 @@ public class InMemoryVisitRepo implements VisitRepo{
 			
 				rs.close();
 				return rv;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
+	
+	public List<newPatient> getAllPatients() {
+		Connection conn = null; // Resets the connection to the database
+		newPatient patient = null; // Resets the model
+		List<newPatient> patients = null; // Resets the list
+		
+		/**
+		 * Reseting the database connection to retrieve information that's stored in the mysql database
+		 * via queries that are sent through the open connection. The results of the data received by this class
+		 * is saved in a result set to be displayed in the jsp view. 
+		 */
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "select a.id, a.consent_inclusion, a.consent_photos, a.hospital_id, b.first_name, b.last_name, " +
+		    		            "b.middle_name, a.dob, a.evaluator_id, a.evaluation_date, a.feet_affected, a.diagnosis, " +
+		    		            "a.sex, a.race " +
+		    		     "from patient a " +
+		    		     "inner join abstract_person b on a.id = b.id " +
+		    		     "order by a.id";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.last()) {
+			  patients = new ArrayList<>(rs.getRow());
+			  rs.beforeFirst(); 
+			}
+			
+			while (rs.next()) {
+				patient = new newPatient(
+					rs.getInt("id"),
+					rs.getInt("consent_inclusion"),
+					rs.getInt("consent_photos"),
+					rs.getInt("hospital_id"),
+					rs.getString("first_name"),
+					rs.getString("last_name"),
+					rs.getString("middle_name"),
+					rs.getString("dob"),
+					rs.getInt("evaluator_id"),
+					rs.getString("evaluation_date"),
+					rs.getString("feet_affected"),
+					rs.getString("diagnosis")
+				);
+				patients.add(patient);
+			}
+			rs.close();
+			ps.close();
+			return patients;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {

@@ -105,67 +105,61 @@
 	  //document.getElementById('leftFoot').hide();
 	  //document.getElementById('rightFoot').hide();
 
-	  
-  if ("${visit.laterality}" == "Left"){
-	$('div.leftFoot').show();
-	$('#rightPC').prop('required', false);
-	$('#leftPC').prop('required', true);
-    $('#rightEH').prop('required', false);
-	$('#leftEH').prop('required', true);
-	$('#rightRE').prop('required', false);
-	$('#leftRE').prop('required', true);
-	$('#rightMC').prop('required', false);
-	$('#leftMC').prop('required', true);
-	$('#rightTHC').prop('required', false);
-	$('#leftTHC').prop('required', true);
-	$('#rightCLB').prop('required', false);
-	$('#leftCLB').prop('required', true);
-	$('#rightTreatment').prop('required', false);
-	$('#leftTreatment').prop('required', true);
-	$('div.rightFoot').hide();
-
-	
-
-  }
-  else if("${visit.laterality}" == "Right"){
-
-	$('div.rightFoot').show();
-	$('#rightPC').prop('required', true);
-	$('#leftPC').prop('required', false);
-    $('#rightEH').prop('required', true);
-	$('#leftEH').prop('required', false);
-	$('#rightRE').prop('required', true);
-	$('#leftRE').prop('required', false);
-	$('#rightMC').prop('required', true);
-	$('#leftMC').prop('required', false);
-	$('#rightTHC').prop('required', true);
-	$('#leftTHC').prop('required', false);
-	$('#rightCLB').prop('required', true);
-	$('#leftCLB').prop('required', false);
-	$('#rightTreatment').prop('required', true);
-	$('#leftTreatment').prop('required', false);
-	$('div.leftFoot').hide();
-
-  }
-  else if("${visit.laterality}" == "Both"){
-  	$('div.leftFoot').show();
-	$('div.rightFoot').show();
-	$('#rightPC').prop('required', true);
-	$('#leftPC').prop('required', true);
-    $('#rightEH').prop('required', true);
-	$('#leftEH').prop('required', true);
-	$('#rightRE').prop('required', true);
-	$('#leftRE').prop('required', true);
-	$('#rightMC').prop('required', true);
-	$('#leftMC').prop('required', true);
-	$('#rightTHC').prop('required', true);
-	$('#leftTHC').prop('required', true);
-	$('#rightCLB').prop('required', true);
-	$('#leftCLB').prop('required', true);
-	$('#rightTreatment').prop('required', true);
-	$('#leftTreatment').prop('required', true);
-  }
-  
+	  /*
+	  if ("${visit.laterality}" == "Left"){
+		$('div.leftFoot').show();
+		$('#rightPC').prop('required', false);
+		$('#leftPC').prop('required', true);
+	    $('#rightEH').prop('required', false);
+		$('#leftEH').prop('required', true);
+		$('#rightRE').prop('required', false);
+		$('#leftRE').prop('required', true);
+		$('#rightMC').prop('required', false);
+		$('#leftMC').prop('required', true);
+		$('#rightTHC').prop('required', false);
+		$('#leftTHC').prop('required', true);
+		$('#rightCLB').prop('required', false);
+		$('#leftCLB').prop('required', true);
+		$('#rightTreatment').prop('required', false);
+		$('#leftTreatment').prop('required', true);
+		$('div.rightFoot').hide();
+	  }
+	  else if("${visit.laterality}" == "Right"){
+		$('div.rightFoot').show();
+		$('#rightPC').prop('required', true);
+		$('#leftPC').prop('required', false);
+	    $('#rightEH').prop('required', true);
+		$('#leftEH').prop('required', false);
+		$('#rightRE').prop('required', true);
+		$('#leftRE').prop('required', false);
+		$('#rightMC').prop('required', true);
+		$('#leftMC').prop('required', false);
+		$('#rightTHC').prop('required', true);
+		$('#leftTHC').prop('required', false);
+		$('#rightCLB').prop('required', true);
+		$('#leftCLB').prop('required', false);
+		$('#rightTreatment').prop('required', true);
+		$('#leftTreatment').prop('required', false);
+		$('div.leftFoot').hide();
+	  }
+	  else if("${visit.laterality}" == "Both"){
+	  	$('div.leftFoot').show();
+		$('div.rightFoot').show();
+		$('#rightPC').prop('required', true);
+		$('#leftPC').prop('required', true);
+	    $('#rightEH').prop('required', true);
+		$('#leftEH').prop('required', true);
+		$('#rightRE').prop('required', true);
+		$('#leftRE').prop('required', true);
+		$('#rightMC').prop('required', true);
+		$('#leftMC').prop('required', true);
+		$('#rightTHC').prop('required', true);
+		$('#leftTHC').prop('required', true);
+		$('#rightCLB').prop('required', true);
+		$('#leftCLB').prop('required', true);
+		$('#rightTreatment').prop('required', true);
+		$('#leftTreatment').prop('required', true);
+	  }*/
   }
   
   function braceLeftTrue(){
@@ -622,8 +616,8 @@
 				<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "referLeftTrue()" VALUE="R - Refer">R - Refer
 				<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "surgeryLeftTrue()" VALUE="S - Surgery">S - Surgery
 				<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "otherLeftTrue()" VALUE="O - Other">O - Other<br>
-			
-			
+			</fieldset>
+			<!-- 
 				<label for = "casterLeft" id = "casterLeft1">Caster: </label>
 	  			<input type="text" name="casterLeft" id = "casterLeft" class="form-control" path="casterLeft">
 	  			
@@ -670,7 +664,7 @@
 		  			<input type="text" name="leftSurgeryComments" id = "leftSurgeryComments" class="form-control" path="leftSurgeryComments">	
 			    </div>
 	  		</fieldset>
-	  		
+	  		-->
 	  	</div>
 		</div>
 		
