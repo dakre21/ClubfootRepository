@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
@@ -77,9 +78,26 @@ public class newPatientController{
 	
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value="/newpatient", method=RequestMethod.POST)	// Returns the newpatient form data to the model
-    public String newPatientSubmit(@ModelAttribute("newPatient") newPatient newpatient, Model model) {
+    public @ResponseBody String newPatientSubmit(@ModelAttribute("newPatient") newPatient newpatient, Model model, @RequestParam("file") MultipartFile file, String name) {
         newpatientrepo.addPatient(newpatient);	// Method call to the addPatient class and passes the newpatient object to it
         model.addAttribute("patients", newpatientrepo.getAllPatients());	// Receives all patients via a method call from repo to the model attribute patients
+        if (!file.isEmpty()) {
+            try {
+            	//BufferedImage bytes = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
+                byte[] bytes = file.getBytes();
+                BufferedOutputStream stream =
+                        new BufferedOutputStream(new FileOutputStream(new File(name)));
+                stream.write(bytes);
+                stream.close();
+                System.out.println("File upload sucess");
+                newpatientrepo.addPhoto(bytes);
+            } catch (Exception e) {
+            	System.out.println("File upload failed");
+            }
+        } else {
+        	System.out.println("No file uploaded");
+        }
+        
         return "view_patients";	// Returns the view_patient view
     }
 	

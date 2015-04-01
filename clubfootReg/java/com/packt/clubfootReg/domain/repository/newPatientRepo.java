@@ -29,7 +29,7 @@ public interface newPatientRepo {
 	int getAddressIDForPerson(int id);	// Method that returns maxaddressidforperson
 	int getMaxAddressID();// Method that returns the maxaddressid
 	int[] getAssociateIDsForPatient(int id);	// Method that returns associateidforpatient
-	void addPhoto(BufferedImage bytes);
+	void addPhoto(byte[] bytes);
 	List<newPatient> getAllPatientsReports(ReportsPatients filters);
 	Map<Integer, String> getAllHospitals();
 	Map<Integer, String> getAllEvaluators();
