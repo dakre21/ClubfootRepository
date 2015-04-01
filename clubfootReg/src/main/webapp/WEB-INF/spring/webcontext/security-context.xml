@@ -15,13 +15,13 @@
 
 	<security:http auto-config="true">
 		<security:intercept-url pattern="/newpatient" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/evaluator" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/view_evaluators" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/edit_evaluator" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/hospital" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/adduser" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/evaluator" access="ROLE_ADMIN, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/view_evaluators" access="ROLE_ADMIN, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/edit_evaluator" access="ROLE_ADMIN, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/hospital" access="ROLE_ADMIN, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/adduser" access="ROLE_ADMIN, ROLE_REGADMIN" />
 		<security:intercept-url pattern="/visit" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/view_hospitals" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/view_hospitals" access="ROLE_ADMIN, ROLE_REGADMIN" />
 		<security:intercept-url pattern="/view_patients" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
 		<security:intercept-url pattern="/view_patient_info" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
 		<security:intercept-url pattern="/view_users" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
@@ -43,6 +43,7 @@
 				<security:user name="Admin" password="Admin123" authorities="ROLE_ADMIN" />
 				<security:user name="Tester" password="Tester123" authorities="ROLE_TESTER" />
 				<security:user name="RegAdmin" password="RegAdmin123" authorities="ROLE_REGADMIN" />
+				<security:user name="HospitalAdmin" password="HospitalAdmin123" authorities="ROLE_HospitalAdmin" />
 			</security:user-service>
 		</security:authentication-provider>
 	</security:authentication-manager>
