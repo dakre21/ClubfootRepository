@@ -804,7 +804,10 @@ public class InMemoryVisitRepo implements VisitRepo{
 			conn = dataSource.getConnection();
 			
 			if (filter == null) {
-				String sql = "select * from visit ";
+				String sql = "select a.id, a.hospital_id, a.patient_id, " +
+							   "(select treatment from foot b join visit d on b.visit_id = d.id where b.visit_id = a.id and laterality = 'Left') as leftTreatment, " +
+							   "(select treatment from foot c join visit e on c.visit_id = e.id where c.visit_id = a.id and laterality = 'Right') as rightTreatment " +
+							 "from visit a";
 				ps = conn.prepareStatement(sql);
 				rs = ps.executeQuery();
 			}
@@ -819,14 +822,18 @@ public class InMemoryVisitRepo implements VisitRepo{
 				
 				if(hospital_id != null){
 					cs.setInt(1, hospital_id);
-				}else{
+				}
+				else{
 					cs.setInt(1, 0);
 				}
+				
 				if(complications != null){
 					cs.setString(2, complications);
-				}else{
-					cs.setString(2, null);
 				}
+				else{
+					cs.setString(2, "null");
+				}
+				
 				if (relapse != null) {
 					if (relapse.equalsIgnoreCase("yes")) {
 						cs.setString(3, "yes");
@@ -837,20 +844,24 @@ public class InMemoryVisitRepo implements VisitRepo{
 					else {
 						cs.setString(3, "unspecified");
 					}
-					} else { 
-						cs.setString(3, "null"); 
-					}
-				/*
+				}
+				else { 
+					cs.setString(3, "null"); 
+				}
+				
 				if(leftTreatment != null){
 					cs.setString(4, leftTreatment);
-				}else{
-					cs.setString(4, null);
 				}
+				else{
+					cs.setString(4, "null");
+				}
+				
 				if(rightTreatment != null){
 					cs.setString(5, rightTreatment);
-				}else{
-					cs.setString(5, null);
-				}*/
+				}
+				else{
+					cs.setString(5, "null");
+				}
 				
 				cs.execute();
 				rs = cs.getResultSet();
@@ -864,9 +875,10 @@ public class InMemoryVisitRepo implements VisitRepo{
 				while (rs.next()) {
 					visit = new Visit();
 					visit.setId(rs.getInt("id"));
-				//	visit.setLeftTreatment(rs.getString("treatment"));
-				//	visit.setRightTreatment(rs.getString("treatment"));
+					visit.setPatientId(rs.getInt("patient_id"));
 					visit.setHospitalId(rs.getInt("hospital_id"));
+				 	visit.setLeftTreatment(rs.getString("leftTreatment"));
+					visit.setRightTreatment(rs.getString("rightTreatment"));
 					rv.add(visit);
 				}
 			

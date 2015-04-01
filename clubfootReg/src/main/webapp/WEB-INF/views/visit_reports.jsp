@@ -22,6 +22,8 @@
 
 <div class="container">
 	<div class="jumbotron">
+		<h1>Visit Report</h1>
+		<hr>
 		<form action="#" th:action="@{/visit_reports}"  modelAttribute="filters" method="post" id="filterVisits">
 		<div class="form-group">
 			
@@ -31,6 +33,7 @@
                 <form:options items="${hospitalList}" />
             </form:select> <br>
             
+            <!-- 
             <label for="all">All Hospitals</label>
 			<input type="checkbox" name="all" id="all" path="all"> <br>
 			
@@ -39,16 +42,17 @@
 			
 			<label for="end">End date: </label>
 			<input type="date" name="end" id="end" class="form-control" path="end" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> <br>
+			-->
 			
 			<label for = "complications"><em>*</em>Were there any complications? </label>	
-			<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsFalse()"VALUE="No" required>No
-			<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsTrue()" VALUE="Yes" required>Yes
-			<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsUnspecified()" VALUE="Unspecified" required>Unspecified<br>
+			<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsFalse()"VALUE="No">No
+			<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsTrue()" VALUE="Yes">Yes
+			<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsUnspecified()" VALUE="Unspecified">Unspecified<br>
 				
 			<label for = "relapse"><em>*</em>Did the patient experience any relapses? </label>	
-			<INPUT TYPE="radio" NAME="relapse" path="relapse" onClick = "relapseFalse()"VALUE="No" required>No
-			<INPUT TYPE="radio" NAME="relapse" path="relapse" onClick = "relapseTrue()" VALUE="Yes" required>Yes
-			<INPUT TYPE="radio" NAME="relapse" path="relapse" onClick = "relapseUnspecified()" VALUE="Unspecified" required>Unspecified<br>
+			<INPUT TYPE="radio" NAME="relapse" path="relapse" onClick = "relapseFalse()"VALUE="No">No
+			<INPUT TYPE="radio" NAME="relapse" path="relapse" onClick = "relapseTrue()" VALUE="Yes">Yes
+			<INPUT TYPE="radio" NAME="relapse" path="relapse" onClick = "relapseUnspecified()" VALUE="Unspecified">Unspecified<br>
 				
 			<label for = "leftTreatment"><em>*</em>Left foot treatment: </label>	
 			<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "noneLeftTrue()" VALUE="None">None
@@ -67,19 +71,19 @@
 			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "referRightTrue()" VALUE="R - Refer">R - Refer
 			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "surgeryRightTrue()" VALUE="S-Surgery">S - Surgery
 			<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "otherRightTrue()" VALUE="O-Other">O - Other<br>
-			
+			<br>
 			<button class="btn btn-primary btn-lg" type="submit">Generate Report</button>
 		</div>	
 		</form>
-	
+	</div>
 		<table class='table table-striped'>
 		   	<thead>
 		   		<tr>
 		   			<th>Visit ID</th>
 		   			<th>Patient ID</th>
+		   			<th>Hospital/Clinic</th>
 		   			<th>Treatment Left</th>
 		   			<th>Treatment Right</th>
-		   			<th>Hospital/Clinic</th>
 		    	</tr>
 		    </thead>
 	   
@@ -88,9 +92,10 @@
             <c:forEach var="o" items="${visit_reports}">
               <tr>
                   <td>${o.id}</td>
-                 <!--  <td>${o.leftTreatment}</td>
-                  <td>${o.rightTreatment}</td>-->
+                  <td>${o.patientId}</td>
                   <td>${o.hospitalId}</td>
+                  <td>${o.leftTreatment}</td>
+                  <td>${o.rightTreatment}</td>
               </tr>
             </c:forEach>
           </c:if>
