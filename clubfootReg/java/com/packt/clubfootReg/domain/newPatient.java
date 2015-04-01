@@ -3,6 +3,7 @@ package com.packt.clubfootReg.domain;
 import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 /**
  * 
@@ -72,7 +73,7 @@ public class newPatient {
 	private String diagnosis_comments;
 	private String abnormalities;
 	private String weakness;
-	private MultipartFile fileName;
+	private CommonsMultipartFile fileName;
 
 	public newPatient() {
 		super();
@@ -608,7 +609,7 @@ public class newPatient {
 		return fileName;
 	}
 
-	public void setFileName(MultipartFile fileName) {
+	public void setFileName(CommonsMultipartFile fileName) {
 		this.fileName = fileName;
 	}
 }

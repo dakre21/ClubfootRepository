@@ -22,12 +22,16 @@ import com.packt.clubfootReg.domain.repository.newPatientRepo;
 
 import javax.sql.DataSource;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.sql.Blob;
 import java.sql.Connection; 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 //import java.sql.Date;
+
+
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -1164,14 +1168,14 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 	}
 	
 	@Override
-	public void addPhoto(byte[] bytes) {
+	public void addPhoto(BufferedImage bytes) {
 		System.out.println("MAKES IT HERE!!!!!!!!");
 		Connection connection = null;	// Instantiation of the database connection
 		try{
 			connection = dataSource.getConnection();	// Connection of the dataSource with the MySql sever
-			String sql = "Insert into photo_table (photo) values (?)";	// First sql statement that contains the information to query into abstract_person
+			String sql = "Insert into patient (photo) values (?)";	// First sql statement that contains the information to query into abstract_person
 			PreparedStatement ps = connection.prepareStatement(sql); // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database with an instantiation of the database connection	
-			ps.setBytes(1, bytes);
+			ps.setBlob(1, (Blob) bytes);
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) { // Catches SQL exception errors

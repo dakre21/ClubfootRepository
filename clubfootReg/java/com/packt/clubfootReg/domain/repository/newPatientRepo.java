@@ -1,5 +1,6 @@
 package com.packt.clubfootReg.domain.repository;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public interface newPatientRepo {
 	int getAddressIDForPerson(int id);	// Method that returns maxaddressidforperson
 	int getMaxAddressID();// Method that returns the maxaddressid
 	int[] getAssociateIDsForPatient(int id);	// Method that returns associateidforpatient
-	void addPhoto(byte[] bytes);
+	void addPhoto(BufferedImage bytes);
 	List<newPatient> getAllPatientsReports();
 	Map<Integer, String> getAllHospitals();
 	Map<Integer, String> getAllEvaluators();

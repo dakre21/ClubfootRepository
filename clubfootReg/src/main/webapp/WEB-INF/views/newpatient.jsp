@@ -517,13 +517,13 @@
 			<div class="col-md-12">
 			<div class="form-group">
 			<label for="fileName">Upload photo of patient here: </label>
-			<input type="file" class="btn btn-lg btn-default" id="fileName" name="fileName" path="fileName"><br>
+			<input type="file" class="btn btn-lg btn-default" id="file" name="file" path="file"><br>
 			<button type="submit" class="btn btn-lg btn-default" for="add_photo" id="add_photo" value="Upload">Add another photo</button>
 			</div>
 			</div>
 		</fieldset>
 			<div class="row" align="center">
-				<button type="submit" class="btn btn-lg btn-primary">Save</button>
+				<button type="submit" class="btn btn-lg btn-primary" value="Upload">Save</button>
 			</div>
 		</div>
 	</div>
