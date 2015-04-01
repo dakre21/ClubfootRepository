@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
 
+import com.mysql.jdbc.CallableStatement;
 import com.packt.clubfootReg.domain.Evaluator;
 import com.packt.clubfootReg.domain.Hospital;
 import com.packt.clubfootReg.domain.ReportsPatients;
@@ -28,6 +29,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 //import java.sql.Date;
+
+
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -1189,7 +1192,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 	}
 
 	@Override
-	public List<newPatient> getAllPatientsReports() {
+	public List<newPatient> getAllPatientsReports(ReportsPatients filters) {
 		Connection conn = null; // Resets the connection to the database
 		newPatient patient = null; // Resets the model
 		List<newPatient> rp = null; // Resets the list
@@ -1200,17 +1203,96 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		 * is saved in a result set to be displayed in the jsp view. 
 		 */
 		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "Select a.id, a.consent_inclusion, a.consent_photos, a.hospital_id, b.first_name, b.last_name, " +
-		            		"b.middle_name, a.dob, a.evaluator_id, a.evaluation_date, a.feet_affected, a.diagnosis, " +
-		            		"a.sex, a.race " +
-		            	 "from patient a " +
-		            	 "inner join abstract_person b on a.id = b.id " +
-		            	 "order by a.id";
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery();
+			if (filters == null) {
+				String sql = "Select a.id, a.consent_inclusion, a.consent_photos, a.hospital_id, b.first_name, b.last_name, " +
+			            		"b.middle_name, a.dob, a.evaluator_id, a.evaluation_date, a.feet_affected, a.diagnosis, " +
+			            		"a.sex, a.race " +
+			            	 "from patient a " +
+			            	 "inner join abstract_person b on a.id = b.id " +
+			            	 "order by a.id";
+				ps = conn.prepareStatement(sql);
+				rs = ps.executeQuery();
+			}
+			else {
+				CallableStatement cs = (CallableStatement) conn.prepareCall("{call filterPatientReport(?, ?, ?, ?)}");
+				
+				String sex = filters.getSex();
+				String race = filters.getRace();
+				String relatives = filters.getRelatives();
+				Integer hospital_id = filters.getHospital_id();
+				//String dobSel = filters.getDobSel();
+				//String dob = filters.getDob();
+				//String eval_dateSel = filters.getEval_dateSel();
+				//String eval_date = filters.getEval_date();
+				
+				if (sex != null) { 
+					cs.setString(1, sex); 
+				} else { 
+					cs.setString(1, "null"); 
+				}
+				
+				if (race != null) { 
+					cs.setString(2, race); 
+				} else { 
+					cs.setString(2, "null"); 
+				}
+				
+				if (relatives != null) {
+					if (relatives.equalsIgnoreCase("yes")) {
+						cs.setString(3, "yes");
+					}
+					else if (relatives.equalsIgnoreCase("no")) {
+						cs.setString(3, "no");
+					}
+					else {
+						cs.setString(3, "unspecified");
+					}
+				} else { 
+					cs.setString(3, "null"); 
+				}
+				
+				if (hospital_id != null) { 
+					cs.setInt(4, hospital_id); 
+				} else { 
+					cs.setInt(4, 0); 
+				}
+				/*
+				if (dobSel != null) { 
+					cs.setString(5, dobSel); 
+				} else { 
+					cs.setString(5, "null"); 
+				}
+				
+				if (dob != null) { 
+					cs.setString(6, dob); 
+				} else { 
+					cs.setString(6, "null"); 
+				}
+				
+				if (eval_dateSel != null) { 
+					cs.setString(7, eval_dateSel); 
+				} else { 
+					cs.setString(7, "null"); 
+				}
+				
+				if (eval_date != null) { 
+					cs.setString(8, eval_date); 
+				} else { 
+					cs.setString(8, "null"); 
+				}*/
+				
+				cs.execute();
+				rs = cs.getResultSet();
+			}
+			
+			
+			System.out.println("MADE IT HERE");
 			
 			if (rs.last()) {
 			  rp = new ArrayList<>(rs.getRow());
@@ -1226,7 +1308,9 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				rp.add(patient);
 			}
 			
-			ps.close();
+			if (ps != null)
+				ps.close();
+			
 			rs.close();
 			return rp;
 		} catch (SQLException e) {

@@ -1,6 +1,9 @@
 package com.packt.clubfootReg.controller;
 
 import java.awt.List;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Map;
@@ -16,9 +19,12 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.packt.clubfootReg.domain.Hospital;
+import com.packt.clubfootReg.domain.ReportsPatients;
 import com.packt.clubfootReg.domain.Visit;
 import com.packt.clubfootReg.domain.newPatient;
 import com.packt.clubfootReg.domain.ReportsHospital;
@@ -68,9 +74,15 @@ public class ReportsController {
 
 	@RequestMapping(value="/patient_reports", method=RequestMethod.GET)	
 	public String patientReports(Model model) {
-		model.addAttribute("patients", newpatientRepo.getAllPatientsReports());	
+		model.addAttribute("patients", newpatientRepo.getAllPatientsReports(null));	
 		return "patient_reports";
 	}
+	
+	@RequestMapping(value="/patient_reports", method=RequestMethod.POST)	
+    public String filterPatientsSubmit(@ModelAttribute("filters") ReportsPatients filters, Model model) {
+        model.addAttribute("patients", newpatientRepo.getAllPatientsReports(filters));	
+        return "patient_reports";	
+    }
 	
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value="/hospital_reports", method=RequestMethod.GET)	// Posts the visit form information to the database
