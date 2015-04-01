@@ -1129,12 +1129,15 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "Select a.id, max(b.id), b.treatment as leftTreatment, b.pc as leftPC, " +
-								"c.treatment as rightTreatment, c.pc as rightPC " +
+			String sql = "select a.id, a.visit_date, " +
+					     "(select treatment from foot b join visit d on b.visit_id = d.id where b.visit_id = a.id and laterality = 'Left') as leftTreatment, " +
+					     "(select sum(if(pc=2,0.5,pc)+if(eh=2,0.5,eh)+if(re=2,0.5,re)+if(mc=2,0.5,mc)+if(thc=2,0.5,thc)+if(clb=2,0.5,clb)) " +
+					     "from foot z join visit y on z.visit_id = y.id where z.visit_id = a.id and laterality = 'Left') as leftScore, " +
+					     "(select treatment from foot c join visit e on c.visit_id = e.id where c.visit_id = a.id and laterality = 'Right') as rightTreatment, " +
+					     "(select sum(if(pc=2,0.5,pc)+if(eh=2,0.5,eh)+if(re=2,0.5,re)+if(mc=2,0.5,mc)+if(thc=2,0.5,thc)+if(clb=2,0.5,clb)) " +
+					     "from foot z join visit y on z.visit_id = y.id where z.visit_id = a.id and laterality = 'Right') as rightScore " +
 					     "from visit a " +
-					     "join foot b on a.id = b.visit_id " +
-					     "join foot c on a.id = c.visit_id " +
-					     "where a.patient_id = ? and b.id <> c.id";
+					     "where patient_id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, patient_id);
 			ResultSet rs = ps.executeQuery();
@@ -1147,10 +1150,11 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			while (rs.next()) {
 				visit = new Visit(patient_id);
 				visit.setId(rs.getInt("id"));
+				visit.setDateOfVisit(rs.getString("visit_date"));
 				visit.setLeftTreatment(rs.getString("leftTreatment"));
-				visit.setLeftPC(rs.getInt("leftPC"));
+				visit.setLeftScore(rs.getInt("leftScore"));
 				visit.setRightTreatment(rs.getString("rightTreatment"));
-				visit.setRightPC(rs.getInt("rightPC"));
+				visit.setRightScore(rs.getInt("rightScore"));
 				visits.add(visit);
 			}
 			

@@ -198,25 +198,23 @@
 					<table class='table table-striped'>
 					   	<thead>
 					   		<tr>
-					    		<!-- <th>Date of visit (dd/mm/yyyy)</th> -->
-					    		<th>ID</th>
+					    		<th>Date of visit (dd/mm/yyyy)</th>
 					    		<th>Treatment (left)</th>
 					    		<th>Treatment (right)</th>
 					    		<th>Pirani score (left)</th>
 					    		<th>Pirani score (right)</th>
-
 					    	</tr>
 					    </thead>
 				    	<c:if test="${not empty visits}">
 				            <c:forEach var="o" items="${visits}">
 				            	<tr>
-				            	    <!-- <td>${o.dateOfVisit}</td> -->
+				            	    <td>${o.dateOfVisit}</td>
 								  	<td>${o.leftTreatment}</td>
 								  	<td>${o.rightTreatment}</td>
-								  	<td>${o.leftPC}</td>
-								  	<td>${o.rightPC}</td>
+								  	<td>${o.leftScore}</td>
+								  	<td>${o.rightScore}</td>
 								  	<td><a href="view_visit_info?id=${o.id}">View Details</a></td>
-								  	<td><a href="edit_visit?id=${o.id}">Edit Visit</a></td>
+								  	<td><a href="edit_visit?id=${o.id}">Edit</a></td>
 				              	</tr>
 				            </c:forEach>
 				    	</c:if>

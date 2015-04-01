@@ -98,6 +98,9 @@ public class Visit {
 	private String results;
 	private String laterality;
 	
+	private Integer leftScore;
+	private Integer rightScore;
+	
 	public Visit() {
 		// TODO Auto-generated constructor stub
 	}
@@ -117,6 +120,20 @@ public class Visit {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	
+	public Integer getLeftScore(){
+		return leftScore;
+	}
+	public void setLeftScore(Integer leftScore){
+		this.leftScore = leftScore;
+	}
+	public Integer getRightScore(){
+		return rightScore;
+	}
+	public void setRightScore(Integer rightScore){
+		this.rightScore = rightScore;
 	}
 	
 	

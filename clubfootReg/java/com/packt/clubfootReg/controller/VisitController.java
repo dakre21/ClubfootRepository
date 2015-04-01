@@ -64,8 +64,9 @@ public class VisitController {
 	@RequestMapping(value="/visit", method=RequestMethod.POST)	// Posts the visit form information to the database
     public String addVisitSubmit(@ModelAttribute("visit") Visit visit, Model model) {
         visitRepo.addVisit(visit);	// Visitrepo adds visit object to the interface
-        model.addAttribute("patients", visitRepo.getAllPatients());
-        return "view_patients";// Returns the view_visit_info page
+        model.addAttribute("patient", visitRepo.getPatient(visit.getPatientId()));
+        model.addAttribute("visits", visitRepo.getVisitsForPatient(visit.getPatientId()));
+        return "view_patient_info";// Returns the view_visit_info page
     }
 	
 	// Annotation for mapping web requests to specific handler classes/methods
