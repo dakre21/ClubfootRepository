@@ -1169,14 +1169,14 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 	}
 	
 	@Override
-	public void addPhoto(BufferedImage bytes) {
+	public void addPhoto(byte[] bytes) {
 		System.out.println("MAKES IT HERE!!!!!!!!");
 		Connection connection = null;	// Instantiation of the database connection
 		try{
 			connection = dataSource.getConnection();	// Connection of the dataSource with the MySql sever
 			String sql = "Insert into patient (photo) values (?)";	// First sql statement that contains the information to query into abstract_person
 			PreparedStatement ps = connection.prepareStatement(sql); // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database with an instantiation of the database connection	
-			ps.setBlob(1, (Blob) bytes);
+			ps.setBytes(1, bytes);
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) { // Catches SQL exception errors
