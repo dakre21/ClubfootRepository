@@ -24,7 +24,7 @@
 		<security:intercept-url pattern="/view_hospitals" access="ROLE_ADMIN, ROLE_REGADMIN" />
 		<security:intercept-url pattern="/view_patients" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
 		<security:intercept-url pattern="/view_patient_info" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/view_users" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/view_users" access="ROLE_ADMIN, ROLE_REGADMIN" />
 		<security:intercept-url pattern="/view_visit" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
 		<security:intercept-url pattern="/edit_patient" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
 		<security:intercept-url pattern="/visit_reports" access="ROLE_ADMIN, ROLE_REGADMIN" />
