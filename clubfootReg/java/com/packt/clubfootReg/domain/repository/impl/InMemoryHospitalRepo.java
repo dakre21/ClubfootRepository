@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.packt.clubfootReg.domain.Evaluator;
 import com.packt.clubfootReg.domain.Hospital;
+import com.packt.clubfootReg.domain.ReportsHospital;
 import com.packt.clubfootReg.domain.repository.HospitalRepo;
 
 import java.sql.Connection; 
@@ -278,6 +279,90 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 			rs.close();
 			ps.close();
 			return regions;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
+
+	@Override
+	public List<ReportsHospital> getAllHospitalsReports(int hospital_id) {
+		Connection conn = null; // Resets the connection to the database
+		ReportsHospital hospital = null; // Resets the model
+		List<ReportsHospital> rh = null; // Resets the list
+		
+		/**
+		 * Reseting the database connection to retrieve information that's stored in the mysql database
+		 * via queries that are sent through the open connection. The results of the data received by this class
+		 * is saved in a result set to be displayed in the jsp view. 
+		 */
+		
+		try {
+			conn = dataSource.getConnection();
+			
+		    String sql = "Select a.name as hospitalName, c.name as regionName, count(*) as numOfPatients, " +
+				   			"(select count(*) from patient where a.id = hospital_id and sex = 'male') as numOfMales, " +
+				   			"(select count(*) from patient where a.id = hospital_id and sex = 'female') as numOfFemales, " +
+				   			"(select count(*) from patient where a.id = hospital_id and feet_affected = 'Left') as latLeft, " +
+				   			"(select count(*) from patient where a.id = hospital_id and feet_affected = 'Right') as latRight, " +
+				   			"(select count(*) from patient where a.id = hospital_id and (feet_affected = 'Left' or feet_affected = 'Right')) as latUni, " +
+				   			"(select count(*) from patient where a.id = hospital_id and feet_affected = 'Both') as latBi, " +
+				   			"(select count(*) from patient where a.id = hospital_id and affected_relatives > 0) as affectedRels, " +
+				   			"(select count(*) from patient where a.id = hospital_id and affected_relatives = 0) as affectedRelsNot, " +
+				   			"(select count(*) from patient where a.id = hospital_id and affected_relatives is null) as affectedRelsIDK, " +
+				   			"(select count(*) from visit where a.id = hospital_id) as numOfVisits, " +
+				   			"(select count(*) from foot d inner join visit e on d.visit_id = e.id where a.id = e.hospital_id and left(treatment, 1) = 'C') as treatmentC, " +
+				   		    "(select count(*) from foot d inner join visit e on d.visit_id = e.id where a.id = e.hospital_id and left(treatment, 1) = 'B') as treatmentB, " +
+				   		    "(select count(*) from foot d inner join visit e on d.visit_id = e.id where a.id = e.hospital_id and left(treatment, 1) = 'T') as treatmentT " +
+				   		 "from hospital a " +
+				   		 "inner join patient b on a.id = b.hospital_id " +
+				   		 "inner join region c on a.region_id = c.id ";
+		    
+		    if (hospital_id != 0) {
+		    	sql = sql + "where a.id = " + hospital_id + " group by a.name, c.name";
+		    } 
+		    else {
+		    	sql = sql + "group by a.name, c.name";
+		    }
+				   		 
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.last()) {
+			  rh = new ArrayList<>(rs.getRow());
+			  rs.beforeFirst(); 
+			}
+			
+			while (rs.next()) {
+				hospital = new ReportsHospital(
+					rs.getString("hospitalName"),
+					rs.getString("regionName"),
+					rs.getInt("numOfPatients")
+				);
+				hospital.setNumOfMales(rs.getInt("numOfMales"));
+				hospital.setNumOfFemales(rs.getInt("numOfFemales"));
+				hospital.setLatLeft(rs.getInt("latLeft"));
+				hospital.setLatRight(rs.getInt("latRight"));
+				hospital.setLatUni(rs.getInt("latUni"));
+				hospital.setLatBi(rs.getInt("latBi"));
+				hospital.setAffectedRels(rs.getInt("affectedRels"));
+				hospital.setAffectedRelsNot(rs.getInt("affectedRelsNot"));
+				hospital.setAffectedRelsIDK(rs.getInt("affectedRelsIDK"));
+				hospital.setNumOfVisits(rs.getInt("numOfVisits"));
+				hospital.setTreatmentC(rs.getInt("treatmentC"));
+				hospital.setTreatmentB(rs.getInt("treatmentB"));
+				hospital.setTreatmentT(rs.getInt("treatmentT"));
+				rh.add(hospital);
+			}
+			
+			ps.close();
+			rs.close();
+			return rh;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {

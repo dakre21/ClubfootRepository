@@ -1,12 +1,17 @@
 package com.packt.clubfootReg.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +19,21 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.packt.clubfootReg.domain.Visit;
 import com.packt.clubfootReg.domain.newPatient;
 import com.packt.clubfootReg.domain.repository.HospitalRepo;
 import com.packt.clubfootReg.domain.repository.newPatientRepo;
@@ -36,7 +46,7 @@ import com.packt.clubfootReg.domain.repository.newPatientRepo;
  */
 // newPatientController class
 @Controller
-public class newPatientController {
+public class newPatientController{
 
 	// Tells the Dispatcher-context to "wire" or inject an instance of UserRepo for this controller class
 	@Autowired
@@ -44,11 +54,19 @@ public class newPatientController {
 	
 	// This initializes spring's "webdatabinder" class to bind web request parameters to the java bean objects to receive the incoming data 
 	@InitBinder
-	public void initialiseBinder(WebDataBinder binder){
+	public void initialiseBinder(HttpServletRequest request,WebDataBinder binder) throws ServletException{
 		binder.setDisallowedFields("unitsInOrder", "discontinued");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");	// Instantiation of SimpleDateFormat for the database to properly synch data in that format
 	    sdf.setLenient(true);	// Method call to setLenient and passes boolean value "true" to it
 	    binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));	// Binder binds the date format set up earlier to registerCustomEditor class
+	   // binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
+	}
+	
+	@InitBinder
+	protected void initBinder(HttpServletRequest request,
+            ServletRequestDataBinder binder) throws Exception {
+			binder.registerCustomEditor(byte[].class,
+                new ByteArrayMultipartFileEditor());
 	}
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value="/newpatient", method=RequestMethod.GET)	// Gets the newpatient form
@@ -60,15 +78,42 @@ public class newPatientController {
 	
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value="/newpatient", method=RequestMethod.POST)	// Returns the newpatient form data to the model
-    public String newPatientSubmit(@ModelAttribute("newPatient") newPatient newpatient, Model model, String fileName,
+    public String newPatientSubmit(@ModelAttribute("newPatient") newPatient newpatient, Model model) {
+        newpatientrepo.addPatient(newpatient);	// Method call to the addPatient class and passes the newpatient object to it
+        model.addAttribute("patients", newpatientrepo.getAllPatients());	// Receives all patients via a method call from repo to the model attribute patients
+        return "view_patients";	// Returns the view_patient view
+    }
+	
+	/*
+	 * 
+	 * 
+	 * if (!file.isEmpty()) {
+            try {
+            	//BufferedImage bytes = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
+                byte[] bytes = file.getBytes();
+                BufferedOutputStream stream =
+                        new BufferedOutputStream(new FileOutputStream(new File(name)));
+                stream.write(bytes);
+                stream.close();
+                System.out.println("File upload sucess");
+                newpatientrepo.addPhoto(bytes);
+            } catch (Exception e) {
+            	System.out.println("File upload failed");
+            }
+        } else {
+        	System.out.println("No file uploaded");
+        }
+String fileName,
             @RequestParam("file") MultipartFile file) {
+>>>>>>> jake
 		  if (!file.isEmpty()) {
 	            try {
-	                byte[] bytes = file.getBytes();
-	                BufferedOutputStream stream =
-	                        new BufferedOutputStream(new FileOutputStream(new File(fileName)));
-	                stream.write(bytes);
-	                stream.close();
+	            	BufferedImage bytes = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
+	                //byte[] bytes = file.getBytes();
+	                //BufferedOutputStream stream =
+	                        //new BufferedOutputStream(new FileOutputStream(new File(file)));
+	                //stream.write(bytes);
+	                //stream.close();
 	                System.out.println("File upload sucess");
 	                newpatientrepo.addPhoto(bytes);
 	            } catch (Exception e) {
@@ -77,12 +122,7 @@ public class newPatientController {
 	        } else {
 	        	System.out.println("No file uploaded");
 	        }
-        newpatientrepo.addPatient(newpatient);	// Method call to the addPatient class and passes the newpatient object to it
-        model.addAttribute("patients", newpatientrepo.getAllPatients());	// Receives all patients via a method call from repo to the model attribute patients
-        return "view_patients";	// Returns the view_patient view
-    }
-	
-	/*
+
 	@RequestMapping(value="/edit_patient", method=RequestMethod.GET)
     public String editPatientForm(Model model) {
         model.addAttribute("patient", newpatientrepo.getPatient(77));
@@ -126,10 +166,15 @@ public class newPatientController {
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value = "/view_patient_info", method = RequestMethod.GET)	// Gets the view_patient_info form 
 	public ModelAndView viewPatientInfoForm(HttpServletRequest request) {
-	    int patient_id = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call
-	    newPatient patient = newpatientrepo.getPatient(patient_id);	// Gets patient_id from newpatient repo's method getPatient
 	    ModelAndView model = new ModelAndView("view_patient_info");	// Passes the view_patient_info view to the model
+	    int patient_id = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call
+	    
+	    newPatient patient = newpatientrepo.getPatient(patient_id);	// Gets patient_id from newpatient repo's method getPatient
 	    model.addObject("patient", patient);	// Adds an object called patient to the model
+	    
+	    List<Visit> visits = newpatientrepo.getVisitsForPatient(patient_id);	// Gets patient_id from newpatient repo's method getPatient
+	    model.addObject("visits", visits);	// Adds an object called patient to the model
+	    
 	    return model;	// Returns the model
 	}
 	

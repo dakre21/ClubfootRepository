@@ -219,6 +219,7 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 		String last_name = evaluator.getLast_name();
 		String title = evaluator.getTitle();
 		int hospital = evaluator.getHospital_id();
+		
 	
 		String sql_abstract_person = "Update abstract_person set first_name = ?, last_name = ?, middle_name = ? where id = ?";
 		String sql_evaluator = "Update evaluator set title = ?, hospital_id = ? where id = ?";
