@@ -28,7 +28,7 @@
      user="root"  password="sparkey1"/>
 
 <sql:query dataSource="${snapshot}" var="result">
-SELECT COUNT(offon) FROM icr_spring.evaluator WHERE offon='offline';
+SELECT COUNT(offon) as COUNT FROM icr_spring.evaluator WHERE offon='offline';
 </sql:query>
 
 <div class="container">
@@ -48,7 +48,7 @@ SELECT COUNT(offon) FROM icr_spring.evaluator WHERE offon='offline';
 			</tr>
 			<c:forEach var="row" items="${result.rows}">
 			<tr>
-			<td><c:out value="${row}"/></td>
+			<td><c:out value="${row.COUNT}"/></td>
 			</tr>
 			</c:forEach>
 			</table>

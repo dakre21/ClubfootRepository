@@ -27,6 +27,18 @@
 		<div class="col-md-8 column">
 			<h1 align="center">Add New Evaluator</h1>
 			<form action="#" th:action="@{/evaluator}" th:object="${evaluator}" modelAttribute="Evaluator" "id="Evaluator" method="post">
+				<div class="form-group">
+					<label for="first_name">First Name</label>
+					<input type="name" class="form-control" id="first_name" name="first_name" path="first_name"/>
+				</div>
+				<div class="form-group">
+					<label for="middle_name">Middle Name</label>
+					<input type="name" class="form-control" id="middle_name" name="middle_name" path="middle_name"/>
+				</div>
+				<div class="form-group">
+					<label for="last_name">Last Name</label>
+					<input type="name" class="form-control" id="last_name" name="last_name" path="last_name"/>
+				</div>
 				
 				<div class="row">
 					<div class="col-md-6">
