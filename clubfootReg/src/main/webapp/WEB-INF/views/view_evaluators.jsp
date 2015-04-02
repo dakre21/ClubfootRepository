@@ -58,6 +58,9 @@ SELECT COUNT(offon) FROM icr_spring.evaluator WHERE offon='offline';
 		<table class='table table-striped'>
 		   	<thead>
 		   		<tr>
+		   			<th>First Name</th>
+		    		<th>Middle Name</th>
+		    		<th>Last Name</th>
 		    		<th>Title</th>
 		    		<th>Hospital</th>
 		    	</tr>
@@ -67,6 +70,9 @@ SELECT COUNT(offon) FROM icr_spring.evaluator WHERE offon='offline';
         	<c:if test="${not empty evaluators}">
             <c:forEach var="o" items="${evaluators}">
               <tr>
+                  <td>${o.first_name}</td>
+                  <td>${o.middle_name}</td>
+                  <td>${o.last_name}</td>
                   <td>${o.title}</td>
                   <td>${o.hospital_name}</td>
                   <td><a href="edit_evaluator?id=${o.id}">Edit</a></td>
