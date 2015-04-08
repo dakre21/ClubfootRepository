@@ -121,6 +121,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		String diagnosis_comments = newpatient.getDiagnosis_comments();
 		String abnormalities = newpatient.getAbnormalities();
 		String weakness = newpatient.getWeakness();
+		String offline = "offline";
 		
 		int patient_id; // Gets the integer value of the patient id
 		int address_id;	// Gets the integer value of the address id
@@ -138,8 +139,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 							 "evaluation_date, dob, tribe, consent_inclusion, consent_photos, birth_place, " +
 							 "birth_complications, affected_relatives, pregency_length, pregnancy_complications, " +
 							 "pregnancy_drinking, pregnancy_smoking, referral_source, referral_other, referral_doctor_name, " +
-							 "referral_hospital_name, deformity_at_birth, prenatal_week, prenatal_confirmed, sex, race) " +
-		                     "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";// First sql statement that contains the information to query into patient
+							 "referral_hospital_name, deformity_at_birth, prenatal_week, prenatal_confirmed, sex, race, offon) " +
+		                     "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";// First sql statement that contains the information to query into patient
 		
 		// Parent/Guardian Info
 		String sql_abstract_person_pg = "Insert into abstract_person (id, created, first_name, last_name, middle_name) "
@@ -274,6 +275,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setString(25, prenatally_diag_confirmation);
 			ps.setString(26, sex);
 			ps.setString(27, race);
+			ps.setString(28, offline);
 			ps.executeUpdate();
 			ps.close();
 			
