@@ -12,19 +12,25 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
 
+import com.mysql.jdbc.CallableStatement;
 import com.packt.clubfootReg.domain.Evaluator;
 import com.packt.clubfootReg.domain.Hospital;
+import com.packt.clubfootReg.domain.ReportsPatients;
+import com.packt.clubfootReg.domain.ReportsVisits;
+import com.packt.clubfootReg.domain.Visit;
 import com.packt.clubfootReg.domain.newPatient;
 import com.packt.clubfootReg.domain.repository.newPatientRepo;
 
 import javax.sql.DataSource;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.sql.Blob;
 import java.sql.Connection; 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 //import java.sql.Date;
-
 
 
 
@@ -115,6 +121,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		String diagnosis_comments = newpatient.getDiagnosis_comments();
 		String abnormalities = newpatient.getAbnormalities();
 		String weakness = newpatient.getWeakness();
+		String offline = "offline";
 		
 		int patient_id; // Gets the integer value of the patient id
 		int address_id;	// Gets the integer value of the address id
@@ -132,15 +139,15 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 							 "evaluation_date, dob, tribe, consent_inclusion, consent_photos, birth_place, " +
 							 "birth_complications, affected_relatives, pregency_length, pregnancy_complications, " +
 							 "pregnancy_drinking, pregnancy_smoking, referral_source, referral_other, referral_doctor_name, " +
-							 "referral_hospital_name, deformity_at_birth, prenatal_week, prenatal_confirmed, sex, race) " +
-		                     "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";// First sql statement that contains the information to query into patient
+							 "referral_hospital_name, deformity_at_birth, prenatal_week, prenatal_confirmed, sex, race, offon) " +
+		                     "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";// First sql statement that contains the information to query into patient
 		
 		// Parent/Guardian Info
 		String sql_abstract_person_pg = "Insert into abstract_person (id, created, first_name, last_name, middle_name) "
 								      + "values (?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into abstract_person
 		String sql_associate_pg = "Insert into associate (id) values (?)"; // First sql statement that contains the information to query into associate person
-		String sql_patient_associates_pg = "Insert into patient_associates (patient_id, associate_id, relationship_to_patient, is_emergency_contact) "
-							             + "values (?, ?, ?, ?)"; // First sql statement that contains the information to query into associate person guardian
+		String sql_patient_associates_pg = "Insert into patient_associates (patient_id, associate_id, relationship_to_patient, phone1, phone2, is_emergency_contact) "
+							             + "values (?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into associate person guardian
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); // Sets up the date format for data to be properly synchronized to the database
 		Date date = new Date(); // Instantiation of the Date class
@@ -156,6 +163,9 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			
 			address_id = getMaxAddressID()+1;
 			patient_id = getMaxPersonID()+1;
+			
+			
+			//this.addPhoto(newpatient.getFileName().getBytes());
 			
 			// ADDRESS
 			ps = conn.prepareStatement(sql_address); // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database and establishment of the sql query
@@ -265,6 +275,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setString(25, prenatally_diag_confirmation);
 			ps.setString(26, sex);
 			ps.setString(27, race);
+			ps.setString(28, offline);
 			ps.executeUpdate();
 			ps.close();
 			
@@ -279,6 +290,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			ps.setString(4, "Guardian Last");
 			ps.setString(5, "Guardian Middle");
 			*/
+			
 			
 			ps.setString(3, guardian_firstName);
 			ps.setString(4, guardian_lastName);
@@ -304,10 +316,12 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			*/
 			
 			ps.setString(3, guardian_relationship);
+			ps.setString(4, guardian_phone1);
+			ps.setString(5, guardian_phone2);
 			if(emergency_contact.equalsIgnoreCase("Primary")) {
-				ps.setInt(4, 1);
+				ps.setInt(6, 1);
 			} else {
-				ps.setInt(4, 0);
+				ps.setInt(6, 0);
 			}
 			ps.executeUpdate();
 			ps.close();
@@ -334,10 +348,12 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				ps.setInt(1, patient_id);
 				ps.setInt(2, pg_id);
 				ps.setString(3, second_guardian_relationship);
+				ps.setString(4, second_guardian_phone1);
+				ps.setString(5, second_guardian_phone2);
 				if(emergency_contact.equalsIgnoreCase("Secondary")) {
-					ps.setInt(4, 1);
+					ps.setInt(6, 1);
 				} else {
-					ps.setInt(4, 0);
+					ps.setInt(6, 0);
 				}
 				ps.executeUpdate();
 				ps.close();
@@ -365,18 +381,25 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				ps.setInt(1, patient_id);
 				ps.setInt(2, pg_id);
 				ps.setString(3, other_guardian_relationship);
+				ps.setString(4, other_guardian_phone1);
+				ps.setString(5, other_guardian_phone2);
 				if(emergency_contact.equalsIgnoreCase("Other")) {
-					ps.setInt(4, 1);
+					ps.setInt(6, 1);
 				} else {
-					ps.setInt(4, 0);
+					ps.setInt(6, 0);
 				}
 				ps.executeUpdate();
 				ps.close();
 			}
+			
 		} catch (SQLException e) { // Catches SQL exception errors
 			throw new RuntimeException(e);
  
-		} finally {
+		} //catch (IOException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		//} 
+		finally {
 			if (conn != null) { // Closes SQL connection 
 				try {
 					conn.close();
@@ -483,7 +506,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 							 "deformity_at_birth = ?, prenatal_week = ?, prenatal_confirmed = ?, sex = ?, race = ? " +
 							 "where id = ?";
 		
-		String sql_patient_associates = "Update patient_associates set relationship_to_patient = ?, is_emergency_contact = ? " +
+		String sql_patient_associates = "Update patient_associates set relationship_to_patient = ?, phone1 = ?, phone2 = ?, is_emergency_contact = ? " +
 										"where patient_id = ? and associate_id = ?";
 		
 		Connection conn = null;
@@ -545,8 +568,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			
 			ps.setString(1, diagnosis);
 			ps.setString(2, diagnosis_comments);
-			//ps.setInt(3, evaluator); /// <--- THIS IS NOT WORKING
-			ps.setInt(3, 0);
+			ps.setInt(3, evaluator);
 			ps.setInt(4, hospital);
 			ps.setString(5, feet);
 			ps.setString(6, evaluation_date);
@@ -604,13 +626,15 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				// PATIENT ASSOCIATES
 				ps = conn.prepareStatement(sql_patient_associates);
 				ps.setString(1, guardian_relationship);
+				ps.setString(2, guardian_phone1);
+				ps.setString(3, guardian_phone2);
 				if(emergency_contact.equalsIgnoreCase("Primary")) {
-					ps.setInt(2, 1);
+					ps.setInt(4, 1);
 				} else {
-					ps.setInt(2, 0);
+					ps.setInt(4, 0);
 				}
-				ps.setInt(3, id);
-				ps.setInt(4, associate_ids[0]);
+				ps.setInt(5, id);
+				ps.setInt(6, associate_ids[0]);
 				ps.executeUpdate();
 				ps.close();
 			}
@@ -629,13 +653,15 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				// PATIENT ASSOCIATES
 				ps = conn.prepareStatement(sql_patient_associates);
 				ps.setString(1, second_guardian_relationship);
+				ps.setString(2, second_guardian_phone1);
+				ps.setString(3, second_guardian_phone2);
 				if(emergency_contact.equalsIgnoreCase("Secondary")) {
-					ps.setInt(2, 1);
+					ps.setInt(4, 1);
 				} else {
-					ps.setInt(2, 0);
+					ps.setInt(4, 0);
 				}
-				ps.setInt(3, id);
-				ps.setInt(4, associate_ids[1]);
+				ps.setInt(5, id);
+				ps.setInt(6, associate_ids[1]);
 				ps.executeUpdate();
 				ps.close();
 			}
@@ -654,13 +680,15 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				// PATIENT ASSOCIATES
 				ps = conn.prepareStatement(sql_patient_associates);
 				ps.setString(1, other_guardian_relationship);
+				ps.setString(2, other_guardian_phone1);
+				ps.setString(3, other_guardian_phone2);
 				if(emergency_contact.equalsIgnoreCase("Other")) {
-					ps.setInt(2, 1);
+					ps.setInt(4, 1);
 				} else {
-					ps.setInt(2, 0);
+					ps.setInt(4, 0);
 				}
-				ps.setInt(3, id);
-				ps.setInt(4, associate_ids[2]);
+				ps.setInt(5, id);
+				ps.setInt(6, associate_ids[2]);
 				ps.executeUpdate();
 				ps.close();
 			}
@@ -748,7 +776,7 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			
 			
 			// Guardian/Emergency Contact Info
-			sql = "select a.id, b.relationship_to_patient, b.is_emergency_contact, c.is_affected, d.first_name, d.last_name, d.middle_name " +
+			sql = "select a.id, b.relationship_to_patient, b.phone1, b.phone2, b.is_emergency_contact, c.is_affected, d.first_name, d.last_name, d.middle_name " +
 				  "from patient a " +
 				  "inner join patient_associates b on a.id = b.patient_id " +
 				  "inner join associate c on b.associate_id = c.id " +
@@ -762,6 +790,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 			while (rs3.next()) {
 				if (count == 0) {
 					patient.setGuardian_relationship(rs3.getString("relationship_to_patient"));
+					patient.setGuardian_phone1(rs3.getString("phone1"));
+					patient.setGuardian_phone2(rs3.getString("phone2"));
 					patient.setGuardian_firstName(rs3.getString("first_Name"));
 					patient.setGuardian_lastName(rs3.getString("last_name"));
 					patient.setGuardian_midName(rs3.getString("middle_name"));
@@ -771,6 +801,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				}
 				else if (count == 1) {
 					patient.setSecond_guardian_relationship(rs3.getString("relationship_to_patient"));
+					patient.setSecond_guardian_phone1(rs3.getString("phone1"));
+					patient.setSecond_guardian_phone2(rs3.getString("phone2"));
 					patient.setSecond_guardian_first(rs3.getString("first_Name"));
 					patient.setSecond_guardian_last(rs3.getString("last_name"));
 					patient.setSecond_guardian_mid(rs3.getString("middle_name"));
@@ -780,6 +812,8 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 				}
 				else {
 					patient.setOther_guardian_relationship(rs3.getString("relationship_to_patient"));
+					patient.setOther_guardian_phone1(rs3.getString("phone1"));
+					patient.setOther_guardian_phone2(rs3.getString("phone2"));
 					patient.setOther_guardian_first(rs3.getString("first_Name"));
 					patient.setOther_guardian_last(rs3.getString("last_name"));
 					patient.setOther_guardian_mid(rs3.getString("middle_name"));
@@ -1084,12 +1118,69 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		}
 	}
 
+	public List<Visit> getVisitsForPatient(int patient_id) {
+		Connection conn = null; // Resets the connection to the database
+		Visit visit = null; // Resets the model
+		List<Visit> visits = null; // Resets the list
+		
+		/**
+		 * Reseting the database connection to retrieve information that's stored in the mysql database
+		 * via queries that are sent through the open connection. The results of the data received by this class
+		 * is saved in a result set to be displayed in the jsp view. 
+		 */
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "select a.id, a.visit_date, " +
+					     "(select treatment from foot b join visit d on b.visit_id = d.id where b.visit_id = a.id and laterality = 'Left') as leftTreatment, " +
+					     "(select sum(if(pc=2,0.5,pc)+if(eh=2,0.5,eh)+if(re=2,0.5,re)+if(mc=2,0.5,mc)+if(thc=2,0.5,thc)+if(clb=2,0.5,clb)) " +
+					     "from foot z join visit y on z.visit_id = y.id where z.visit_id = a.id and laterality = 'Left') as leftScore, " +
+					     "(select treatment from foot c join visit e on c.visit_id = e.id where c.visit_id = a.id and laterality = 'Right') as rightTreatment, " +
+					     "(select sum(if(pc=2,0.5,pc)+if(eh=2,0.5,eh)+if(re=2,0.5,re)+if(mc=2,0.5,mc)+if(thc=2,0.5,thc)+if(clb=2,0.5,clb)) " +
+					     "from foot z join visit y on z.visit_id = y.id where z.visit_id = a.id and laterality = 'Right') as rightScore " +
+					     "from visit a " +
+					     "where patient_id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, patient_id);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.last()) {
+			  visits = new ArrayList<>(rs.getRow());
+			  rs.beforeFirst(); 
+			}
+			
+			while (rs.next()) {
+				visit = new Visit(patient_id);
+				visit.setId(rs.getInt("id"));
+				visit.setDateOfVisit(rs.getString("visit_date"));
+				visit.setLeftTreatment(rs.getString("leftTreatment"));
+				visit.setLeftScore(rs.getInt("leftScore"));
+				visit.setRightTreatment(rs.getString("rightTreatment"));
+				visit.setRightScore(rs.getInt("rightScore"));
+				visits.add(visit);
+			}
+			
+			rs.close();
+			ps.close();
+			return visits;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
+	
 	@Override
 	public void addPhoto(byte[] bytes) {
+		System.out.println("MAKES IT HERE!!!!!!!!");
 		Connection connection = null;	// Instantiation of the database connection
 		try{
 			connection = dataSource.getConnection();	// Connection of the dataSource with the MySql sever
-			String sql = "Insert into photo_table (photo) values (?)";	// First sql statement that contains the information to query into abstract_person
+			String sql = "Insert into patient (photo) values (?)";	// First sql statement that contains the information to query into abstract_person
 			PreparedStatement ps = connection.prepareStatement(sql); // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database with an instantiation of the database connection	
 			ps.setBytes(1, bytes);
 			ps.executeUpdate();
@@ -1106,6 +1197,139 @@ public class InMemoryNewPatientRepo implements newPatientRepo{
 		}
 		
 		
+	}
+
+	@Override
+	public List<newPatient> getAllPatientsReports(ReportsPatients filters) {
+		Connection conn = null; // Resets the connection to the database
+		newPatient patient = null; // Resets the model
+		List<newPatient> rp = null; // Resets the list
+		
+		/**
+		 * Reseting the database connection to retrieve information that's stored in the mysql database
+		 * via queries that are sent through the open connection. The results of the data received by this class
+		 * is saved in a result set to be displayed in the jsp view. 
+		 */
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			if (filters == null) {
+				String sql = "Select a.id, a.consent_inclusion, a.consent_photos, a.hospital_id, b.first_name, b.last_name, " +
+			            		"b.middle_name, a.dob, a.evaluator_id, a.evaluation_date, a.feet_affected, a.diagnosis, " +
+			            		"a.sex, a.race " +
+			            	 "from patient a " +
+			            	 "inner join abstract_person b on a.id = b.id " +
+			            	 "order by a.id";
+				ps = conn.prepareStatement(sql);
+				rs = ps.executeQuery();
+			}
+			else {
+				CallableStatement cs = (CallableStatement) conn.prepareCall("{call filterPatientReport(?, ?, ?, ?)}");
+				
+				String sex = filters.getSex();
+				String race = filters.getRace();
+				String relatives = filters.getRelatives();
+				Integer hospital_id = filters.getHospital_id();
+				//String dobSel = filters.getDobSel();
+				//String dob = filters.getDob();
+				//String eval_dateSel = filters.getEval_dateSel();
+				//String eval_date = filters.getEval_date();
+				
+				if (sex != null) { 
+					cs.setString(1, sex); 
+				} else { 
+					cs.setString(1, "null"); 
+				}
+				
+				if (race != null) { 
+					cs.setString(2, race); 
+				} else { 
+					cs.setString(2, "null"); 
+				}
+				
+				if (relatives != null) {
+					if (relatives.equalsIgnoreCase("yes")) {
+						cs.setString(3, "yes");
+					}
+					else if (relatives.equalsIgnoreCase("no")) {
+						cs.setString(3, "no");
+					}
+					else {
+						cs.setString(3, "unspecified");
+					}
+				} else { 
+					cs.setString(3, "null"); 
+				}
+				
+				if (hospital_id != null) { 
+					cs.setInt(4, hospital_id); 
+				} else { 
+					cs.setInt(4, 0); 
+				}
+				/*
+				if (dobSel != null) { 
+					cs.setString(5, dobSel); 
+				} else { 
+					cs.setString(5, "null"); 
+				}
+				
+				if (dob != null) { 
+					cs.setString(6, dob); 
+				} else { 
+					cs.setString(6, "null"); 
+				}
+				
+				if (eval_dateSel != null) { 
+					cs.setString(7, eval_dateSel); 
+				} else { 
+					cs.setString(7, "null"); 
+				}
+				
+				if (eval_date != null) { 
+					cs.setString(8, eval_date); 
+				} else { 
+					cs.setString(8, "null"); 
+				}*/
+				
+				cs.execute();
+				rs = cs.getResultSet();
+			}
+			
+			
+			System.out.println("MADE IT HERE");
+			
+			if (rs.last()) {
+			  rp = new ArrayList<>(rs.getRow());
+			  rs.beforeFirst(); 
+			}
+			
+			while (rs.next()) {
+				patient = new newPatient();
+				patient.setId(rs.getInt("id"));
+				patient.setPatient_firstName(rs.getString("first_name"));
+				patient.setPatient_lastName(rs.getString("last_name"));
+				patient.setPatient_midName(rs.getString("middle_name"));
+				rp.add(patient);
+			}
+			
+			if (ps != null)
+				ps.close();
+			
+			rs.close();
+			return rp;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+				conn.close();
+				} catch (SQLException e) {}
+			}
+		}
 	}
 	
 }

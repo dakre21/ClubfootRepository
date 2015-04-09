@@ -1,5 +1,9 @@
 package com.packt.clubfootReg.controller;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebService;
+
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -95,8 +99,87 @@ public class HospitalController {
 	}
 
 	public static void main(String[] args) {
+		/*
 		// TODO Auto-generated method stub
+	       //Addition
+	       try
+	       {
+	           int i = 3;
+	           int j = 3;
+	           int result = addition(i,j);
+	           System.out.println("Result = " + result);
+	       }
+	       catch(Exception ex)
+	       {
+	           System.out.println("Exception:" + ex);
+	       }
+	        //Subtraction
+	        try
+	       {
+	           int i = 3;
+	           int j = 3;
+	           int result = subtraction(i,j);
+	           System.out.println("Result = " + result);
+	       }
+	       catch(Exception ex)
+	       {
+	           System.out.println("Exception:" + ex);
+	       } 
+	        //Multiplication
+	        try
+	        {
+	           int i = 4;
+	           int j = 3;
+	           int result = multiplication(i,j);
+	           System.out.println("Result = " + result);
+	        }
+	        catch(Exception ex)
+	        {
+	           System.out.println("Exception:" + ex);
+	        }  
+	        //division
+	        try
+	        {
+	           int i = 4;
+	           int j = 3;
+	           int result = division(i,j);
+	           System.out.println("Result = " + result);
+	        }
+	        catch(Exception ex)
+	        {
+	           System.out.println("Exception:" + ex);
+	        }          
+	       
+	    }
+
+	    private static int addition(int number1, int number2) {
+	        com.hubberspot.clubfoot.ClubfootServiceService service = new com.hubberspot.clubfoot.ClubfootServiceService();
+	        com.hubberspot.clubfoot.ClubfootService port = service.getClubfootServicePort();
+	        return port.addition(number1, number2);
+	    }
+
+	    private static int division(int number1, int number2) {
+	        com.hubberspot.clubfoot.ClubfootServiceService service = new com.hubberspot.clubfoot.ClubfootServiceService();
+	        com.hubberspot.clubfoot.ClubfootService port = service.getClubfootServicePort();
+	        return port.division(number1, number2);
+	    }
+
+	    private static int multiplication(int number1, int number2) {
+	        com.hubberspot.clubfoot.ClubfootServiceService service = new com.hubberspot.clubfoot.ClubfootServiceService();
+	        com.hubberspot.clubfoot.ClubfootService port = service.getClubfootServicePort();
+	        return port.multiplication(number1, number2);
+	    }
+
+	    private static int subtraction(int number1, int number2) {
+	        com.hubberspot.clubfoot.ClubfootServiceService service = new com.hubberspot.clubfoot.ClubfootServiceService();
+	        com.hubberspot.clubfoot.ClubfootService port = service.getClubfootServicePort();
+	        return port.subtraction(number1, number2);
+	    }
+	    
 
 	}
-
+	
+	
+*/
+}
 }

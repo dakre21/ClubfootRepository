@@ -1,3 +1,7 @@
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="javax.servlet.http.*,javax.servlet.*" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -19,13 +23,35 @@
 
 <body>
 
+<sql:setDataSource var="snapshot" driver="com.mysql.jdbc.Driver"
+     url="jdbc:mysql://localhost:3306/icr_spring"
+     user="root"  password="sparkey1"/>
+
+<sql:query dataSource="${snapshot}" var="result">
+SELECT COUNT(offon) as COUNT FROM icr_spring.patient WHERE offon='offline';
+</sql:query>
 
 <div class="container">
 	<div class="jumbotron">
 		<h1>
 			Patients
 			<a role="button" class="btn btn-primary btn-lg" href="newpatient">Add New Patient</a>
+			<a role="button" class="btn btn-lg btn-primary" href="view_patients">Refresh Page</a>
 		</h1>
+		
+		<h2>
+		<table border="1" width="100%">
+			<tr>
+			<th>Number of Unsynced Records:</th>
+			</tr>
+			<c:forEach var="row" items="${result.rows}">
+			<tr>
+			<td><c:out value="${row.COUNT}"/></td>
+			</tr>
+			</c:forEach>
+			</table>
+		</h2>
+		
 		<hr>
 		<table class='table table-striped'>
 		   	<thead>

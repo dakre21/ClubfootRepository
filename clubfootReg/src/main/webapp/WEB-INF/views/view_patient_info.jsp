@@ -203,19 +203,21 @@
 					    		<th>Treatment (right)</th>
 					    		<th>Pirani score (left)</th>
 					    		<th>Pirani score (right)</th>
-
 					    	</tr>
 					    </thead>
-				    	<tbody>
-			              	<tr>
-			                	<td></td>
-							  	<td></td>
-							  	<td></td>
-							 	<td></td>
-							  	<td></td>
-							  	<td><a href="">View Details</a></td>
-			              	</tr>
-				      	</tbody>
+				    	<c:if test="${not empty visits}">
+				            <c:forEach var="o" items="${visits}">
+				            	<tr>
+				            	    <td>${o.dateOfVisit}</td>
+								  	<td>${o.leftTreatment}</td>
+								  	<td>${o.rightTreatment}</td>
+								  	<td>${o.leftScore}</td>
+								  	<td>${o.rightScore}</td>
+								  	<td><a href="view_visit_info?id=${o.id}">View Details</a></td>
+								  	<td><a href="edit_visit?id=${o.id}">Edit</a></td>
+				              	</tr>
+				            </c:forEach>
+				    	</c:if>
 				  	</table>
 				</div>
 			</fieldset>

@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html"; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
@@ -101,10 +101,67 @@
 	  $('#description1').hide();
 	  $('#results1').hide();
 	  $('#treatmentComplications1').hide();
+	  
+	  //document.getElementById('leftFoot').hide();
+	  //document.getElementById('rightFoot').hide();
 
+	  /*
+	  if ("${visit.laterality}" == "Left"){
+		$('div.leftFoot').show();
+		$('#rightPC').prop('required', false);
+		$('#leftPC').prop('required', true);
+	    $('#rightEH').prop('required', false);
+		$('#leftEH').prop('required', true);
+		$('#rightRE').prop('required', false);
+		$('#leftRE').prop('required', true);
+		$('#rightMC').prop('required', false);
+		$('#leftMC').prop('required', true);
+		$('#rightTHC').prop('required', false);
+		$('#leftTHC').prop('required', true);
+		$('#rightCLB').prop('required', false);
+		$('#leftCLB').prop('required', true);
+		$('#rightTreatment').prop('required', false);
+		$('#leftTreatment').prop('required', true);
+		$('div.rightFoot').hide();
+	  }
+	  else if("${visit.laterality}" == "Right"){
+		$('div.rightFoot').show();
+		$('#rightPC').prop('required', true);
+		$('#leftPC').prop('required', false);
+	    $('#rightEH').prop('required', true);
+		$('#leftEH').prop('required', false);
+		$('#rightRE').prop('required', true);
+		$('#leftRE').prop('required', false);
+		$('#rightMC').prop('required', true);
+		$('#leftMC').prop('required', false);
+		$('#rightTHC').prop('required', true);
+		$('#leftTHC').prop('required', false);
+		$('#rightCLB').prop('required', true);
+		$('#leftCLB').prop('required', false);
+		$('#rightTreatment').prop('required', true);
+		$('#leftTreatment').prop('required', false);
+		$('div.leftFoot').hide();
+	  }
+	  else if("${visit.laterality}" == "Both"){
+	  	$('div.leftFoot').show();
+		$('div.rightFoot').show();
+		$('#rightPC').prop('required', true);
+		$('#leftPC').prop('required', true);
+	    $('#rightEH').prop('required', true);
+		$('#leftEH').prop('required', true);
+		$('#rightRE').prop('required', true);
+		$('#leftRE').prop('required', true);
+		$('#rightMC').prop('required', true);
+		$('#leftMC').prop('required', true);
+		$('#rightTHC').prop('required', true);
+		$('#leftTHC').prop('required', true);
+		$('#rightCLB').prop('required', true);
+		$('#leftCLB').prop('required', true);
+		$('#rightTreatment').prop('required', true);
+		$('#leftTreatment').prop('required', true);
+	  }*/
   }
   
-
   function braceLeftTrue(){
 	  $('#castLeftNum').hide();
 	  $('#casterLeft').hide();
@@ -398,6 +455,11 @@
 	  $('#description1').show();
 	  $('#results1').show();
 	  $('#treatmentComplications1').show();
+	  $('#treatmentComplications').prop('required', true);
+	  $('#description').prop('required', true);
+
+
+
 	  
   }
   function complicationsFalse(){
@@ -407,16 +469,24 @@
 	  $('#description1').hide();
 	  $('#results1').hide();
 	  $('#treatmentComplications1').hide();
+	  $('#treatmentComplications').prop('required', false);
+	  $('#description').prop('required', false);
   }
   
   function lastVisitTrue(){
 	  $('#nextVisitDate').hide();
 	  $('#dateOfNextVisit1').hide();
+	  $('#nextVisitDate').prop('required', false);
+
   }
   function lastVisitFalse(){
 	  $('#nextVisitDate').show();
 	  $('#dateOfNextVisit1').show();
+	  $('#nextVisitDate').prop('required', true);
+
   }
+  
+  
   </script>
   <jsp:include page="navbar.jsp" />
 </head>
@@ -435,18 +505,31 @@
 		  	
 		  	<input type="hidden" class="form-control" name="patientId" path="patientId" value="${visit.patientId}">
 		  	
-		  	<label for="hospital"><em>*</em>Hospital/Clinic: </label>
-			<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
+		  	
+		  	
+		  	<label for="hospitalId"><em>*</em>Hospital/Clinic: </label>
+			<form:select class="form-control" path="hospitalList" id="hospitalId" name="hospitalId">
             	<form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
                 <form:options items="${hospitalList}" />
        		</form:select>
+		  	<br>
 		  	
+		  	<label for="evaluatorId">Evaluator</label>
+			<form:select class="form-control" path="evaluatorList" id="evaluatorId" name="evaluatorId">
+            	<form:option value="" label="Select an Evaluator" disabled="true" selected="true" style="display: none;"/>
+                <form:options items="${evaluatorList}" />
+            </form:select>
+            <br>
+		  	
+		  	<!-- 
 	  		<label for = "evaluatorId"><em>*</em>Name of Evaluator:</label>
 	  		<input type="text" name="evaluatorId" class="form-control" path="evaluatorId" >
 	  		<a href="evaluator">Add evaluator</a> <br>
+	  		-->
 	  		
 	  		<label for="dateOfVisit"><em>*</em>Date of visit: </label>
-			<input type="date" name="dateOfVisit" id="dateOfVisit" class="form-control" path="dateOfVisit" placeholder="dd/mm/yyyy"   validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
+			<input type="date" name="dateOfVisit" id="dateOfVisit" class="form-control" path="dateOfVisit" placeholder="dd/mm/yyyy"   validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy" required> 
+	  		<br>
 	  		
 		  	<label for = "isLastVisit">Is this the patient's final treatment visit? </label>
 			<INPUT TYPE="radio" NAME="isLastVisit" path="isLastVisit" onClick = "lastVisitTrue()" VALUE="Yes">Yes
@@ -464,6 +547,7 @@
 		
 		<div class = "form-group">
 			<!--  <button class='toggle'>Hide Left Foot</button>-->
+			<div id="leftFoot" class="leftFoot">
  			<fieldset>
 				<legend>Left Foot</legend>
 				<!--  <form>-->
@@ -522,7 +606,7 @@
 				<INPUT TYPE="radio" NAME="leftCLB" path="leftCLB" VALUE="0">0	
 			</fieldset>
 			
-			<!-- 
+			
 			<fieldset>
 				<label for = "leftTreatment"><em>*</em>Treatment: </label>	
 				<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "noneLeftTrue()" VALUE="None">None
@@ -532,7 +616,8 @@
 				<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "referLeftTrue()" VALUE="R - Refer">R - Refer
 				<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "surgeryLeftTrue()" VALUE="S - Surgery">S - Surgery
 				<INPUT TYPE="radio" NAME="leftTreatment" path="leftTreatment" onClick = "otherLeftTrue()" VALUE="O - Other">O - Other<br>
-				
+			</fieldset>
+			<!-- 
 				<label for = "casterLeft" id = "casterLeft1">Caster: </label>
 	  			<input type="text" name="casterLeft" id = "casterLeft" class="form-control" path="casterLeft">
 	  			
@@ -580,11 +665,13 @@
 			    </div>
 	  		</fieldset>
 	  		-->
+	  	</div>
 		</div>
 		
 		
 		<div class = "form-group">
 			<!-- <button class='toggle'>Hide Right Foot</button> -->
+			<div id="rightFoot" class = "rightFoot">
 			<fieldset> 
 				<legend>Right Foot</legend>
 				
@@ -643,7 +730,7 @@
 				<INPUT TYPE="radio" NAME="rightCLB" path="rightCLB" VALUE="0">0	
 			</fieldset>
 			
-			<!-- 
+			
 			<fieldset>
 				<label for = "rightTreatment"><em>*</em>Treatment: </label>	
 				<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "noneRightTrue()" VALUE="none">None
@@ -653,6 +740,9 @@
 				<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "referRightTrue()" VALUE="R - Refer">R - Refer
 				<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "surgeryRightTrue()" VALUE="S-Surgery">S - Surgery
 				<INPUT TYPE="radio" NAME="rightTreatment" path="rightTreatment" onClick = "otherRightTrue()" VALUE="O-Other">O - Other<br>
+			</fieldset>
+			<!--  	
+				
 				<label for = "casterRight" id = "casterRight1">Caster: </label>
 	  			<input type="text" name="casterRight" id = "casterRight" class="form-control" path="casterRight">
 	  			<label for = "castRightNum" id = "castRightNum1">Casting Number: </label>
@@ -693,15 +783,16 @@
 			</fieldset>
 			-->
 		</div>
+		</div>
 	
 		<div class = "form-group">
 			<fieldset>
 				<legend>Complications</legend>
 				
 				<label for = "complications"><em>*</em>Were there any complications? </label>	
-				<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsFalse()"VALUE="No">No
-				<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsTrue()" VALUE="Yes">Yes
-				<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsFalse()" VALUE="Unspecified">Unspecified<br>
+				<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsFalse()"VALUE="No" required>No
+				<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsTrue()" VALUE="Yes" required>Yes
+				<INPUT TYPE="radio" NAME="complications" path="complications" onClick = "complicationsFalse()" VALUE="Unspecified" required>Unspecified<br>
 				
 				<label for = "description" id = "description1"><em>*</em>Description of complication(s): </label>
 	  			<input type="text" name="description" id = "description" class="form-control" path="description">

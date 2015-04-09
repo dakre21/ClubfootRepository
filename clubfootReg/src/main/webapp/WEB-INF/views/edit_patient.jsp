@@ -27,31 +27,26 @@
 	  	font-family: arial;
 	  	font-style: normal;
 	  }
-
 	  h1 {
 	  	font-size: x-large;
 	  	font-style: bold;
 	  	line-height: 1.5;
 	  	text-decoration: underline;
 	  }
-
 	  fieldset {
 	  	margin-bottom: 15px;
 	  	padding: 10px;
   	  	text-align: left;
   	  	border: 2px groove;
 	  }
-
 	  legend {
 	  	padding: 0px 3px;
 	  	font-weight: bold;
 	  	font-variant: small-caps;
 	  }
-
 	  em{
 	  	color: red;
 	  }
-
 	  input[type=submit] {
   		width: 150px;
   		padding: 10px;
@@ -64,7 +59,7 @@
 	  $('#deformity_history_num1').hide();
 	  $('#deformity_history_num').hide();
 	  $('#preg_complications_explained1').hide();
-	  $('#preg_complications_explained').hide();
+	  $('#pregnancy_complications_explained').hide();
 	  $('#referral_hospital_name1').hide();
 	  $('#referral_hospital_name').hide();
 	  $('#referral_doc_name1').hide();
@@ -76,6 +71,9 @@
 	  $('#referral_other1').hide();
 	  $('#referral_other').hide();
 	  $('div.prev_treat').hide();
+	  $('#prenatallyDiagYes').hide();
+	  $('#prenatallyDiagNO').hide();
+	  $('#prenatallyDiagUn').hide();
 	  
 	  $("#hospital").val("${patient.hospital}");
 	  $("#evaluator").val("${patient.evaluator}");
@@ -159,11 +157,15 @@
 			break;
 	  }
 	  
-	  if ("${patient.second_guardian_last}")
+	  if ("${patient.second_guardian_last}") {
 	    document.getElementById("secondGuardianYes").checked = true;
-      else
+		$('fieldset.guardian_check').show();
+		$('second_guardian_phone1').prop('required', true);
+	  }
+      else {
 		document.getElementById("secondGuardianNo").checked = true;
-	  
+      }
+      
 	  switch ("${patient.emergency_contact}") {
 	  	case "primary":
 	  		document.getElementById("emergencyPrimary").checked = true;
@@ -173,14 +175,17 @@
 	  		break;
 	  	case "other":
 	  		document.getElementById("emergencyOther").checked = true;
+	  		$('fieldset.emergency_contact').show();
+	  		$('other_guardian_phone1').prop('required', true);
 	  		break;
 	  	default:
 	  		document.getElementById("emergencyUnspecified").checked = true;
 	  		break;
       }
-
 	  if ("${patient.deformity_history_num}" > 0) {
 	    document.getElementById("defYes").checked = true;
+	    $('#deformity_history_num1').show();
+	    $('#deformity_history_num').show();
 	  }
 	  else if ("${patient.deformity_history_num}" == 0) {
 	    document.getElementById("defNo").checked = true;
@@ -188,11 +193,15 @@
 	  else {
 	    document.getElementById("defUn").checked = true;
 	  }
-	  
-	  if ("${patient.pregnancy_complications_explained}")
+
+	  if ("${patient.pregnancy_complications_explained}"){
 		document.getElementById("pregCompYes").checked = true;
-  	  else
+		$('#preg_complications_explained1').show();
+	    $('#pregnancy_complications_explained').show();
+	  }
+  	  else {
     	document.getElementById("pregCompNo").checked = true;
+  	  }
 	  
 	  if ("${patient.pregnancy_alc}" == "Yes")
 		document.getElementById("pregAlcYes").checked = true;
@@ -200,7 +209,6 @@
 	   	document.getElementById("pregAlcNo").checked = true;
 	  else
 		document.getElementById("pregAlcUn").checked = true;
-
 	  if ("${patient.pregnancy_smoke}" == "Yes")
 		document.getElementById("pregSmokeYes").checked = true;
 	  else if ("${patient.pregnancy_smoke}" == "No")
@@ -227,6 +235,10 @@
 	  switch ("${patient.referral}") {
 	  	case "Hospital/Clinic":
 	  		document.getElementById("refHosp").checked = true;
+	  		$('#referral_hospital_name1').show();
+	  		$('#referral_hospital_name').show();
+	 		$('#referral_doc_name1').show();
+	 	 	$('#referral_doc_name').show();
 			break;
 	  	case "Midwife":
 	  		document.getElementById("refMidwife").checked = true;
@@ -239,6 +251,9 @@
 			break;
 	  	case "Other":
 	  		document.getElementById("refOther").checked = true;
+	  		$('#referral_other1').hide();
+	  		$('#referral_other').hide();
+	  		$('#referral_other').prop('required',true);
 			break;
 		default:
 			document.getElementById("refUn").checked = true;
@@ -268,17 +283,28 @@
 	  else
 		document.getElementById("deformityUn").checked = true;
 	  
-	  if ("${patient.previous_treatments_num}" > 0)
+	  if ("${patient.previous_treatments_num}" > 0){
 	    document.getElementById("prevYes").checked = true;
-	  else if ("${patient.previous_treatments_num}" == 0)
+		$('div.prev_treat').hide();
+	  }
+	  else if ("${patient.previous_treatments_num}" == 0){
 		document.getElementById("prevNo").checked = true;
-	  else
+	  }
+	  else{
 		document.getElementById("prevUn").checked = true;
+	  }
 	  
-	  if ("${patient.diagnosis_prenatally_week}")
+	  if ("${patient.diagnosis_prenatally_week}"){
 	    document.getElementById("diagYes").checked = true;
-	  else
+		 $('#diagnosis_prenatally_week1').show();
+	     $('#diagnosis_prenatally_week').show();
+	     $('#prenatallyDiagYes').show();
+	     $('#prenatallyDiagNO').show();
+	     $('#prenatallyDiagUn').show();
+	  }
+	  else {
 		document.getElementById("diagNo").checked = true;
+	  }
 	  
 	  if ("${patient.prenatally_diag_confirmation}" == "Yes")
 	    document.getElementById("prenatallyDiagYes").checked = true;
@@ -289,15 +315,19 @@
   }
   function guardianHandlerTrue(){
 	  $('fieldset.guardian_check').show();
+	  $('second_guardian_phone1').prop('required', true);
   }
   function guardianHandlerFalse(){
 	  $('fieldset.guardian_check').hide();
+	  $('second_guardian_phone1').prop('required', false);
   }
   function guardianEmergencyTrue(){
 	  $('fieldset.emergency_contact').show();
+	  $('other_guardian_phone1').prop('required', true);
   }
   function guardianEmergencyFalse(){
 	  $('fieldset.emergency_contact').hide();
+	  $('other_guardian_phone1').prop('required', false);
   }
   function guardianDeformityTrue(){
 	  $('#deformity_history_num1').show();
@@ -309,11 +339,11 @@
   }
   function pregCompFalse(){
 	  $('#preg_complications_explained1').hide();
-	  $('#preg_complications_explained').hide();
+	  $('#pregnancy_complications_explained').hide();
   }
   function pregCompTrue(){
 	  $('#preg_complications_explained1').show();
-	  $('#preg_complications_explained').show();
+	  $('#pregnancy_complications_explained').show();
   }
   function referralFnTrue(){
 	  $('#referral_hospital_name1').show();
@@ -322,6 +352,7 @@
 	  $('#referral_doc_name').show();
 	  $('#referral_other1').hide();
 	  $('#referral_other').hide();
+	  $('#referral_other').prop('required',false);
   }
   function referralFnFalse(){
 	  $('#referral_hospital_name1').hide();
@@ -330,30 +361,40 @@
 	  $('#referral_doc_name').hide();
 	  $('#referral_other1').hide();
 	  $('#referral_other').hide();
+	  $('#referral_other').prop('required',false);
   }
   function referralOtherTrue(){
 	  $('#referral_other1').show();
 	  $('#referral_other').show();
+	  $('#referral_other').prop('required',true);
+	  $('#referral_hospital_name1').hide();
+	  $('#referral_hospital_name').hide();
+	  $('#referral_doc_name1').hide();
+	  $('#referral_doc_name').hide();
   }
   function prevTreatmentTrue(){
 	  $('#previous_treatments_num1').show();
 	  $('#previous_treatments_num').show();
 	  $('div.prev_treat').show();
-
   }
   function prevTreatmentFalse(){
 	  $('#previous_treatments_num1').hide();
 	  $('#previous_treatments_num').hide();
 	  $('div.prev_treat').hide();
-
   }
   function diagPrenatTrue(){
 	  $('#diagnosis_prenatally_week1').show();
 	  $('#diagnosis_prenatally_week').show();
+	  $('#prenatallyDiagYes').show();
+	  $('#prenatallyDiagNO').show();
+	  $('#prenatallyDiagUn').show();
   }
   function diagPrenatFalse(){
 	  $('#diagnosis_prenatally_week1').hide();
 	  $('#diagnosis_prenatally_week').hide();
+	  $('#prenatallyDiagYes').hide();
+	  $('#prenatallyDiagNO').hide();
+	  $('#prenatallyDiagUn').hide();
   }
   </script>
   
@@ -370,12 +411,12 @@
 		<div class="form-group">
 			<p><i>Please complete the form. Mandatory fields are marked with a </i><em>*</em></p>
 			<label for="guardianConsent"><em>*</em>Does the parent or guardian consent to being included: </label>
-			<input id="gcYes" type="radio" name="guardianConsent" value="1" path="guardianConsent"> Yes
-			<input id="gcNo" type="radio" name="guardianConsent" value="0" path="guardianConsent"> No <br>
+			<input id="gcYes" type="radio" name="guardianConsent" value="1" path="guardianConsent" > Yes
+			<input id="gcNo" type="radio" name="guardianConsent" value="0" path="guardianConsent" > No <br>
 
 			<label for="photoConsent"><em>*</em>Does the parent or guardian consent to photographs of the patient being used for CURE evaluation and marketing purposes: </label>
-			<input id="pcYes" type="radio" name="photoConsent" value="1" path="photoConsent"> Yes
-			<input id="pcNo" type="radio" name="photoConsent" value="0" path="photoConsent"> No <br>
+			<input id="pcYes" type="radio" name="photoConsent" value="1" path="photoConsent" > Yes
+			<input id="pcNo" type="radio" name="photoConsent" value="0" path="photoConsent" > No <br>
 			
 			<label for="hospital">Hospital</label>
 			<form:select class="form-control" path="hospitalList" id="hospital" name="hospital">
@@ -413,7 +454,7 @@
 			<input id="raceUn" type="radio" name="race" value="unspecified" path="race"> Unspecified <br>
 
 			<label for="dob"><em>*</em>Date of birth: </label>
-			<input type="date" name="dob" id="dob" class="form-control" path="dob"> 
+			<input type="date" name="dob" id="dob" class="form-control" path="dob" value= "${patient.dob}" > 
 			<label for="tribe">Tribe: </label>
 			<input type="text" name="tribe" class="form-control" path="tribe" value = "${patient.tribe}">
 			</div>
@@ -469,7 +510,7 @@
 			<input id="relUn" type="radio" name="guardian_relationship" value="unspecified" path="guardian_relationship"> Unspecified <br>
 
 			<label for="guardian_phone1"><em>*</em>Phone number 1: </label>
-			<input type="telephone" name="guardian_phone1" class="form-control"  path="guardian_phone1" placeholder="xxx-xxx-xxxx" value = "${patient.guardian_phone1}" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
+			<input type="telephone" name="guardian_phone1" class="form-control"  path="guardian_phone1" placeholder="xxx-xxx-xxxx" value = "${patient.guardian_phone1}" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number" >
 			<label for="guardian_phone2">Phone number 2: </label>
 			<input type="telephone" name="guardian_phone2" class="form-control"  path="guardian_phone2" value = "${patient.guardian_phone2}"placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number"> <br>
 			
@@ -501,7 +542,7 @@
 				<input id="relUn2" type="radio" name="second_guardian_relationship" value="unspecified1" path="second_guardian_relationship"> Unspecified <br>
 			
 				<label for="second_guardian_phone1"><em>*</em>Phone number 1: </label>
-				<input type="telephone" name="second_guardian_phone1" class="form-control" path="second_guardian_phone1" value = "${patient.second_guardian_phone1}" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
+				<input type="telephone" name="second_guardian_phone1" class="form-control" path="second_guardian_phone1" value = "${patient.second_guardian_phone1}" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number" >
 				<label for="second_guardian_phone2">Phone number 2: </label>
 				<input type="telephone" name="second_guardian_phone2" class="form-control" path="second_guardian_phone2"  value = "${patient.second_guardian_phone2}" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
 				</div>
@@ -538,7 +579,7 @@
 				<input id="relUn3" type="radio" name="other_guardian_relationship" value="unspecified1" path="other_guardian_relationship"> Unspecified <br>
 			
 				<label for="other_guardian_phone1"><em>*</em>Phone number 1: </label>
-				<input type="telephone" name="other_guardian_phone1" class="form-control" path="other_guardian_phone1" value = "${patient.other_guardian_phone1}" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
+				<input type="telephone" name="other_guardian_phone1" class="form-control" path="other_guardian_phone1" value = "${patient.other_guardian_phone1}" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number" >
 				<label for="other_guardian_phone2">Phone number 2: </label>
 				<input type="telephone" name="other_guardian_phone2" class="form-control" path="other_guardian_phone2" value = "${patient.other_guardian_phone2}" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
 				</div>
@@ -613,7 +654,8 @@
 			<label for="referral_hospital_name" id="referral_hospital_name1">Hospital/clinic name: </label>
 			<input type="text" name="referral_hospital_name" path="referral_hospital_name" id="referral_hospital_name" value = "${patient.referral_hospital_name}">
 			<label for="referral_other" id="referral_other1"><em>*</em>Please specify: </label>
-			<input type="text" name="referral_other" path="referral_other" id="referral_other" value = "${patient.referral_other}">
+			<input type="text" name="referral_other" path="referral_other" id="referral_other" value = "${patient.referral_other}" >
+
 			</div>
 			</div>
 		</fieldset>
@@ -631,7 +673,7 @@
             </form:select>
 			
 			<label for="evaluation_date"><em>*</em>Evaluation date (dd/mm/yyyy): </label>
-			<input type="date" name="evaluation_date" class="form-control" path="evaluation_date" value = "${patient.evaluation_date}"> <br>
+			<input type="date" name="evaluation_date" class="form-control" path="evaluation_date" value = "${patient.evaluation_date}" > <br>
 			
 			<label for="feet"><em>*</em>Feet affected: </label>
 			<input id="feetLeft" type="radio" name="feet" value="Left" path="feet" > Left
@@ -640,7 +682,7 @@
 			
 			<label for="diagnosis"><em>*</em>Diagnosis: </label>
 			<input id="diagIdio" type="radio" name="diagnosis" value="Idiopathic Clubfoot" path="diagnosis"  > Idiopathic Clubfoot
-			<input id="diagSynd" type="radio" name="diagnosis" value="Syndromic Clubfoot" path="diagnosis" > Syndromic Clubfoot
+			<input id="diagSynd" type="radio" name="diagnosis" value="Syndromic Clubfoot" path="diagnosis"  > Syndromic Clubfoot
 			<input id="diagNeuro" type="radio" name="diagnosis" value="Neuropathic Clubfoot" path="diagnosis" > Neuropathic Clubfoot
 			<input id="diagOther" type="radio" name="diagnosis" value="Other" path="diagnosis" > Other <br>
 			
@@ -667,7 +709,7 @@
 			<label for="diagnosis_prenatally">Diagnosis prenatally: </label>
 			<input id="diagYes" type="radio" name="diagnosis_prenatally" value="Yes" path="diagnosis_prenatally" onClick="diagPrenatTrue()"> Yes
 			<input id="diagNo" type="radio" name="diagnosis_prenatally" value="No" path="diagnosis_prenatally" onClick="diagPrenatFalse()"> No
-			<input id="diagUn" type="radio" name="diagnosis_prenatally" value="Unspecified" path="diagnosis_prenatally" onClick="diagPrenatTrue()"> Unspecified <br>
+			<input id="diagUn" type="radio" name="diagnosis_prenatally" value="Unspecified" path="diagnosis_prenatally" onClick="diagPrenatFalse()"> Unspecified <br>
 			
 			<label for="diagnosis_prenatally_week1" id="diagnosis_prenatally_week1">At prenatally week: </label>
 			<input type="text" name="diagnosis_prenatally_week" class="form-control" path="diagnosis_prenatally_week" id="diagnosis_prenatally_week" value = "${patient.diagnosis_prenatally_week}"> <br>

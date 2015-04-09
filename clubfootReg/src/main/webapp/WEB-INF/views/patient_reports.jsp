@@ -1,131 +1,138 @@
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<html>
+<html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html"; charset=ISO-8859-1">
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<title>Clubfoot Registry | Patient Reports</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <style type="text/css">
   body {
     padding-top: 70px;
   }
-  .nav_links{
-  margin-left:35%;
-  width:30%;
-  	border: 1px solid #000000;
-  }
-.nav_links ul { 
-	margin:0 auto;
-	padding: 0px;
-	background-color:#D8D8D8;
-	
-	list-style-type: none;
-}
-.nav_links li a{
-	display: block;
-	padding:2px;
-	width: 100%;
-	color: #585858;
-	border-bottom: 1px solid black;
-	background-color: #D0DBF0
-	text-decoration:none;
-}
-.nav_links li a:hover{
-	background-color:#A4A4A4;
-	color: #585858;
-	text-decoration:none;
-
-}
-
-
 </style>
-<title>Clubfoot Registry | Patient Reports</title>
+<script>
+	window.onload = function(){
+		if("${filters.sex}" == "male")
+			document.getElementById("male").checked = true;
+		else if("${filters.sex}" == "female")
+			document.getElementById("female").checked = true;
+		
+		if("${filters.race}" == "asian")
+			document.getElementById("asian").checked = true;
+		else if("${filters.race}" == "white")
+			document.getElementById("white").checked = true;
+		else if("${filters.race}" == "black")
+			document.getElementById("black").checked = true;
+		else if("${filters.race}" == "indian")
+			document.getElementById("indian").checked = true;
+		else if("${filters.race}" == "mixed")
+			document.getElementById("mixed").checked = true;
+		else if("${filters.race}" == "other")
+			document.getElementById("other").checked = true;
+		else if("${filters.race}" == "unspecified")
+			document.getElementById("unspecified").checked = true;
+		
+		if("${filters.relatives}" == "yes")
+			document.getElementById("relYes").checked = true;
+		else if("${filters.relatives}" == "no")
+			document.getElementById("relNo").checked = true;
+		else if("${filters.relatives}" == "unspecified")
+			document.getElementById("relUn").checked = true;
+		
+	    if("${filters.hospital_id}" > 0 )
+			document.getElementById("hospital_id").value = "${filters.hospital_id}";
+		else		
+			document.getElementById("hospital_id").value = "";
+	}
+</script>
 	<jsp:include page="navbar.jsp" />
 </head>
+
 <body>
+
 
 <div class="container">
 	<div class="jumbotron">
-		<h1>
-			Patients
-		</h1>
+		<h1>Patient Report</h1>
 		<hr>
+		<form action="#" th:action="@{/patient_reports}"  modelAttribute="filters" method="post" id="filterPatients">
 		<div class="form-group">
 			<label for="sex">Gender: </label>
-			<input type="radio" name="sex" value="male" path="sex" > Male
-			<input type="radio" name="sex" value="female" path="sex" > Female <br>
+			<input type="radio" id = "male" name="sex" value="male" path="sex" > Male
+			<input type="radio" id = "female" name="sex" value="female" path="sex" > Female <br>
 
 			<label for="race">Race: </label>
-			<input type="radio" name="race" value="asian" path="race"> Asian
-			<input type="radio" name="race" value="white" path="race"> Caucasian (White) 
-			<input type="radio" name="race" value="black" path="race"> African (Black)
-			<input type="radio" name="race" value="indian" path="race"> Asian (Indian)
-			<input type="radio" name="race" value="mixed" path="race"> Mixed
-			<input type="radio" name="race" value="other" path="race"> Other
-			<input type="radio" name="race" value="unspecified" path="race"> Unspecified <br>
-
-			<label for="race">Before/After </label>
-			<input type="radio" name="after" value="after" path="after"> After
-			<input type="radio" name="before" value="before" path="before"> Before
-			<input type="radio" name="on" value="on" path="on"> On <br>
+			<input type="radio" id = "asian" name="race" value="asian" path="race"> Asian
+			<input type="radio" id = "white" name="race" value="white" path="race"> Caucasian (White) 
+			<input type="radio" id = "black" name="race" value="black" path="race"> African (Black)
+			<input type="radio" id = "indian" name="race" value="indian" path="race"> Asian (Indian)
+			<input type="radio" id = "mixed" name="race" value="mixed" path="race"> Mixed
+			<input type="radio" id = "other" name="race" value="other" path="race"> Other
+			<input type="radio" id = "unspecified" name="race" value="unspecified" path="race"> Unspecified <br>
+			
+			<label for="relatives">Relatives with clubfoot? </label>
+			<input type="radio" id = "relYes" name="relatives" value="yes" path="relatives"> Yes
+			<input type="radio" id = "relNo" name="relatives" value="no" path="relatives"> No
+			<input type="radio" id = "relUn" name="relatives" value="unspecified" path="relatives"> Unspecified <br>
+			
+			<label for="hospital_id">Hospital</label>
+			<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
+            	<form:option  id = "selected" value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
+                <form:options items="${hospitalList}" />
+            </form:select><br>
+			<!-- 
+			<label for="dobSel">Before/After </label>
+			<input type="radio" name="dobSel" value="after" path="dobSel"> After
+			<input type="radio" name="dobSel" value="before" path="dobSel"> Before
+			<input type="radio" name="dobSel" value="on" path="dobSel"> On <br>
 			
 			<label for="dob">Date of birth: </label>
-			<input type="date" name="dob" id="dob" class="form-control" path="dob" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
+			<input type="date" name="dob" id="dob" class="form-control" path="dob" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> <br>
 			
-			<label for="race">Before/After </label>
-			<input type="radio" name="after_eval" value="after_eval" path="after_eval"> After
-			<input type="radio" name="before_eval" value="before_eval" path="before_eval"> Before
-			<input type="radio" name="on_eval" value="on_eval" path="on"> On <br>
+			<label for="eval_dateSel">Before/After </label>
+			<input type="radio" name="eval_dateSel" value="after" path="eval_dateSel"> After
+			<input type="radio" name="eval_dateSel" value="before" path="eval_dateSel"> Before
+			<input type="radio" name="eval_dateSel" value="on" path="eval_dateSel"> On <br>
 			
-			<label for="dob">Evaluation date: </label>
-			<input type="date" name="eval_date" id="eval_date" class="form-control" path="eval_date" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> 
-			
-			<label for="race">Relatives with clubfoot? </label>
-			<input type="radio" name="yes" value="yes" path="yes"> Yes
-			<input type="radio" name="no" value="no" path="no"> No
-			<input type="radio" name="unsure" value="unsure" path="unsure"> Unsure
-			
-			<div class="form-group">
-					<label for="hospital_id">Hospital</label>
-					<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
-                    <form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
-                    <form:options items="${hospitalList}" />
-                    </form:select><br>
-            
-            
-		<a role="button" class="btn btn-primary btn-lg">Generate Report</a>
+			<label for="eval_date">Evaluation date: </label>
+			<input type="date" name="eval_date" id="eval_date" class="form-control" path="eval_date" placeholder="dd/mm/yyyy"  validate pattern="\d{1,2}/\d{1,2}/\d{4}" title="dd/mm/yyyy"> <br> 
+            -->
+            <button class="btn btn-primary btn-lg" type="submit">Generate Report</button>
+            <button class="btn btn-primary btn-lg" type="reset">Clear</button>
 		</div>
-	<!--  	<table class='table table-striped'>
-		   	<thead>
-		   		<tr>
-		    		<th>ID</th>
-		    		<th>First Name</th>
-		    		<th>Middle Name</th>
-		    		<th>Last Name</th>
-		    	</tr>
-		    </thead>
-	   
-	    	<tbody>
-        	<c:if test="${not empty patients}">
-            <c:forEach var="o" items="${patients}">
-              <tr>
-                  <td><a href="view_patient_info?id=${o.id}">${o.id}</a></td>
-				  <td>${o.patient_firstName}</td>
-				  <td>${o.patient_midName}</td>
-				  <td>${o.patient_lastName}</td>
-				  <td><a href="edit_patient?id=${o.id}">Edit</a></td>
-				  <td><a href="visit?id=${o.id}">Add Visit</a></td>
-              </tr>
-            </c:forEach>
-          </c:if>
-	      </tbody>
-	  </table>-->
-	</div>	
+		</form>
+	</div>
+	
+	<br>
+		
+	<table id="patients_table" class='table table-striped'>
+	   	<thead>
+	   		<tr>
+	    		<th>ID</th>
+	    		<th>First Name</th>
+	    		<th>Middle Name</th>
+	    		<th>Last Name</th>
+	    	</tr>
+	    </thead>
+   
+    	<tbody>
+	       	<c:if test="${not empty patients}">
+	        	<c:forEach var="o" items="${patients}">
+	            	<tr>
+	                	<td><a href="view_patient_info?id=${o.id}">${o.id}</a></td>
+				  		<td>${o.patient_firstName}</td>
+				  		<td>${o.patient_midName}</td>
+				  		<td>${o.patient_lastName}</td>
+	             	</tr>
+	           	</c:forEach>
+	        </c:if>
+      	</tbody>
+	</table>	
 
 	<hr>
 

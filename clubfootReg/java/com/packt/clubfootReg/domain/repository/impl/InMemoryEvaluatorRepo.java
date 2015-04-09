@@ -79,11 +79,12 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 			ps.executeUpdate();
 			ps.close();
 			
-			String sql2 = "Insert into evaluator values(?, ?, ?)"; // First sql statement that contains the information to query into evaluator
+			String sql2 = "Insert into evaluator values(?, ?, ?, ?)"; // First sql statement that contains the information to query into evaluator
 			PreparedStatement ps2 = connection.prepareStatement(sql2);
 			ps2.setInt(1, this.getMaxPersonID());
 			ps2.setString(2, title);
 			ps2.setInt(3, hospital);
+			ps2.setString(4, "offline");
 			ps2.executeUpdate();
 			ps2.close();
 		} catch (SQLException e) { // Catches SQL exception errors
@@ -218,6 +219,7 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 		String last_name = evaluator.getLast_name();
 		String title = evaluator.getTitle();
 		int hospital = evaluator.getHospital_id();
+		
 	
 		String sql_abstract_person = "Update abstract_person set first_name = ?, last_name = ?, middle_name = ? where id = ?";
 		String sql_evaluator = "Update evaluator set title = ?, hospital_id = ? where id = ?";

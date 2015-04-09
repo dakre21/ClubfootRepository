@@ -1,5 +1,6 @@
 package com.packt.clubfootReg.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.packt.clubfootReg.domain.Visit;
+import com.packt.clubfootReg.domain.newPatient;
 import com.packt.clubfootReg.domain.repository.HospitalRepo;
 import com.packt.clubfootReg.domain.repository.VisitRepo;
 import com.packt.clubfootReg.domain.repository.newPatientRepo;
@@ -32,6 +34,7 @@ public class VisitController {
 	// Tells the Dispatcher-context to "wire" or inject an instance of UserRepo for this controller class
 	@Autowired
 	private VisitRepo visitRepo;	// An instantiation of VisitRepo interface
+	private newPatientRepo newPatientRepo;
 	
 	// This initializes spring's "webdatabinder" class to bind web request parameters to the java bean objects to receive the incoming data 
 	@InitBinder
@@ -48,8 +51,10 @@ public class VisitController {
 	
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value = "/visit", method = RequestMethod.GET)	// Gets the visit view
-	public ModelAndView editPatientForm(HttpServletRequest request) {
-	    Visit visit = new Visit(Integer.parseInt(request.getParameter("id")));	// Instantiation of visit and passes parses an integer from the getParameter method for "id"
+	public ModelAndView addVisitForm(HttpServletRequest request) {
+		int patient_id = Integer.parseInt(request.getParameter("id"));
+	    Visit visit = new Visit(patient_id);	// Instantiation of visit and passes parses an integer from the getParameter method for "id"
+	    visit.setLaterality(visitRepo.getLateralityForPatient(patient_id));
 	    ModelAndView model = new ModelAndView("visit");	// Model passes the "visit" view to it
 		model.addObject("visit", visit);	// Adds an object called visit to the model
 	    return model;// Returns the model 
@@ -59,8 +64,9 @@ public class VisitController {
 	@RequestMapping(value="/visit", method=RequestMethod.POST)	// Posts the visit form information to the database
     public String addVisitSubmit(@ModelAttribute("visit") Visit visit, Model model) {
         visitRepo.addVisit(visit);	// Visitrepo adds visit object to the interface
-        model.addAttribute("visit", visitRepo.getVisit(visit.getId()));	// Gets the visit id from the interface method getVisit and adds it to the attribute of the model
-        return "view_visit_info";// Returns the view_visit_info page
+        model.addAttribute("patient", visitRepo.getPatient(visit.getPatientId()));
+        model.addAttribute("visits", visitRepo.getVisitsForPatient(visit.getPatientId()));
+        return "view_patient_info";// Returns the view_visit_info page
     }
 	
 	// Annotation for mapping web requests to specific handler classes/methods
@@ -72,10 +78,33 @@ public class VisitController {
 	
 	// Annotation for mapping web requests to specific handler classes/methods	
 	@RequestMapping(value = "/view_visit_info", method = RequestMethod.GET)	// Get the view_visit_info page info
-	public String view_visit_infoForm(Model model){
-		return "view_visit_info";	// Returns the view_visit_info page
+	public ModelAndView view_visit_infoForm(HttpServletRequest request){
+		ModelAndView model = new ModelAndView("view_visit_info");	// Passes the view_patient_info view to the model
+		int visit_id = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call
+		Visit visit = visitRepo.getVisit(visit_id);	// Gets patient_id from newpatient repo's method getPatient
+		//visit.setLaterality(visitRepo.getLateralityWithVisitId(visit_id));
+		model.addObject("visit", visit);	// Adds an object called patient to the model
+		return model;	// Returns the model
 	}
 	
+	// Annotation for mapping web requests to specific handler classes/methods
+	@RequestMapping(value = "/edit_visit", method = RequestMethod.GET)	// Gets the edit_edit form
+	public ModelAndView editVisitForm(HttpServletRequest request) {
+	    int visit_id = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call and finds "id"
+	    Visit visit = visitRepo.getVisit(visit_id);	// Method call oneditrepo to get the edit id
+	    //visit.setLaterality(visitRepo.getLateralityWithVisitId(visit_id));
+	    ModelAndView model = new ModelAndView("edit_visit");	// Instantiation of ModelAndView and passes "edit_visit" view to it
+	    model.addObject("visit", visit);	// Adds the object visit to the model
+	    return model;	// Returns the model
+	}
+	
+	// Annotation for mapping web requests to specific handler classes/methods
+	@RequestMapping(value="/edit_visit", method=RequestMethod.POST)	// Returns the edit_visit form
+    public String editVisitSubmit(@ModelAttribute("editVisit") Visit visit, Model model) {
+        visitRepo.updateVisit(visit);	// Method call to update visit information
+        model.addAttribute("visit", visitRepo.getVisit(visit.getId()));	// Model adds the attribute of visit by id
+        return "view_visit_info";	// Returns view_visit_info
+    }
 	/*
 	@RequestMapping(value = "/visit", method = RequestMethod.POST)
 	public String visitSubmitForm(@ModelAttribute("visit") Visit visit, Model model){
@@ -84,12 +113,17 @@ public class VisitController {
         visitRepo.addVisit(visit);
 		return "view_visit";
 	}*/
-	/*
+	
 	@ModelAttribute("hospitalList")
 	public Map<Integer, String> populateHospitalSelect() {
 	    return visitRepo.getAllHospitals();
 	}
-	*/
+	
+	@ModelAttribute("evaluatorList")
+	public Map<Integer, String> populateEvaluatorSelect() {
+	    return visitRepo.getAllEvaluators();
+	}
+	
 	public VisitController() {
 		// TODO Auto-generated constructor stub
 	}
