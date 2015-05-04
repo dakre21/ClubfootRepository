@@ -37,7 +37,8 @@ public class EvaluatorController {
 	@Autowired
 	private EvaluatorRepo evaluatorRepo;	// An instantiation of the EvaluatorRepo interface called evaluatorRepo
 	
-	// This initializes spring's "webdatabinder" class to bind web request parameters to the java bean objects to receive the incoming data 
+	// This initializes spring's "webdatabinder" class to bind web request parameters 
+	// to the java bean objects to receive the incoming data 
 	@InitBinder
 	public void initialiseBinder(WebDataBinder binder){
 		binder.setDisallowedFields("unitsInOrder", "discontinued"); // Instantiation of WebDataBinder of binder to call setDisallowedFields, and makes sure that all parameters are in order

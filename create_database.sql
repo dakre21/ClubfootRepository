@@ -151,9 +151,11 @@ CREATE TABLE IF NOT EXISTS `icr_spring`.`patient` (
   `deformity_at_birth` LONGTEXT NULL,
   `prenatal_week` INT NULL,
   `prenatal_confirmed` LONGTEXT NULL,
+  `sex` VARCHAR(45) NULL,
+  `race` VARCHAR(45) NULL,
   PRIMARY KEY (`id`),
   INDEX `evaluator_idx` (`evaluator_id` ASC),
-  INDEX `hospital_idx` (`hospital_id` ASC),
+  INDEX `hospifilterPatientReportfilterPatientReporttal_idx` (`hospital_id` ASC),
   INDEX `user_idx` (`user_id` ASC),
   CONSTRAINT `patient_evaluator_fk`
     FOREIGN KEY (`evaluator_id`)
@@ -195,7 +197,6 @@ CREATE TABLE IF NOT EXISTS `icr_spring`.`visit` (
   `user` INT NULL,
   `is_last_visit` VARCHAR(45) NULL,
   `next_visit_date` VARCHAR(45) NULL,
-  `feet_laterality` VARCHAR(45) NULL,
   `relapse` LONGTEXT NULL,
   `complications` LONGTEXT NULL,
   `complications_description` LONGTEXT NULL,
@@ -250,6 +251,8 @@ CREATE TABLE IF NOT EXISTS `icr_spring`.`patient_associates` (
   `associate_id` INT NULL,
   `relationship_to_patient` VARCHAR(45) NULL,
   `is_emergency_contact` INT NULL,
+  `phone1` VARCHAR(45) NULL,
+  `phone2` VARCHAR(45) NULL,
   INDEX `relative_idx` (`associate_id` ASC),
   CONSTRAINT `p_assoc_patient_fk`
     FOREIGN KEY (`patient_id`)
