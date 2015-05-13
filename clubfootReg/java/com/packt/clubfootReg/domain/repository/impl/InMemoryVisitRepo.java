@@ -122,20 +122,20 @@ public class InMemoryVisitRepo implements VisitRepo{
 		String results = visit.getResults();
 		String comments = visit.getComments();
 		
-		String sql_visit = "Insert into visit (id, evaluator_id, patient_id, hospital_id, visit_date, is_last_visit, " +
+		String sqlVisit = "Insert into visit (id, evaluator_id, patient_id, hospital_id, visit_date, is_last_visit, " +
 					   	   "next_visit_date, relapse, complications, complications_description, complications_treatment, " +
 					   	   "complications_results, general_comments) " +
 		                   "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into visit
 		
-		//String sql_left_foot = "Insert into foot (id, visit_id, laterality, varus, cavus, abductus, equinus, pc, eh, re, mc, thc, clb, " +
+		//String sqlLeftFoot = "Insert into foot (id, visit_id, laterality, varus, cavus, abductus, equinus, pc, eh, re, mc, thc, clb, " +
 		//					   "cast_number, abduction, dorsiflexion, brace_compliance, brace_problems, brace_action, surgery_other, " +
 		//					   "surgery_comment, other_details) " +
 		//					   "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
-		String sql_left_foot = "Insert into foot (id, visit_id, laterality, varus, cavus, abductus, equinus, pc, eh, re, mc, thc, treatment, clb) " +
+		String sqlLeftFoot = "Insert into foot (id, visit_id, laterality, varus, cavus, abductus, equinus, pc, eh, re, mc, thc, treatment, clb) " +
    				               "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into left foot
 		
-		String sql_right_foot = "Insert into foot (id, visit_id, laterality, varus, cavus, abductus, equinus, pc, eh, re, mc, thc, treatment, clb) " +
+		String sqlRightFoot = "Insert into foot (id, visit_id, laterality, varus, cavus, abductus, equinus, pc, eh, re, mc, thc, treatment, clb) " +
 				   				"values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into right foot
 		
 		Connection connection = null;	// Instantiation of the connection to the database
@@ -149,7 +149,7 @@ public class InMemoryVisitRepo implements VisitRepo{
 			connection = dataSource.getConnection(); // Connection of the dataSource with the MySql sever
 			
 			// VISIT
-			ps = connection.prepareStatement(sql_visit);
+			ps = connection.prepareStatement(sqlVisit);
 			ps.setInt(1, visitId);
 			/*
 			ps.setInt(2, 0);
@@ -179,7 +179,7 @@ public class InMemoryVisitRepo implements VisitRepo{
 			ps.close();
 			
 			// LEFT FOOT
-			ps = connection.prepareStatement(sql_left_foot);
+			ps = connection.prepareStatement(sqlLeftFoot);
 			ps.setInt(1, this.getMaxFootId() + 1);
 			ps.setInt(2, visitId);
 			ps.setString(3, "Left");
@@ -222,7 +222,7 @@ public class InMemoryVisitRepo implements VisitRepo{
 			
 			
 			// RIGHT FOOT
-			ps = connection.prepareStatement(sql_right_foot);
+			ps = connection.prepareStatement(sqlRightFoot);
 			ps.setInt(1, this.getMaxFootId() + 1);
 			ps.setInt(2, visitId);
 			ps.setString(3, "Right");
@@ -343,16 +343,16 @@ public class InMemoryVisitRepo implements VisitRepo{
 		String results = visit.getResults();
 		String comments = visit.getComments();
 		
-		String sql_visit = "Update visit set evaluator_id = ?, hospital_id = ?, visit_date = ?, is_last_visit = ?, " +
+		String sqlVisit = "Update visit set evaluator_id = ?, hospital_id = ?, visit_date = ?, is_last_visit = ?, " +
 			   	   			  "next_visit_date = ?, relapse = ?, complications = ?, complications_description = ?, " +
 			   	   			  "complications_treatment = ?, complications_results = ?, general_comments = ? " +
 			   	   			  "where id = ?";
 		
-		String sql_left_foot = "Update foot set varus = ?, cavus = ?, abductus = ?, equinus = ?, " +
+		String sqlLeftFoot = "Update foot set varus = ?, cavus = ?, abductus = ?, equinus = ?, " +
 						       	  "pc = ?, eh = ?, re = ?, mc = ?, thc = ?, clb = ?, treatment = ? " +
 						       "Where visit_id = ? and laterality = 'left'";
 		
-		String sql_right_foot = "Update foot set varus = ?, cavus = ?, abductus = ?, equinus = ?, " +
+		String sqlRightFoot = "Update foot set varus = ?, cavus = ?, abductus = ?, equinus = ?, " +
 				                   "pc = ?, eh = ?, re = ?, mc = ?, thc = ?, clb = ?, treatment = ? " +
 				                "Where visit_id = ? and laterality = 'right'";
 
@@ -363,7 +363,7 @@ public class InMemoryVisitRepo implements VisitRepo{
 			connection = dataSource.getConnection(); // Connection of the dataSource with the MySql sever
 			
 			// VISIT
-			ps = connection.prepareStatement(sql_visit);
+			ps = connection.prepareStatement(sqlVisit);
 			ps.setInt(1, evaluatorId);
 			ps.setInt(2, hospitalId);
 			ps.setString(3, dateOfVisit);
@@ -380,7 +380,7 @@ public class InMemoryVisitRepo implements VisitRepo{
 			ps.close();
 			
 			// LEFT FOOT
-			ps = connection.prepareStatement(sql_left_foot);
+			ps = connection.prepareStatement(sqlLeftFoot);
 			ps.setInt(1, hindfootLeftVarus);
 			ps.setInt(2, hindfootLeftCavus);
 			ps.setInt(3, hindfootLeftAbductus);
@@ -397,7 +397,7 @@ public class InMemoryVisitRepo implements VisitRepo{
 			ps.close();
 			
 			// RIGHT FOOT
-			ps = connection.prepareStatement(sql_right_foot);
+			ps = connection.prepareStatement(sqlRightFoot);
 			ps.setInt(1, hindfootRightVarus);
 			ps.setInt(2, hindfootRightCavus);
 			ps.setInt(3, hindfootRightAbductus);
@@ -571,7 +571,7 @@ public class InMemoryVisitRepo implements VisitRepo{
 		}
 	}
 	
-	public List<Visit> getVisitsForPatient(int patient_id) {
+	public List<Visit> getVisitsForPatient(int patientId) {
 		Connection conn = null; // Resets the connection to the database
 		Visit visit = null; // Resets the model
 		List<Visit> visits = null; // Resets the list
@@ -594,7 +594,7 @@ public class InMemoryVisitRepo implements VisitRepo{
 					     "from visit a " +
 					     "where patient_id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, patient_id);
+			ps.setInt(1, patientId);
 			ResultSet rs = ps.executeQuery();
 			
 			if (rs.last()) {
@@ -603,7 +603,7 @@ public class InMemoryVisitRepo implements VisitRepo{
 			}
 			
 			while (rs.next()) {
-				visit = new Visit(patient_id);
+				visit = new Visit(patientId);
 				visit.setId(rs.getInt("id"));
 				visit.setDateOfVisit(rs.getString("visit_date"));
 				visit.setLeftTreatment(rs.getString("leftTreatment"));
