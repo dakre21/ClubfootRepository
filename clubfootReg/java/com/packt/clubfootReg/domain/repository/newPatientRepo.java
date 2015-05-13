@@ -33,5 +33,5 @@ public interface newPatientRepo {
 	List<newPatient> getAllPatientsReports(ReportsPatients filters);
 	Map<Integer, String> getAllHospitals();
 	Map<Integer, String> getAllEvaluators();
-	List<Visit> getVisitsForPatient(int patient_id);
+	List<Visit> getVisitsForPatient(int patientId);
 }

@@ -873,14 +873,14 @@ public class InMemoryVisitRepo implements VisitRepo{
 			else {
 				CallableStatement cs = (CallableStatement) conn.prepareCall("{call filterVisitReport(?, ?, ?, ?, ?)}");
 				
-				Integer hospital_id = filter.getHospital_id();
+				Integer hospitalId = filter.getHospitalId();
 				String complications = filter.getComplications();
 				String relapse = filter.getRelapse();
 				String leftTreatment = filter.getLeftTreatment();
 				String rightTreatment = filter.getRightTreatment();
 				
-				if(hospital_id != null){
-					cs.setInt(1, hospital_id);
+				if(hospitalId != null){
+					cs.setInt(1, hospitalId);
 				}
 				else{
 					cs.setInt(1, 0);

@@ -133,8 +133,8 @@ String fileName,
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value = "/edit_patient", method = RequestMethod.GET)	// Gets the edit_patient form
 	public ModelAndView editPatientForm(HttpServletRequest request) {
-	    int patient_id = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call and finds "id"
-	    newPatient patient = newpatientrepo.getPatient(patient_id);	// Method call on newpatientrepo to get the patient id
+	    int patientId = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call and finds "id"
+	    newPatient patient = newpatientrepo.getPatient(patientId);	// Method call on newpatientrepo to get the patient id
 	    ModelAndView model = new ModelAndView("edit_patient");	// Instantiation of ModelAndView and passes "edit_patient" view to it
 	    model.addObject("patient", patient);	// Adds the object patient to the model
 	    return model;	// Returns the model
@@ -167,12 +167,12 @@ String fileName,
 	@RequestMapping(value = "/view_patient_info", method = RequestMethod.GET)	// Gets the view_patient_info form 
 	public ModelAndView viewPatientInfoForm(HttpServletRequest request) {
 	    ModelAndView model = new ModelAndView("view_patient_info");	// Passes the view_patient_info view to the model
-	    int patient_id = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call
+	    int patientId = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call
 	    
-	    newPatient patient = newpatientrepo.getPatient(patient_id);	// Gets patient_id from newpatient repo's method getPatient
+	    newPatient patient = newpatientrepo.getPatient(patientId);	// Gets patient_id from newpatient repo's method getPatient
 	    model.addObject("patient", patient);	// Adds an object called patient to the model
 	    
-	    List<Visit> visits = newpatientrepo.getVisitsForPatient(patient_id);	// Gets patient_id from newpatient repo's method getPatient
+	    List<Visit> visits = newpatientrepo.getVisitsForPatient(patientId);	// Gets patient_id from newpatient repo's method getPatient
 	    model.addObject("visits", visits);	// Adds an object called patient to the model
 	    
 	    return model;	// Returns the model
