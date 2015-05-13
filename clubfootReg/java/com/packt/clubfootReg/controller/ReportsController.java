@@ -99,9 +99,9 @@ public class ReportsController {
 	}
 	
 	@RequestMapping(value="/hospital_reports", method=RequestMethod.POST)	
-    public String filterHospitalsSubmit(@ModelAttribute("hospital_id") int hospitalId, Model model) {
+    public String filterHospitalsSubmit(@ModelAttribute("hospitalId") int hospitalId, Model model) {
         model.addAttribute("hospitals", hospitalRepo.getAllHospitalsReports(hospitalId));
-        model.addAttribute("hospital_id", hospitalId);
+        model.addAttribute("hospitalId", hospitalId);
         return "hospital_reports";	
     }
 	

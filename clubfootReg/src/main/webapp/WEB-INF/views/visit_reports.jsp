@@ -17,10 +17,10 @@
 <script>
 	window.onload = function(){
 		
-		if("${filters.hospital_id}" > 0)
-			document.getElementById("hospital_id").value = "${filters.hospital_id}";
+		if("${filters.hospitalId}" > 0)
+			document.getElementById("hospitalId").value = "${filters.hospitalId}";
 		else
-			document.getElementById("hospital_id").value = "";
+			document.getElementById("hospitalId").value = "";
 		
 		
 		if("${filters.complications}" == "No")
@@ -83,8 +83,8 @@
 		<form action="#" th:action="@{/visit_reports}"  modelAttribute="filters" method="post" id="filterVisits">
 		<div class="form-group">
 			
-			<label for="hospital_id">Hospital</label>
-			<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
+			<label for="hospitalId">Hospital</label>
+			<form:select class="form-control" path="hospitalList" id="hospitalId" name="hospitalId">
             	<form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
                 <form:options items="${hospitalList}" />
             </form:select> <br>
