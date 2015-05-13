@@ -52,11 +52,11 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 	// This method effectively adds data that was saved to the model to the MySQL instance of the database
 	public void addEvaluator(Evaluator evaluator) {
 		listOfEvaluators.add(evaluator); // Adds the object of the model "evaluator" to the list created above
-		String first_name = evaluator.getFirst_name(); // Gets the String first_name from the evaluator model
-		String middle_name = evaluator.getMiddle_name(); // Gets the String middle_name from the evaluator model
-		String last_name = evaluator.getLast_name(); // Gets the String last_name from the evaluator model
+		String firstName = evaluator.getFirstName(); // Gets the String first_name from the evaluator model
+		String middleName = evaluator.getMiddleName(); // Gets the String middle_name from the evaluator model
+		String lastName = evaluator.getLastName(); // Gets the String last_name from the evaluator model
 		String title = evaluator.getTitle(); // Gets the String title from the evaluator model
-		int hospital = evaluator.getHospital_id(); // Gets the integer value of the evaluator id
+		int hospitalId = evaluator.getHospitalId(); // Gets the integer value of the evaluator id
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); // Sets up the date format for data to be properly synchronized to the database
 		Date date = new Date(); // Instantiation of the Date class
@@ -73,9 +73,9 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 			PreparedStatement ps = connection.prepareStatement(sql); // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database and connection to the database with the sql query
 			ps.setInt(1, this.getMaxPersonID()+1);
 			ps.setString(2, dateFormat.format(date));
-			ps.setString(3, first_name);
-			ps.setString(4, last_name);
-			ps.setString(5, middle_name);
+			ps.setString(3, firstName);
+			ps.setString(4, lastName);
+			ps.setString(5, middleName);
 			ps.executeUpdate();
 			ps.close();
 			
@@ -83,7 +83,7 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 			PreparedStatement ps2 = connection.prepareStatement(sql2);
 			ps2.setInt(1, this.getMaxPersonID());
 			ps2.setString(2, title);
-			ps2.setInt(3, hospital);
+			ps2.setInt(3, hospitalId);
 			ps2.executeUpdate();
 			ps2.close();
 		} catch (SQLException e) { // Catches SQL exception errors
@@ -213,15 +213,15 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 	public void updateEvaluator(Evaluator evaluator) {
 		listOfEvaluators.add(evaluator);
 		int id = evaluator.getId();
-		String first_name = evaluator.getFirst_name();
-		String middle_name = evaluator.getMiddle_name();
-		String last_name = evaluator.getLast_name();
+		String firstName = evaluator.getFirstName();
+		String middleName = evaluator.getMiddleName();
+		String lastName = evaluator.getLastName();
 		String title = evaluator.getTitle();
-		int hospital = evaluator.getHospital_id();
+		int hospitalId = evaluator.getHospitalId();
 		
 	
-		String sql_abstract_person = "Update abstract_person set first_name = ?, last_name = ?, middle_name = ? where id = ?";
-		String sql_evaluator = "Update evaluator set title = ?, hospital_id = ? where id = ?";
+		String sqlAbstractPerson = "Update abstract_person set first_name = ?, last_name = ?, middle_name = ? where id = ?";
+		String sqlEvaluator = "Update evaluator set title = ?, hospital_id = ? where id = ?";
 		
 		Connection connection = null;
 		PreparedStatement ps = null;
@@ -230,18 +230,18 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 			connection = dataSource.getConnection();
 			
 			// Abstract Person
-			ps = connection.prepareStatement(sql_abstract_person);
-			ps.setString(1, first_name);
-			ps.setString(2, last_name);
-			ps.setString(3, middle_name);
+			ps = connection.prepareStatement(sqlAbstractPerson);
+			ps.setString(1, firstName);
+			ps.setString(2, lastName);
+			ps.setString(3, middleName);
 			ps.setInt(4, id);
 			ps.executeUpdate();
 			ps.close();
 			
 			// Evaluator
-			ps = connection.prepareStatement(sql_evaluator);
+			ps = connection.prepareStatement(sqlEvaluator);
 			ps.setString(1, title);
-			ps.setInt(2, hospital);
+			ps.setInt(2, hospitalId);
 			ps.setInt(3, id);
 			ps.executeUpdate();
 			ps.close();

@@ -61,8 +61,8 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	// This method effectively adds data that was saved to the model to the MySQL instance of the database
 	public void addHospital(Hospital hospital) {
 		listOfHospitals.add(hospital); // Adds the object of the model "hospital" to the list created above
-		String name = hospital.getName();	// Gets the String name from the hospital model
-		int region_id = hospital.getRegion_id(); // Gets the integer value of the region id
+		String hospitalName = hospital.getHospitalName();	// Gets the String name from the hospital model
+		int regionId = hospital.getRegionId(); // Gets the integer value of the region id
 		
 		Connection connection = null;	// Instantiation of the connection to the database
 		
@@ -77,8 +77,8 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 			PreparedStatement ps = connection.prepareStatement(sql); // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database and establishment of the sql query
 			
 			ps.setInt(1, this.getMaxHospitalID()+1);
-			ps.setString(2, name);
-			ps.setInt(3, region_id);
+			ps.setString(2, hospitalName);
+			ps.setInt(3, regionId);
 			
 			ps.executeUpdate();
 			ps.close();
@@ -171,7 +171,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 					rs.getString("region_name")
 				);
 				hospitals.add(hospital);
-				System.out.println(hospital.getName());
+				System.out.println(hospital.getHospitalName());
 			}
 			rs.close();
 			ps.close();
@@ -197,8 +197,8 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	public void updateHospital(Hospital hospital) {
 		listOfHospitals.add(hospital);
 		int id = hospital.getId();
-		String name = hospital.getName();
-		int region_id = hospital.getRegion_id();
+		String hospitalName = hospital.getHospitalName();
+		int regionId = hospital.getRegionId();
 	
 		String sql = "Update hospital set name = ?, region_id = ? where id = ?";
 		
@@ -209,8 +209,8 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 			connection = dataSource.getConnection();
 			
 			ps = connection.prepareStatement(sql);
-			ps.setString(1, name);
-			ps.setInt(2, region_id);
+			ps.setString(1, hospitalName);
+			ps.setInt(2, regionId);
 			ps.setInt(3, id);
 			ps.executeUpdate();
 			ps.close();
@@ -290,7 +290,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	}
 
 	@Override
-	public List<ReportsHospital> getAllHospitalsReports(int hospital_id) {
+	public List<ReportsHospital> getAllHospitalsReports(int hospitalId) {
 		Connection conn = null; // Resets the connection to the database
 		ReportsHospital hospital = null; // Resets the model
 		List<ReportsHospital> rh = null; // Resets the list
@@ -322,8 +322,8 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 				   		 "inner join patient b on a.id = b.hospital_id " +
 				   		 "inner join region c on a.region_id = c.id ";
 		    
-		    if (hospital_id != 0) {
-		    	sql = sql + "where a.id = " + hospital_id + " group by a.name, c.name";
+		    if (hospitalId != 0) {
+		    	sql = sql + "where a.id = " + hospitalId + " group by a.name, c.name";
 		    } 
 		    else {
 		    	sql = sql + "group by a.name, c.name";

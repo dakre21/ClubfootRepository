@@ -40,11 +40,11 @@
         	<c:if test="${not empty evaluators}">
             <c:forEach var="o" items="${evaluators}">
               <tr>
-                  <td>${o.first_name}</td>
-                  <td>${o.middle_name}</td>
-                  <td>${o.last_name}</td>
+                  <td>${o.firstName}</td>
+                  <td>${o.middleName}</td>
+                  <td>${o.lastName}</td>
                   <td>${o.title}</td>
-                  <td>${o.hospital_name}</td>
+                  <td>${o.hospitalName}</td>
                   <td><a href="edit_evaluator?id=${o.id}">Edit</a></td>
               </tr>
             </c:forEach>

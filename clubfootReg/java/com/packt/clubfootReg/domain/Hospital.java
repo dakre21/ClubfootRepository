@@ -10,9 +10,9 @@ public class Hospital {
 	
 	// Form attributes to by synchronized to the database
 	private int id;
-	private String name;
-	private int region_id;
-	private String region_name;
+	private String hospitalName;
+	private int regionId;
+	private String regionName;
 	
 	
 	public Hospital() {
@@ -20,12 +20,12 @@ public class Hospital {
 	}
 	
 	// Hospital constructor that sets up the retriving information from the database via this model
-	public Hospital(int id, String name, int region_id, String region_name){
+	public Hospital(int id, String hospitalName, int regionId, String regionName){
 		// Sets current object "this" to the value being passed when this model is being instantiated 
 		this.id = id;
-		this.name = name;
-		this.region_id = region_id;
-		this.region_name = region_name;
+		this.hospitalName = hospitalName;
+		this.regionId = regionId;
+		this.regionName = regionName;
 	}
 
 	public static void main(String[] args) {
@@ -39,28 +39,28 @@ public class Hospital {
 	 * the value to the model attribute to be synchronized to the database (visa versa for pull requests). 
 	 */
 
-	public String getName() {
-		return name;
+	public String getHospitalName() {
+		return hospitalName;
 	}
 
-	public void setName(String hospitalName) {
-		this.name = hospitalName;
+	public void setHospitalName(String hospitalName) {
+		this.hospitalName = hospitalName;
 	}
 
-	public int getRegion_id() {
-		return region_id;
+	public int getRegionId() {
+		return regionId;
 	}
 
-	public void setRegion_id(int hospitalRegion) {
-		this.region_id = hospitalRegion;
+	public void setRegionId(int regionId) {
+		this.regionId = regionId;
 	}
 
-	public String getRegion_name() {
-		return region_name;
+	public String getRegionName() {
+		return regionName;
 	}
 
-	public void setRegion_name(String regionName) {
-		this.region_name = regionName;
+	public void setRegionName(String regionName) {
+		this.regionName = regionName;
 	}
 	
 	public int getId() {

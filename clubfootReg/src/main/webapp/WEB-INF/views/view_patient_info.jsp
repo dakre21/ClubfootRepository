@@ -77,7 +77,7 @@
 			<fieldset>
 				<legend>Personal Information</legend>
 				<div class = "col-md-12">
-					<label><b>Name:&nbsp; </b></label><label>${patient.patient_firstName}&nbsp;</label><label>${patient.patient_midName}&nbsp;</label><label>${patient.patient_lastName}&nbsp;</label><br>
+					<label><b>Name:&nbsp; </b></label><label>${patient.patientFirstName}&nbsp;</label><label>${patient.patientMiddleName}&nbsp;</label><label>${patient.patientLastName}&nbsp;</label><br>
 					<label><b>Sex:&nbsp;</b></label><label>${patient.sex}</label><br>
 					<label><b>Date of Birth (dd/mm/yyyy):&nbsp;</b></label><label>${patient.dob}</label><br>
 					<label><b>Race:&nbsp;</b></label><label>${patient.race}</label><br>
@@ -104,22 +104,22 @@
 				<legend>Parent/Guardian Information</legend>
 				<div class = "col-md-12">
 					<h2>Primary</h2>
-					<label><b>Name:&nbsp; </b></label><label>${patient.guardian_firstName}&nbsp;</label><label>${patient.guardian_midName}&nbsp;</label><label>${patient.guardian_lastName}&nbsp;</label><br>			
-					<label><b>Relationship to patient:&nbsp;</b></label><label>${patient.guardian_relationship}</label><br>
-					<label><b>Phone 1:&nbsp;</b></label><label>${patient.guardian_phone1}</label><br>
-					<label><b>Phone 2:&nbsp;</b></label><label>${patient.guardian_phone2}</label><br>
+					<label><b>Name:&nbsp; </b></label><label>${patient.guardianFirstName}&nbsp;</label><label>${patient.guardianMiddleName}&nbsp;</label><label>${patient.guardianLastName}&nbsp;</label><br>			
+					<label><b>Relationship to patient:&nbsp;</b></label><label>${patient.guardianRelationship}</label><br>
+					<label><b>Phone 1:&nbsp;</b></label><label>${patient.guardianPhone1}</label><br>
+					<label><b>Phone 2:&nbsp;</b></label><label>${patient.guardianPhone2}</label><br>
 					<h2>Secondary</h2>
-					<label><b>Name:&nbsp; </b></label><label>${patient.second_guardian_first}&nbsp;</label><label>${patient.second_guardian_mid}&nbsp;</label><label>${patient.second_guardian_last}&nbsp;</label><br>			
-					<label><b>Relationship to patient:&nbsp;</b></label><label>${patient.second_guardian_relationship}</label><br>
-					<label><b>Phone 1:&nbsp;</b></label><label>${patient.second_guardian_phone1}</label><br>
-					<label><b>Phone 2:&nbsp;</b></label><label>${patient.second_guardian_phone2}</label><br>
+					<label><b>Name:&nbsp; </b></label><label>${patient.secondGuardianFirst}&nbsp;</label><label>${patient.secondGuardianMiddle}&nbsp;</label><label>${patient.secondGuardianLast}&nbsp;</label><br>			
+					<label><b>Relationship to patient:&nbsp;</b></label><label>${patient.secondGuardianRelationship}</label><br>
+					<label><b>Phone 1:&nbsp;</b></label><label>${patient.secondGuardianPhone1}</label><br>
+					<label><b>Phone 2:&nbsp;</b></label><label>${patient.secondGuardianPhone2}</label><br>
 					<h2>Other Emergency Contact</h2>
-					<label><b>Name:&nbsp; </b></label><label>${patient.other_guardian_first}&nbsp;</label><label>${patient.other_guardian_mid}&nbsp;</label><label>${patient.other_guardian_last}&nbsp;</label><br>			
-					<label><b>Relationship to patient:&nbsp;</b></label><label>${patient.other_guardian_relationship}</label><br>
-					<label><b>Phone 1:&nbsp;</b></label><label>${patient.other_guardian_phone1}</label><br>
-					<label><b>Phone 2:&nbsp;</b></label><label>${patient.other_guardian_phone2}</label><br>
+					<label><b>Name:&nbsp; </b></label><label>${patient.otherGuardianFirst}&nbsp;</label><label>${patient.otherGuardianMiddle}&nbsp;</label><label>${patient.otherGuardianLast}&nbsp;</label><br>			
+					<label><b>Relationship to patient:&nbsp;</b></label><label>${patient.otherGuardianRelationship}</label><br>
+					<label><b>Phone 1:&nbsp;</b></label><label>${patient.otherGuardianPhone1}</label><br>
+					<label><b>Phone 2:&nbsp;</b></label><label>${patient.otherGuardianPhone2}</label><br>
 					<br>
-					<label><b>Emergency Contact:&nbsp;</b></label><label>${patient.emergency_contact}</label><br>
+					<label><b>Emergency Contact:&nbsp;</b></label><label>${patient.emergencyContact}</label><br>
 				</div>
 			</fieldset>
 		</div>
@@ -128,13 +128,13 @@
 			<fieldset>
 				<legend>Family History</legend>
 				<div class = "col-md-12">
-					<label><b>Number of affected relatives:&nbsp;</b></label><label>${patient.deformity_history_num}</label><br>
+					<label><b>Number of affected relatives:&nbsp;</b></label><label>${patient.deformityHistoryNum}</label><br>
 					<label><b>Length of pregnancy (in weeks):&nbsp;</b></label><label>${patient.pregnancy}</label><br>
-					<label><b>Pregnancy complications:&nbsp;</b></label><label>${patient.pregnancy_complications_explained}</label><br>
-					<label><b>Did the mother consume alcohol during pregnancy:&nbsp;</b></label><label>${patient.pregnancy_alc}</label><br>
-					<label><b>Did the mother smoke during pregnancy:&nbsp;</b></label><label>${patient.pregnancy_smoke}</label><br>
+					<label><b>Pregnancy complications:&nbsp;</b></label><label>${patient.pregnancyComplicationsExplained}</label><br>
+					<label><b>Did the mother consume alcohol during pregnancy:&nbsp;</b></label><label>${patient.pregnancyAlc}</label><br>
+					<label><b>Did the mother smoke during pregnancy:&nbsp;</b></label><label>${patient.pregnancySmoke}</label><br>
 					<label><b>Any complications during birth:&nbsp;</b></label><label>${patient.complications}</label><br>
-					<label><b>Place of birth:&nbsp;</b></label><label>${patient.place_birth}</label><br>
+					<label><b>Place of birth:&nbsp;</b></label><label>${patient.placeBirth}</label><br>
 				</div>
 			</fieldset>
 		</div>
@@ -144,9 +144,9 @@
 				<legend>Referral Information</legend>
 				<div class = "col-md-12">
 					<label><b>Referral source:&nbsp; </b></label><label>${patient.referral}</label><br>
-					<label><b>Referring doctor:&nbsp;</b></label><label>${patient.referral_doc_name}</label><br>
-					<label><b>Referring hospital:&nbsp;</b></label><label>${patient.referral_hospital_name}</label><br>
-					<label><b>Other referral:&nbsp;</b></label><label>${patient.referral_other}</label><br>
+					<label><b>Referring doctor:&nbsp;</b></label><label>${patient.referralDocName}</label><br>
+					<label><b>Referring hospital:&nbsp;</b></label><label>${patient.referralHospitalName}</label><br>
+					<label><b>Other referral:&nbsp;</b></label><label>${patient.referralOther}</label><br>
 				</div>
 			</fieldset>
 		</div>
@@ -156,18 +156,18 @@
 				<legend>Diagnosis</legend>
 				<div class = "col-md-12">
 					<label><b>Evaluator:&nbsp; </b></label><label><a href = "view_evaluators">${patient.evaluator}</a></label><br>
-					<label><b>Evaluation date (dd/mm/yyyy):&nbsp;</b></label><label>${patient.evaluation_date}</label><br>
+					<label><b>Evaluation date (dd/mm/yyyy):&nbsp;</b></label><label>${patient.evaluationDate}</label><br>
 					<label><b>Hospital/Clinic:&nbsp;</b></label><label>${patient.hospital}</label><br>
 					<label><b>Feet affected:&nbsp;</b></label><label>${patient.feet}</label><br>
 					<label><b>Diagnosis:&nbsp;</b></label><label>${patient.diagnosis}</label><br>
-					<label><b>Deformity at birth:&nbsp;</b></label><label>${patient.deformity_at_birth}</label><br>
-					<label><b>Any previous treatments:&nbsp; </b></label><label>${patient.previous_treatments}&nbsp;</label><br>
-					<label><b>Number of previous treatments:&nbsp;</b></label><label>${patient.previous_treatments_num}</label><br>
+					<label><b>Deformity at birth:&nbsp;</b></label><label>${patient.deformityAtBirth}</label><br>
+					<label><b>Any previous treatments:&nbsp; </b></label><label>${patient.previousTreatments}&nbsp;</label><br>
+					<label><b>Number of previous treatments:&nbsp;</b></label><label>${patient.previousTreatmentsNum}</label><br>
 					<label><b>Type of previous treatments:&nbsp;</b></label><label></label><br>
-					<label><b>Diagnosed prenatally:&nbsp;</b></label><label>${patient.diagnosis_prenatally}</label><br>
-					<label><b>Prenatal diagnosis at pregnancy week:&nbsp;</b></label><label>${patient.diagnosis_prenatally_week}</label><br>
-					<label><b>Prenatal diagnosis confirmed at birth:&nbsp;</b></label><label>${patient.prenatally_diag_confirmation}</label><br>
-					<label><b>Diagnosis comments:&nbsp;</b></label><label>${patient.diagnosis_comments}</label><br>
+					<label><b>Diagnosed prenatally:&nbsp;</b></label><label>${patient.diagnosisPrenatally}</label><br>
+					<label><b>Prenatal diagnosis at pregnancy week:&nbsp;</b></label><label>${patient.diagnosisPrenatallyWeek}</label><br>
+					<label><b>Prenatal diagnosis confirmed at birth:&nbsp;</b></label><label>${patient.prenatallyDiagConfirmation}</label><br>
+					<label><b>Diagnosis comments:&nbsp;</b></label><label>${patient.diagnosisComments}</label><br>
 				</div>
 			</fieldset>
 		</div>

@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 
-import com.packt.clubfootReg.controller.AddUserController;
+import com.packt.clubfootReg.controller.UserController;
 import com.packt.clubfootReg.controller.HomeController;
 import com.packt.clubfootReg.domain.User;
 import com.packt.clubfootReg.domain.Visit;
@@ -49,7 +49,7 @@ public class UserTest {
 	private MockMvc mockMvc;
 
 	@InjectMocks
-	private AddUserController auc;
+	private UserController auc;
 	@InjectMocks
 	User user = new User();
 	@InjectMocks
@@ -98,15 +98,15 @@ public class UserTest {
 	@Test
 	public void test_UserNameisNull() throws Exception {
 		if(this.user == null){
-			assertNull(user.getUser_name());
+			assertNull(user.getUserName());
 		}
 	}
 	
 	@Test
 	public void test_UserNameisNotNull() throws Exception {
 		if(this.user1 != null){
-			assertNotNull(user1.getUser_name());
-			assertEquals(user1.getUser_name(), "test_name");
+			assertNotNull(user1.getUserName());
+			assertEquals(user1.getUserName(), "test_name");
 		}
 	}
 	
@@ -128,30 +128,30 @@ public class UserTest {
 	@Test
 	public void test_UserHospitalisNull() throws Exception {
 		if(this.user == null){
-			assertNull(user.getHospital_id());
+			assertNull(user.getHospitalId());
 		}
 	}
 	
 	@Test
 	public void test_UserHospitalisNotNull() throws Exception {
 		if(this.user1 != null){
-			assertNotNull(user1.getHospital_id());
-			assertEquals(user1.getHospital_id(), 2);
+			assertNotNull(user1.getHospitalId());
+			assertEquals(user1.getHospitalId(), 2);
 		}
 	}
 	
 	@Test
 	public void test_UserRoleisNull() throws Exception {
 		if(this.user == null){
-			assertNull(user.getRole_id());
+			assertNull(user.getRoleId());
 		}
 	}
 	
 	@Test
 	public void test_UserRoleisNotNull() throws Exception {
 		if(this.user1 != null){
-			assertNotNull(user1.getRole_id());
-			assertEquals(user1.getRole_id(), 3);
+			assertNotNull(user1.getRoleId());
+			assertEquals(user1.getRoleId(), 3);
 		}
 	}
 

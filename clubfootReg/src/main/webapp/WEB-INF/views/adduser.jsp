@@ -29,8 +29,8 @@
 			<h1 align="center">Add New User</h1>
 			<form action="#" th:action="@{/adduser}" th:object="${user}" modelAttribute="user" id="User" method="post">
 				<div class="form-group">
-					<label for="user_name">User Name</label>
-					<input type="name" class="form-control" name="user_name" path="user_name" />
+					<label for="userName">User Name</label>
+					<input type="userName" class="form-control" name="userName" path="userName" />
 				</div>
 				
 				<div class="form-group">
@@ -39,8 +39,8 @@
 				</div>
 				
 				<div class="form-group">
-					<label for="role_id">Role</label>
-					<form:select class="form-control" path="roleList" id="role_id" name="role_id">
+					<label for="roleId">Role</label>
+					<form:select class="form-control" path="roleList" id="roleId" name="roleId">
                     	<form:option value="" label="Select a Role" disabled="true" selected="true" style="display: none;"/>
                     	<form:options items="${roleList}" />
                     </form:select>
@@ -48,7 +48,7 @@
 				
 				<div class="form-group">
 					<label for="hospital">Hospital</label>
-					<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
+					<form:select class="form-control" path="hospitalList" id="hospitalId" name="hospitalId">
                     	<form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
                     	<form:options items="${hospitalList}" />
                     </form:select>

@@ -102,45 +102,45 @@ public class NewPatientTest {
 	@Test
 	public void test_PatientFirstNameisNull() throws Exception {
 		if(this.np == null){
-			assertNull(np.getPatient_firstName());
+			assertNull(np.getPatientFirstName());
 		}
 	}
 	
 	@Test
 	public void test_PatientFirstNameisNotNull() throws Exception {
 		if(this.np1 != null){
-			assertNotNull(np1.getPatient_firstName());
-			assertEquals(np1.getPatient_firstName(), "Bob");
+			assertNotNull(np1.getPatientFirstName());
+			assertEquals(np1.getPatientFirstName(), "Bob");
 		}
 	}
 	
 	@Test
 	public void test_PatientMidNameisNull() throws Exception {
 		if(this.np == null){
-			assertNull(np.getPatient_midName());
+			assertNull(np.getPatientMiddleName());
 		}
 	}
 	
 	@Test
 	public void test_PatientMidNameisNotNull() throws Exception {
 		if(this.np1 != null){
-			assertNotNull(np1.getPatient_midName());
-			assertEquals(np1.getPatient_midName(), "Not known");
+			assertNotNull(np1.getPatientMiddleName());
+			assertEquals(np1.getPatientMiddleName(), "Not known");
 		}
 	}
 	
 	@Test
 	public void test_PatientLastNameisNull() throws Exception {
 		if(this.np == null){
-			assertNull(np.getPatient_lastName());
+			assertNull(np.getPatientLastName());
 		}
 	}
 	
 	@Test
 	public void test_PatientLastNameisNotNull() throws Exception {
 		if(this.np1 != null){
-			assertNotNull(np1.getPatient_lastName());
-			assertEquals(np1.getPatient_lastName(), "Knight");
+			assertNotNull(np1.getPatientLastName());
+			assertEquals(np1.getPatientLastName(), "Knight");
 		}
 	}
 	
@@ -207,7 +207,7 @@ public class NewPatientTest {
 	@Test
 	public void test_PatientVisitisNotNull() throws Exception {
 		if(this.np1 != null){
-			assertNotNull(np1.getEvaluation_date());
+			assertNotNull(np1.getEvaluationDate());
 			//assertEquals(np1.getEvaluation_date(), "2/11/2015");
 		}
 	}
@@ -215,7 +215,7 @@ public class NewPatientTest {
 	@Test
 	public void test_PatientVisitisNull() throws Exception {
 		if(this.np == null){
-			assertNull(np.getEvaluation_date());
+			assertNull(np.getEvaluationDate());
 		}
 	}
 	

@@ -28,16 +28,16 @@
 			<h1 align="center">Add New Evaluator</h1>
 			<form action="#" th:action="@{/evaluator}" th:object="${evaluator}" modelAttribute="Evaluator" "id="Evaluator" method="post">
 				<div class="form-group">
-					<label for="first_name">First Name</label>
-					<input type="name" class="form-control" id="first_name" name="first_name" path="first_name"/>
+					<label for="firstName">First Name</label>
+					<input type="name" class="form-control" id="firstName" name="firstName" path="firstName"/>
 				</div>
 				<div class="form-group">
-					<label for="middle_name">Middle Name</label>
-					<input type="name" class="form-control" id="middle_name" name="middle_name" path="middle_name"/>
+					<label for="middleName">Middle Name</label>
+					<input type="name" class="form-control" id="middleName" name="middleName" path="middleName"/>
 				</div>
 				<div class="form-group">
-					<label for="last_name">Last Name</label>
-					<input type="name" class="form-control" id="last_name" name="last_name" path="last_name"/>
+					<label for="lastName">Last Name</label>
+					<input type="name" class="form-control" id="lastName" name="lastName" path="lastName"/>
 				</div>
 				
 				<div class="row">
@@ -57,9 +57,9 @@
 					</div> 
 					<div class="col-md-6">
 						<div class="form-group">
-							<label for="hospital_id">Hospital</label>
-							<!--<form:select class="form-control" path="hospitalList" items="${hospitalList}" id="hospital_id" name="hospital_id"/>-->
-							<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
+							<label for="hospitalId">Hospital</label>
+							<!--<form:select class="form-control" path="hospitalList" items="${hospitalList}" id="hospitalId" name="hospitalId"/>-->
+							<form:select class="form-control" path="hospitalList" id="hospitalId" name="hospitalId">
                       			<form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
                       			<form:options items="${hospitalList}" />
                        		</form:select>

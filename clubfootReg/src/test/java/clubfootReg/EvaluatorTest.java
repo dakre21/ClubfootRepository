@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 
-import com.packt.clubfootReg.controller.AddUserController;
+import com.packt.clubfootReg.controller.UserController;
 import com.packt.clubfootReg.controller.HomeController;
 import com.packt.clubfootReg.domain.Evaluator;
 import com.packt.clubfootReg.domain.User;
@@ -50,7 +50,7 @@ public class EvaluatorTest {
 	private MockMvc mockMvc;
 
 	@InjectMocks
-	private AddUserController auc;
+	private UserController auc;
 	@InjectMocks
 	Evaluator evaluator = new Evaluator();
 	@InjectMocks
@@ -98,45 +98,45 @@ public class EvaluatorTest {
 	@Test
 	public void test_EvaluatorNameisNull() throws Exception {
 		if(this.evaluator == null){
-			assertNull(evaluator.getFirst_name());
+			assertNull(evaluator.getFirstName());
 		}
 	}
 	
 	@Test
 	public void test_EvaluatorNameisNotNull() throws Exception {
 		if(this.evaluator1 != null){
-			assertNotNull(evaluator1.getFirst_name());
-			assertEquals(evaluator1.getFirst_name(), "first");
+			assertNotNull(evaluator1.getFirstName());
+			assertEquals(evaluator1.getFirstName(), "first");
 		}
 	}
 	
 	@Test
 	public void test_EvaluatorLNameisNull() throws Exception {
 		if(this.evaluator == null){
-			assertNull(evaluator.getLast_name());
+			assertNull(evaluator.getLastName());
 		}
 	}
 	
 	@Test
 	public void test_EvaluatorLNameisNotNull() throws Exception {
 		if(this.evaluator1 != null){
-			assertNotNull(evaluator1.getLast_name());
-			assertEquals(evaluator1.getLast_name(), "last");
+			assertNotNull(evaluator1.getLastName());
+			assertEquals(evaluator1.getLastName(), "last");
 		}
 	}
 	
 	@Test
 	public void test_EvaluatorMNameisNull() throws Exception {
 		if(this.evaluator == null){
-			assertNull(evaluator.getMiddle_name());
+			assertNull(evaluator.getMiddleName());
 		}
 	}
 	
 	@Test
 	public void test_EvaluatorMNameisNotNull() throws Exception {
 		if(this.evaluator1 != null){
-			assertNotNull(evaluator1.getMiddle_name());
-			assertEquals(evaluator1.getMiddle_name(), "middle");
+			assertNotNull(evaluator1.getMiddleName());
+			assertEquals(evaluator1.getMiddleName(), "middle");
 		}
 	}
 	
@@ -158,30 +158,30 @@ public class EvaluatorTest {
 	@Test
 	public void test_EvaluatorHospisNull() throws Exception {
 		if(this.evaluator == null){
-			assertNull(evaluator.getHospital_name());
+			assertNull(evaluator.getHospitalName());
 		}
 	}
 	
 	@Test
 	public void test_EvaluatorHospisNotNull() throws Exception {
 		if(this.evaluator1 != null){
-			assertNotNull(evaluator1.getHospital_name());
-			assertEquals(evaluator1.getHospital_name(), "Rush");
+			assertNotNull(evaluator1.getHospitalName());
+			assertEquals(evaluator1.getHospitalName(), "Rush");
 		}
 	}
 	
 	@Test
 	public void test_EvaluatorHospIDisNull() throws Exception {
 		if(this.evaluator == null){
-			assertNull(evaluator.getHospital_id());
+			assertNull(evaluator.getHospitalId());
 		}
 	}
 	
 	@Test
 	public void test_EvaluatorHospIDisNotNull() throws Exception {
 		if(this.evaluator1 != null){
-			assertNotNull(evaluator1.getHospital_id());
-			assertEquals(evaluator1.getHospital_id(), 1);
+			assertNotNull(evaluator1.getHospitalId());
+			assertEquals(evaluator1.getHospitalId(), 1);
 		}
 	}
 

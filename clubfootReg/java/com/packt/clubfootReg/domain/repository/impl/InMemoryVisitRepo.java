@@ -77,9 +77,9 @@ public class InMemoryVisitRepo implements VisitRepo{
 		Integer leftPC = visit.getLeftPC();
 		Integer leftEH = visit.getLeftEH();
 		Integer leftRE = visit.getLeftRE();
-		Integer leftMC = visit.getLeftPC();
-		Integer leftTHC = visit.getLeftEH();
-		Integer leftCLB = visit.getLeftRE();
+		Integer leftMC = visit.getLeftMC();
+		Integer leftTHC = visit.getLeftTHC();
+		Integer leftCLB = visit.getLeftCLB();
 		String leftTreatment = visit.getLeftTreatment();
 		
 		Integer casterLeft = visit.getCasterLeft();
@@ -100,9 +100,9 @@ public class InMemoryVisitRepo implements VisitRepo{
 		Integer rightPC = visit.getRightPC();
 		Integer rightEH = visit.getRightEH();
 		Integer rightRE = visit.getRightRE();
-		Integer rightMC = visit.getRightPC();
-		Integer rightTHC = visit.getRightEH();
-		Integer rightCLB = visit.getRightRE();
+		Integer rightMC = visit.getRightMC();
+		Integer rightTHC = visit.getRightTHC();
+		Integer rightCLB = visit.getRightCLB();
 		String rightTreatment = visit.getRightTreatment();
 		
 		Integer casterRight = visit.getCasterRight();
@@ -1061,21 +1061,21 @@ public class InMemoryVisitRepo implements VisitRepo{
 			
 			if (rs2.next()) {
 				patient.setTribe(rs2.getString("tribe"));
-				patient.setDeformity_at_birth(rs2.getString("deformity_at_birth"));
-				patient.setDiagnosis_prenatally_week(rs2.getInt("prenatal_week"));
-				patient.setPrenatally_diag_confirmation(rs2.getString("prenatal_confirmed"));
-				patient.setDiagnosis_comments(rs2.getString("diagnosis_comment"));
+				patient.setDeformityAtBirth(rs2.getString("deformity_at_birth"));
+				patient.setDiagnosisPrenatallyWeek(rs2.getInt("prenatal_week"));
+				patient.setPrenatallyDiagConfirmation(rs2.getString("prenatal_confirmed"));
+				patient.setDiagnosisComments(rs2.getString("diagnosis_comment"));
 				patient.setReferral(rs2.getString("referral_source"));
-				patient.setReferral_doc_name(rs2.getString("referral_doctor_name"));
-				patient.setReferral_hospital_name(rs2.getString("referral_hospital_name"));
-				patient.setReferral_other(rs2.getString("referral_other"));
-				patient.setDeformity_history_num(rs2.getInt("affected_relatives"));
+				patient.setReferralDocName(rs2.getString("referral_doctor_name"));
+				patient.setReferralHospitalName(rs2.getString("referral_hospital_name"));
+				patient.setReferralOther(rs2.getString("referral_other"));
+				patient.setDeformityHistoryNum(rs2.getInt("affected_relatives"));
 				patient.setPregnancy(rs2.getInt("pregency_length"));
-				patient.setPregnancy_complications_explained(rs2.getString("pregnancy_complications"));
-				patient.setPregnancy_alc(rs2.getString("pregnancy_drinking"));
-				patient.setPregnancy_smoke(rs2.getString("pregnancy_smoking"));
+				patient.setPregnancyComplicationsExplained(rs2.getString("pregnancy_complications"));
+				patient.setPregnancyAlc(rs2.getString("pregnancy_drinking"));
+				patient.setPregnancySmoke(rs2.getString("pregnancy_smoking"));
 				patient.setComplications(rs2.getString("birth_complications"));
-				patient.setPlace_birth(rs2.getInt("birth_place"));
+				patient.setPlaceBirth(rs2.getInt("birth_place"));
 				patient.setSex(rs2.getString("sex"));
 				patient.setRace(rs2.getString("race"));
 			}
@@ -1098,36 +1098,36 @@ public class InMemoryVisitRepo implements VisitRepo{
 			int count = 0;
 			while (rs3.next()) {
 				if (count == 0) {
-					patient.setGuardian_relationship(rs3.getString("relationship_to_patient"));
-					patient.setGuardian_phone1(rs3.getString("phone1"));
-					patient.setGuardian_phone2(rs3.getString("phone2"));
-					patient.setGuardian_firstName(rs3.getString("first_Name"));
-					patient.setGuardian_lastName(rs3.getString("last_name"));
-					patient.setGuardian_midName(rs3.getString("middle_name"));
+					patient.setGuardianRelationship(rs3.getString("relationship_to_patient"));
+					patient.setGuardianPhone1(rs3.getString("phone1"));
+					patient.setGuardianPhone2(rs3.getString("phone2"));
+					patient.setGuardianFirstName(rs3.getString("first_Name"));
+					patient.setGuardianLastName(rs3.getString("last_name"));
+					patient.setGuardianMiddleName(rs3.getString("middle_name"));
 					if (rs3.getInt("is_emergency_contact") == 1) {
-						patient.setEmergency_contact("primary");
+						patient.setEmergencyContact("primary");
 					}
 				}
 				else if (count == 1) {
-					patient.setSecond_guardian_relationship(rs3.getString("relationship_to_patient"));
-					patient.setSecond_guardian_phone1(rs3.getString("phone1"));
-					patient.setSecond_guardian_phone2(rs3.getString("phone2"));
-					patient.setSecond_guardian_first(rs3.getString("first_Name"));
-					patient.setSecond_guardian_last(rs3.getString("last_name"));
-					patient.setSecond_guardian_mid(rs3.getString("middle_name"));
+					patient.setSecondGuardianRelationship(rs3.getString("relationship_to_patient"));
+					patient.setSecondGuardianPhone1(rs3.getString("phone1"));
+					patient.setSecondGuardianPhone2(rs3.getString("phone2"));
+					patient.setSecondGuardianFirst(rs3.getString("first_Name"));
+					patient.setSecondGuardianLast(rs3.getString("last_name"));
+					patient.setSecondGuardianMiddle(rs3.getString("middle_name"));
 					if (rs3.getInt("is_emergency_contact") == 1) {
-						patient.setEmergency_contact("secondary");
+						patient.setEmergencyContact("secondary");
 					}
 				}
 				else {
-					patient.setOther_guardian_relationship(rs3.getString("relationship_to_patient"));
-					patient.setOther_guardian_phone1(rs3.getString("phone1"));
-					patient.setOther_guardian_phone2(rs3.getString("phone2"));
-					patient.setOther_guardian_first(rs3.getString("first_Name"));
-					patient.setOther_guardian_last(rs3.getString("last_name"));
-					patient.setOther_guardian_mid(rs3.getString("middle_name"));
+					patient.setOtherGuardianRelationship(rs3.getString("relationship_to_patient"));
+					patient.setOtherGuardianPhone1(rs3.getString("phone1"));
+					patient.setOtherGuardianPhone2(rs3.getString("phone2"));
+					patient.setOtherGuardianFirst(rs3.getString("first_Name"));
+					patient.setOtherGuardianLast(rs3.getString("last_name"));
+					patient.setOtherGuardianMiddle(rs3.getString("middle_name"));
 					if (rs3.getInt("is_emergency_contact") == 1) {
-						patient.setEmergency_contact("other");
+						patient.setEmergencyContact("other");
 					}
 				}
 				count++;
