@@ -6,11 +6,11 @@ public class ReportsPatients {
 	private String sex;
 	private String race;
 	private String relatives;
-	private int hospital_id;
+	private int hospitalId;
 	private String dobSel;
 	private String dob;
-	private String eval_dateSel;
-	private String eval_date;
+	private String evalDateSel;
+	private String evalDate;
 	
 	public ReportsPatients() {
 		// TODO Auto-generated constructor stub
@@ -45,11 +45,11 @@ public class ReportsPatients {
 	}
 	
 	
-	public int getHospital_id() {
-		return hospital_id;
+	public int getHospitalId() {
+		return hospitalId;
 	}
-	public void setHospital_id(int hospital_id) {
-		this.hospital_id = hospital_id;
+	public void setHospitalId(int hospitalId) {
+		this.hospitalId = hospitalId;
 	}
 	
 	
@@ -69,19 +69,19 @@ public class ReportsPatients {
 	}
 	
 	
-	public String getEval_dateSel() {
-		return eval_dateSel;
+	public String getEvalDateSel() {
+		return evalDateSel;
 	}
-	public void setEval_dateSel(String eval_dateSel) {
-		this.eval_dateSel = eval_dateSel;
+	public void setEvalDateSel(String evalDateSel) {
+		this.evalDateSel = evalDateSel;
 	}
 	
 	
-	public String getEval_date() {
-		return eval_date;
+	public String getEvalDate() {
+		return evalDate;
 	}
-	public void setEval_date(String eval_date) {
-		this.eval_date = eval_date;
+	public void setEvalDate(String evalDate) {
+		this.evalDate = evalDate;
 	}
 	
 	

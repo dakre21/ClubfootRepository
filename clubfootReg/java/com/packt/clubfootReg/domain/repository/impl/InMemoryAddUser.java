@@ -59,10 +59,10 @@ public class InMemoryAddUser implements UserRepo{
 	public void addUser(User user) {
 		listOfUsers.add(user);	// Adds the object of the model "user" to the list created above
 		int id = user.getId();	// Gets the integer value of the user id
-		String userName = user.getUser_name(); // Gets the user name from the model
+		String userName = user.getUserName(); // Gets the user name from the model
 		String email = user.getEmail();	// Gets the email from the model
-		int hospital_id = user.getHospital_id();	// Gets the hospital id
-		int role_id = user.getRole_id();	// Gets the user role id
+		int hospitalId = user.getHospitalId();	// Gets the hospital id
+		int roleId = user.getRoleId();	// Gets the user role id
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");	// Sets up the date format for data to be properly synchronized to the database
 		Date date = new Date();	// Instantiation of the Date class
@@ -87,14 +87,14 @@ public class InMemoryAddUser implements UserRepo{
 			ps2.setInt(1, this.getMaxPersonID());
 			ps2.setString(2, userName);
 			ps2.setString(3, email);
-			ps2.setInt(4, role_id);
+			ps2.setInt(4, roleId);
 			ps2.executeUpdate();
 			ps2.close();
 			
 			sql = "Insert into user_hospital (user_id, hospital_id) values (?, ?)"; // First sql statement that contains the information to query into hospital
 			PreparedStatement ps3 = connection.prepareStatement(sql);
 			ps3.setInt(1, this.getMaxPersonID());
-			ps3.setInt(2, hospital_id);
+			ps3.setInt(2, hospitalId);
 			ps3.executeUpdate();
 			ps3.close();
 			
@@ -131,8 +131,9 @@ public class InMemoryAddUser implements UserRepo{
 					     "inner join user_hospital c on a.id = c.user_id " +
 					     "inner join hospital d on c.hospital_id = d.id " +
 					     "inner join role e on a.role_id = e.id " +
-					     "order by a.id";
-			PreparedStatement ps = conn.prepareStatement(sql);	
+					     "where a.id = ?"; 
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			
 			if (rs.next()) {
@@ -168,10 +169,10 @@ public class InMemoryAddUser implements UserRepo{
 	public void updateUser(User user) {
 		listOfUsers.add(user);	// Adds the object of the model "user" to the list created above
 		int id = user.getId();	// Gets the integer value of the user id
-		String userName = user.getUser_name(); // Gets the user name from the model
+		String userName = user.getUserName(); // Gets the user name from the model
 		String email = user.getEmail();	// Gets the email from the model
-		int hospital_id = user.getHospital_id();	// Gets the hospital id
-		int role_id = user.getRole_id();	// Gets the user role id
+		int hospitalId = user.getHospitalId();	// Gets the hospital id
+		int roleId = user.getRoleId();	// Gets the user role id
 
 		Connection connection = null;	// Instantiation of the database connection
 		
@@ -186,14 +187,14 @@ public class InMemoryAddUser implements UserRepo{
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setString(1, userName);
 			ps.setString(2, email);
-			ps.setInt(3, role_id);
+			ps.setInt(3, roleId);
 			ps.setInt(4, id);
 			ps.executeUpdate();
 			ps.close();
 			
 			sql = "Update user_hospital set hospital_id = ? where user_id = ?"; // First sql statement that contains the information to query into hospital
 			PreparedStatement ps2 = connection.prepareStatement(sql);
-			ps2.setInt(1, hospital_id);
+			ps2.setInt(1, hospitalId);
 			ps2.setInt(2, id);
 			ps2.executeUpdate();
 			ps2.close();

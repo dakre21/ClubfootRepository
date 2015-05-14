@@ -42,9 +42,9 @@
             <c:forEach var="o" items="${patients}">
               <tr>
                   <td><a href="view_patient_info?id=${o.id}">${o.id}</a></td>
-				  <td>${o.patient_firstName}</td>
-				  <td>${o.patient_midName}</td>
-				  <td>${o.patient_lastName}</td>
+				  <td>${o.patientFirstName}</td>
+				  <td>${o.patientMiddleName}</td>
+				  <td>${o.patientLastName}</td>
 				  <td><a href="edit_patient?id=${o.id}">Edit</a></td>
 				  <td><a href="visit?id=${o.id}">Add Visit</a></td>
               </tr>

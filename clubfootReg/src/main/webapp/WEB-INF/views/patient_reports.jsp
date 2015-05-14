@@ -44,10 +44,10 @@
 		else if("${filters.relatives}" == "unspecified")
 			document.getElementById("relUn").checked = true;
 		
-	    if("${filters.hospital_id}" > 0 )
-			document.getElementById("hospital_id").value = "${filters.hospital_id}";
+	    if("${filters.hospitalId}" > 0 )
+			document.getElementById("hospitalId").value = "${filters.hospitalId}";
 		else		
-			document.getElementById("hospital_id").value = "";
+			document.getElementById("hospitalId").value = "";
 	}
 </script>
 	<jsp:include page="navbar.jsp" />
@@ -80,8 +80,8 @@
 			<input type="radio" id = "relNo" name="relatives" value="no" path="relatives"> No
 			<input type="radio" id = "relUn" name="relatives" value="unspecified" path="relatives"> Unspecified <br>
 			
-			<label for="hospital_id">Hospital</label>
-			<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
+			<label for="hospitalId">Hospital</label>
+			<form:select class="form-control" path="hospitalList" id="hospitalId" name="hospitalId">
             	<form:option  id = "selected" value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
                 <form:options items="${hospitalList}" />
             </form:select><br>
@@ -125,9 +125,9 @@
 	        	<c:forEach var="o" items="${patients}">
 	            	<tr>
 	                	<td><a href="view_patient_info?id=${o.id}">${o.id}</a></td>
-				  		<td>${o.patient_firstName}</td>
-				  		<td>${o.patient_midName}</td>
-				  		<td>${o.patient_lastName}</td>
+				  		<td>${o.patientFirstName}</td>
+				  		<td>${o.patientMiddleName}</td>
+				  		<td>${o.patientLastName}</td>
 	             	</tr>
 	           	</c:forEach>
 	        </c:if>

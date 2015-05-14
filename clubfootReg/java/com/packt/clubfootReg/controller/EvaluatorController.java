@@ -70,8 +70,8 @@ public class EvaluatorController {
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value = "/edit_evaluator", method = RequestMethod.GET) // In this instance we receive the jsp view "edit_evaluator" and get command to view the page
 	public ModelAndView editEvaluatorForm(HttpServletRequest request) {
-	    int evaluator_id = Integer.parseInt(request.getParameter("id"));	// This parses an int from the request object's getParameter method for "id"
-	    Evaluator e = evaluatorRepo.getEvaluator(evaluator_id);	// Instantiation of Evaluator based on the integer id value of the evaluator
+	    int evaluatorId = Integer.parseInt(request.getParameter("id"));	// This parses an int from the request object's getParameter method for "id"
+	    Evaluator e = evaluatorRepo.getEvaluator(evaluatorId);	// Instantiation of Evaluator based on the integer id value of the evaluator
 	    ModelAndView model = new ModelAndView("edit_evaluator");	// Instantition of the Model and view built in method and passes edit_evaluator view to it
 	    model.addObject("evaluator", e); // Adds an object to the model called evaluator and passes the object e to it for the edit functionality
 	    return model; // Returns the model for the user to edit

@@ -55,25 +55,22 @@
   <script>
   window.onload = function(){
 	  $('fieldset.guardian_check').hide();
-	  $('fieldset.emergency_contact').hide();
-	  $('#deformity_history_num1').hide();
-	  $('#deformity_history_num').hide();
-	  $('#preg_complications_explained1').hide();
-	  $('#pregnancy_complications_explained').hide();
-	  $('#referral_hospital_name1').hide();
-	  $('#referral_hospital_name').hide();
-	  $('#referral_doc_name1').hide();
-	  $('#referral_doc_name').hide();
-	  $('#previous_treatments_num1').hide();
-	  $('#previous_treatments_num').hide();
-	  $('#diagnosis_prenatally_week1').hide();
-	  $('#diagnosis_prenatally_week').hide();
-	  $('#referral_other1').hide();
-	  $('#referral_other').hide();
+	  $('fieldset.emergencyContact').hide();
+	  $('#deformityHistoryNum1').hide();
+	  $('#deformityHistoryNum').hide();
+	  $('#pregnancyComplicationsExplained1').hide();
+	  $('#pregnancyComplicationsExplained').hide();
+	  $('#referralHospitalName1').hide();
+	  $('#referralHospitalName').hide();
+	  $('#referralDocName1').hide();
+	  $('#referralDocName').hide();
+	  $('#previousTreatmentsNum1').hide();
+	  $('#previousTreatmentsNum').hide();
+	  $('#referralOther1').hide();
+	  $('#referralOther').hide();
 	  $('div.prev_treat').hide();
-	  $('#prenatallyDiagYes').hide();
-	  $('#prenatallyDiagNO').hide();
-	  $('#prenatallyDiagUn').hide();
+	  $('div.diagPrenatally').hide()
+
 	  
 	  $("#hospital").val("${patient.hospital}");
 	  $("#evaluator").val("${patient.evaluator}");
@@ -118,13 +115,15 @@
 	  }
 	  
 	  /*
+	  trying to figure out how to display a date from database
+	  
 	  var year = "${patient.dob}".substring(0, 4);
 	  var month = "${patient.dob}".substring(5, 7);
 	  var day = "${patient.dob}".substring(8, 10);
 	  var date = month + '/' + day + '/' + year;
 	  $("#dob").val(date);*/
 	  
-	  switch ("${patient.guardian_relationship}") {
+	  switch ("${patient.guardianRelationship}") {
 	    case "mother":
 	    	document.getElementById("relMom").checked = true;
 	    	break;
@@ -157,61 +156,127 @@
 			break;
 	  }
 	  
-	  if ("${patient.second_guardian_last}") {
+	  if ("${patient.secondGuardianFirst}") {
 	    document.getElementById("secondGuardianYes").checked = true;
 		$('fieldset.guardian_check').show();
-		$('second_guardian_phone1').prop('required', true);
+		$('secondGuardianPhone1').prop('required', true);
+		switch ("${patient.secondGuardianRelationship}") {
+	    case "mother":
+	    	document.getElementById("relMom2").checked = true;
+	    	break;
+	    case "father":
+	    	document.getElementById("relDad2").checked = true;
+	    	break;
+		case "grandparent":
+			document.getElementById("relGparent2").checked = true;
+	    	break;
+		case "brother":
+			document.getElementById("relBro2").checked = true;
+			break;
+		case "sister":
+			document.getElementById("relSis2").checked = true;
+			break;
+		case "aunt":
+			document.getElementById("relAunt2").checked = true;
+			break;
+		case "uncle":
+			document.getElementById("relUncle2").checked = true;
+			break;
+		case "friend":
+			document.getElementById("relFriend2").checked = true;
+			break;
+		case "other":
+			document.getElementById("relOther2").checked = true;
+			break;
+		default:
+			document.getElementById("relUn2").checked = true;
+			break;
+	  }
 	  }
       else {
 		document.getElementById("secondGuardianNo").checked = true;
       }
       
-	  switch ("${patient.emergency_contact}") {
+	  switch ("${patient.emergencyContact}") {
 	  	case "primary":
 	  		document.getElementById("emergencyPrimary").checked = true;
 	  		break;
 	  	case "secondary":
 	  		document.getElementById("emergencySecondary").checked = true;
+	  		$('fieldset.guardian_check').show();
+	  		$('secondGuardianPhone1').prop('required', true);
 	  		break;
 	  	case "other":
 	  		document.getElementById("emergencyOther").checked = true;
-	  		$('fieldset.emergency_contact').show();
-	  		$('other_guardian_phone1').prop('required', true);
+	  		$('fieldset.emergencyContact').show();
+	  		$('otherGuardianPhone1').prop('required', true);
+	  		switch ("${patient.otherGuardianRelationship}") {
+		    case "mother":
+		    	document.getElementById("relMom3").checked = true;
+		    	break;
+		    case "father":
+		    	document.getElementById("relDad3").checked = true;
+		    	break;
+			case "grandparent":
+				document.getElementById("relGparent3").checked = true;
+		    	break;
+			case "brother":
+				document.getElementById("relBro3").checked = true;
+				break;
+			case "sister":
+				document.getElementById("relSis3").checked = true;
+				break;
+			case "aunt":
+				document.getElementById("relAunt3").checked = true;
+				break;
+			case "uncle":
+				document.getElementById("relUncle3").checked = true;
+				break;
+			case "friend":
+				document.getElementById("relFriend3").checked = true;
+				break;
+			case "other":
+				document.getElementById("relOther3").checked = true;
+				break;
+			default:
+				document.getElementById("relUn3").checked = true;
+				break;
+		  }
 	  		break;
 	  	default:
 	  		document.getElementById("emergencyUnspecified").checked = true;
 	  		break;
       }
-	  if ("${patient.deformity_history_num}" > 0) {
+	  if ("${patient.deformityHistoryNum}" > 0) {
 	    document.getElementById("defYes").checked = true;
-	    $('#deformity_history_num1').show();
-	    $('#deformity_history_num').show();
+	    $('#deformityHistoryNum1').show();
+	    $('#deformityHistoryNum').show();
 	  }
-	  else if ("${patient.deformity_history_num}" == 0) {
+	  else if ("${patient.deformityHistoryNum}" == 0) {
 	    document.getElementById("defNo").checked = true;
 	  }
 	  else {
 	    document.getElementById("defUn").checked = true;
 	  }
 
-	  if ("${patient.pregnancy_complications_explained}"){
+	  if ("${patient.pregnancyComplicationsExplained}"){
 		document.getElementById("pregCompYes").checked = true;
-		$('#preg_complications_explained1').show();
-	    $('#pregnancy_complications_explained').show();
+		$('#pregnancyComplicationsExplained1S').show();
+	    $('#pregnancyComplicationsExplained').show();
 	  }
   	  else {
     	document.getElementById("pregCompNo").checked = true;
   	  }
 	  
-	  if ("${patient.pregnancy_alc}" == "Yes")
+	  if ("${patient.pregnancyAlc}" == "Yes")
 		document.getElementById("pregAlcYes").checked = true;
-	  else if ("${patient.pregnancy_alc}" == "No")
+	  else if ("${patient.pregnancyAlc}" == "No")
 	   	document.getElementById("pregAlcNo").checked = true;
 	  else
 		document.getElementById("pregAlcUn").checked = true;
-	  if ("${patient.pregnancy_smoke}" == "Yes")
+	  if ("${patient.pregnancySmoke}" == "Yes")
 		document.getElementById("pregSmokeYes").checked = true;
-	  else if ("${patient.pregnancy_smoke}" == "No")
+	  else if ("${patient.pregnancySmoke}" == "No")
 	   	document.getElementById("pregSmokeNo").checked = true;
 	  else
 		document.getElementById("pregSmokeUn").checked = true;
@@ -223,11 +288,11 @@
 	  else
 		document.getElementById("compUn").checked = true;
 		
-	  if ("${patient.place_birth}" == "0")
+	  if ("${patient.placeBirth}" == "0")
 		document.getElementById("placeBirthHosp").checked = true;
-	  else if ("${patient.place_birth}" == "1")
+	  else if ("${patient.placeBirth}" == "1")
 	   	document.getElementById("placeBirthClinic").checked = true;
-	  else if ("${patient.place_birth}" == "2")
+	  else if ("${patient.placeBirth}" == "2")
 		document.getElementById("placeBirthHome").checked = true;
 	  else
 		document.getElementById("placeBirthUn").checked = true;
@@ -235,10 +300,10 @@
 	  switch ("${patient.referral}") {
 	  	case "Hospital/Clinic":
 	  		document.getElementById("refHosp").checked = true;
-	  		$('#referral_hospital_name1').show();
-	  		$('#referral_hospital_name').show();
-	 		$('#referral_doc_name1').show();
-	 	 	$('#referral_doc_name').show();
+	  		$('#referralHospitalName1').show();
+	  		$('#referralHospitalName').show();
+	 		$('#referralDocName1').show();
+	 	 	$('#referralDocName').show();
 			break;
 	  	case "Midwife":
 	  		document.getElementById("refMidwife").checked = true;
@@ -251,9 +316,9 @@
 			break;
 	  	case "Other":
 	  		document.getElementById("refOther").checked = true;
-	  		$('#referral_other1').hide();
-	  		$('#referral_other').hide();
-	  		$('#referral_other').prop('required',true);
+	  		$('#referralOther1').hide();
+	  		$('#referralOther').hide();
+	  		$('#referralOther').prop('required',true);
 			break;
 		default:
 			document.getElementById("refUn").checked = true;
@@ -276,125 +341,118 @@
 	  else if ("${patient.diagnosis}" == "Other")
 	    document.getElementById("diagOther").checked = true;
 	  
-	  if ("${patient.deformity_at_birth}" == "Yes")
+	  if ("${patient.deformityAtBirth}" == "Yes")
 	    document.getElementById("deformityYes").checked = true;
-	  else if ("${patient.deformity_at_birth}" == "No")
+	  else if ("${patient.deformityAtBirth}" == "No")
 		document.getElementById("deformityNo").checked = true;
 	  else
 		document.getElementById("deformityUn").checked = true;
 	  
-	  if ("${patient.previous_treatments_num}" > 0){
+	  if ("${patient.previousTreatmentsNum}" > 0){
 	    document.getElementById("prevYes").checked = true;
 		$('div.prev_treat').hide();
 	  }
-	  else if ("${patient.previous_treatments_num}" == 0){
+	  else if ("${patient.previousTreatmentsNum}" == 0){
 		document.getElementById("prevNo").checked = true;
 	  }
 	  else{
 		document.getElementById("prevUn").checked = true;
 	  }
 	  
-	  if ("${patient.diagnosis_prenatally_week}"){
+	  if ("${patient.diagnosisPrenatallyWeek}"){
 	    document.getElementById("diagYes").checked = true;
-		 $('#diagnosis_prenatally_week1').show();
-	     $('#diagnosis_prenatally_week').show();
-	     $('#prenatallyDiagYes').show();
-	     $('#prenatallyDiagNO').show();
-	     $('#prenatallyDiagUn').show();
+
+	     $('div.diagPrenatally').show();
 	  }
 	  else {
 		document.getElementById("diagNo").checked = true;
 	  }
 	  
-	  if ("${patient.prenatally_diag_confirmation}" == "Yes")
+	  if ("${patient.prenatallyDiagConfirmation}" == "Yes")
 	    document.getElementById("prenatallyDiagYes").checked = true;
-	  else if ("${patient.prenatally_diag_confirmation}" == "No")
+	  else if ("${patient.prenatallyDiagConfirmation}" == "No")
 		document.getElementById("prenatallyDiagNo").checked = true;
 	  else
 		document.getElementById("prenatallyDiagUn").checked = true;
   }
   function guardianHandlerTrue(){
 	  $('fieldset.guardian_check').show();
-	  $('second_guardian_phone1').prop('required', true);
+	  $('secondGuardianPhone1').prop('required', true);
   }
   function guardianHandlerFalse(){
 	  $('fieldset.guardian_check').hide();
-	  $('second_guardian_phone1').prop('required', false);
+	  $('secondGuardianPhone1').prop('required', false);
   }
   function guardianEmergencyTrue(){
-	  $('fieldset.emergency_contact').show();
-	  $('other_guardian_phone1').prop('required', true);
+	  $('fieldset.emergencyContact').show();
+	  $('otherGuardianPhone1').prop('required', true);
   }
   function guardianEmergencyFalse(){
-	  $('fieldset.emergency_contact').hide();
-	  $('other_guardian_phone1').prop('required', false);
+	  $('fieldset.emergencyContact').hide();
+	  $('otherGuardianPhone1').prop('required', false);
   }
   function guardianDeformityTrue(){
-	  $('#deformity_history_num1').show();
-	  $('#deformity_history_num').show();
+	  $('#deformityHistoryNum1').show();
+	  $('#deformityHistoryNum').show();
   }
   function guardianDeformityFalse(){
-	  $('#deformity_history_num1').hide();
-	  $('#deformity_history_num').hide();
+	  $('#deformityHistoryNum1').hide();
+	  $('#deformityHistoryNum').hide();
   }
   function pregCompFalse(){
-	  $('#preg_complications_explained1').hide();
-	  $('#pregnancy_complications_explained').hide();
+	  $('#pregnancyComplicationsExplained1').hide();
+	  $('#pregnancyComplicationsExplained').hide();
   }
   function pregCompTrue(){
-	  $('#preg_complications_explained1').show();
-	  $('#pregnancy_complications_explained').show();
+	  $('#pregnancyComplicationsExplained1').show();
+	  $('#pregnancyComplicationsExplained').show();
   }
   function referralFnTrue(){
-	  $('#referral_hospital_name1').show();
-	  $('#referral_hospital_name').show();
-	  $('#referral_doc_name1').show();
-	  $('#referral_doc_name').show();
-	  $('#referral_other1').hide();
-	  $('#referral_other').hide();
-	  $('#referral_other').prop('required',false);
+	  $('#referralHospitalName1').show();
+	  $('#referralHospitalName').show();
+	  $('#referralDocName1').show();
+	  $('#referralDocName').show();
+	  $('#referralOther1').hide();
+	  $('#referralOther').hide();
+	  $('#referralOther').prop('required',false);
   }
   function referralFnFalse(){
-	  $('#referral_hospital_name1').hide();
-	  $('#referral_hospital_name').hide();
-	  $('#referral_doc_name1').hide();
-	  $('#referral_doc_name').hide();
-	  $('#referral_other1').hide();
-	  $('#referral_other').hide();
-	  $('#referral_other').prop('required',false);
+	  $('#referralHospitalName1').hide();
+	  $('#referralHospitalName').hide();
+	  $('#referralDocName1').hide();
+	  $('#referralDocName').hide();
+	  $('#referralOther1').hide();
+	  $('#referralOther').hide();
+	  $('#referralOther').prop('required',false);
   }
   function referralOtherTrue(){
-	  $('#referral_other1').show();
-	  $('#referral_other').show();
-	  $('#referral_other').prop('required',true);
-	  $('#referral_hospital_name1').hide();
-	  $('#referral_hospital_name').hide();
-	  $('#referral_doc_name1').hide();
-	  $('#referral_doc_name').hide();
+	  $('#referralOther1').show();
+	  $('#referralOther').show();
+	  $('#referralOther').prop('required',true);
+	  $('#referralHospitalName1').hide();
+	  $('#referralHospitalName').hide();
+	  $('#referralDocName1').hide();
+	  $('#referralDocName').hide();
   }
   function prevTreatmentTrue(){
-	  $('#previous_treatments_num1').show();
-	  $('#previous_treatments_num').show();
+	  $('#previousTreatmentsNum1').show();
+	  $('#previousTreatmentsNum').show();
 	  $('div.prev_treat').show();
   }
   function prevTreatmentFalse(){
-	  $('#previous_treatments_num1').hide();
-	  $('#previous_treatments_num').hide();
+	  $('#previousTreatmentsNum1').hide();
+	  $('#previousTreatmentsNum').hide();
 	  $('div.prev_treat').hide();
   }
   function diagPrenatTrue(){
-	  $('#diagnosis_prenatally_week1').show();
-	  $('#diagnosis_prenatally_week').show();
-	  $('#prenatallyDiagYes').show();
-	  $('#prenatallyDiagNO').show();
-	  $('#prenatallyDiagUn').show();
+
+	     $('div.diagPrenatally').show();
+
   }
   function diagPrenatFalse(){
-	  $('#diagnosis_prenatally_week1').hide();
-	  $('#diagnosis_prenatally_week').hide();
-	  $('#prenatallyDiagYes').hide();
-	  $('#prenatallyDiagNO').hide();
-	  $('#prenatallyDiagUn').hide();
+
+	     $('div.diagPrenatally').hide();
+
   }
   </script>
   
@@ -431,14 +489,14 @@
 		<legend>General Information</legend>
 			<div class="col-md-12">
 			<div class="form-group">
-			<label for="patient_lastName"><em>*</em>Last name/Surname: </label>
-			<input type="name" name="patient_lastName" class="form-control" path="patient_lastName" value="${patient.patient_lastName}" >
+			<label for="patientLastName"><em>*</em>Last name/Surname: </label>
+			<input type="name" name="patientLastName" class="form-control" path="patientLastName" value="${patient.patientLastName}" >
 
-			<label for="patient_firstName"><em>  *</em>First name: </label>
-			<input type="name" name="patient_firstName" class="form-control" path="patient_firstName" value = "${patient.patient_firstName}" >
+			<label for="patientFirstName"><em>  *</em>First name: </label>
+			<input type="name" name="patientFirstName" class="form-control" path="patientFirstName" value = "${patient.patientFirstName}" >
 
-			<label for="patient_midName">   Middle name: </label>
-			<input type="name" name="patient_midName" class="form-control" path="patient_midName" value = "${patient.patient_midName}"> <br>
+			<label for="patientMiddleName">   Middle name: </label>
+			<input type="name" name="patientMiddleName" class="form-control" path="patientMiddleName" value = "${patient.patientMiddleName}"> <br>
 
 			<label for="sex"><em>*</em>Sex: </label>
 			<input id="sexM" type="radio" name="sex" value="male" path="sex" > Male
@@ -488,31 +546,31 @@
 		<legend>Primary Parent/Guardian</legend>
 			<div class="col-md-12">
 			<div class="form-group">
-			<label for="guardian_lastName">Last name/Surname: </label>
-			<input type="name" name="guardian_lastName" class="form-control" path="guardian_lastName" value = "${patient.guardian_lastName}">
+			<label for="guardianLastName">Last name/Surname: </label>
+			<input type="name" name="guardianLastName" class="form-control" path="guardianLastName" value = "${patient.guardianLastName}">
 
-			<label for="guardian_firstName">  First name: </label>
-			<input type="name" name="guardian_firstName" class="form-control" path="guardian_firstName" value = "${patient.guardian_firstName}">
+			<label for="guardianFirstName">  First name: </label>
+			<input type="name" name="guardianFirstName" class="form-control" path="guardianFirstName" value = "${patient.guardianFirstName}">
 
-			<label for="guardian_midName">   Middle name: </label>
-			<input type="name" name="guardian_midName" class="form-control" path="guardian_midName" value = "${patient.guardian_midName}"> <br>
+			<label for="guardianMiddleName">   Middle name: </label>
+			<input type="name" name="guardianMiddleName" class="form-control" path="guardianMiddleName" value = "${patient.guardianMiddleName}"> <br>
 
-			<label for="guardian_relationship">Relationship to patient: </label>
-			<input id="relMom" type="radio" name="guardian_relationship" value="mother" path="guardian_relationship"> Mother
-			<input id="relDad" type="radio" name="guardian_relationship" value="father" path="guardian_relationship"> Father
-			<input id="relGparent" type="radio" name="guardian_relationship" value="grandparent" path="guardian_relationship"> Grandparent
-			<input id="relBro" type="radio" name="guardian_relationship" value="brother" path="guardian_relationship"> Brother
-			<input id="relSis" type="radio" name="guardian_relationship" value="sister" path="guardian_relationship"> Sister
-			<input id="relAunt" type="radio" name="guardian_relationship" value="aunt" path="guardian_relationship"> Aunt
-			<input id="relUncle" type="radio" name="guardian_relationship" value="uncle" path="guardian_relationship"> Uncle 
-			<input id="relFriend" type="radio" name="guardian_relationship" value="friend" path="guardian_relationship"> Friend 
-			<input id="relOther" type="radio" name="guardian_relationship" value="other" path="guardian_relationship"> Other
-			<input id="relUn" type="radio" name="guardian_relationship" value="unspecified" path="guardian_relationship"> Unspecified <br>
+			<label for="guardianRelationship">Relationship to patient: </label>
+			<input id="relMom" type="radio" name="guardianRelationship" value="mother" path="guardianRelationship"> Mother
+			<input id="relDad" type="radio" name="guardianRelationship" value="father" path="guardianRelationship"> Father
+			<input id="relGparent" type="radio" name="guardianRelationship" value="grandparent" path="guardianRelationship"> Grandparent
+			<input id="relBro" type="radio" name="guardianRelationship" value="brother" path="guardianRelationship"> Brother
+			<input id="relSis" type="radio" name="guardianRelationship" value="sister" path="guardianRelationship"> Sister
+			<input id="relAunt" type="radio" name="guardianRelationship" value="aunt" path="guardianRelationship"> Aunt
+			<input id="relUncle" type="radio" name="guardianRelationship" value="uncle" path="guardianRelationship"> Uncle 
+			<input id="relFriend" type="radio" name="guardianRelationship" value="friend" path="guardianRelationship"> Friend 
+			<input id="relOther" type="radio" name="guardianRelationship" value="other" path="guardianRelationship"> Other
+			<input id="relUn" type="radio" name="guardianRelationship" value="unspecified" path="guardianRelationship"> Unspecified <br>
 
-			<label for="guardian_phone1"><em>*</em>Phone number 1: </label>
-			<input type="telephone" name="guardian_phone1" class="form-control"  path="guardian_phone1" placeholder="xxx-xxx-xxxx" value = "${patient.guardian_phone1}" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number" >
-			<label for="guardian_phone2">Phone number 2: </label>
-			<input type="telephone" name="guardian_phone2" class="form-control"  path="guardian_phone2" value = "${patient.guardian_phone2}"placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number"> <br>
+			<label for="guardianPhone1"><em>*</em>Phone number 1: </label>
+			<input type="telephone" name="guardianPhone1" class="form-control"  path="guardianPhone1" placeholder="xxx-xxx-xxxx" value = "${patient.guardianPhone1}" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number" >
+			<label for="guardianPhone2">Phone number 2: </label>
+			<input type="telephone" name="guardianPhone2" class="form-control"  path="guardianPhone2" value = "${patient.guardianPhone2}"placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number"> <br>
 			
 			<label for="guardian_check">Secondary parent/guardian: </label>
 			<input id="secondGuardianYes" type="radio" name="guardian_check" value="Yes" path="guardian_check" onClick="guardianHandlerTrue()"> Yes
@@ -522,66 +580,66 @@
 			<fieldset class="guardian_check">
 			<legend>Secondary Parent/Guardian</legend>
 				<div class="form-group">
-				<label for="second_guardian_last">Last name/Surname: </label>
-				<input type="name" name="second_guardian_last" class="form-control" path="second_guardian_last" value = "${patient.second_guardian_last}">
-				<label for="second_guardian_first">First name: </label>
-				<input type="name" name="second_guardian_first" class="form-control" path="second_guardian_first" value = "${patient.second_guardian_first}">
-				<label for="second_guardian_mid">Middle name: </label>
-				<input type="name" name="second_guardian_mid" class="form-control" path="second_guardian_mid" value = "${patient.second_guardian_mid}"> <br>
+				<label for="secondGuardianlast">Last name/Surname: </label>
+				<input type="name" name="secondGuardianlast" class="form-control" path="secondGuardianlast" value = "${patient.secondGuardianLast}">
+				<label for="secondGuardianFirst">First name: </label>
+				<input type="name" name="secondGuardianFirst" class="form-control" path="secondGuardianFirst" value = "${patient.secondGuardianFirst}">
+				<label for="secondGuardianMiddle">Middle name: </label>
+				<input type="name" name="secondGuardianMiddle" class="form-control" path="secondGuardianMiddle" value = "${patient.secondGuardianMiddle}"> <br>
 				
-				<label for="second_guardian_relationship">Relationship to patient: </label>
-				<input id="relMom2" type="radio" name="second_guardian_relationship" value="mother" path="second_guardian_relationship"> Mother
-				<input id="relDad2" type="radio" name="second_guardian_relationship" value="father" path="second_guardian_relationship"> Father
-				<input id="relGparent2" type="radio" name="second_guardian_relationship" value="grandparent" path="second_guardian_relationship"> Grandparent
-				<input id="relBro2" type="radio" name="second_guardian_relationship" value="brother" path="second_guardian_relationship"> Brother
-				<input id="relSis2" type="radio" name="second_guardian_relationship" value="sister" path="second_guardian_relationship"> Sister
-				<input id="relAunt2" type="radio" name="second_guardian_relationship" value="aunt" path="second_guardian_relationship"> Aunt
-				<input id="relUncle2" type="radio" name="second_guardian_relationship" value="uncle" path="second_guardian_relationship"> Uncle 
-				<input id="relFriend2" type="radio" name="second_guardian_relationship" value="friend" path="second_guardian_relationship"> Friend 
-				<input id="relOther2" type="radio" name="second_guardian_relationship" value="other" path="second_guardian_relationship"> Other
-				<input id="relUn2" type="radio" name="second_guardian_relationship" value="unspecified1" path="second_guardian_relationship"> Unspecified <br>
+				<label for="secondGuardianRelationship">Relationship to patient: </label>
+				<input id="relMom2" type="radio" name="secondGuardianRelationship" value="mother" path="secondGuardianRelationship"> Mother
+				<input id="relDad2" type="radio" name="secondGuardianRelationship" value="father" path="secondGuardianRelationship"> Father
+				<input id="relGparent2" type="radio" name="secondGuardianRelationship" value="grandparent" path="secondGuardianRelationship"> Grandparent
+				<input id="relBro2" type="radio" name="secondGuardianRelationship" value="brother" path="secondGuardianRelationship"> Brother
+				<input id="relSis2" type="radio" name="secondGuardianRelationship" value="sister" path="secondGuardianRelationship"> Sister
+				<input id="relAunt2" type="radio" name="secondGuardianRelationship" value="aunt" path="secondGuardianRelationship"> Aunt
+				<input id="relUncle2" type="radio" name="secondGuardianRelationship" value="uncle" path="secondGuardianRelationship"> Uncle 
+				<input id="relFriend2" type="radio" name="secondGuardianRelationship" value="friend" path="secondGuardianRelationship"> Friend 
+				<input id="relOther2" type="radio" name="secondGuardianRelationship" value="other" path="secondGuardianRelationship"> Other
+				<input id="relUn2" type="radio" name="secondGuardianRelationship" value="unspecified1" path="secondGuardianRelationship"> Unspecified <br>
 			
-				<label for="second_guardian_phone1"><em>*</em>Phone number 1: </label>
-				<input type="telephone" name="second_guardian_phone1" class="form-control" path="second_guardian_phone1" value = "${patient.second_guardian_phone1}" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number" >
-				<label for="second_guardian_phone2">Phone number 2: </label>
-				<input type="telephone" name="second_guardian_phone2" class="form-control" path="second_guardian_phone2"  value = "${patient.second_guardian_phone2}" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
+				<label for="secondGuardianPhone1"><em>*</em>Phone number 1: </label>
+				<input type="telephone" name="secondGuardianPhone1" class="form-control" path="secondGuardianPhone1" value = "${patient.secondGuardianPhone1}" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number" >
+				<label for="secondGuardianPhone2">Phone number 2: </label>
+				<input type="telephone" name="secondGuardianPhone2" class="form-control" path="secondGuardianPhone2"  value = "${patient.secondGuardianPhone2}" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
 				</div>
 			</fieldset>
 			</div>
 			
-			<label for="emergency_contact">Emergency Contact: </label>
-			<input id="emergencyPrimary" type="radio" name="emergency_contact" value="Primary" path="emergency_contact" onClick="guardianEmergencyFalse()"> Primary
-			<input id="emergencySecondary" type="radio" name="emergency_contact" value="Secondary" path="emergency_contact" onClick="guardianEmergencyFalse()"> Seconday
-			<input id="emergencyOther" type="radio" name="emergency_contact" value="Other" path="emergency_contact" onClick="guardianEmergencyTrue()"> Other
-			<input id="emergencyUnspecified" type="radio" name="emergency_contact" value="Unspecified" path="emergency_contact" onClick="guardianEmergencyFalse()"> Unspecified
+			<label for="emergencyContact">Emergency Contact: </label>
+			<input id="emergencyPrimary" type="radio" name="emergencyContact" value="Primary" path="emergencyContact" onClick="guardianEmergencyFalse()"> Primary
+			<input id="emergencySecondary" type="radio" name="emergencyContact" value="Secondary" path="emergencyContact" onClick="guardianEmergencyFalse()"> Seconday
+			<input id="emergencyOther" type="radio" name="emergencyContact" value="Other" path="emergencyContact" onClick="guardianEmergencyTrue()"> Other
+			<input id="emergencyUnspecified" type="radio" name="emergencyContact" value="Unspecified" path="emergencyContact" onClick="guardianEmergencyFalse()"> Unspecified
 			
 			<div class="row">
-			<fieldset class="emergency_contact">
+			<fieldset class="emergencyContact">
 			<legend>Other Emergency Contact</legend>
 				<div class="form-group">
-				<label for="other_guardian_last">Last name/Surname: </label>
-				<input type="name" name="other_guardian_last" class="form-control" path="other_guardian_last" value = "${patient.other_guardian_last}">
-				<label for="other_guardian_first">First name: </label>
-				<input type="name" name="other_guardian_first" class="form-control" path="other_guardian_first" value = "${patient.other_guardian_first}">
-				<label for="other_guardian_mid">Middle name: </label>
-				<input type="name" name="other_guardian_mid" class="form-control" path="other_guardian_mid" value = "${patient.other_guardian_mid}"> <br>
+				<label for="otherGuardianLast">Last name/Surname: </label>
+				<input type="name" name="otherGuardianLast" class="form-control" path="otherGuardianLast" value = "${patient.otherGuardianLast}">
+				<label for="otherGuardianFirst">First name: </label>
+				<input type="name" name="otherGuardianFirst" class="form-control" path="otherGuardianFirst" value = "${patient.otherGuardianFirst}">
+				<label for="otherGuardianMiddle">Middle name: </label>
+				<input type="name" name="otherGuardianMiddle" class="form-control" path="otherGuardianMiddle" value = "${patient.otherGuardianMiddle}"> <br>
 				
-				<label for="other_guardian_relationship">Relationship to parent: </label>
-				<input id="relMom3" type="radio" name="other_guardian_relationship" value="mother" path="other_guardian_relationship"> Mother
-				<input id="relDad3" type="radio" name="other_guardian_relationship" value="father" path="other_guardian_relationship"> Father
-				<input id="relGparent3" type="radio" name="other_guardian_relationship" value="grandparent" path="other_guardian_relationship"> Grandparent
-				<input id="relBro3" type="radio" name="other_guardian_relationship" value="brother" path="other_guardian_relationship"> Brother
-				<input id="relSis3" type="radio" name="other_guardian_relationship" value="sister" path="other_guardian_relationship"> Sister
-				<input id="relAunt3" type="radio" name="other_guardian_relationship" value="aunt" path="other_guardian_relationship"> Aunt
-				<input id="relUncle3" type="radio" name="other_guardian_relationship" value="uncle" path="other_guardian_relationship"> Uncle 
-				<input id="relFriend3" type="radio" name="other_guardian_relationship" value="friend" path="other_guardian_relationship"> Friend 
-				<input id="relOther3" type="radio" name="other_guardian_relationship" value="other" path="other_guardian_relationship" > Other
-				<input id="relUn3" type="radio" name="other_guardian_relationship" value="unspecified1" path="other_guardian_relationship"> Unspecified <br>
+				<label for="otherGuardianRelationship">Relationship to parent: </label>
+				<input id="relMom3" type="radio" name="otherGuardianRelationship" value="mother" path="otherGuardianRelationship"> Mother
+				<input id="relDad3" type="radio" name="otherGuardianRelationship" value="father" path="otherGuardianRelationship"> Father
+				<input id="relGparent3" type="radio" name="otherGuardianRelationship" value="grandparent" path="otherGuardianRelationship"> Grandparent
+				<input id="relBro3" type="radio" name="otherGuardianRelationship" value="brother" path="otherGuardianRelationship"> Brother
+				<input id="relSis3" type="radio" name="otherGuardianRelationship" value="sister" path="otherGuardianRelationship"> Sister
+				<input id="relAunt3" type="radio" name="otherGuardianRelationship" value="aunt" path="otherGuardianRelationship"> Aunt
+				<input id="relUncle3" type="radio" name="otherGuardianRelationship" value="uncle" path="otherGuardianRelationship"> Uncle 
+				<input id="relFriend3" type="radio" name="otherGuardianRelationship" value="friend" path="otherGuardianRelationship"> Friend 
+				<input id="relOther3" type="radio" name="otherGuardianRelationship" value="other" path="otherGuardianRelationship" > Other
+				<input id="relUn3" type="radio" name="otherGuardianRelationship" value="unspecified1" path="otherGuardianRelationship"> Unspecified <br>
 			
-				<label for="other_guardian_phone1"><em>*</em>Phone number 1: </label>
-				<input type="telephone" name="other_guardian_phone1" class="form-control" path="other_guardian_phone1" value = "${patient.other_guardian_phone1}" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number" >
-				<label for="other_guardian_phone2">Phone number 2: </label>
-				<input type="telephone" name="other_guardian_phone2" class="form-control" path="other_guardian_phone2" value = "${patient.other_guardian_phone2}" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
+				<label for="otherGuardianPhone1"><em>*</em>Phone number 1: </label>
+				<input type="telephone" name="otherGuardianPhone1" class="form-control" path="otherGuardianPhone1" value = "${patient.otherGuardianPhone1}" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number" >
+				<label for="otherGuardianPhone2">Phone number 2: </label>
+				<input type="telephone" name="otherGuardianPhone2" class="form-control" path="otherGuardianPhone2" value = "${patient.otherGuardianPhone2}" placeholder="xxx-xxx-xxxx" pattern="(\+?\d[- .]*){7,13}" title="international, national or local phone number">
 				</div>
 			</fieldset>
 			</div>
@@ -593,13 +651,13 @@
 		<legend>Family History</legend>
 			<div class="col-md-12">
 			<div class="form-group">
-			<label for="deformity_history">Any relatives with the clubfoot deformity: </label>
-			<input id="defYes" type="radio" name="deformity_history" value="Yes" path="deformity_history" onClick="guardianDeformityTrue()"> Yes
-			<input id="defNo" type="radio" name="deformity_history" value="No" path="deformity_history" onClick="guardianDeformityFalse()"> No
-			<input id="defUn" type="radio" name="deformity_history" value="Unspecified" path="deformity_history" onClick="guardianDeformityFalse()"> Unspecified <br>
+			<label for="deformityHistory">Any relatives with the clubfoot deformity: </label>
+			<input id="defYes" type="radio" name="deformityHistory" value="Yes" path="deformityHistory" onClick="guardianDeformityTrue()"> Yes
+			<input id="defNo" type="radio" name="deformityHistory" value="No" path="deformityHistory" onClick="guardianDeformityFalse()"> No
+			<input id="defUn" type="radio" name="deformityHistory" value="Unspecified" path="deformityHistory" onClick="guardianDeformityFalse()"> Unspecified <br>
 			
-			<label for="deformity_history_num" id="deformity_history_num1">How many: </label>
-			<input type="text" name="deformity_history_num" class="form-control" path="deformity_history_num" id="deformity_history_num" value = "${patient.deformity_history_num}"> <br>
+			<label for="deformityHistoryNum" id="deformityHistoryNum1">How many: </label>
+			<input type="text" name="deformityHistoryNum" class="form-control" path="deformityHistoryNum" id="deformityHistoryNum" value = "${patient.deformityHistoryNum}"> <br>
 			
 			<label for="pregnancy">Length of pregnancy (in weeks): </label>
 			<input type="text" name="pregnancy" class="form-control" path="pregnancy" value = "${patient.pregnancy}"> <br>
@@ -609,29 +667,29 @@
 			<input id="pregCompNo" type="radio" name="pregnancy_complications" value="No" path="pregnancy_complications" onClick="pregCompFalse()"> No
 			<input id="pregCompUn" type="radio" name="pregnancy_complications" value="Unspecified" path="pregnancy_complications" onClick="pregCompFalse()"> Unspecified <br>
 			
-			<label for="preg_complications_explained1" id="preg_complications_explained1">What were the complications: </label>
-			<input type="text" name="pregnancy_complications_explained" class="form-control" path="pregnancy_complications_explained" id="pregnancy_complications_explained" value = "${patient.pregnancy_complications_explained}"> <br>
+			<label for="pregnancyComplicationsExplained" id="pregnancyComplicationsExplained1">What were the complications: </label>
+			<input type="text" name="pregnancyComplicationsExplained" class="form-control" path="pregnancyComplicationsExplained" id="pregnancyComplicationsExplained" value = "${patient.pregnancyComplicationsExplained}"> <br>
 			
-			<label for="pregnancy_alc">Did the mother consume alcohol during pregnancy: </label>
-			<input id="pregAlcYes" type="radio" name="pregnancy_alc" value="Yes" path="pregnancy_alc"> Yes
-			<input id="pregAlcNo" type="radio" name="pregnancy_alc" value="No" path="pregnancy_alc"> No
-			<input id="pregAlcUn" type="radio" name="pregnancy_alc" value="Unspecified" path="pregnancy_alc"> Unspecified <br>
+			<label for="pregnancyAlc">Did the mother consume alcohol during pregnancy: </label>
+			<input id="pregAlcYes" type="radio" name="pregnancyAlc" value="Yes" path="pregnancyAlc"> Yes
+			<input id="pregAlcNo" type="radio" name="pregnancyAlc" value="No" path="pregnancyAlc"> No
+			<input id="pregAlcUn" type="radio" name="pregnancyAlc" value="Unspecified" path="pregnancyAlc"> Unspecified <br>
 			
-			<label for="pregnancy_smoke">Did the mother smoke during pregnancy: </label>
-			<input id="pregSmokeYes" type="radio" name="pregnancy_smoke" value="Yes" path="pregnancy_smoke"> Yes
-			<input id="pregSmokeNo" type="radio" name="pregnancy_smoke" value="No" path="pregnancy_smoke"> No
-			<input id="pregSmokeUn" type="radio" name="pregnancy_smoke" value="Unspecified" path="pregnancy_smoke"> Unspecified <br>
+			<label for="pregnancySmoke">Did the mother smoke during pregnancy: </label>
+			<input id="pregSmokeYes" type="radio" name="pregnancySmoke" value="Yes" path="pregnancySmoke"> Yes
+			<input id="pregSmokeNo" type="radio" name="pregnancySmoke" value="No" path="pregnancySmoke"> No
+			<input id="pregSmokeUn" type="radio" name="pregnancySmoke" value="Unspecified" path="pregnancySmoke"> Unspecified <br>
 			
 			<label for="complications">Any complications during birth: </label>
 			<input id="compYes" type="radio" name="complications" value="Yes" path="complications"> Yes
 			<input id="compNo" type="radio" name="complications" value="No" path="complications"> No
 			<input id="compUn" type="radio" name="complications" value="Unspecified" path="complications"> Unspecified <br> 
 			
-			<label for="place_birth">Place of birth: </label>
-			<input id="placeBirthHosp" type="radio" name="place_birth" value="0" path="place_birth"> Hospital
-			<input id="placeBirthClinic" type="radio" name="place_birth" value="1" path="place_birth"> Clinic
-			<input id="placeBirthHome" type="radio" name="place_birth" value="2" path="place_birth"> Home
-			<input id="placeBirthUn" type="radio" name="place_birth" value="3" path="place_birth"> Unspecified
+			<label for="placeBirth">Place of birth: </label>
+			<input id="placeBirthHosp" type="radio" name="placeBirth" value="0" path="placeBirth"> Hospital
+			<input id="placeBirthClinic" type="radio" name="placeBirth" value="1" path="placeBirth"> Clinic
+			<input id="placeBirthHome" type="radio" name="placeBirth" value="2" path="placeBirth"> Home
+			<input id="placeBirthUn" type="radio" name="placeBirth" value="3" path="placeBirth"> Unspecified
 			</div>
 			</div>
 		</fieldset>
@@ -649,12 +707,12 @@
 			<input id="refOther" type="radio" name="referral" value="Other" path="referral" onClick="referralOtherTrue()"> Other
 			<input id="refUn" type="radio" name="referral" value="Unspecified" path="referral" onClick="referralFnFalse()"> Unspecified <br>
 		
-			<label for="referral_doc_name1" id="referral_doc_name1">Doctor name: </label>
-			<input type="text" name="referral_doc_name" path="referral_doc_name" id="referral_doc_name" value = "${patient.referral_doc_name}">
-			<label for="referral_hospital_name" id="referral_hospital_name1">Hospital/clinic name: </label>
-			<input type="text" name="referral_hospital_name" path="referral_hospital_name" id="referral_hospital_name" value = "${patient.referral_hospital_name}">
-			<label for="referral_other" id="referral_other1"><em>*</em>Please specify: </label>
-			<input type="text" name="referral_other" path="referral_other" id="referral_other" value = "${patient.referral_other}" >
+			<label for="referralDocName1" id="referralDocName1">Doctor name: </label>
+			<input type="text" name="referralDocName" path="referralDocName" id="referralDocName" value = "${patient.referralDocName}">
+			<label for="referralHospitalName" id="referralHospitalName1">Hospital/clinic name: </label>
+			<input type="text" name="referralHospitalName" path="referralHospitalName" id="referralHospitalName" value = "${patient.referralHospitalName}">
+			<label for="referralOther" id="referralOther1"><em>*</em>Please specify: </label>
+			<input type="text" name="referralOther" path="referralOther" id="referralOther" value = "${patient.referralOther}" >
 
 			</div>
 			</div>
@@ -672,8 +730,8 @@
                 <form:options items="${evaluatorList}" />
             </form:select>
 			
-			<label for="evaluation_date"><em>*</em>Evaluation date (dd/mm/yyyy): </label>
-			<input type="date" name="evaluation_date" class="form-control" path="evaluation_date" value = "${patient.evaluation_date}" > <br>
+			<label for="evaluationDate"><em>*</em>Evaluation date (dd/mm/yyyy): </label>
+			<input type="date" name="evaluationDate" class="form-control" path="evaluationDate" value = "${patient.evaluationDate}" > <br>
 			
 			<label for="feet"><em>*</em>Feet affected: </label>
 			<input id="feetLeft" type="radio" name="feet" value="Left" path="feet" > Left
@@ -686,18 +744,18 @@
 			<input id="diagNeuro" type="radio" name="diagnosis" value="Neuropathic Clubfoot" path="diagnosis" > Neuropathic Clubfoot
 			<input id="diagOther" type="radio" name="diagnosis" value="Other" path="diagnosis" > Other <br>
 			
-			<label for="deformity_at_birth">Deformity present at birth: </label>
-			<input id="deformityYes" type="radio" name="deformity_at_birth" value="Yes" path="deformity_at_birth"> Yes
-			<input id="deformityNo" type="radio" name="deformity_at_birth" value="No" path="deformity_at_birth"> No
-			<input id="deformityUn" type="radio" name="deformity_at_birth" value="Unspecified" path="deformity_at_birth"> Unspecified <br>
+			<label for="deformityAtBirth">Deformity present at birth: </label>
+			<input id="deformityYes" type="radio" name="deformityAtBirth" value="Yes" path="deformityAtBirth"> Yes
+			<input id="deformityNo" type="radio" name="deformityAtBirth" value="No" path="deformityAtBirth"> No
+			<input id="deformityUn" type="radio" name="deformityAtBirth" value="Unspecified" path="deformityAtBirth"> Unspecified <br>
 			
-			<label for="previous_treatments">Any previous treatments: </label>
-			<input id="prevYes" type="radio" name="previous_treatments" value="Yes" path="previous_treatments" onClick="prevTreatmentTrue()"> Yes
-			<input id="prevNo" type="radio" name="previous_treatments" value="No" path="previous_treatments" onClick="prevTreatmentFalse()"> No
-			<input id="prevUn" type="radio" name="previous_treatments" value="Unspecified" path="previous_treatments"> Unspecified <br>
+			<label for="previousTreatments">Any previous treatments: </label>
+			<input id="prevYes" type="radio" name="previousTreatments" value="Yes" path="previousTreatments" onClick="prevTreatmentTrue()"> Yes
+			<input id="prevNo" type="radio" name="previousTreatments" value="No" path="previousTreatments" onClick="prevTreatmentFalse()"> No
+			<input id="prevUn" type="radio" name="previousTreatments" value="Unspecified" path="previousTreatments"> Unspecified <br>
 			<div class = "prev_treat">
-				<label for="previous_treatments_num1" id="previous_treatments_num1">Number of previous treatments: </label>
-				<input type="text" name="previous_treatments_num" class="form-control" path="previous_treatments_num" id="previous_treatments_num" value = "${patient.previous_treatments_num}"> <br>
+				<label for="previousTreatmentsNum1" id="previousTreatmentsNum1">Number of previous treatments: </label>
+				<input type="text" name="previousTreatmentsNum" class="form-control" path="previousTreatmentsNum" id="previousTreatmentsNum" value = "${patient.previousTreatmentsNum}"> <br>
 				
 				<label for ="previous_treatment_type" id="previous_treatment_type1">Type of previous treatments(s): </label>
 				<input type="checkbox" name = "prev_treat_casting_above" value = "Casting above knee" id = "prev_treat_casting_above"> Casting above knee
@@ -706,20 +764,21 @@
 				<input type="checkbox" name = "prev_treat_unspecified" value = "Unspecified" id = "prev_treat_unspecified"> Unspecified
 				<input type="checkbox" name = "prev_treat_other" value = "Other" id = "prev_treat_other"> Other <br>
 			</div>
-			<label for="diagnosis_prenatally">Diagnosis prenatally: </label>
-			<input id="diagYes" type="radio" name="diagnosis_prenatally" value="Yes" path="diagnosis_prenatally" onClick="diagPrenatTrue()"> Yes
-			<input id="diagNo" type="radio" name="diagnosis_prenatally" value="No" path="diagnosis_prenatally" onClick="diagPrenatFalse()"> No
-			<input id="diagUn" type="radio" name="diagnosis_prenatally" value="Unspecified" path="diagnosis_prenatally" onClick="diagPrenatFalse()"> Unspecified <br>
+			<label for="diagnosisPrenatally">Diagnosis prenatally: </label>
+			<input id="diagYes" type="radio" name="diagnosisPrenatally" value="Yes" path="diagnosisPrenatally" onClick="diagPrenatTrue()"> Yes
+			<input id="diagNo" type="radio" name="diagnosisPrenatally" value="No" path="diagnosisPrenatally" onClick="diagPrenatFalse()"> No
+			<input id="diagUn" type="radio" name="diagnosisPrenatally" value="Unspecified" path="diagnosisPrenatally" onClick="diagPrenatFalse()"> Unspecified <br>
 			
-			<label for="diagnosis_prenatally_week1" id="diagnosis_prenatally_week1">At prenatally week: </label>
-			<input type="text" name="diagnosis_prenatally_week" class="form-control" path="diagnosis_prenatally_week" id="diagnosis_prenatally_week" value = "${patient.diagnosis_prenatally_week}"> <br>
-			<label for="prenatally_diag_confirmation1" id="prenatally_diag_confirmation1">If so, confirmed at birth: </label>
-			<input id="prenatallyDiagYes" type="radio" name="prenatally_diag_confirmation" value="Yes" path="diagnosis_prenatally"> Yes
-			<input id="prenatallyDiagNo" type="radio" name="prenatally_diag_confirmation" value="No" path="diagnosis_prenatally"> No
-			<input id="prenatallyDiagUn" type="radio" name="prenatally_diag_confirmation" value="Unspecified" path="diagnosis_prenatally"> Unspecified <br><br>
-			
-			<label for="diagnosis_comments">Diagnosis comments: </label>
-			<input type="text" name="diagnosis_comments" class="form-control" path="diagnosis_comments" value = "${patient.diagnosis_comments}"> <br>
+			<div class = "diagPrenatally">
+				<label for="diagnosisPrenatallyWeek1" id="diagnosisPrenatallyWeek1">At prenatally week: </label>
+				<input type="text" name="diagnosisPrenatallyWeek" class="form-control" path="diagnosisPrenatallyWeek" id="diagnosisPrenatallyWeek" value = "${patient.diagnosisPrenatallyWeek}"> <br>
+				<label for="prenatallyDiagConfirmation1" id="prenatallyDiagConfirmation1">If so, confirmed at birth: </label>
+				<input id="prenatallyDiagYes" type="radio" name="prenatallyDiagConfirmation" value="Yes" path="diagnosisPrenatally"> Yes
+				<input id="prenatallyDiagNo" type="radio" name="prenatallyDiagConfirmation" value="No" path="diagnosisPrenatally"> No
+				<input id="prenatallyDiagUn" type="radio" name="prenatallyDiagConfirmation" value="Unspecified" path="diagnosisPrenatally"> Unspecified <br>
+			</div>
+			<label for="diagnosisComments">Diagnosis comments: </label>
+			<input type="text" name="diagnosisComments" class="form-control" path="diagnosisComments" value = "${patient.diagnosisComments}"> <br>
 			</div>
 			</div>
 		</fieldset>

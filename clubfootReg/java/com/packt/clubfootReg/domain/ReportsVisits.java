@@ -3,7 +3,7 @@ package com.packt.clubfootReg.domain;
 public class ReportsVisits {
 
 	private int id;
-	private int hospital_id;
+	private int hospitalId;
 	private String complications;
 	private String relapse;
 	private String leftTreatment;
@@ -24,12 +24,12 @@ public class ReportsVisits {
 		this.id = id;
 	}
 
-	public int getHospital_id() {
-		return hospital_id;
+	public int getHospitalId() {
+		return hospitalId;
 	}
 
-	public void setHospital_id(int hospital_id) {
-		this.hospital_id = hospital_id;
+	public void setHospitalId(int hospitalId) {
+		this.hospitalId = hospitalId;
 	}
 
 	public String getComplications() {

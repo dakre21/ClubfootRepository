@@ -53,10 +53,10 @@
   	
   	<script>
   		window.onload = function() { 
-			$("#user_name").val("${user.user_name}");
+			$("#userName").val("${user.userName}");
 			$("#email").val("${user.email}");
-			$("#hospital_id").val("${user.hospital_id}");
-			$("#role_id").val("${user.role_id}");
+			$("#hospitalId").val("${user.hospitalId}");
+			$("#roleId").val("${user.roleId}");
   		}
   	</script>
 	<jsp:include page="navbar.jsp" />
@@ -70,8 +70,8 @@
 			<h1>Edit User</h1>  
 			<form action="#" th:action="@{/edit_user}" th:object="${user}" modelAttribute="editUser" method="post" id="updateUser">
 				<div class="form-group">
-					<label for="user_name">User Name</label>
-					<input type="name" class="form-control" id="user_name" name="user_name" path="user_name" />
+					<label for="userName">User Name</label>
+					<input type="name" class="form-control" id="userName" name="userName" path="userName" />
 				</div>
 				
 				<div class="form-group">
@@ -80,8 +80,8 @@
 				</div>
 				
 				<div class="form-group">
-					<label for="role_id">Role</label>
-					<form:select class="form-control" path="roleList" id="role_id" name="role_id">
+					<label for="roleId">Role</label>
+					<form:select class="form-control" path="roleList" id="roleId" name="roleId">
                     	<form:option value="" label="Select a Role" disabled="true" selected="true" style="display: none;"/>
                     	<form:options items="${roleList}" />
                     </form:select>
@@ -89,7 +89,7 @@
 				
 				<div class="form-group">
 					<label for="hospital">Hospital</label>
-					<form:select class="form-control" path="hospitalList" id="hospital_id" name="hospital_id">
+					<form:select class="form-control" path="hospitalList" id="hospitalId" name="hospitalId">
                     	<form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
                     	<form:options items="${hospitalList}" />
                     </form:select>

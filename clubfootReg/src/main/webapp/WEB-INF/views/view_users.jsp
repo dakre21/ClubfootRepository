@@ -41,10 +41,10 @@
         	<c:if test="${not empty users}">
             <c:forEach var="o" items="${users}">
               <tr>
-                  <td>${o.user_name}</td>
+                  <td>${o.userName}</td>
                   <td>${o.email}</td>
-                  <td>${o.hospital_name}</td>
-                  <td>${o.role_name}</td>
+                  <td>${o.hospitalName}</td>
+                  <td>${o.roleName}</td>
                   <td><a href="edit_user?id=${o.id}">Edit</a></td>
               </tr>
             </c:forEach>

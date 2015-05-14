@@ -31,7 +31,7 @@ import com.packt.clubfootReg.domain.repository.UserRepo;
 
 //Controller class for add user
 @Controller
-public class AddUserController {
+public class UserController {
 
 	// Tells the Dispatcher-context to "wire" or inject an instance of UserRepo for this controller class
 	@Autowired
@@ -69,8 +69,8 @@ public class AddUserController {
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value = "/edit_user", method = RequestMethod.GET) // In this instance we receive the jsp view "edit_evaluator" and get command to view the page
 	public ModelAndView editUserForm(HttpServletRequest request) {
-	    int user_id = Integer.parseInt(request.getParameter("id"));	// This parses an int from the request object's getParameter method for "id"
-	    User u = userRepo.getUser(user_id);	// Instantiation of Hospital based on the integer id value of the hospital
+	    int userId = Integer.parseInt(request.getParameter("id"));	// This parses an int from the request object's getParameter method for "id"
+	    User u = userRepo.getUser(userId);	// Instantiation of Hospital based on the integer id value of the hospital
 	    ModelAndView model = new ModelAndView("edit_user");	// Instantition of the Model and view built in method and passes edit_hospital view to it
 	    model.addObject("user", u); // Adds an object to the model called hospital and passes the object h to it for the edit functionality
 	    return model; // Returns the model for the user to edit
@@ -96,7 +96,7 @@ public class AddUserController {
 	    return userRepo.getAllHospitals();
 	}
 	
-	public AddUserController() {
+	public UserController() {
 		// TODO Auto-generated constructor stub
 	}
 

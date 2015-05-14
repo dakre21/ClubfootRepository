@@ -29,12 +29,12 @@
       		<h1 align="center">Add New Hospital</h1>
       		<form action="#" th:action="@{/hospital}" th:object="${hospital}" modelAttribute="Hospital" id="Hospital" method="post">
         		<div class="form-group">
-          			<label for="hospital">Hospital/Clinic Name</label>
-          			<input type="text" class="form-control" id="hospital" name="name" path="name"/>
+          			<label for="hospitalName">Hospital/Clinic Name</label>
+          			<input type="text" class="form-control" id="hospitalName" name="hospitalName" path="hospitalName"/>
         		</div>
          		<div class="form-group">
-              		<label for="region_id">Region</label>
-                	<form:select class="form-control" path="regionList" id="region_id" name="region_id">
+              		<label for="regionId">Region</label>
+                	<form:select class="form-control" path="regionList" id="regionId" name="regionId">
                  		<form:option value="" label="Select a Region" disabled="true" selected="true" style="display: none;"/>
                  		<form:options items="${regionList}" />
                  	</form:select>

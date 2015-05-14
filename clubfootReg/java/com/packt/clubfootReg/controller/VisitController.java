@@ -52,9 +52,9 @@ public class VisitController {
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value = "/visit", method = RequestMethod.GET)	// Gets the visit view
 	public ModelAndView addVisitForm(HttpServletRequest request) {
-		int patient_id = Integer.parseInt(request.getParameter("id"));
-	    Visit visit = new Visit(patient_id);	// Instantiation of visit and passes parses an integer from the getParameter method for "id"
-	    visit.setLaterality(visitRepo.getLateralityForPatient(patient_id));
+		int patientId = Integer.parseInt(request.getParameter("id"));
+	    Visit visit = new Visit(patientId);	// Instantiation of visit and passes parses an integer from the getParameter method for "id"
+	    visit.setLaterality(visitRepo.getLateralityForPatient(patientId));
 	    ModelAndView model = new ModelAndView("visit");	// Model passes the "visit" view to it
 		model.addObject("visit", visit);	// Adds an object called visit to the model
 	    return model;// Returns the model 
@@ -80,8 +80,8 @@ public class VisitController {
 	@RequestMapping(value = "/view_visit_info", method = RequestMethod.GET)	// Get the view_visit_info page info
 	public ModelAndView view_visit_infoForm(HttpServletRequest request){
 		ModelAndView model = new ModelAndView("view_visit_info");	// Passes the view_patient_info view to the model
-		int visit_id = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call
-		Visit visit = visitRepo.getVisit(visit_id);	// Gets patient_id from newpatient repo's method getPatient
+		int visitId = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call
+		Visit visit = visitRepo.getVisit(visitId);	// Gets patient_id from newpatient repo's method getPatient
 		//visit.setLaterality(visitRepo.getLateralityWithVisitId(visit_id));
 		model.addObject("visit", visit);	// Adds an object called patient to the model
 		return model;	// Returns the model
@@ -90,8 +90,8 @@ public class VisitController {
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value = "/edit_visit", method = RequestMethod.GET)	// Gets the edit_edit form
 	public ModelAndView editVisitForm(HttpServletRequest request) {
-	    int visit_id = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call and finds "id"
-	    Visit visit = visitRepo.getVisit(visit_id);	// Method call oneditrepo to get the edit id
+	    int visitId = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call and finds "id"
+	    Visit visit = visitRepo.getVisit(visitId);	// Method call oneditrepo to get the edit id
 	    //visit.setLaterality(visitRepo.getLateralityWithVisitId(visit_id));
 	    ModelAndView model = new ModelAndView("edit_visit");	// Instantiation of ModelAndView and passes "edit_visit" view to it
 	    model.addObject("visit", visit);	// Adds the object visit to the model

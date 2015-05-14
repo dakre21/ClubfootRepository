@@ -68,8 +68,8 @@ public class HospitalController {
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value = "/edit_hospital", method = RequestMethod.GET) // In this instance we receive the jsp view "edit_evaluator" and get command to view the page
 	public ModelAndView editHospitalForm(HttpServletRequest request) {
-	    int hospital_id = Integer.parseInt(request.getParameter("id"));	// This parses an int from the request object's getParameter method for "id"
-	    Hospital h = hospitalRepo.getHospital(hospital_id);	// Instantiation of Hospital based on the integer id value of the hospital
+	    int hospitalId = Integer.parseInt(request.getParameter("id"));	// This parses an int from the request object's getParameter method for "id"
+	    Hospital h = hospitalRepo.getHospital(hospitalId);	// Instantiation of Hospital based on the integer id value of the hospital
 	    ModelAndView model = new ModelAndView("edit_hospital");	// Instantition of the Model and view built in method and passes edit_hospital view to it
 	    model.addObject("hospital", h); // Adds an object to the model called hospital and passes the object h to it for the edit functionality
 	    return model; // Returns the model for the user to edit
