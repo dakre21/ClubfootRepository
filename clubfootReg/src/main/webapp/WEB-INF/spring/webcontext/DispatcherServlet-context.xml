@@ -11,7 +11,7 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd
 http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 	
 	<mvc:annotation-driven />
-	<context:component-scan base-package="com.packt.clubfootReg" />
+	<context:component-scan base-package="edu.uiowa.icr" />
 	
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />
@@ -19,23 +19,23 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 	</bean>
 	
 	<!-- Definition for JDBCTemplate bean -->
-   <bean id="inMemoryNewPatientRepo" class="com.packt.clubfootReg.domain.repository.impl.InMemoryNewPatientRepo">
+   <bean id="inMemoryPatientRepo" class="edu.uiowa.icr.implementation.InMemoryPatientRepo">
       <property name="dataSource"  ref="dataSource" />    
    </bean>
    
-   <bean id="inMemoryEvaluatorRepo" class="com.packt.clubfootReg.domain.repository.impl.InMemoryEvaluatorRepo">
+   <bean id="inMemoryEvaluatorRepo" class="edu.uiowa.icr.implementation.InMemoryEvaluatorRepo">
    		<property name="dataSource" ref="dataSource" />
    </bean>
    
-   <bean id="inMemoryHospitalRepo" class="com.packt.clubfootReg.domain.repository.impl.InMemoryHospitalRepo">
+   <bean id="inMemoryHospitalRepo" class="edu.uiowa.icr.implementation.InMemoryHospitalRepo">
    		<property name="dataSource" ref="dataSource" />
    </bean>
    
-   <bean id="inMemoryVisitRepo" class="com.packt.clubfootReg.domain.repository.impl.InMemoryVisitRepo">
+   <bean id="inMemoryVisitRepo" class="edu.uiowa.icr.implementation.InMemoryVisitRepo">
    		<property name="dataSource" ref="dataSource" />
    </bean>
    
-   <bean id="inMemoryAddUser" class="com.packt.clubfootReg.domain.repository.impl.InMemoryAddUser">
+   <bean id="inMemoryAddUser" class="edu.uiowa.icr.implementation.InMemoryAddUser">
    		<property name="dataSource" ref="dataSource" />
    </bean>
    

@@ -17,56 +17,43 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="nav navbar-nav navbar-right">
-      		  <!-- 
-      		  <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                  Visits
-                  <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="view_visit">View Visits</a></li>
-                      <li><a href="visit">Add Visit</a></li>
-                      <li><a href="view_visit_info">View Visit Info</a></li>
-                  </ul>
-              </li>
-              -->
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                   Patients
                   <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="view_patients">View Patients</a></li>
+                    <li><a href="viewpatients">View Patients</a></li>
                       <li><a href="newpatient">Add Patient</a></li>
                   </ul>
               </li>
               <li class="dropdown">
-                <a href="view_evaluators" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <a href="viewevaluators" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                   Evaluators
                   <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="view_evaluators">View Evaluators</a></li>
+                    <li><a href="viewevaluators">View Evaluators</a></li>
                       <li><a href="evaluator">Add Evaluator</a></li>
                   </ul>
               </li>
               <li class="dropdown">
-                <a href="view_hospitals" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <a href="viewhospitals" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                   Hospitals
                   <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="view_hospitals">View Hospitals</a></li>
+                    <li><a href="viewhospitals">View Hospitals</a></li>
                       <li><a href="hospital">Add Hospital</a></li>
                   </ul>
               </li>
               <li class="dropdown">
-                <a href="view_users" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <a href="viewusers" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                   Users
                   <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="view_users">View Users</a></li>
+                    <li><a href="viewusers">View Users</a></li>
                       <li><a href="adduser">Add User</a></li>
                   </ul>
               </li>
@@ -76,9 +63,9 @@
                   <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="hospital_reports">Hospital</a></li>
-                      <li><a href="patient_reports">Patient</a></li>
-                      <li><a href="visit_reports">Visit</a></li>
+                    <li><a href="hospitalreports">Hospital</a></li>
+                      <li><a href="patientreports">Patient</a></li>
+                      <li><a href="visitreports">Visit</a></li>
                   </ul>
               </li>
               <li class="dropdown">

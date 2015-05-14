@@ -25,10 +25,9 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 
-import com.packt.clubfootReg.controller.HomeController;
-import com.packt.clubfootReg.controller.HospitalController;
-import com.packt.clubfootReg.domain.Hospital;
-
+import edu.uiowa.icr.controllers.HomeController;
+import edu.uiowa.icr.controllers.HospitalController;
+import edu.uiowa.icr.models.Hospital;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
