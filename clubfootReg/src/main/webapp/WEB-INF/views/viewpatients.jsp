@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html"; charset=ISO-8859-1">
-<title>Clubfoot Registry | Users</title>
+<title>Clubfoot Registry | Patients</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -23,29 +23,30 @@
 <div class="container">
 	<div class="jumbotron">
 		<h1>
-			Users
-			<a role="button" class="btn btn-primary btn-lg" href="adduser">Add New User</a>
+			Patients
+			<a role="button" class="btn btn-primary btn-lg" href="patient">Add New Patient</a>
 		</h1>
 		<hr>
 		<table class='table table-striped'>
 		   	<thead>
 		   		<tr>
-		    		<th>Username</th>
-		    		<th>Email</th>
-		    		<th>Hospital</th>
-		    		<th>Role</th>
+		    		<th>ID</th>
+		    		<th>First Name</th>
+		    		<th>Middle Name</th>
+		    		<th>Last Name</th>
 		    	</tr>
 		    </thead>
 	   
 	    	<tbody>
-        	<c:if test="${not empty users}">
-            <c:forEach var="o" items="${users}">
+        	<c:if test="${not empty patients}">
+            <c:forEach var="o" items="${patients}">
               <tr>
-                  <td>${o.userName}</td>
-                  <td>${o.email}</td>
-                  <td>${o.hospitalName}</td>
-                  <td>${o.roleName}</td>
-                  <td><a href="edit_user?id=${o.id}">Edit</a></td>
+                  <td><a href="viewpatientinfo?id=${o.id}">${o.id}</a></td>
+				  <td>${o.patientFirstName}</td>
+				  <td>${o.patientMiddleName}</td>
+				  <td>${o.patientLastName}</td>
+				  <td><a href="editpatient?id=${o.id}">Edit</a></td>
+				  <td><a href="visit?id=${o.id}">Add Visit</a></td>
               </tr>
             </c:forEach>
           </c:if>
@@ -63,6 +64,5 @@
 		</div>
 	</div>
 </div>
-
 </body>
-</html> 
+</html>   

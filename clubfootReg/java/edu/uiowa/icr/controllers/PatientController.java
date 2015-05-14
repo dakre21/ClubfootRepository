@@ -69,19 +69,19 @@ public class PatientController{
                 new ByteArrayMultipartFileEditor());
 	}
 	// Annotation for mapping web requests to specific handler classes/methods
-	@RequestMapping(value="/newpatient", method=RequestMethod.GET)	// Gets the newpatient form
+	@RequestMapping(value="/patient", method=RequestMethod.GET)	// Gets the newpatient form
 	public String patientForm(Model model) {
 		Patient newpatient = new Patient();	// Instantiation of the newpatient model class
 		model.addAttribute("newpatient", newpatient);	// Adds the object newpatient to the model attribute "newpatient"
-		return "newpatient";	// Returns the newpatient view
+		return "patient";	// Returns the newpatient view
 	}
 	
 	// Annotation for mapping web requests to specific handler classes/methods
-	@RequestMapping(value="/newpatient", method=RequestMethod.POST)	// Returns the newpatient form data to the model
+	@RequestMapping(value="/patient", method=RequestMethod.POST)	// Returns the newpatient form data to the model
     public String newPatientSubmit(@ModelAttribute("newPatient") Patient newpatient, Model model) {
         newpatientrepo.addPatient(newpatient);	// Method call to the addPatient class and passes the newpatient object to it
         model.addAttribute("patients", newpatientrepo.getAllPatients());	// Receives all patients via a method call from repo to the model attribute patients
-        return "view_patients";	// Returns the view_patient view
+        return "viewpatients";	// Returns the view_patient view
     }
 	
 	/*
@@ -131,21 +131,21 @@ String fileName,
     */
 	
 	// Annotation for mapping web requests to specific handler classes/methods
-	@RequestMapping(value = "/edit_patient", method = RequestMethod.GET)	// Gets the edit_patient form
+	@RequestMapping(value = "/editpatient", method = RequestMethod.GET)	// Gets the edit_patient form
 	public ModelAndView editPatientForm(HttpServletRequest request) {
 	    int patientId = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call and finds "id"
 	    Patient patient = newpatientrepo.getPatient(patientId);	// Method call on newpatientrepo to get the patient id
-	    ModelAndView model = new ModelAndView("edit_patient");	// Instantiation of ModelAndView and passes "edit_patient" view to it
+	    ModelAndView model = new ModelAndView("editpatient");	// Instantiation of ModelAndView and passes "edit_patient" view to it
 	    model.addObject("patient", patient);	// Adds the object patient to the model
 	    return model;	// Returns the model
 	}
 	
 	// Annotation for mapping web requests to specific handler classes/methods
-	@RequestMapping(value="/edit_patient", method=RequestMethod.POST)	// Returns the edit_patient form
+	@RequestMapping(value="/editpatient", method=RequestMethod.POST)	// Returns the edit_patient form
     public String editPatientSubmit(@ModelAttribute("editPatient") Patient patient, Model model) {
         newpatientrepo.updatePatient(patient);	// Method call to update patient information
         model.addAttribute("patient", newpatientrepo.getPatient(patient.getId()));	// Model adds the attribute of patient by id
-        return "view_patient_info";	// Returns view_patient_info
+        return "viewpatientinfo";	// Returns view_patient_info
     }
 	
 	/*
@@ -157,16 +157,16 @@ String fileName,
     }*/
 	
 	// Annotation for mapping web requests to specific handler classes/methods
-	@RequestMapping(value = "/view_patients", method = RequestMethod.GET)	// Gets the view_patients form
+	@RequestMapping(value = "/viewpatients", method = RequestMethod.GET)	// Gets the view_patients form
 	public String viewPatientsForm(Model model){
 		model.addAttribute("patients", newpatientrepo.getAllPatients());	// Adds all patients from the getAllPatients method
-		return "view_patients";	// Returns view_patients view
+		return "viewpatients";	// Returns view_patients view
 	}
 	
 	// Annotation for mapping web requests to specific handler classes/methods
-	@RequestMapping(value = "/view_patient_info", method = RequestMethod.GET)	// Gets the view_patient_info form 
+	@RequestMapping(value = "/viewpatientinfo", method = RequestMethod.GET)	// Gets the view_patient_info form 
 	public ModelAndView viewPatientInfoForm(HttpServletRequest request) {
-	    ModelAndView model = new ModelAndView("view_patient_info");	// Passes the view_patient_info view to the model
+	    ModelAndView model = new ModelAndView("viewpatientinfo");	// Passes the view_patient_info view to the model
 	    int patientId = Integer.parseInt(request.getParameter("id"));	// Parses an integer from the getParameter method call
 	    
 	    Patient patient = newpatientrepo.getPatient(patientId);	// Gets patient_id from newpatient repo's method getPatient

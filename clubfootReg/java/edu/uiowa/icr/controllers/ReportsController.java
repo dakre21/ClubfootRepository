@@ -64,45 +64,45 @@ public class ReportsController {
 	}
 	
 	// Annotation for mapping web requests to specific handler classes/methods
-	@RequestMapping(value="/visit_reports", method=RequestMethod.GET)	// Posts the visit form information to the database
+	@RequestMapping(value="/visitreports", method=RequestMethod.GET)	// Posts the visit form information to the database
 	public String visitReports(Model model) {
-		model.addAttribute("visit_reports", visitRepo.getAllVisitsReports(null));
-		return "visit_reports";// Returns the view_visit_info page
+		model.addAttribute("visitreports", visitRepo.getAllVisitsReports(null));
+		return "visitreports";// Returns the view_visit_info page
 	}
 	
 	// Annotation for mapping web requests to specific handler classes/methods
-	@RequestMapping(value="/visit_reports", method=RequestMethod.POST)	// Posts the visit form information to the database
+	@RequestMapping(value="/visitreports", method=RequestMethod.POST)	// Posts the visit form information to the database
 	public String visitReportsFilter(@ModelAttribute("filters") ReportsVisits filter, Model model) {
-		model.addAttribute("visit_reports", visitRepo.getAllVisitsReports(filter));
+		model.addAttribute("visitreports", visitRepo.getAllVisitsReports(filter));
 		model.addAttribute("filters", filter);
-		return "visit_reports";// Returns the view_visit_info page
+		return "visitreports";// Returns the view_visit_info page
 	}
 	
 
-	@RequestMapping(value="/patient_reports", method=RequestMethod.GET)	
+	@RequestMapping(value="/patientreports", method=RequestMethod.GET)	
 	public String patientReports(Model model) {
 		model.addAttribute("patients", newpatientRepo.getAllPatientsReports(null));	
-		return "patient_reports";
+		return "patientreports";
 	}
 	
-	@RequestMapping(value="/patient_reports", method=RequestMethod.POST)	
+	@RequestMapping(value="/patientreports", method=RequestMethod.POST)	
     public String filterPatientsSubmit(@ModelAttribute("filters") ReportsPatients filters, Model model) {
         model.addAttribute("patients", newpatientRepo.getAllPatientsReports(filters));	
         model.addAttribute("filters", filters);
-        return "patient_reports";	
+        return "patientreports";	
     }
 	
-	@RequestMapping(value="/hospital_reports", method=RequestMethod.GET)
+	@RequestMapping(value="/hospitalreports", method=RequestMethod.GET)
 	public String hospitalReports(Model model) {
 		model.addAttribute("hospitals", hospitalRepo.getAllHospitalsReports(0));
-		return "hospital_reports";
+		return "hospitalreports";
 	}
 	
-	@RequestMapping(value="/hospital_reports", method=RequestMethod.POST)	
+	@RequestMapping(value="/hospitalreports", method=RequestMethod.POST)	
     public String filterHospitalsSubmit(@ModelAttribute("hospitalId") int hospitalId, Model model) {
         model.addAttribute("hospitals", hospitalRepo.getAllHospitalsReports(hospitalId));
         model.addAttribute("hospitalId", hospitalId);
-        return "hospital_reports";	
+        return "hospitalreports";	
     }
 	
 	@ModelAttribute("hospitalList")

@@ -16,20 +16,20 @@
 	<security:http auto-config="true">
 		<security:intercept-url pattern="/newpatient" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
 		<security:intercept-url pattern="/evaluator" access="ROLE_ADMIN, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/view_evaluators" access="ROLE_ADMIN, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/edit_evaluator" access="ROLE_ADMIN, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/viewevaluators" access="ROLE_ADMIN, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/editevaluator" access="ROLE_ADMIN, ROLE_REGADMIN" />
 		<security:intercept-url pattern="/hospital" access="ROLE_ADMIN, ROLE_REGADMIN" />
 		<security:intercept-url pattern="/adduser" access="ROLE_ADMIN, ROLE_REGADMIN" />
 		<security:intercept-url pattern="/visit" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/view_hospitals" access="ROLE_ADMIN, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/view_patients" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/view_patient_info" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/view_users" access="ROLE_ADMIN, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/view_visit" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/edit_patient" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/visit_reports" access="ROLE_ADMIN, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/patient_reports" access="ROLE_ADMIN, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/hospital_reports" access="ROLE_ADMIN, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/viewhospitals" access="ROLE_ADMIN, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/viewpatients" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/viewpatientinfo" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/viewusers" access="ROLE_ADMIN, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/viewvisit" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/editpatient" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/visitreports" access="ROLE_ADMIN, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/patientreports" access="ROLE_ADMIN, ROLE_REGADMIN" />
+		<security:intercept-url pattern="/hospitalreports" access="ROLE_ADMIN, ROLE_REGADMIN" />
 		
 		<security:form-login login-page="/login" 
 			default-target-url="/"

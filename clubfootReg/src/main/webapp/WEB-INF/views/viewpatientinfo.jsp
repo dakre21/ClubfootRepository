@@ -213,8 +213,8 @@
 								  	<td>${o.rightTreatment}</td>
 								  	<td>${o.leftScore}</td>
 								  	<td>${o.rightScore}</td>
-								  	<td><a href="view_visit_info?id=${o.id}">View Details</a></td>
-								  	<td><a href="edit_visit?id=${o.id}">Edit</a></td>
+								  	<td><a href="viewvisitinfo?id=${o.id}">View Details</a></td>
+								  	<td><a href="editvisit?id=${o.id}">Edit</a></td>
 				              	</tr>
 				            </c:forEach>
 				    	</c:if>

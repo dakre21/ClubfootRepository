@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html"; charset=ISO-8859-1">
-<title>Clubfoot Registry | Evaluators</title>
+<title>Clubfoot Registry | Users</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -18,34 +18,34 @@
 </head>
 
 <body>
+
+
 <div class="container">
 	<div class="jumbotron">
+		<h1>
+			Users
+			<a role="button" class="btn btn-primary btn-lg" href="adduser">Add New User</a>
+		</h1>
+		<hr>
 		<table class='table table-striped'>
 		   	<thead>
-          <h1>
-            Evaluators
-            <a role="button" class="btn btn-lg btn-primary" href="evaluator">Add New Evaluator</a>
-          </h1>
-          <hr>
 		   		<tr>
-		    		<th>First Name</th>
-		    		<th>Middle Name</th>
-		    		<th>Last Name</th>
-		    		<th>Title</th>
+		    		<th>Username</th>
+		    		<th>Email</th>
 		    		<th>Hospital</th>
+		    		<th>Role</th>
 		    	</tr>
 		    </thead>
 	   
 	    	<tbody>
-        	<c:if test="${not empty evaluators}">
-            <c:forEach var="o" items="${evaluators}">
+        	<c:if test="${not empty users}">
+            <c:forEach var="o" items="${users}">
               <tr>
-                  <td>${o.firstName}</td>
-                  <td>${o.middleName}</td>
-                  <td>${o.lastName}</td>
-                  <td>${o.title}</td>
+                  <td>${o.userName}</td>
+                  <td>${o.email}</td>
                   <td>${o.hospitalName}</td>
-                  <td><a href="edit_evaluator?id=${o.id}">Edit</a></td>
+                  <td>${o.roleName}</td>
+                  <td><a href="edituser?id=${o.id}">Edit</a></td>
               </tr>
             </c:forEach>
           </c:if>
@@ -63,5 +63,6 @@
 		</div>
 	</div>
 </div>
+
 </body>
-</html>                                 		
+</html> 

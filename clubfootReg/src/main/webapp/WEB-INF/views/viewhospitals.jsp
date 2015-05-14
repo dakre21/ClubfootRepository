@@ -41,7 +41,7 @@
               <tr>
                   <td>${o.hospitalName}</td>
                   <td>${o.regionName}</td>
-                  <td><a href="edit_hospital?id=${o.id}">Edit</a></td>
+                  <td><a href="edithospital?id=${o.id}">Edit</a></td>
               </tr>
             </c:forEach>
           </c:if>

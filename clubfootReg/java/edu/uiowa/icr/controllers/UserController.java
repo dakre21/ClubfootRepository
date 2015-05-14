@@ -56,33 +56,33 @@ public class UserController {
 	public String userSubmitForm(@ModelAttribute("user") User user, Model model){
 		userRepo.addUser(user);	// UserRepo's interface method "addUser" passes the object user to the method "addUser"
 		model.addAttribute("users", userRepo.getAllUsers());	// Add all users to the model from receiving the information stored in the database and retrieved via the "getAllUsers" method
-		return "view_users";	// Returns view_users jsp view
+		return "viewusers";	// Returns view_users jsp view
 	}
 	
 	// Annotation for mapping web requests to specific handler classes/methods
-	@RequestMapping(value = "/view_users", method = RequestMethod.GET) // In this instance we receive the jsp view "view_user" and get command to view all users
+	@RequestMapping(value = "/viewusers", method = RequestMethod.GET) // In this instance we receive the jsp view "view_user" and get command to view all users
 	public String viewUsersForm(Model model){
 		model.addAttribute("users", userRepo.getAllUsers());	// Receives all of the users saved in the repository class and adds it to the model users
-		return "view_users";	// Returns view_users jsp view
+		return "viewusers";	// Returns view_users jsp view
 	}
 	
 	// Annotation for mapping web requests to specific handler classes/methods
-	@RequestMapping(value = "/edit_user", method = RequestMethod.GET) // In this instance we receive the jsp view "edit_evaluator" and get command to view the page
+	@RequestMapping(value = "/edituser", method = RequestMethod.GET) // In this instance we receive the jsp view "edit_evaluator" and get command to view the page
 	public ModelAndView editUserForm(HttpServletRequest request) {
 	    int userId = Integer.parseInt(request.getParameter("id"));	// This parses an int from the request object's getParameter method for "id"
 	    User u = userRepo.getUser(userId);	// Instantiation of Hospital based on the integer id value of the hospital
-	    ModelAndView model = new ModelAndView("edit_user");	// Instantition of the Model and view built in method and passes edit_hospital view to it
+	    ModelAndView model = new ModelAndView("edituser");	// Instantition of the Model and view built in method and passes edit_hospital view to it
 	    model.addObject("user", u); // Adds an object to the model called hospital and passes the object h to it for the edit functionality
 	    return model; // Returns the model for the user to edit
 	}
 	
 	// Annotation for mapping web requests to specific handler classes/methods
-	@RequestMapping(value="/edit_user", method=RequestMethod.POST) // In this instance we receive the jsp view "edit_evaluator" and post command to submit edit form data to the database
+	@RequestMapping(value="/edituser", method=RequestMethod.POST) // In this instance we receive the jsp view "edit_evaluator" and post command to submit edit form data to the database
     public String editUserSubmit(@ModelAttribute("editUser") User user, Model model) {
         userRepo.updateUser(user);	// The object evaluateRepo calls the "updateEvaluator" method and passes evaluator to it
         //model.addAttribute("evaluator", evaluatorRepo.getEvaluator(evaluator.getId()));
         model.addAttribute("users", userRepo.getAllUsers());	// This invokes the addAttribute method of the model and receives all of the evaluators
-        return "view_users"; // Returns the view_evaluators page for the user to view
+        return "viewusers"; // Returns the view_evaluators page for the user to view
     }
 	
 	
