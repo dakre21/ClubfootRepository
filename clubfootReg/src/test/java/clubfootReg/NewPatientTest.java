@@ -26,11 +26,10 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 
-import com.packt.clubfootReg.controller.LoginController;
-import com.packt.clubfootReg.controller.newPatientController;
-import com.packt.clubfootReg.domain.Hospital;
-import com.packt.clubfootReg.domain.newPatient;
-
+import edu.uiowa.icr.controllers.LoginController;
+import edu.uiowa.icr.controllers.PatientController;
+import edu.uiowa.icr.models.Hospital;
+import edu.uiowa.icr.models.Patient;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -50,11 +49,11 @@ public class NewPatientTest {
 	private MockMvc mockMvc;
 
 	@InjectMocks
-	private newPatientController npc;
+	private PatientController npc;
 	@InjectMocks
-	newPatient np = new newPatient();
+	Patient np = new Patient();
 	@InjectMocks
-	newPatient np1 = new newPatient(1, 2, 3, 4, "Bob", 
+	Patient np1 = new Patient(1, 2, 3, 4, "Bob", 
 	          "Knight", "Not known", "01/02/1993", 5,
 	          "02/11/2015", "right", "severe");
 	

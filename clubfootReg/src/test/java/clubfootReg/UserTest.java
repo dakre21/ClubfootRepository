@@ -25,11 +25,10 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 
-import com.packt.clubfootReg.controller.UserController;
-import com.packt.clubfootReg.controller.HomeController;
-import com.packt.clubfootReg.domain.User;
-import com.packt.clubfootReg.domain.Visit;
-
+import edu.uiowa.icr.controllers.HomeController;
+import edu.uiowa.icr.controllers.UserController;
+import edu.uiowa.icr.models.User;
+import edu.uiowa.icr.models.Visit;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 

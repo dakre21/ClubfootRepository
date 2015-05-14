@@ -18,7 +18,7 @@
     <description></description>
     <display-name>AddFormServlet</display-name>
     <servlet-name>AddFormServlet</servlet-name>
-    <servlet-class>com.packt.clubfootReg.db.controller.AddFormServlet</servlet-class>
+    <servlet-class>edu.uiowa.icr.db.controller.AddFormServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>AddFormServlet</servlet-name>
@@ -28,7 +28,7 @@
     <description></description>
     <display-name>AddServlet</display-name>
     <servlet-name>AddServlet</servlet-name>
-    <servlet-class>com.packt.clubfootReg.db.controller.AddServlet</servlet-class>
+    <servlet-class>edu.uiowa.icr.db.controller.AddServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>AddServlet</servlet-name>
