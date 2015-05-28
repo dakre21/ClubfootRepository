@@ -207,7 +207,9 @@ public class InMemoryVisitRepo implements VisitRepo{
 			ps.setString(21, leftSurgeryComments);
 			ps.setString(22, otherLeft);
 			*/
+			System.out.println("hindfootLeftVarus: " +hindfootLeftVarus);
 			ps.setInt(4, hindfootLeftVarus);
+			System.out.println("hindfootLeftCavus: "+hindfootLeftCavus);
 			ps.setInt(5, hindfootLeftCavus);
 			ps.setInt(6, hindfootLeftAbductus);
 			ps.setInt(7, hindfootLeftEquinus);
@@ -382,10 +384,12 @@ public class InMemoryVisitRepo implements VisitRepo{
 			
 			// LEFT FOOT
 			ps = connection.prepareStatement(sqlLeftFoot);
+			//Errors if null
 			ps.setInt(1, hindfootLeftVarus);
-			ps.setInt(2, hindfootLeftCavus);
-			ps.setInt(3, hindfootLeftAbductus);
-			ps.setInt(4, hindfootLeftEquinus);
+            ps.setInt(2, hindfootLeftCavus);
+            ps.setInt(3, hindfootLeftAbductus);
+            ps.setInt(4, hindfootLeftEquinus);
+			
 			ps.setInt(5, leftPC);
 			ps.setInt(6, leftEH);
 			ps.setInt(7, leftRE);

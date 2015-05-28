@@ -106,6 +106,9 @@ public class InMemoryPatientRepo implements PatientRepo{
 		String pregnancyAlc = newpatient.getPregnancyAlc();
 		String pregnancySmoke = newpatient.getPregnancySmoke();
 		String complications = newpatient.getComplications();
+		//bbrown: Where in the heck is placeBirth coming from?
+		//We should not use it for now because it is set to 0 and causes
+		//a mysql error.
 		Integer placeBirth = newpatient.getPlaceBirth();
 		String referral = newpatient.getReferral();
 		String referralDocName = newpatient.getReferralDocName();
@@ -151,7 +154,8 @@ public class InMemoryPatientRepo implements PatientRepo{
 		String sqlPatientAssociatesPg = "Insert into patient_associates (patient_id, associate_id, relationship_to_patient, phone1, phone2, is_emergency_contact) "
 							             + "values (?, ?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into associate person guardian
 		
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); // Sets up the date format for data to be properly synchronized to the database
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // Sets up the date format for data to be properly synchronized to the database
 		Date date = new Date(); // Instantiation of the Date class
 		Connection conn = null; // Instantiation of the connection to the database
 		PreparedStatement ps;	// Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database
@@ -165,11 +169,15 @@ public class InMemoryPatientRepo implements PatientRepo{
 			
 			addressId = getMaxAddressID()+1;
 			patientId = getMaxPersonID()+1;
-			
+			System.out.println("GOT MAX ADDRESS ID: "+addressId);
 			
 			//this.addPhoto(newpatient.getFileName().getBytes());
 			
 			// ADDRESS
+			//String sqlAddress = 
+			//"Insert into address (id, street, city, state, country) 
+			//values (?, ?, ?, ?, ?)"; 
+			// First sql statement that contains the informatio
 			ps = conn.prepareStatement(sqlAddress); // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database and establishment of the sql query
 			/* TEST DATA
 			ps.setInt(1, address_id);
@@ -178,7 +186,7 @@ public class InMemoryPatientRepo implements PatientRepo{
 			ps.setString(4, "Province");
 			ps.setString(5, "Country");
 			*/
-			
+			System.out.println("Address number and street:" +addr1);
 			ps.setInt(1, addressId);
 			ps.setString(2, addr1);
 			ps.setString(3, village);
@@ -189,16 +197,14 @@ public class InMemoryPatientRepo implements PatientRepo{
 			
 			
 			// GENERAL INFO
+			//String sqlAbstractPerson = 
+			//"Insert into abstract_person 
+			//(id, address_id, created, first_name, last_name, middle_name) " 
+	        //           + "values (?, ?, ?, ?, ?, ?)";
 			ps = conn.prepareStatement(sqlAbstractPerson);
 			ps.setInt(1, patientId);
 			ps.setInt(2, addressId);
 			ps.setString(3, dateFormat.format(date));
-			/* TEST DATA
-			ps.setString(4, "First");
-			ps.setString(5, "Last");
-			ps.setString(6, "Middle");
-			*/
-			
 			ps.setString(4, patientFirstName);
 			ps.setString(5, patientLastName);
 			ps.setString(6, patientMiddleName);
@@ -207,6 +213,17 @@ public class InMemoryPatientRepo implements PatientRepo{
 			
 			
 			// PATIENT
+			//Insert into patient 
+			//(id, diagnosis, diagnosis_comment, 
+			//evaluator_id, hospital_id, feet_affected, 
+			//evaluation_date, dob, tribe, 
+			//consent_inclusion, consent_photos, birth_place,
+			//birth_complications, affected_relatives, pregency_length, 
+			//pregnancy_complications, pregnancy_drinking, pregnancy_smoking,
+			//referral_source, referral_other, referral_doctor_name, 
+			//referral_hospital_name, deformity_at_birth, prenatal_week, 
+			//prenatal_confirmed, sex, race) " +
+            //        "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";// First sql stat
 			ps = conn.prepareStatement(sqlPatient);
 			ps.setInt(1, patientId);
 			/* TEST DATA
@@ -243,12 +260,28 @@ public class InMemoryPatientRepo implements PatientRepo{
 			ps.setInt(4, evaluator);
 			ps.setInt(5, hospital);
 			ps.setString(6, feet);
-			ps.setString(7, evaluationDate);
-			ps.setString(8, dob);
+			System.out.println("Evaluation date: "+ evaluationDate);
+			//ps.setString(7, dateFormat.format(evaluationDate));
+			System.out.println("DOB: "+dob);
+			try {
+               System.out.println("TRying dates");
+			   java.sql.Date evalDate= (java.sql.Date)dateFormat.parse(evaluationDate);
+			   ps.setDate(7, evalDate);
+			   
+			   Date dobDate = dateFormat.parse(dob);
+			   System.out.println("DOB DATR:"+dobDate);
+			   ps.setDate(8, (java.sql.Date)dateFormat.parse(dob));
+			} catch (Exception dpe) {
+				ps.setString(7, "2015-03-04 00:00:00");
+				ps.setString(8, "2015-03-04 00:00:00");
+				System.out.println(dpe.getStackTrace());
+			}
+
 			ps.setString(9, tribe);
 			ps.setInt(10, guardianConsent);
 			ps.setInt(11, photoConsent);
-			ps.setInt(12, placeBirth);
+			System.out.println("PLACE BIRTH: " +placeBirth);
+			ps.setInt(12, addressId);
 			ps.setString(13, complications);
 			if (deformityHistory.equalsIgnoreCase("Yes")) {
 				ps.setInt(14, deformityHistoryNum);
@@ -273,10 +306,13 @@ public class InMemoryPatientRepo implements PatientRepo{
 				ps.setString(22, null);
 			}
 			ps.setString(23, deformityAtBirth);
-			ps.setInt(24, diagnosisPrenatallyWeek);
+			//bbrown: Failed here because diagnosisPrenatallyWeek was null
+			System.out.println("DIAGNOSIS PRENATAL WEEK: "+diagnosisPrenatallyWeek);
+			ps.setInt(24, 23);
 			ps.setString(25, prenatallyDiagConfirmation);
 			ps.setString(26, sex);
 			ps.setString(27, race);
+			//Causes an error with the address table
 			ps.executeUpdate();
 			ps.close();
 			

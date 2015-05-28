@@ -10,12 +10,16 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import edu.uiowa.icr.implementation.inter.HospitalRepo;
-import edu.uiowa.icr.models.Evaluator;
+//import edu.uiowa.icr.models.Evaluator;
 import edu.uiowa.icr.models.Hospital;
 import edu.uiowa.icr.models.ReportsHospital;
+import edu.uiowa.icr.models.Region;
+import edu.uiowa.icr.util.*;
+import org.hibernate.*;
 
 import java.sql.Connection; 
 import java.sql.ResultSet;
@@ -23,7 +27,7 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+//import org.springframework.jdbc.core.RowMapper;
 
 /**
  * 
@@ -62,18 +66,32 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	public void addHospital(Hospital hospital) {
 		listOfHospitals.add(hospital); // Adds the object of the model "hospital" to the list created above
 		String hospitalName = hospital.getHospitalName();	// Gets the String name from the hospital model
-		int regionId = hospital.getRegionId(); // Gets the integer value of the region id
+		//int regionId = hospital.getRegionId(); // Gets the integer value of the region id
+        int regionId = 17;
 		
-		Connection connection = null;	// Instantiation of the connection to the database
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		  
+        session.beginTransaction();
+        
+        Query regquery = session.createQuery("from Region where id= :id");
+        regquery.setInteger("id", regionId);
+        Region region = (Region) regquery.uniqueResult();
+        session.save(new Hospital(hospital.getHospitalName(), region));
+        //session.save(hospital);
+        session.getTransaction().commit();
+        session.close();
+        
+		//Connection connection = null;	// Instantiation of the connection to the database
 		
 		/**
 		 * The following contains a set of prepared statements to be prepared to be synchronized to the MySql database.
 		 * The prepared statements pull information that was saved to the model via the form submission.
 		 */
+        /*
 		try {
 			connection = dataSource.getConnection(); // Connection of the dataSource with the MySql sever
 			
-			String sql = "Insert into hospital values(?, ?, ?)"; // First sql statement that contains the information to query into hospital
+			String sql = "Insert into hospital (id, name, region_id) values(?, ?, ?)"; // First sql statement that contains the information to query into hospital
 			PreparedStatement ps = connection.prepareStatement(sql); // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database and establishment of the sql query
 			
 			ps.setInt(1, this.getMaxHospitalID()+1);
@@ -91,7 +109,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 				} catch (SQLException e) {}
 			}
 		}
-		
+		*/
 		return;
 	}
 	
@@ -101,6 +119,16 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	 * is saved in a result set to be displayed in the jsp view. 
 	 */
 	public Hospital getHospital(int id) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		  
+        session.beginTransaction();
+        Query query = session.createQuery("from Hospital where id= :id");
+        query.setInteger("id", id);
+        Hospital hospital = (Hospital) query.uniqueResult();
+        session.getTransaction().commit();
+        session.close();
+		return hospital;
+		/*
 		Connection conn = null; // Resets the connection to the database
 		Hospital hospital = null; // Resets the model
 		
@@ -135,19 +163,30 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 				} catch (SQLException e) {}
 			}
 		}
+		*/
 	}
 	
 	public List<Hospital> getAllHospitals() {
-		Connection conn = null; // Resets the connection to the database
-		Hospital hospital = null; // Resets the model
-		List<Hospital> hospitals = null; // Resets the list
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		  
+        session.beginTransaction();
+        Query q = session.createQuery("From Hospital ");
+        
+        List<Hospital> resultList = q.list();
+        session.getTransaction().commit();
+        session.close();
+        return resultList;
+        
+		//Connection conn = null; // Resets the connection to the database
+		//Hospital hospital = null; // Resets the model
+		//List<Hospital> hospitals = null; // Resets the list
 		
 		/**
 		 * Reseting the database connection to retrieve information that's stored in the mysql database
 		 * via queries that are sent through the open connection. The results of the data received by this class
 		 * is saved in a result set to be displayed in the jsp view. 
 		 */
-		
+		/*
 		try {
 			conn = dataSource.getConnection();
 			
@@ -185,6 +224,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 				} catch (SQLException e) {}
 			}
 		}
+		*/
 	}
 
 	/**
@@ -197,10 +237,25 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	public void updateHospital(Hospital hospital) {
 		listOfHospitals.add(hospital);
 		int id = hospital.getId();
-		String hospitalName = hospital.getHospitalName();
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		  
+        session.beginTransaction();
+    	 Query regquery = session.createQuery("from Hospital where id= :id");
+	        regquery.setInteger("id", 17);
+	        Hospital hosp = (Hospital) regquery.uniqueResult();
+            hosp.setHospitalName(hospital.getHospitalName());
+            session.update(hosp);
+	        session.getTransaction().commit();
+	        session.close();
+	       
+/*
+	        String hospitalName = hospital.getHospitalName();
 		int regionId = hospital.getRegionId();
 	
 		String sql = "Update hospital set name = ?, region_id = ? where id = ?";
+		
+        session.getTransaction().commit();
+        
 		
 		Connection connection = null;
 		PreparedStatement ps = null;
@@ -226,6 +281,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 		}
 		
 		return;
+    */		
 	}
 	
 	/**
@@ -261,6 +317,22 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	}
 
 	public Map<Integer, String> getAllRegions() {
+		Session session = edu.uiowa.icr.util.HibernateUtil.getSessionFactory().openSession();
+		  
+        session.beginTransaction();
+        Query q = session.createQuery("From Region ");
+
+        List<Region> resultList = q.list();
+        session.getTransaction().commit();
+        session.close();
+		Map<Integer, String> regions = new LinkedHashMap<Integer,String>();
+        for (Region next : resultList) {
+            System.out.println("next region: " + next.getName());
+            regions.put(next.getId().intValue(), next.getName());
+        }
+        return regions;
+        /*
+        
 		Connection conn = null; // Resets the connection to the database
 		Map<Integer, String> regions = new LinkedHashMap<Integer,String>();
 		
@@ -287,6 +359,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 				} catch (SQLException e) {}
 			}
 		}
+	   */	
 	}
 
 	@Override

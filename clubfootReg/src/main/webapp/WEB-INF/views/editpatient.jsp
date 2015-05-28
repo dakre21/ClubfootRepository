@@ -472,7 +472,7 @@
 			<input id="gcYes" type="radio" name="guardianConsent" value="1" path="guardianConsent" > Yes
 			<input id="gcNo" type="radio" name="guardianConsent" value="0" path="guardianConsent" > No <br>
 
-			<label for="photoConsent"><em>*</em>Does the parent or guardian consent to photographs of the patient being used for CURE evaluation and marketing purposes: </label>
+			<label for="photoConsent"><em>*</em>Does the parent or guardian consent to photographs of the patient being used for CURE uation and marketing purposes: </label>
 			<input id="pcYes" type="radio" name="photoConsent" value="1" path="photoConsent" > Yes
 			<input id="pcNo" type="radio" name="photoConsent" value="0" path="photoConsent" > No <br>
 			
@@ -724,7 +724,7 @@
 			<div class="col-mid-12">
 			<div class="form-group">
 			
-			<label for="evaluator">Evaluator</label>
+			<label for="uator">Evaluator</label>
 			<form:select class="form-control" path="evaluatorList" id="evaluator" name="evaluator">
             	<form:option value="" label="Select an Evaluator" disabled="true" selected="true" style="display: none;"/>
                 <form:options items="${evaluatorList}" />

@@ -44,8 +44,8 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
       class="org.springframework.jdbc.datasource.DriverManagerDataSource">
       <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
       <property name="url" value="jdbc:mysql://localhost:3306/icr_spring"/>
-      <property name="username" value="root"/>
-      <property name="password" value=""/>
+      <property name="username" value="icrst"/>
+      <property name="password" value="studEnts_1461"/>
    </bean>
    
    <bean id="multipartResolver"

@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+//import org.apache.log4j.Logger;
+
 import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
@@ -19,6 +21,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -29,6 +32,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 @Repository
 public class InMemoryEvaluatorRepo implements EvaluatorRepo{
+	//static Logger log = Logger.getLogger(InMemoryEvaluatorRepo.class.getName());
 
 	private DataSource dataSource; // Instantiation of the datasource object
 	private JdbcTemplate jdbcTemplateObject; // Instantiation of the JdbcTemplate object
@@ -68,20 +72,35 @@ public class InMemoryEvaluatorRepo implements EvaluatorRepo{
 		 */
 		try {
 			connection = dataSource.getConnection(); // Connection of the dataSource with the MySql sever
+			//log.info("MaxPersonID+1: "+this.getMaxPersonID()+1);
+			//log.info("DATE: "+ dateFormat.format(date));
+			//log.info("Firstname: "+firstName);
+			//log.info("lastname: "+lastName);
+			//log.info("middleName: "+middleName);
 			
-			String sql = "Insert into abstract_person (id, created, first_name, last_name, middle_name) values(?, ?, ?, ?, ?)"; // First sql statement that contains the information to query into abstract_person
+			String sql = "Insert into abstract_person (created, first_name, last_name, middle_name) values(?, ?, ?, ?)"; // First sql statement that contains the information to query into abstract_person
 			PreparedStatement ps = connection.prepareStatement(sql); // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database and connection to the database with the sql query
-			ps.setInt(1, this.getMaxPersonID()+1);
-			ps.setString(2, dateFormat.format(date));
-			ps.setString(3, firstName);
-			ps.setString(4, lastName);
-			ps.setString(5, middleName);
+			//ps.setInt(1, this.getMaxPersonID()+1);
+			ps.setString(1, dateFormat.format(date));
+			ps.setString(2, firstName);
+			ps.setString(3, lastName);
+			ps.setString(4, middleName);
 			ps.executeUpdate();
+		
+			ResultSet rs = ps.executeQuery("select last_insert_id() as last_id from abstract_person");
+			rs.next();
+			int returnedId = rs.getInt("last_id");
+			System.out.println("RETURNED ID :"+returnedId);
+			rs.close();
 			ps.close();
-			
-			String sql2 = "Insert into evaluator values(?, ?, ?)"; // First sql statement that contains the information to query into evaluator
+				
+			String sql2 = "Insert into evaluator (id, title, hospital_id) values(?, ?, ?)"; // First sql statement that contains the information to query into evaluator
 			PreparedStatement ps2 = connection.prepareStatement(sql2);
-			ps2.setInt(1, this.getMaxPersonID());
+            //log.info("MaxPersonId: "+ this.getMaxPersonID());
+			//ps2.setInt(1, this.getMaxPersonID());
+			ps2.setInt(1, returnedId);
+			System.out.println("Hospital Title: " +title);
+			System.out.println("Hospital ID: "+ hospitalId);
 			ps2.setString(2, title);
 			ps2.setInt(3, hospitalId);
 			ps2.executeUpdate();
