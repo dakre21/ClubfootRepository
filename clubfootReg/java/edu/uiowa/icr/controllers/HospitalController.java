@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import edu.uiowa.icr.implementation.inter.HospitalRepo;
 import edu.uiowa.icr.models.Evaluator;
 import edu.uiowa.icr.models.Hospital;
+import edu.uiowa.icr.models.Patient;
 
 /**
  * 
@@ -58,6 +59,7 @@ public class HospitalController {
 	}
 	
 	
+	
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value = "/viewhospitals", method = RequestMethod.GET) // In this instance we receive the jsp view "view_hospitals" and get command to view the page
 	public String viewHospitalsForm(Model model){
@@ -68,6 +70,7 @@ public class HospitalController {
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value = "/edithospital", method = RequestMethod.GET) // In this instance we receive the jsp view "edit_evaluator" and get command to view the page
 	public ModelAndView editHospitalForm(HttpServletRequest request) {
+		System.out.println("THE ID OF THE HOSP TO BE EDITED: "+request.getParameter("Id")); 
 	    int hospitalId = Integer.parseInt(request.getParameter("id"));	// This parses an int from the request object's getParameter method for "id"
 	    Hospital h = hospitalRepo.getHospital(hospitalId);	// Instantiation of Hospital based on the integer id value of the hospital
 	    ModelAndView model = new ModelAndView("edithospital");	// Instantition of the Model and view built in method and passes edit_hospital view to it
