@@ -5,16 +5,16 @@
 <hibernate-configuration>
  <session-factory>
   
-    <property name="connection.url">jdbc:mysql://localhost:3306/my_mysqldb</property>
-    <property name="connection.username">username</property>
-    <property name="connection.password">password</property>
+    <property name="connection.url">jdbc:mysql://devel1.eng.uiowa.edu:3306/icr_spring</property>
+    <property name="connection.username">icrst</property>
+    <property name="connection.password">studEnts_1461</property>
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
   
     <property name="show_sql">true</property>
   
     <property name="format_sql">true</property>
-    <property name="hbm2ddl.auto">create</property>
+<!--     <property name="hbm2ddl.auto">update</property>   -->
   
     <!-- JDBC connection pool (use the built-in) -->
     <property name="connection.pool_size">1</property>

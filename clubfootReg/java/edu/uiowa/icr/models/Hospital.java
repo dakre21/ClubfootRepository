@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -17,19 +18,22 @@ import javax.persistence.Transient;
 import edu.uiowa.icr.models.Region;
 
 @Entity
-@Table
+@Table(name="hospital")
 public class Hospital {
 	
 	// Form attributes to by synchronized to the database
 	@Id
 	@GeneratedValue
-	private int id;
+    //@Column(columnDefinition = "int")
+	private Long id;
 	//private int id;
 	
 	@Column(name = "name")
 	private String hospitalName;
 	
 	@ManyToOne
+	@JoinColumn(name="region_id")  //added may 29
+    //@Column(columnDefinition = "Long")   //added may 29
 	private Region region;
 	
 	//@Column(name = "region_id")
@@ -39,7 +43,8 @@ public class Hospital {
 	private String regionName;
 	
 	@Transient
-	private int regionId;
+    //@Column(columnDefinition = "int")
+	private Long regionId;
 	
 	public Hospital() {
 		// TODO Auto-generated constructor stub
@@ -47,11 +52,11 @@ public class Hospital {
 	public Hospital(String name, Region region) {
 		this.hospitalName = name;
 		this.region = region;
-		this.regionId = region.getId().intValue();
+		this.regionId = region.getId();
 		this.regionName = region.getName();
 	}
 	// Hospital constructor that sets up the retrieving information from the database via this model
-	public Hospital(int id, String hospitalName, int regionId, String regionName){
+	public Hospital(Long id, String hospitalName, Long regionId, String regionName){
 		// Sets current object "this" to the value being passed when this model is being instantiated 
 		this.id = id;
 		this.hospitalName = hospitalName;
@@ -91,12 +96,12 @@ public class Hospital {
 	}
 	
 	@Transient
-	public int getRegionId () {
+	public Long getRegionId () {
 		return regionId;
 	}
 	
 	@Transient
-	public void setRegionId(int regionId) {
+	public void setRegionId(Long regionId) {
 		this.regionId = regionId;
 	}
 
@@ -111,11 +116,11 @@ public class Hospital {
 		this.regionName = regionName;
 	}
 	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

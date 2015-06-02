@@ -94,12 +94,12 @@ public class ReportsController {
 	
 	@RequestMapping(value="/hospitalreports", method=RequestMethod.GET)
 	public String hospitalReports(Model model) {
-		model.addAttribute("hospitals", hospitalRepo.getAllHospitalsReports(0));
+		model.addAttribute("hospitals", hospitalRepo.getAllHospitalsReports(new Long(0)));
 		return "hospitalreports";
 	}
 	
 	@RequestMapping(value="/hospitalreports", method=RequestMethod.POST)	
-    public String filterHospitalsSubmit(@ModelAttribute("hospitalId") int hospitalId, Model model) {
+    public String filterHospitalsSubmit(@ModelAttribute("hospitalId") Long hospitalId, Model model) {
         model.addAttribute("hospitals", hospitalRepo.getAllHospitalsReports(hospitalId));
         model.addAttribute("hospitalId", hospitalId);
         return "hospitalreports";	

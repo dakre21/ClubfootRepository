@@ -8,11 +8,12 @@ import javax.persistence.*;
 import edu.uiowa.icr.models.Hospital;
  
 @Entity
-@Table
+@Table(name="region")
 public class Region {
  
     @Id
     @GeneratedValue
+    //@Column(columnDefinition = "int")
     private Long id;
  
      

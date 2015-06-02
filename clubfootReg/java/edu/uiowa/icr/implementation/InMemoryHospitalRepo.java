@@ -57,7 +57,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 
 	}
 	
-	public Hospital getHospital1(int id) {
+	public Hospital getHospital1(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -66,15 +66,15 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	public void addHospital(Hospital hospital) {
 		listOfHospitals.add(hospital); // Adds the object of the model "hospital" to the list created above
 		String hospitalName = hospital.getHospitalName();	// Gets the String name from the hospital model
-		//int regionId = hospital.getRegionId(); // Gets the integer value of the region id
-        int regionId = 17;
+		Long regionId = hospital.getRegionId(); // Gets the integer value of the region id
+        //Long regionId = 17;
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		  
         session.beginTransaction();
         
         Query regquery = session.createQuery("from Region where id= :id");
-        regquery.setInteger("id", regionId);
+        regquery.setLong("id", regionId);
         Region region = (Region) regquery.uniqueResult();
         session.save(new Hospital(hospital.getHospitalName(), region));
         //session.save(hospital);
@@ -118,12 +118,12 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	 * via queries that are sent through the open connection. The results of the data received by this class
 	 * is saved in a result set to be displayed in the jsp view. 
 	 */
-	public Hospital getHospital(int id) {
+	public Hospital getHospital(Long id) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		  
         session.beginTransaction();
         Query query = session.createQuery("from Hospital where id= :id");
-        query.setInteger("id", id);
+        query.setLong("id", id);
         Hospital hospital = (Hospital) query.uniqueResult();
         session.getTransaction().commit();
         session.close();
@@ -173,8 +173,8 @@ public class InMemoryHospitalRepo implements HospitalRepo{
         Query q = session.createQuery("From Hospital ");
         
         List<Hospital> resultList = q.list();
-        session.getTransaction().commit();
-        session.close();
+        //session.getTransaction().commit();
+        //session.close();
         return resultList;
         
 		//Connection conn = null; // Resets the connection to the database
@@ -230,18 +230,18 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	/**
 	 * Method the effectively deletes hospital information stored in the database
 	 */
-	public void deleteHospital(int id) {
+	public void deleteHospital(Long id) {
 		// TODO Auto-generated method stub
 		
 	}
 	public void updateHospital(Hospital hospital) {
 		listOfHospitals.add(hospital);
-		int id = hospital.getId();
+		Long id = hospital.getId();
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		  
         session.beginTransaction();
     	 Query regquery = session.createQuery("from Hospital where id= :id");
-	        regquery.setInteger("id", 17);
+	        regquery.setLong("id", id);
 	        Hospital hosp = (Hospital) regquery.uniqueResult();
             hosp.setHospitalName(hospital.getHospitalName());
             session.update(hosp);
@@ -287,9 +287,9 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	/**
 	 * Method that retrieves the max hospital id
 	 */
-	public int getMaxHospitalID() {
+	public Long getMaxHospitalID() {
 		Connection conn = null; // Resets the connection to the database
-		int max = 0;
+		Long max = new Long(0);
 		
 		try {
 			conn = dataSource.getConnection();
@@ -299,7 +299,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 			ResultSet rs = ps.executeQuery();
 			
 			if (rs.next()) {
-				max = rs.getInt(1);
+				max = rs.getLong(1);
 			}
 			
 			rs.close();
@@ -316,19 +316,19 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 		}
 	}
 
-	public Map<Integer, String> getAllRegions() {
+	public Map<Long, String> getAllRegions() {
 		Session session = edu.uiowa.icr.util.HibernateUtil.getSessionFactory().openSession();
 		  
         session.beginTransaction();
         Query q = session.createQuery("From Region ");
 
         List<Region> resultList = q.list();
-        session.getTransaction().commit();
-        session.close();
-		Map<Integer, String> regions = new LinkedHashMap<Integer,String>();
+        //session.getTransaction().commit();
+      //  session.close();
+		Map<Long, String> regions = new LinkedHashMap<Long, String>();
         for (Region next : resultList) {
             System.out.println("next region: " + next.getName());
-            regions.put(next.getId().intValue(), next.getName());
+            regions.put(next.getId(), next.getName());
         }
         return regions;
         /*
@@ -363,7 +363,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	}
 
 	@Override
-	public List<ReportsHospital> getAllHospitalsReports(int hospitalId) {
+	public List<ReportsHospital> getAllHospitalsReports(Long hospitalId) {
 		Connection conn = null; // Resets the connection to the database
 		ReportsHospital hospital = null; // Resets the model
 		List<ReportsHospital> rh = null; // Resets the list

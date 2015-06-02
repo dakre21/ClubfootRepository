@@ -2,7 +2,7 @@ package edu.uiowa.icr.models;
 
 public class ReportsHospital {
 
-	private int id;
+	private Long id;
 	private String hospitalName;
 	private String regionName;
 	private int numOfPatients;
