@@ -1,4 +1,8 @@
 package edu.uiowa.icr.models;
+import java.util.Set;
+import java.util.HashSet;
+import edu.uiowa.icr.models.Hospital;
+
 
 /**
  * 
@@ -11,7 +15,7 @@ public class User {
 	private int id;
 	private String userName;
 	private String email;
-	private int hospitalId;
+	private Set<Integer> hospitalIds;
 	private String hospitalName;
 	private int roleId;
 	private String roleName;
@@ -19,15 +23,22 @@ public class User {
 	public User() {
 		
 	}
-	
-	// User constructor that sets up the retriving information from the database via this model
-	public User(int id, String userName, String email, int hospitalId, String hospitalName, int roleId, String roleName) {
+
+	public User(int id, String userName, String email, int roleId, String roleName) {
 		// Sets current object "this" to the value being passed when this model is being instantiated 
 		this.id = id;
 		this.userName = userName;
 		this.email = email;
-		this.hospitalId = hospitalId;
-		this.hospitalName = hospitalName;
+		this.roleId = roleId;
+		this.roleName = roleName;
+	}
+	// User constructor that sets up the retrieving information from the database via this model
+	public User(int id, String userName, String email, HashSet<Integer> hospitalIds, int roleId, String roleName) {
+		// Sets current object "this" to the value being passed when this model is being instantiated 
+		this.id = id;
+		this.userName = userName;
+		this.email = email;
+		this.hospitalIds = hospitalIds;
 		this.roleId = roleId;
 		this.roleName = roleName;
 	}
@@ -66,14 +77,14 @@ public class User {
 		this.email = email;
 	}
 	
+	public void setHospitalIds(Set<Integer> hospitalIds) {
+		this.hospitalIds = hospitalIds;
+	}	
 	
-	public int getHospitalId() {
-		return hospitalId;
-	}
-	public void setHospitalId(int hospitalId) {
-		this.hospitalId = hospitalId;
-	}
-
+	public Set<Integer> getHospitalIds(){
+		return hospitalIds;
+    }
+	
 	
 	public String getHospitalName() {
 		return hospitalName;
