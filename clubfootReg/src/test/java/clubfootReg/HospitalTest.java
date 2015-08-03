@@ -52,7 +52,7 @@ public class HospitalTest {
 	@InjectMocks
 	Hospital mockHosp = new Hospital();
 	@InjectMocks
-	Hospital mockHosp1 = new Hospital(1, "Rush", 1, "USA");
+	Hospital mockHosp1 = new Hospital(Long.getLong("1"), "Rush", Long.getLong("1"), "USA");
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -111,7 +111,7 @@ public class HospitalTest {
 		
 		if(this.mockHosp1 != null){
 			assertNotNull(mockHosp1.getId());
-			assertEquals(mockHosp1.getId(), 1);
+			assertEquals(mockHosp1.getId(), Long.getLong("1"));
 		}
 		
 	}
@@ -130,7 +130,7 @@ public class HospitalTest {
 		
 		if(this.mockHosp1 != null){
 			assertNotNull(mockHosp1.getRegionId());
-			assertEquals(mockHosp1.getRegionId(), 1);
+			assertEquals(mockHosp1.getRegionId(), Long.getLong("1"));
 		}
 		
 	}

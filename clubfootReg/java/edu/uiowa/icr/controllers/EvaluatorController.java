@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,8 +71,11 @@ public class EvaluatorController {
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value = "/editevaluator", method = RequestMethod.GET) // In this instance we receive the jsp view "edit_evaluator" and get command to view the page
 	public ModelAndView editEvaluatorForm(HttpServletRequest request) {
+		MapUtils.debugPrint(System.out, "Evaulator Request Map", request.getParameterMap());
 	    int evaluatorId = Integer.parseInt(request.getParameter("id"));	// This parses an int from the request object's getParameter method for "id"
+	    System.out.println("Eval ID: "+evaluatorId);
 	    Evaluator e = evaluatorRepo.getEvaluator(evaluatorId);	// Instantiation of Evaluator based on the integer id value of the evaluator
+	    
 	    ModelAndView model = new ModelAndView("editevaluator");	// Instantition of the Model and view built in method and passes edit_evaluator view to it
 	    model.addObject("evaluator", e); // Adds an object to the model called evaluator and passes the object e to it for the edit functionality
 	    return model; // Returns the model for the user to edit
@@ -80,10 +84,11 @@ public class EvaluatorController {
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value="/editevaluator", method=RequestMethod.POST) // In this instance we receive the jsp view "edit_evaluator" and post command to submit edit form data to the database
     public String editEvaluatorSubmit(@ModelAttribute("editEvaluator") Evaluator evaluator, Model model) {
-        evaluatorRepo.updateEvaluator(evaluator);	// The object evaluateRepo calls the "updateEvaluator" method and passes evaluator to it
+        System.out.println("IN EDIT EVAL SUBMIT");
+		evaluatorRepo.updateEvaluator(evaluator);	// The object evaluateRepo calls the "updateEvaluator" method and passes evaluator to it
         //model.addAttribute("evaluator", evaluatorRepo.getEvaluator(evaluator.getId()));
         model.addAttribute("evaluators", evaluatorRepo.getAllEvaluators());	// This invokes the addAttribute method of the model and receives all of the evaluators
-        return "view_evaluators"; // Returns the view_evaluators page for the user to view
+        return "viewevaluators"; // Returns the view_evaluators page for the user to view
     }
 	
 	@ModelAttribute("hospitalList")

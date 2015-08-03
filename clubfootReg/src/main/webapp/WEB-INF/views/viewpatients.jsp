@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html"; charset=ISO-8859-1">
@@ -24,7 +25,9 @@
 	<div class="jumbotron">
 		<h1>
 			Patients
+			<!-- <sec:authorize access="hasAnyRole('ADMIN_ROLE')">  -->
 			<a role="button" class="btn btn-primary btn-lg" href="patient">Add New Patient</a>
+			<!-- </sec:authorize>  -->
 		</h1>
 		<hr>
 		<table class='table table-striped'>
@@ -45,7 +48,9 @@
 				  <td>${o.patientFirstName}</td>
 				  <td>${o.patientMiddleName}</td>
 				  <td>${o.patientLastName}</td>
+				  <sec:authorize access="hasRole('ROLE_ADMIN')">    
 				  <td><a href="editpatient?id=${o.id}">Edit</a></td>
+				  </sec:authorize>  
 				  <td><a href="visit?id=${o.id}">Add Visit</a></td>
               </tr>
             </c:forEach>

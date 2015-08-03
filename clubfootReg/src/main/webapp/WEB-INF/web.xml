@@ -38,8 +38,15 @@
   	<param-name>contextConfigLocation</param-name>
   	<param-value>
   	/WEB-INF/spring/webcontext/security-context.xml
-  	</param-value>
+  	/WEB-INF/spring/webcontext/data-source-cfg.xml
+   	</param-value>
+ 
   </context-param>
+ <!-- <context-param>
+   	<param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+    <param-value>/WEB-INF/springsecurity.taglib.xml</param-value>
+  </context-param>
+  -->
   <listener>
   	<listener-class>
   		org.springframework.web.context.ContextLoaderListener

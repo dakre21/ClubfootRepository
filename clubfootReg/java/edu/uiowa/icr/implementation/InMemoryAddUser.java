@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 
 import javax.sql.DataSource;
 
@@ -59,11 +61,14 @@ public class InMemoryAddUser implements UserRepo{
 	public void addUser(User user) {
 		listOfUsers.add(user);	// Adds the object of the model "user" to the list created above
 		int id = user.getId();	// Gets the integer value of the user id
-		String userName = user.getUserName(); // Gets the user name from the model
+		String login = user.getUserName(); // Gets the user name from the model
 		String email = user.getEmail();	// Gets the email from the model
-		int hospitalId = user.getHospitalId();	// Gets the hospital id
+		Set<Integer> hospitalIds = user.getHospitalIds();	// Gets the hospital id
 		int roleId = user.getRoleId();	// Gets the user role id
 
+		email ="smeold@eng.uiowa.edu";
+		roleId = 5;
+		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");	// Sets up the date format for data to be properly synchronized to the database
 		Date date = new Date();	// Instantiation of the Date class
 		Connection connection = null;	// Instantiation of the database connection
@@ -75,29 +80,49 @@ public class InMemoryAddUser implements UserRepo{
 		try {
 			connection = dataSource.getConnection();	// Connection of the dataSource with the MySql sever
 			
-			String sql = "Insert into abstract_person (id, created) values (?, ?)";	// First sql statement that contains the information to query into abstract_person
-			PreparedStatement ps = connection.prepareStatement(sql); // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database with an instantiation of the database connection
-			ps.setInt(1, this.getMaxPersonID()+1);	
-			ps.setString(2, dateFormat.format(date));
-			ps.executeUpdate();
-			ps.close();
-			
-			sql = "Insert into user (id, login, email, role_id) values (?, ?, ?, ?)"; // First sql statement that contains the information to query into user
-			PreparedStatement ps2 = connection.prepareStatement(sql);
-			ps2.setInt(1, this.getMaxPersonID());
-			ps2.setString(2, userName);
+			String apsql = "Insert into abstract_person (id, created) values (?, ?)";	// First sql statement that contains the information to query into abstract_person
+			PreparedStatement ps = connection.prepareStatement(apsql); // Instantiation of the class "PreparedStatement" of how the query statements are prepared to be added to the database with an instantiation of the database connection
+            int nextPersonId = this.getMaxPersonID() + 1;
+            try {
+               ps.setInt(1, nextPersonId);	
+			   ps.setString(2, dateFormat.format(date));
+			   ps.executeUpdate();
+			   ps.close();
+            } catch (Exception nestede1) {
+	        	System.out.println("BBROWN FIRST");
+        	    System.out.println(nestede1);
+            }
+	        try {		
+			String usql = "Insert into user (id, login, email, role_id) values (?, ?, ?, ?)"; // First sql statement that contains the information to query into user
+			PreparedStatement ps2 = connection.prepareStatement(usql);
+			ps2.setInt(1, nextPersonId);
+			ps2.setString(2, login);
 			ps2.setString(3, email);
 			ps2.setInt(4, roleId);
 			ps2.executeUpdate();
 			ps2.close();
+	        } catch (Exception nestede) {
+	        	System.out.println("BBROWN SECOND");
+	        	System.out.println(nestede);
+	        }
+	        try {
+	        	String hsql = "Insert into user_hospital (user_id, hospital_id) values (?, ?)"; // First sql statement that contains the information to query into hospital
+		        
+			    for (Integer hospId: hospitalIds)
+			    {
+			       System.out.println("ITERATING THR HOSPI ID IN INSERT USER.  Hpsit id is " +hospId+ "  and user id is "+nextPersonId);
+			       PreparedStatement ps3 = connection.prepareStatement(hsql);
+			       ps3.setInt(1, nextPersonId);
+			       ps3.setInt(2, hospId);
+			       ps3.executeUpdate();
+		           ps3.close();   	    
+			    }
 			
-			sql = "Insert into user_hospital (user_id, hospital_id) values (?, ?)"; // First sql statement that contains the information to query into hospital
-			PreparedStatement ps3 = connection.prepareStatement(sql);
-			ps3.setInt(1, this.getMaxPersonID());
-			ps3.setInt(2, hospitalId);
-			ps3.executeUpdate();
-			ps3.close();
-			
+			    //ps3.close();
+	        } catch (Exception nested3) {
+	        	System.out.println("BBROWN THIRD");
+	        	System.out.println(nested3);
+	        }
 		} catch (SQLException e) { // Catches SQL exception errors
 			throw new RuntimeException(e);
  
@@ -124,14 +149,13 @@ public class InMemoryAddUser implements UserRepo{
 		 */
 		try {
 			conn = dataSource.getConnection();
-			
-			String sql = "Select a.id, a.login, a.email, d.id as hospital_id, d.name as hospital_name, e.id as role_id, e.name as role_name " +
-						 "from user a " +
-					     "inner join abstract_person b on a.id = b.id " +
-					     "inner join user_hospital c on a.id = c.user_id " +
-					     "inner join hospital d on c.hospital_id = d.id " +
-					     "inner join role e on a.role_id = e.id " +
-					     "where a.id = ?"; 
+			//a.login was a.login
+			String sql = "Select u.id, u.login, u.email, r.id as role_id, r.name as role_name " +
+						 "from user u " +
+					     "inner join abstract_person ap on u.id = ap.id " +
+					    
+					     "inner join role r on u.role_id = r.id " +
+					     "where u.id = ?"; 
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
@@ -141,8 +165,6 @@ public class InMemoryAddUser implements UserRepo{
 					rs.getInt("id"),
 					rs.getString("login"),
 					rs.getString("email"),
-					rs.getInt("hospital_id"),
-					rs.getString("hospital_name"),
 					rs.getInt("role_id"),
 					rs.getString("role_name")
 				);
@@ -169,9 +191,9 @@ public class InMemoryAddUser implements UserRepo{
 	public void updateUser(User user) {
 		listOfUsers.add(user);	// Adds the object of the model "user" to the list created above
 		int id = user.getId();	// Gets the integer value of the user id
-		String userName = user.getUserName(); // Gets the user name from the model
+		String login = user.getUserName(); // Gets the user name from the model
 		String email = user.getEmail();	// Gets the email from the model
-		int hospitalId = user.getHospitalId();	// Gets the hospital id
+		Set<Integer> hospitalIds = user.getHospitalIds();	// Gets the hospital id
 		int roleId = user.getRoleId();	// Gets the user role id
 
 		Connection connection = null;	// Instantiation of the database connection
@@ -185,19 +207,19 @@ public class InMemoryAddUser implements UserRepo{
 			
 			String sql = "Update user set login = ?, email = ?, role_id = ? where id = ?"; // First sql statement that contains the information to query into user
 			PreparedStatement ps = connection.prepareStatement(sql);
-			ps.setString(1, userName);
+			ps.setString(1, login);
 			ps.setString(2, email);
 			ps.setInt(3, roleId);
 			ps.setInt(4, id);
 			ps.executeUpdate();
 			ps.close();
 			
-			sql = "Update user_hospital set hospital_id = ? where user_id = ?"; // First sql statement that contains the information to query into hospital
-			PreparedStatement ps2 = connection.prepareStatement(sql);
-			ps2.setInt(1, hospitalId);
-			ps2.setInt(2, id);
-			ps2.executeUpdate();
-			ps2.close();
+			//sql = "Update user_hospital set hospital_id = ? where user_id = ?"; // First sql statement that contains the information to query into hospital
+			//PreparedStatement ps2 = connection.prepareStatement(sql);
+			//ps2.setInt(1, hospitalId);
+			//ps2.setInt(2, id);
+			//ps2.executeUpdate();
+			//ps2.close();
 			
 		} catch (SQLException e) { // Catches SQL exception errors
 			throw new RuntimeException(e);
@@ -231,13 +253,12 @@ public class InMemoryAddUser implements UserRepo{
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "select a.id, a.login, a.email, d.id as hospital_id, d.name as hospital_name, e.id as role_id, e.name as role_name " +
-						 "from user a " +
-					     "inner join abstract_person b on a.id = b.id " +
-					     "inner join user_hospital c on a.id = c.user_id " +
-					     "inner join hospital d on c.hospital_id = d.id " +
-					     "inner join role e on a.role_id = e.id " +
-					     "order by a.id";
+			String sql = "select u.id as user_id, u.login, u.email, r.id as role_id, r.name as role_name " +
+						 "from user u " +
+					     "inner join abstract_person ap on u.id = ap.id " +
+					    
+					     "inner join role r on u.role_id = r.id " +
+					     "order by u.id";
 			PreparedStatement ps = conn.prepareStatement(sql);	
 			ResultSet rs = ps.executeQuery();
 			
@@ -248,15 +269,32 @@ public class InMemoryAddUser implements UserRepo{
 			
 			while (rs.next()) {
 				user = new User(
-					rs.getInt("id"),
+					rs.getInt("user_id"),
 					rs.getString("login"),
 					rs.getString("email"),
-					rs.getInt("hospital_id"),
-					rs.getString("hospital_name"),
 					rs.getInt("role_id"),
 					rs.getString("role_name")
 				);
 				users.add(user);
+			}
+
+			String getHospitals = "select uh.hospital_id " +
+					 " from user_hospital uh " +
+					 " where uh.user_id = ? ";
+			PreparedStatement psh = conn.prepareStatement(getHospitals);
+			for (User u: users) {
+				
+				psh.setInt(1,u.getId());
+                ResultSet hrs = psh.executeQuery();
+                Set<Integer> userHospitals = new HashSet<Integer>();
+                while (hrs.next()) {
+                	//userHospitals.add(Integer.getInteger(""+hrs.getInt(1)));
+                	int h_id  = hrs.getInt("hospital_id");
+                	System.out.println("HHHHHOSPITLA ID "+h_id);
+                    userHospitals.add(new Integer(h_id));	
+                }
+                u.setHospitalIds(userHospitals);
+                hrs.close();
 			}
 			rs.close();
 			ps.close();

@@ -70,9 +70,9 @@ public class UserController {
 	@RequestMapping(value = "/edituser", method = RequestMethod.GET) // In this instance we receive the jsp view "edit_evaluator" and get command to view the page
 	public ModelAndView editUserForm(HttpServletRequest request) {
 	    int userId = Integer.parseInt(request.getParameter("id"));	// This parses an int from the request object's getParameter method for "id"
-	    User u = userRepo.getUser(userId);	// Instantiation of Hospital based on the integer id value of the hospital
-	    ModelAndView model = new ModelAndView("edituser");	// Instantition of the Model and view built in method and passes edit_hospital view to it
-	    model.addObject("user", u); // Adds an object to the model called hospital and passes the object h to it for the edit functionality
+	    User u = userRepo.getUser(userId);	// Instantiation of User based on the integer id value of the user
+	    ModelAndView model = new ModelAndView("edituser");	// Instantition of the Model and view built in method and passes edituser view to it
+	    model.addObject("user", u); // Adds an object to the model called user and passes the object h to it for the edit functionality
 	    return model; // Returns the model for the user to edit
 	}
 	

@@ -32,14 +32,18 @@
 							<spring:message code="AbstractUserDetailsAuthenticationProvider.badCredentials"/><br />
 						</div>
 						</c:if>
-						<form action="<c:url value= "/j_spring_security_check">
-						</c:url>" method="post">
+					<!-- 	 <form name='f' action="<c:url value='j_spring_security_check' />"  
+                          method='POST'>  -->
+				  	<form action="<c:url value= '/j_spring_security_check'>   
+						</c:url>" method="post">   
 							<fieldset>
 								<div class="form-group">
-									<input class="form-control" placeholder="User Name" name='j_username' type="text">
+								<!--  was j_username  bbrown -->
+									<input class="form-control" placeholder="User Name" name='username' type="text">
 								</div>
 								<div class="form-group">
-									<input class="form-control" placeholder="Password" name='j_password' type="password" value="">
+								<!--  was j_password bbrown -->
+									<input class="form-control" placeholder="Password" name='password' type="password" value="">
 								</div>
 								<input class="btn btn-lg btn-success btn-block" type="submit" value="Login" href="/clubfootReg/home">
 							</fieldset>

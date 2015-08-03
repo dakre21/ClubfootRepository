@@ -4,6 +4,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.MapUtils;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +24,8 @@ import edu.uiowa.icr.implementation.inter.HospitalRepo;
 import edu.uiowa.icr.models.Evaluator;
 import edu.uiowa.icr.models.Hospital;
 import edu.uiowa.icr.models.Patient;
+import edu.uiowa.icr.models.Region;
+import edu.uiowa.icr.util.HibernateUtil;
 
 /**
  * 
@@ -58,8 +63,6 @@ public class HospitalController {
 		return "viewhospitals";	// Returns view_hospitals view
 	}
 	
-	
-	
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value = "/viewhospitals", method = RequestMethod.GET) // In this instance we receive the jsp view "view_hospitals" and get command to view the page
 	public String viewHospitalsForm(Model model){
@@ -67,26 +70,50 @@ public class HospitalController {
 		return "viewhospitals";	// Returns view_hospitals view
 	}
 	
+	
+	
+	// Annotation for mapping web requests to specific handler classes/methods
+		@RequestMapping(value = "/edithospital", method = RequestMethod.GET) // In this instance we receive the jsp view "edit_evaluator" and get command to view the page
+		public ModelAndView editHospitalForm(HttpServletRequest request) {
+			System.out.println("THE ID OF THE HOSP TO BE EDITED: "+request.getParameter("Id")); 
+		    Long hospitalId = Long.parseLong(request.getParameter("id"));	// This parses a Long from the request object's getParameter method for "id"
+		    Hospital h = hospitalRepo.getHospital(hospitalId);	// Instantiation of Hospital based on the integer id value of the hospital
+		    ModelAndView model = new ModelAndView("edithospital");	// Instantiation of the Model and view built in method and passes edit_hospital view to it
+		    model.addObject("hospital", h); // Adds an object to the model called hospital and passes the object h to it for the edit functionality
+		    return model; // Returns the model for the user to edit
+		}
+		
+		// Annotation for mapping web requests to specific handler classes/methods
+		@RequestMapping(value="/edithospital", method=RequestMethod.POST) // In this instance we receive the jsp view "edit_evaluator" and post command to submit edit form data to the database
+	    public String editHospitalSubmit(@ModelAttribute("editHospital") Hospital hospital, Model model) {
+	        hospitalRepo.updateHospital(hospital);	// The object evaluateRepo calls the "updateEvaluator" method and passes evaluator to it
+	        //model.addAttribute("evaluator", evaluatorRepo.getEvaluator(evaluator.getId()));
+	        model.addAttribute("hospitals", hospitalRepo.getAllHospitals());	// This invokes the addAttribute method of the model and receives all of the evaluators
+	        return "viewhospitals"; // Returns the view_evaluators page for the user to view
+	    }
+	/*
+		
 	// Annotation for mapping web requests to specific handler classes/methods
 	@RequestMapping(value = "/edithospital", method = RequestMethod.GET) // In this instance we receive the jsp view "edit_evaluator" and get command to view the page
 	public ModelAndView editHospitalForm(HttpServletRequest request) {
-		System.out.println("THE ID OF THE HOSP TO BE EDITED: "+request.getParameter("Id")); 
-	    Long hospitalId = Long.parseLong(request.getParameter("id"));	// This parses a Long from the request object's getParameter method for "id"
-	    Hospital h = hospitalRepo.getHospital(hospitalId);	// Instantiation of Hospital based on the integer id value of the hospital
-	    ModelAndView model = new ModelAndView("edithospital");	// Instantiation of the Model and view built in method and passes edit_hospital view to it
+		MapUtils.debugPrint(System.out, "Request Map", request.getParameterMap());
+		Long hospitalId = Long.parseLong(request.getParameter("id"));	// This parses a Long from the request object's getParameter method for "id"
+		Hospital h = hospitalRepo.getHospital(hospitalId);	// Instantiation of Hospital based on the integer id value of the hospital
+        ModelAndView model = new ModelAndView("edithospital");	// Instantiation of the Model and view built in method and passes edit_hospital view to it
 	    model.addObject("hospital", h); // Adds an object to the model called hospital and passes the object h to it for the edit functionality
 	    return model; // Returns the model for the user to edit
 	}
 	
 	// Annotation for mapping web requests to specific handler classes/methods
-	@RequestMapping(value="/edit_hospital", method=RequestMethod.POST) // In this instance we receive the jsp view "edit_evaluator" and post command to submit edit form data to the database
+	//was edit_hospital	
+	@RequestMapping(value="/editHospital", method=RequestMethod.POST) // In this instance we receive the jsp view "edit_evaluator" and post command to submit edit form data to the database
     public String editHospitalSubmit(@ModelAttribute("editHospital") Hospital hospital, Model model) {
-        hospitalRepo.updateHospital(hospital);	// The object evaluateRepo calls the "updateEvaluator" method and passes evaluator to it
-        //model.addAttribute("evaluator", evaluatorRepo.getEvaluator(evaluator.getId()));
+	    System.out.println("IN IMPLEMENTATION: HOSP REGIO: "+hospital.getRegion());	
+		hospitalRepo.updateHospital(hospital);	// The object hospitalRepo calls the "updateHospital" method and passes evaluator to it
         model.addAttribute("hospitals", hospitalRepo.getAllHospitals());	// This invokes the addAttribute method of the model and receives all of the evaluators
-        return "viewhospitals"; // Returns the view_evaluators page for the user to view
+        return "viewhospitals"; // Returns the viewhospitals page for the user to view
     }
-	
+    */
 	
 	@ModelAttribute("regionList")
 	public Map<Long, String> populateRegionSelect() {

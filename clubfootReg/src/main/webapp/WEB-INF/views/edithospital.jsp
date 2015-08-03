@@ -54,7 +54,7 @@
   	<script>
   		window.onload = function() { 
 			$("#hospitalName").val("${hospital.hospitalName}");
-			$("#regionId").val("${hospital.regionId}");
+			//$("#regionId").val("${hospital.regionId}");
   		}
   	</script>
 	<jsp:include page="navbar.jsp" />
@@ -66,15 +66,21 @@
 		<div class="col-sm-2 column"></div>
 		<div class="col-md-8 column">
 			<h1>Edit Hospital</h1>  
-			<form action="#" th:action="@{/edit_hospital}" th:object="${hospital}" modelAttribute="editHospital" method="get" id="updateHospital">
+			<!--  was /edit_hospital-->
+		    <form action="#" th:action="@{/edit_Hospital}" th:object="${hospital}" modelAttribute="editHospital" method="post" id="updateHospital">  
+
+	
 				<div class="form-group">
           			<label for="hospitalName">Hospital/Clinic Name</label>
-          			<input type="text" class="form-control" id="hospitalName" name="hospitalName" path="hospitalName"/>
+          			<input type="text" class="form-control" id="hospitalName" name="hospitalName" path="hospitalName"/>   
         		</div>
          		<div class="form-group">
               		<label for="regionId">Region</label>
+              		
                 	<form:select class="form-control" path="regionList" id="regionId" name="regionId">
-                 		<form:option value="" label="Select a Region" disabled="true" selected="true" style="display: none;"/>
+                 <!--  		<form:option value="" label="Select a Region" disabled="true" selected="true" style="display: none;"/>   --> 
+ 
+                    <form:option value="" label="Select a Regione"  selected="true"/>   
                  		<form:options items="${regionList}" />
                  	</form:select>
             	</div>

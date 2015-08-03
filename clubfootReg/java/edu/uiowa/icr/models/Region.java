@@ -18,8 +18,9 @@ public class Region {
  
      
     private String name;
-     
-    @OneToMany(mappedBy="region",cascade=CascadeType.PERSIST)
+         
+    //CascadeType was PERSIST
+    @OneToMany(mappedBy="region",cascade=CascadeType.ALL)
     private List<Hospital> hospitals = new ArrayList<Hospital>();
       
     public Region() {
@@ -45,5 +46,8 @@ public class Region {
     }
     public void setHospitals(List<Hospital> hospitals) {
         this.hospitals = hospitals;
+    }
+    public String toString() {
+    	return this.id + ", name: " + this.name;
     }
 }

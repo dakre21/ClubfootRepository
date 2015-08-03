@@ -67,7 +67,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 		listOfHospitals.add(hospital); // Adds the object of the model "hospital" to the list created above
 		String hospitalName = hospital.getHospitalName();	// Gets the String name from the hospital model
 		Long regionId = hospital.getRegionId(); // Gets the integer value of the region id
-        //Long regionId = 17;
+        System.out.println("regionId from GUI hospital object: "+regionId);
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		  
@@ -173,8 +173,8 @@ public class InMemoryHospitalRepo implements HospitalRepo{
         Query q = session.createQuery("From Hospital ");
         
         List<Hospital> resultList = q.list();
-        //session.getTransaction().commit();
-        //session.close();
+        session.getTransaction().commit();
+        session.close();
         return resultList;
         
 		//Connection conn = null; // Resets the connection to the database
@@ -237,17 +237,40 @@ public class InMemoryHospitalRepo implements HospitalRepo{
 	public void updateHospital(Hospital hospital) {
 		listOfHospitals.add(hospital);
 		Long id = hospital.getId();
+		Long regionId = hospital.getRegionId(); // Gets the integer value of the region id
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		  
         session.beginTransaction();
     	 Query regquery = session.createQuery("from Hospital where id= :id");
 	        regquery.setLong("id", id);
 	        Hospital hosp = (Hospital) regquery.uniqueResult();
+	     Query rQuery = session.createQuery("from Region where id = :id");
+	        rQuery.setLong("id", regionId);
+	        Region reg = (Region) rQuery.uniqueResult();
             hosp.setHospitalName(hospital.getHospitalName());
+            hosp.setRegion(reg);
             session.update(hosp);
 	        session.getTransaction().commit();
 	        session.close();
-	       
+		
+		/*
+		listOfHospitals.add(hospital);
+		Long id = hospital.getId();
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		System.out.println("IN updateHospital");  
+		System.out.println("REGION ID FOR GUI HOSPITAL: "+hospital.getRegionId());
+		System.out.println("REGION NAME FOR GUI HOSPITAL: "+hospital.getRegionName());
+        session.beginTransaction();
+    	Query regquery = session.createQuery("from Hospital where id= :id");
+	    regquery.setLong("id", id);
+	    Hospital existingHosp = (Hospital) regquery.uniqueResult();
+        existingHosp.setHospitalName(hospital.getHospitalName());
+        existingHosp.setRegion(hospital.getRegion());
+        //session.update(hospital);
+        session.update(existingHosp);
+	    session.getTransaction().commit();
+	    session.close();
+	     */  
 /*
 	        String hospitalName = hospital.getHospitalName();
 		int regionId = hospital.getRegionId();
@@ -327,7 +350,7 @@ public class InMemoryHospitalRepo implements HospitalRepo{
       //  session.close();
 		Map<Long, String> regions = new LinkedHashMap<Long, String>();
         for (Region next : resultList) {
-            System.out.println("next region: " + next.getName());
+            //System.out.println("next region: " + next.getName());
             regions.put(next.getId(), next.getName());
         }
         return regions;
