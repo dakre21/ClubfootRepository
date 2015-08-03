@@ -50,12 +50,12 @@
   			padding: 10px;
 		}
  	</style>
-  	
+  
   	<script>
   		window.onload = function() { 
 			$("#userName").val("${user.userName}");
 			$("#email").val("${user.email}");
-			$("#hospitalId").val("${user.hospitalId}");
+
 			$("#roleId").val("${user.roleId}");
   		}
   	</script>
