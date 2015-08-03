@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html"; charset=ISO-8859-1">
@@ -48,10 +49,10 @@
 				
 				<div class="form-group">
 					<label for="hospital">Hospital</label>
-					<form:select class="form-control" path="hospitalList" id="hospitalId" name="hospitalId">
-                    	<form:option value="" label="Select a Hospital" disabled="true" selected="true" style="display: none;"/>
-                    	<form:options items="${hospitalList}" />
-                    </form:select>
+					<form:checkboxes items= "${hospitalList}" class="form-control" path="hospitalList" id="hospitalIds" name="hospitalIds" /> 
+   
+                  
+                    
 				</div>
 				&nbsp;
 				<div class="row" align="center">
