@@ -13,31 +13,55 @@
 		http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-	<security:http auto-config="true">
-		<security:intercept-url pattern="/newpatient" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/evaluator" access="ROLE_ADMIN, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/viewevaluators" access="ROLE_ADMIN, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/editevaluator" access="ROLE_ADMIN, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/hospital" access="ROLE_ADMIN, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/adduser" access="ROLE_ADMIN, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/visit" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/viewhospitals" access="ROLE_ADMIN, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/viewpatients" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/viewpatientinfo" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/viewusers" access="ROLE_ADMIN, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/viewvisit" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/editpatient" access="ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/visitreports" access="ROLE_ADMIN, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/patientreports" access="ROLE_ADMIN, ROLE_REGADMIN" />
-		<security:intercept-url pattern="/hospitalreports" access="ROLE_ADMIN, ROLE_REGADMIN" />
+    <!--  <security:http auto-config="true" use-expressions="true">   --> 
+	<!--  <security:http auto-config="true">  -->  
+	<security:http use-expressions="true">
+		<security:intercept-url pattern="/newpatient" access="hasAnyRole('ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN')" />
+		<security:intercept-url pattern="/evaluator" access="hasAnyRole('ROLE_ADMIN, ROLE_REGADMIN')" />
+		<security:intercept-url pattern="/viewevaluators" access="hasAnyRole('ROLE_ADMIN, ROLE_REGADMIN')" />
+		<security:intercept-url pattern="/editevaluator" access="hasAnyRole('ROLE_ADMIN, ROLE_REGADMIN')" />
+		<security:intercept-url pattern="/hospital" access="hasAnyRole('ROLE_ADMIN, ROLE_REGADMIN')" />
+		<security:intercept-url pattern="/edithospital" access="hasAnyRole('ROLE_ADMIN, ROLE_REGADMIN')" />
+		<security:intercept-url pattern="/adduser" access="hasAnyRole('ROLE_ADMIN, ROLE_REGADMIN')" />
+		<security:intercept-url pattern="/visit" access="hasAnyRole('ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN')" />
+		<security:intercept-url pattern="/viewhospitals" access="hasAnyRole('ROLE_ADMIN, ROLE_REGADMIN ROLE_TESTER')" />
+		<security:intercept-url pattern="/viewpatients" access="hasAnyRole('ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN')" />
+		<security:intercept-url pattern="/viewpatientinfo" access="hasAnyRole('ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN')" />
+		<security:intercept-url pattern="/viewusers" access="hasAnyRole('ROLE_ADMIN, ROLE_REGADMIN')" />
+		<security:intercept-url pattern="/viewvisit" access="hasAnyRole('ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN')" />
+		<security:intercept-url pattern="/editpatient" access="hasAnyRole('ROLE_ADMIN, ROLE_TESTER, ROLE_REGADMIN')" />
+		<security:intercept-url pattern="/visitreports" access="hasAnyRole('ROLE_ADMIN, ROLE_REGADMIN')" />
+		<security:intercept-url pattern="/patientreports" access="hasAnyRole('ROLE_ADMIN, ROLE_REGADMIN')" />
+		<security:intercept-url pattern="/hospitalreports" access="hasAnyRole('ROLE_ADMIN, ROLE_REGADMIN')" />
 		
 		<security:form-login login-page="/login" 
+		    login-processing-url="/j_spring_security_check" 
 			default-target-url="/"
+			username-parameter="username"
+            password-parameter="password"
 			authentication-failure-url="/loginfailed"/>
 			<security:logout logout-success-url="/logout"/>
 	</security:http>
+	  <bean id="bartsDataSource"
+         class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+  
+         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+         <property name="url" value="jdbc:mysql://devel1.eng.uiowa.edu:3306/icr_spring" />
+         <property name="username" value="icrst" />
+         <property name="password" value="studEnts_1461" />
+     </bean>
+      <bean
+        id="encoder"
+        class="org.springframework.security.crypto.password.StandardPasswordEncoder" />
 	
 	<security:authentication-manager>
+       <security:authentication-provider>
+        <!--  <security:password-encoder ref="encoder" />   -->   
+       <!--   <security:password-encoder hash="sha" />  -->
+         <security:jdbc-user-service data-source-ref="bartsDataSource"  
+                                     users-by-username-query="select login, password, status from user where login=?" 
+                                     authorities-by-username-query="select u.login, r.name from user u, role r where u.role_id = r.id and u.login =?" />
+       </security:authentication-provider>
 		<security:authentication-provider>
 			<security:user-service>
 				<security:user name="Admin" password="Admin123" authorities="ROLE_ADMIN" />
