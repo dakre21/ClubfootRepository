@@ -52,7 +52,7 @@ public class UserTest {
 	@InjectMocks
 	User user = new User();
 	@InjectMocks
-	User user1 = new User(1, "test_name", "test@email.com", 2, "UIHC", 0, "Admin");
+	User user1 = new User(1, "test_name", "test@email.com", 5, "ROLE_ADMIN");
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -127,15 +127,15 @@ public class UserTest {
 	@Test
 	public void test_UserHospitalisNull() throws Exception {
 		if(this.user == null){
-			assertNull(user.getHospitalId());
+			assertNull(user.getHospitalIds());
 		}
 	}
 	
 	@Test
 	public void test_UserHospitalisNotNull() throws Exception {
 		if(this.user1 != null){
-			assertNotNull(user1.getHospitalId());
-			assertEquals(user1.getHospitalId(), 2);
+			assertNotNull(user1.getHospitalIds());
+			//assertEquals(user1.getHospitalId(), 2);
 		}
 	}
 	
