@@ -4,11 +4,14 @@
   <artifactId>clubfootReg</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
+  
+ 
+  
   <dependencies>
   	<dependency>
   		<groupId>org.springframework</groupId>
   		<artifactId>spring-webmvc</artifactId>
-  		<version>4.0.3.RELEASE</version>
+  		<version>${spring-framework.version}</version>
   	</dependency>
   	<dependency>
   		<groupId>javax.servlet</groupId>
@@ -24,7 +27,8 @@
    	<dependency>
         <groupId>org.springframework</groupId>
     	<artifactId>spring-jdbc</artifactId>
-    	<version>3.2.1.RELEASE</version>
+       <!--   <version>3.2.1.RELEASE</version>   -->
+        <version>${spring-framework.version}</version>
 	</dependency>
    	<dependency>
   		<groupId>mysql</groupId>
@@ -41,7 +45,46 @@
   				<artifactId>spring-asm</artifactId>
   				<groupId>org.springframework</groupId>
   			</exclusion>
-  		</exclusions>
+  		</exclusions> 	
+  	</dependency>
+  	<dependency>
+  		<groupId>org.springframework.security</groupId>
+  		<artifactId>spring-security-aspects</artifactId>
+  		<version>3.1.4.RELEASE</version>
+  	</dependency>
+  	  	<dependency>
+  		<groupId>org.springframework.security</groupId>
+  		<artifactId>spring-security-cas</artifactId>
+  		<version>3.1.4.RELEASE</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.springframework.security</groupId>
+  		<artifactId>spring-security-crypto</artifactId>
+  		<version>3.1.4.RELEASE</version>
+  	</dependency>
+  	 	<dependency>
+  		<groupId>org.springframework.security</groupId>
+  		<artifactId>spring-security-ldap</artifactId>
+  		<version>3.1.4.RELEASE</version>
+  	</dependency> 	<dependency>
+  		<groupId>org.springframework.security</groupId>
+  		<artifactId>spring-security-openid</artifactId>
+  		<version>3.1.4.RELEASE</version>
+  	</dependency> 	<dependency>
+  		<groupId>org.springframework.security</groupId>
+  		<artifactId>spring-security-remoting</artifactId>
+  		<version>3.1.4.RELEASE</version>
+  	</dependency>
+
+    <!-- <dependency>
+  	   <groupId>org.springframework.webflow</groupId>
+       <artifactId>spring-faces</artifactId>
+        <version>3.1.4.RELEASE</version>
+     </dependency>  -->   
+  	 <dependency>
+  		<groupId>org.springframework.security</groupId>
+  		<artifactId>spring-security-taglibs</artifactId>
+  		<version>3.1.4.RELEASE</version>
   	</dependency>
   	<dependency>
   		<groupId>org.springframework.security</groupId>
@@ -136,5 +179,7 @@
   <properties>
   	<maven.compiler.source>1.7</maven.compiler.source>
   	<maven.compiler.target>1.7</maven.compiler.target>
+  	 <!-- Spring -->
+		<spring-framework.version>4.0.3.RELEASE</spring-framework.version>
   </properties>
 </project>
